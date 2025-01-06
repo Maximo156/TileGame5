@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398492f618341d44680d07a87ab1025d, type: 3}
+  m_Name: OverworldPortal
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: f8082110958844e4d9e79992b2c54326, type: 2}
+  HitsToBreak: 1000
+  Drops: []
+  UiSprite: {fileID: 7880635831719066056, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
+  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  structural: 0
+  solid: 0
+  MustBePlacedOn: []
+  NewDim: {fileID: 11400000, guid: a924afc1afeadfd4eaa3f1495083cc62, type: 2}
+  Exit: {fileID: 11400000, guid: b1678367436a8f54b92bb8f649e302a1, type: 2}

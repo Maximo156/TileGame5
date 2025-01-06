@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
+  m_Name: DirtWall
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: 58e45a9b08997004db17ba0111c4af9c, type: 2}
+  HitsToBreak: 2
+  Drops:
+  - Item: {fileID: 11400000, guid: 391352f8f1052a644869b6f2cca92a3f, type: 2}
+    Count: 3
+  UiSprite: {fileID: 1856473118, guid: 5cdf76e781047644d9d795af4f3c078b, type: 3}
+  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  structural: 1
+  solid: 1
+  MustBePlacedOn: []

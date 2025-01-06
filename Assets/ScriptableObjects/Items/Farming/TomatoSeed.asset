@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aa4439cdb41bdc4ca5158b32b5e39e2, type: 3}
+  m_Name: TomatoSeed
+  m_EditorClassIdentifier: 
+  Sprite: {fileID: 192876589, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
+  Color: {r: 1, g: 1, b: 1, a: 1}
+  MaxStackSize: 99
+  BurnTime: 0
+  MaxDurability: 1
+  Reach: 7
+  block: {fileID: 11400000, guid: 67b9677184043d74cb9a14259b93b563, type: 2}

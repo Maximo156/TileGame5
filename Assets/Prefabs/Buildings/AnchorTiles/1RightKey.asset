@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 690d016fdde1c7243930deffa618c71d, type: 3}
+  m_Name: 1RightKey
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 524350845, guid: a732a3ac76c331946ba185fca4abc876, type: 3}
+  - {fileID: 606783278, guid: a732a3ac76c331946ba185fca4abc876, type: 3}
+  - {fileID: 1384282294, guid: a732a3ac76c331946ba185fca4abc876, type: 3}
+  - {fileID: -715808541, guid: a732a3ac76c331946ba185fca4abc876, type: 3}
+  - {fileID: -1799126241, guid: d61c3b375c0c21240b86d1124eccace3, type: 3}
+  - {fileID: -13377282, guid: d61c3b375c0c21240b86d1124eccace3, type: 3}
+  - {fileID: 486271527, guid: d61c3b375c0c21240b86d1124eccace3, type: 3}
+  - {fileID: -1554617726, guid: d61c3b375c0c21240b86d1124eccace3, type: 3}
+  direction: 1
+  key: 1
+  Lock: 0

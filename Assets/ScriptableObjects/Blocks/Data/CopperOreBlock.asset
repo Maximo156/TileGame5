@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
+  m_Name: CopperOreBlock
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: d4e2e604b37c25e4ab32d40b1431f5c2, type: 2}
+  HitsToBreak: 5
+  Drops:
+  - Item: {fileID: 11400000, guid: fd246b5683b2dce4c95174dd21b0d737, type: 2}
+    Count: 2
+  UiSprite: {fileID: -8641174390336560586, guid: efa2fa69ae8bc8a4a885f9d96b14d473, type: 3}
+  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  structural: 1
+  solid: 1
+  MustBePlacedOn: []

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
+  m_Name: TomatoSeedling
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: 4b195bbec1dce18499c8a2fd77f1fe52, type: 2}
+  HitsToBreak: 1
+  Drops:
+  - Item: {fileID: 11400000, guid: 851039e123ef6bf47b51224a6ccd3e6a, type: 2}
+    Count: 1
+  UiSprite: {fileID: 2071693735, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
+  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  structural: 0
+  solid: 0
+  MustBePlacedOn:
+  - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
+  nextBlock: {fileID: 11400000, guid: c4eea3eb5736daa4ba2f8a96a099ee86, type: 2}
+  MeanSecondsToHappen: 5

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
+  m_Name: RadishPlant
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: c5a3776a25e37c6438d5435acaa3a0cd, type: 2}
+  HitsToBreak: 1
+  Drops:
+  - Item: {fileID: 11400000, guid: 89e05cb5ef19ea64e9a963950f6a4e58, type: 2}
+    Count: 1
+  UiSprite: {fileID: 512123043, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
+  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  structural: 0
+  solid: 0
+  MustBePlacedOn:
+  - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}

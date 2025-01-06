@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
+  m_Name: WoodWall
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: d9e9a781a70698642ba1be0fd65bd80b, type: 2}
+  HitsToBreak: 1
+  Drops:
+  - Item: {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
+    Count: 3
+  UiSprite: {fileID: -1090782670, guid: c1feb689ca067a54f9a5630e03013c4e, type: 3}
+  UiColor: {r: 0.77254903, g: 0.41960785, b: 0.23137255, a: 1}
+  structural: 1
+  solid: 1
+  MustBePlacedOn: []

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9461edb5501c704ebbbd3696622a51a, type: 3}
+  m_Name: BasicCrate
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: 33380e998d140f944964e3bb5397acb3, type: 2}
+  HitsToBreak: 3
+  Drops: []
+  UiSprite: {fileID: 3489699743356552951, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
+  structural: 0
+  solid: 0
+  MustBePlacedOn: []

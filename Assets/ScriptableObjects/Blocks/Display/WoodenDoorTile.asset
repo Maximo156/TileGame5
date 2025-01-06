@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95def25621ddc2d418edc636927d6ca3, type: 3}
+  m_Name: WoodenDoorTile
+  m_EditorClassIdentifier: 
+  Horizontal:
+    Open: {fileID: -1812014146, guid: e584dd1dbd560cf489a3f8609eb91bdc, type: 3}
+    Closed: {fileID: -1567657779, guid: e584dd1dbd560cf489a3f8609eb91bdc, type: 3}
+  Vertical:
+    Open: {fileID: 1171715030, guid: e584dd1dbd560cf489a3f8609eb91bdc, type: 3}
+    Closed: {fileID: 2001023181, guid: e584dd1dbd560cf489a3f8609eb91bdc, type: 3}
+  m_ColorOverride: {r: 0.77254903, g: 0.41960785, b: 0.23137255, a: 1}
