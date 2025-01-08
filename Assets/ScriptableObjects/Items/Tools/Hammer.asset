@@ -16,7 +16,7 @@ MonoBehaviour:
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 1
   BurnTime: 0
-  MaxDurability: 1
+  MaxDurability: 100
   Reach: 7
   BuildingCategories:
   - name: Floors
@@ -52,3 +52,4 @@ MonoBehaviour:
     recipes:
     - block: {fileID: 11400000, guid: f190cce03727c234aaaa1b058e5e3cac, type: 2}
     - block: {fileID: 11400000, guid: b1678367436a8f54b92bb8f649e302a1, type: 2}
+    - block: {fileID: 11400000, guid: 21ea753720df4014d8264935c1fc2a07, type: 2}

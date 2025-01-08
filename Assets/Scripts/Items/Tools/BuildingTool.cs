@@ -8,7 +8,7 @@ public class BuildingTool : Tool, IGridSource
     [Header("Building Categories")]
     public List<Category> BuildingCategories;
 
-    public override void Use(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
+    public override bool PerformAction(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
     {
         var recipe = (useInfo.state as BuildingToolState)?.selectedRecipe;
         if (CanReach(usePosition, targetPosition) &&
@@ -18,8 +18,10 @@ public class BuildingTool : Tool, IGridSource
             if (ChunkManager.PlaceBlock(Vector2Int.FloorToInt(targetPosition.ToVector2()), recipe.block))
             {
                 recipe.UseRecipe(useInfo.availableInventory);
+                return true;
             }
         }
+        return false;
     }
 
     public IEnumerable<IGridItem> GetGridItems()
@@ -33,12 +35,15 @@ public class BuildingTool : Tool, IGridSource
     }
 }
 
-public class BuildingToolState : ItemState, IGridClickListener
+public class BuildingToolState : ItemState, IDurableState, IGridClickListener
 {
     public BlockRecipe selectedRecipe;
+
+    public DurableState Durability { get; }
+
     public BuildingToolState(BuildingTool tool)
     {
-
+        Durability = new DurableState(tool.MaxDurability, this);
     }
 
     public void OnClick(IGridItem item)

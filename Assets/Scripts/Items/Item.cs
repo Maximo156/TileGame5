@@ -145,15 +145,6 @@ public class Item : ScriptableObject, ISpriteful, ISaveable
     {
         return null;
     }
-
-    public struct UseInfo
-    {
-        public ItemState state;
-        public IInventoryContainer availableInventory;
-        public Inventory UsedFrom;
-        public int UsedIndex;
-        public UserInfo UserInfo;
-    }
 }
 
 public abstract class ItemState
@@ -161,7 +152,7 @@ public abstract class ItemState
     public delegate void ItemStateChanged();
     public event ItemStateChanged OnStateChange;
 
-    protected void TriggerStateChange()
+    public void TriggerStateChange()
     {
         OnStateChange?.Invoke();
     }
@@ -174,4 +165,23 @@ public abstract class ItemState
 
 public interface ICyclable {
     public void Cycle();
+}
+
+public interface IColliderListener
+{
+    public void OnCollision(CollisionInfo info);
+}
+
+public struct CollisionInfo
+{
+    public ItemState state;
+}
+
+public struct UseInfo
+{
+    public ItemState state;
+    public IInventoryContainer availableInventory;
+    public Inventory UsedFrom;
+    public int UsedIndex;
+    public UserInfo UserInfo;
 }

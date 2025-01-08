@@ -13,6 +13,9 @@ public class Chunk
     public delegate void BlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos);
     public static event BlockRefreshed OnBlockRefreshed;
 
+    public delegate void LightingUpdated(Dictionary<Vector3Int, int> updated);
+    public static event LightingUpdated OnLightingUpdated;
+
     public delegate void ChunkChanged(Chunk chunk);
     public static event ChunkChanged OnChunkChanged;
 
@@ -96,6 +99,10 @@ public class Chunk
             if (block is Roof roof) {
                 CalcRoofStrengthBFS(position, roof);
             }
+            if(block is LightBlock)
+            {
+                CalcLight(position);
+            }
             ChangedBlock(position, slice);
         }
         return res;
@@ -108,6 +115,10 @@ public class Chunk
         if(slice.Break(worldPosition, roof, out var broken))
         {
             CalcRoofStrengthBFS(worldPosition, broken as Roof);
+            if (broken is LightBlock)
+            {
+                CalcLight(worldPosition);
+            }
         }
 
         ChangedBlock(worldPosition, slice);
@@ -211,6 +222,49 @@ public class Chunk
         {
             return worldPosition + local - Vector2Int.one * (radius - 1);
         }
+    }
+
+    public void CalcLight(Vector2Int worldPosition)
+    {
+        Queue<Vector2Int> toCheck = new();
+        Dictionary<Vector3Int, int> updated = new();
+        foreach (var v in Utilities.QuadAdjacent.Select(v => v + worldPosition))
+        {
+            toCheck.Enqueue(v);
+        }
+        int safety = 0;
+        while(toCheck.TryDequeue(out var cur) && safety++ < 1000)
+        {
+            if (!ChunkManager.TryGetBlock(cur, out var curBlock)) continue;
+            if (curBlock.WallBlock is LightBlock)
+            {
+                updated[cur.ToVector3Int()] = curBlock.LightLevel;
+                continue;
+            }
+            ChunkManager.TryGetBlock(cur + Vector2Int.up, out var up);
+            ChunkManager.TryGetBlock(cur + Vector2Int.down, out var down);
+            ChunkManager.TryGetBlock(cur + Vector2Int.left, out var left);
+            ChunkManager.TryGetBlock(cur + Vector2Int.right, out var right);
+
+            var lrMax = Mathf.Max(left.LightLevel, right.LightLevel);
+            bool lrSame = left.LightLevel == right.LightLevel;
+            var udMax = Mathf.Max(up.LightLevel, down.LightLevel);
+            bool udSame = up.LightLevel == down.LightLevel;
+
+            var target = Mathf.Max(lrMax - (lrSame ? 0 : 1), udMax - (udSame ? 0 : 1));
+            if (curBlock.LightLevel != target)
+            {
+                curBlock.LightLevel = updated[cur.ToVector3Int()] = target;
+                foreach (var v in Utilities.QuadAdjacent.Select(v => v+cur))
+                {
+                    toCheck.Enqueue(v);
+                }
+            }
+        }
+        CallbackManager.AddCallback(() =>
+        {
+            OnLightingUpdated?.Invoke(updated);
+        });
     }
 
     Vector2Int WorldToLocal(Vector2Int worldPos)

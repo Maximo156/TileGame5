@@ -10,8 +10,8 @@ public class WorldDisplay : MonoBehaviour
 
     public SingleTileMap Water;
     public SingleTileMap Stone;
-    public SingleTileMap Roof;
-    public SingleTileMap Darkness;
+    public LightTileMap Roof;
+    public LightTileMap Darkness;
 
     public Tilemap Ground;
     public Tilemap Wall;
@@ -34,6 +34,8 @@ public class WorldDisplay : MonoBehaviour
         yield return new WaitForSeconds(layerLoadTime);
         Roof.SetTiles(tileDisplayInfo.RoofPositions, !clear);
         yield return new WaitForSeconds(layerLoadTime);
+        Darkness.SetTiles(tileDisplayInfo.DarknessPositions, !clear);
+        yield return new WaitForSeconds(layerLoadTime);
         Ground.SetTiles(tileDisplayInfo.GroundTiles.positions, !clear ? tileDisplayInfo.GroundTiles.tiles : Enumerable.Repeat<TileBase>(null, tileDisplayInfo.GroundTiles.tiles.Length).ToArray());
         yield return new WaitForSeconds(layerLoadTime);
         Wall.SetTiles(tileDisplayInfo.WallTiles.positions, !clear? tileDisplayInfo.WallTiles.tiles : Enumerable.Repeat<TileBase>(null, tileDisplayInfo.GroundTiles.tiles.Length).ToArray());
@@ -47,7 +49,7 @@ public class WorldDisplay : MonoBehaviour
     public void UpdateBlock(Vector2Int pos, BlockSlice block)
     {
         var pos3 = pos.ToVector3Int();
-        Roof.SetTile(pos3, block.RoofBlock is not null);
+        Roof.SetTile(pos3, block.LightLevel, block.RoofBlock is not null);
         Ground.SetTile(pos3, block.GroundBlock?.Display);
         Wall.SetTile(pos3, block.WallBlock?.Display);
         UpdateItems(pos, block.PlacedItems);

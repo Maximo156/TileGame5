@@ -8,7 +8,9 @@ public class TileDisplayCache
 {
     public Vector3Int[] WaterPositions { get; }
     public Vector3Int[] StonePositions { get; }
-    public Vector3Int[] RoofPositions { get; } 
+    public Dictionary<Vector3Int, int> RoofPositions { get; }
+
+    public Dictionary<Vector3Int, int> DarknessPositions { get; }
 
     public (Vector3Int[] positions, TileBase[] tiles) GroundTiles { get; }
     public (Vector3Int[] positions, TileBase[] tiles) WallTiles { get; }
@@ -19,7 +21,8 @@ public class TileDisplayCache
     {
         var water = new List<Vector3Int>();
         var stone = new List<Vector3Int>();
-        var roof = new List<Vector3Int>();
+        var roof = new Dictionary<Vector3Int, int>();
+        var darkness = new Dictionary<Vector3Int, int>();
 
         var groundPos = new List<Vector3Int>();
         var groundTile = new List<TileBase>();
@@ -53,9 +56,10 @@ public class TileDisplayCache
                 }
                 if(slice.RoofBlock is not null)
                 {
-                    roof.Add(pos);
+                    roof.Add(pos, slice.LightLevel);
                 }
-                if(slice.PlacedItems is not null && slice.PlacedItems.Count > 0)
+                darkness.Add(pos, slice.LightLevel);
+                if (slice.PlacedItems is not null && slice.PlacedItems.Count > 0)
                 {
                     itemPos.Add(pos.ToVector2Int());
                     items.Add(slice.PlacedItems.ToArray());
@@ -65,7 +69,8 @@ public class TileDisplayCache
 
         WaterPositions = water.ToArray();
         StonePositions = stone.ToArray();
-        RoofPositions = roof.ToArray();
+        RoofPositions = roof;
+        DarknessPositions = darkness;
 
         GroundTiles = (groundPos.ToArray(), groundTile.ToArray());
         WallTiles = (wallPos.ToArray(), wallTile.ToArray());

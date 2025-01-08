@@ -7,7 +7,7 @@ public class MiningTool : Tool
     [Header("Mining Settings")]
     public int Damage;
 
-    public override void Use(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
+    public override bool PerformAction(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
     {
         if (CanReach(usePosition, targetPosition))
         {
@@ -19,13 +19,16 @@ public class MiningTool : Tool
             {
                 info.StartBreak(targetBlock, roof);
             }
-            if (info.Hit(targetBlock, roof, Damage)) {
-                if(ChunkManager.BreakBlock(targetBlock, roof))
+            if (info.Hit(targetBlock, roof, Damage))
+            {
+                if (ChunkManager.BreakBlock(targetBlock, roof))
                 {
                     miningState.Durability.ChangeDurability(-1);
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     public override ItemState GetItemState()
@@ -91,10 +94,11 @@ public class MiningTool : Tool
 public class MiningToolState : ItemState, IDurableState, ICyclable
 {
     public bool mineRoof;
-    DurableState durability;
+    public DurableState Durability { get; }
+
     public MiningToolState(MiningTool tool)
     {
-        durability = new(tool.MaxDurability, TriggerStateChange);
+        Durability = new(tool.MaxDurability, this);
     }
 
     public void Cycle()
@@ -102,8 +106,6 @@ public class MiningToolState : ItemState, IDurableState, ICyclable
         mineRoof = !mineRoof;
         TriggerStateChange();
     }
-
-    public DurableState Durability => durability;
 
     public override string GetStateString()
     {

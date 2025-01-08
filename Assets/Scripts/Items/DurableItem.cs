@@ -7,13 +7,9 @@ public class DurableItem : Item
 {
     public int MaxDurability;
 
-    public override void Use(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
+    public override ItemState GetItemState()
     {
-        if (MaxDurability > 0)
-        {
-            (useInfo.state as IDurableState)?.Durability.ChangeDurability(-1);
-        }
-        base.Use(usePosition, targetPosition, useInfo);
+        return new DurableState(MaxDurability, null);
     }
 }
 
@@ -22,14 +18,17 @@ public interface IDurableState
     public DurableState Durability { get; }
 }
 
-public class DurableState
+public class DurableState : ItemState, IDurableState
 {
     public int CurDurability { get; private set; }
-    Action onStateChange;
-    public DurableState(int durability, Action onStateChange)
+
+    public DurableState Durability => this;
+
+    readonly Action onStateChange;
+    public DurableState(int durability, ItemState containingState)
     {
         CurDurability = durability;
-        this.onStateChange = onStateChange;
+        onStateChange = containingState is not null ? containingState.TriggerStateChange : TriggerStateChange;
     }
 
     public void ChangeDurability(int dif)

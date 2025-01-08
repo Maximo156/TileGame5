@@ -33,6 +33,8 @@ public class ToolDisplay : MonoBehaviour
     private Vector2 ScreenPos;
     private PlayerInventories inventory;
     private UserInfo userInfo;
+    private PolygonCollider2D m_collider2D;
+
     public void Awake()
     {
         mainCamera = Camera.main;
@@ -43,6 +45,8 @@ public class ToolDisplay : MonoBehaviour
         gameObject.SetActive(false);
 
         inventory = GetComponentInParent<PlayerInventories>();
+        m_collider2D = GetComponentInChildren<PolygonCollider2D>();
+        m_collider2D.enabled = false;
 
         userInfo = new UserInfo
         {
@@ -50,6 +54,7 @@ public class ToolDisplay : MonoBehaviour
             Hunger = GetComponentInParent<Hunger>(),
             transform = transform.parent
         };
+        Physics2D.IgnoreCollision(m_collider2D, m_collider2D);
     }
 
     public void MoveMouse(InputAction.CallbackContext value)
@@ -74,6 +79,8 @@ public class ToolDisplay : MonoBehaviour
     int curSlot;
     private void ChangeHand(ItemStack newInHand, int slot)
     {
+        onAnimFinished = null;
+        AnimationEnd();
         gridControl.Close();
         curInHand = newInHand;
         curSlot = slot;
@@ -94,9 +101,23 @@ public class ToolDisplay : MonoBehaviour
         }
         gameObject.SetActive(true);
         display.sprite = newInHand.Item.Sprite;
+        UpdateCollider();
         display.transform.localScale = curSelected.scale * Vector3.one;
         display.transform.localEulerAngles = Vector3.forward * curSelected.zRotation;
         animator.SetFloat("Speed", curSelected.AnimationSpeed);
+    }
+
+
+    bool useCollider => display?.sprite?.GetPhysicsShapeCount() > 0;
+    void UpdateCollider()
+    {
+        var pointsList = new List<Vector2>();
+
+        if (useCollider)
+        {
+            display.sprite.GetPhysicsShape(0, pointsList);
+            m_collider2D.points = pointsList.ToArray();
+        }
     }
 
     public void OnRightClick(Vector3 ScreenPos)
@@ -116,11 +137,11 @@ public class ToolDisplay : MonoBehaviour
     Action onAnimFinished;
     public void OnStartAttack(Action onAnimFinished)
     {
-
         gridControl?.Close();
         this.onAnimFinished = onAnimFinished;
         if (curSelected != null && !animating && gameObject.activeInHierarchy)
         {
+            m_collider2D.enabled = useCollider;
             animating = true;
             animator.Play(curSelected.AnimationName);
         }
@@ -131,7 +152,7 @@ public class ToolDisplay : MonoBehaviour
         curInHand?.Item.Use(
             transform.parent.position, 
             mainCamera.ScreenToWorldPoint(ScreenPos),
-            new Item.UseInfo() {
+            new UseInfo() {
                 state = curInHand.State,
                 availableInventory = inventory,
                 UsedFrom = inventory.HotbarInv,
@@ -143,6 +164,8 @@ public class ToolDisplay : MonoBehaviour
     public void AnimationEnd()
     {
         animating = false;
+        itemDamaged = false;
+        m_collider2D.enabled = false;
         onAnimFinished?.Invoke();
     }
 
@@ -151,6 +174,24 @@ public class ToolDisplay : MonoBehaviour
         if(curInHand == null)
         {
             gameObject.SetActive(false);
+        }
+    }
+
+    bool itemDamaged = false;
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (!animating)
+        {
+            return;
+        }
+
+        if(!itemDamaged && curInHand.Item is IColliderListener listener)
+        {
+            listener.OnCollision(new CollisionInfo()
+            {
+                state = curInHand.State
+            });
+            itemDamaged = true;
         }
     }
 }

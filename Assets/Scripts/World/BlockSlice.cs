@@ -17,6 +17,13 @@ public class BlockSlice
     [JsonProperty]
     public Roof RoofBlock { get; private set; }
 
+    private int _lightLevel;
+    public int LightLevel
+    {
+        get => (WallBlock as LightBlock)?.LightLevel ?? _lightLevel;
+        set => _lightLevel = value;
+    }
+
     public Stack<ItemStack> PlacedItems;
 
     public BlockState State;
@@ -40,6 +47,10 @@ public class BlockSlice
     {
         if(block is Wall wall)
         {
+            if(WallBlock is LightBlock)
+            {
+                _lightLevel = 0;
+            }
             WallBlock = wall;
             State = block.GetState();
         }
