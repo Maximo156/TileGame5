@@ -20,7 +20,7 @@ public class BlockSlice
     private int _lightLevel;
     public int LightLevel
     {
-        get => (WallBlock as LightBlock)?.LightLevel ?? _lightLevel;
+        get => ((WallBlock as LightBlock)?.LightLevel * 2) ?? _lightLevel;
         set => _lightLevel = value;
     }
 

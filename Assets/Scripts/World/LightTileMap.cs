@@ -47,7 +47,7 @@ public class LightTileMap : MonoBehaviour
 
     public Color GetScaledColor(int lightLevel)
     {
-        var alpha = 1 - Mathf.Clamp01(lightLevel * 1f / WorldSettings.MaxLightLevel);
+        var alpha = 1 - Mathf.Clamp01((lightLevel / 2) * 1f / WorldSettings.MaxLightLevel);
         return new Color(ShadowColor.r, ShadowColor.g, ShadowColor.b, ShadowColor.a * alpha);
     }
 

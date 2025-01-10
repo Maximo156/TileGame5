@@ -223,6 +223,7 @@ public class Chunk
         timer.StartInterval("Whole");
         Queue<Vector2Int> toCheck = new();
         Dictionary<Vector3Int, int> updated = new();
+        toCheck.Enqueue(worldPosition);
         foreach (var v in Utilities.QuadAdjacent.Select(v => v + worldPosition))
         {
             toCheck.Enqueue(v);
@@ -247,7 +248,7 @@ public class Chunk
             var udMax = Mathf.Max(AvailableLight(up), AvailableLight(down));
             bool udSame = up.LightLevel == down.LightLevel;
 
-            var target = Mathf.Max(0, Mathf.Max(lrMax - (lrSame ? 0 : 1), udMax - (udSame ? 0 : 1)));
+            var target = Mathf.Max(0, Mathf.Max(lrMax - (lrSame ? 1 : 2), udMax - (udSame ? 1 : 2)));
             if (curBlock.LightLevel != target)
             {
                 curBlock.LightLevel = updated[cur.ToVector3Int()] = target;
