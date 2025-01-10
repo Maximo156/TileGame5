@@ -11,6 +11,7 @@ public class ChunkGenerator: ScriptableObject, ISaveable
     public bool saveChunks;
     public BiomeInfo biomes;
     public List<ChunkSubGenerator> Generators;
+    public Gradient ShadowColor;
     public string Identifier { get; private set; }
     ChunkSaver Saver;
 
@@ -31,6 +32,13 @@ public class ChunkGenerator: ScriptableObject, ISaveable
     public void SaveChunk(Chunk chunk)
     {
         Saver.SaveChunk(chunk);
+    }
+
+    public Color GetColor(int hoursPerDay, float curTime)
+    {
+        var val = curTime / hoursPerDay;
+        val = val < 0.5 ? val : 1 - val;
+        return ShadowColor.Evaluate(val * 2);
     }
 
     void OnValidate()

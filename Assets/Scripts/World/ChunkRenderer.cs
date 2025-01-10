@@ -28,10 +28,6 @@ public class ChunkRenderer : MonoBehaviour
         Chunk.OnBlockChanged += PlaceTile;
         Chunk.OnBlockRefreshed += RefreshTile;
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
 
     private void FixedUpdate()
     {
@@ -119,6 +115,7 @@ public class ChunkRenderer : MonoBehaviour
     {
         rendering = true;
         yield return Display.RenderChunk(chunk.GetBlocks(), !load);
+        chunk.UpdateLighting();
         rendering = false;
     }
 

@@ -14,6 +14,7 @@ public class ChunkManager : MonoBehaviour
     static ChunkManager Manager;
     public static int ChunkWidth => Manager.chunkWidth;
     public static int MsPerTick => Manager.msPerTick;
+    public static ChunkGenerator CurRealm => Manager.terrainGenerator;
     public static string DataPath;
 
     public ChunkGenerator OverworldGenerator;

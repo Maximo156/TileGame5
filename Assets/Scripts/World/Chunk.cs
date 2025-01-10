@@ -23,6 +23,8 @@ public class Chunk
     public Vector2Int BlockPos => ChunkPos * width;
 
     public BlockSlice[,] blocks { get; private set; }
+
+    HashSet<Vector2Int> LightPositions = new();
     readonly int width;
     System.Random rand;
 
@@ -42,6 +44,17 @@ public class Chunk
         if(worldPos != null)
         {
             GetBlock(worldPos.Value).SetBlock(portal);
+        }
+        LightPositions.Clear();
+        for (int x = 0; x < blocks.GetLength(0); x++)
+        {
+            for (int y = 0; y < blocks.GetLength(0); y++)
+            {
+                if (blocks[x, y].WallBlock is LightBlock)
+                {
+                    LightPositions.Add(new Vector2Int(x, y) + BlockPos);
+                }
+            }
         }
         tileDisplayCache = new TileDisplayCache(blocks, BlockPos);
         CallbackManager.AddCallback(() =>
@@ -99,8 +112,7 @@ public class Chunk
             if (block is Roof roof) {
                 CalcRoofStrengthBFS(position, roof);
             }
-            CalcLight(position);
-            ChangedBlock(position, slice);
+            ChangedBlock(position, slice, block);
         }
         return res;
     }
@@ -113,8 +125,7 @@ public class Chunk
         {
             CalcRoofStrengthBFS(worldPosition, broken as Roof);
         }
-        CalcLight(worldPosition);
-        ChangedBlock(worldPosition, slice);
+        ChangedBlock(worldPosition, slice, broken);
         return true;
     }
 
@@ -123,7 +134,7 @@ public class Chunk
         var slice = GetBlock(worldPosition);
 
         var res = slice.PlaceItem(item);
-        ChangedBlock(worldPosition, slice);
+        ChangedSlice(worldPosition, slice);
         return res;
     }
 
@@ -132,7 +143,7 @@ public class Chunk
         var slice = GetBlock(worldPosition);
 
         var res = slice.PopItem();
-        ChangedBlock(worldPosition, slice);
+        ChangedSlice(worldPosition, slice);
         return res;
     }
 
@@ -150,7 +161,7 @@ public class Chunk
                 }
                 else
                 {
-                    ChangedBlock(worldPosition, slice);
+                    ChangedSlice(worldPosition, slice);
                 }
             }
             return true;
@@ -217,7 +228,15 @@ public class Chunk
         }
     }
 
-    public void CalcLight(Vector2Int worldPosition)
+    public void UpdateLighting()
+    {
+        foreach(var pos in LightPositions)
+        {
+            CalcLight(pos);
+        }
+    }
+
+    void CalcLight(Vector2Int worldPosition)
     {
         var timer = new Timer(1, "LightCalc");
         timer.StartInterval("Whole");
@@ -286,7 +305,24 @@ public class Chunk
         });
     }
 
-    void ChangedBlock(Vector2Int worldPosition, BlockSlice slice)
+    void ChangedBlock(Vector2Int worldPosition, BlockSlice slice, Block updated)
+    {
+        if(updated is LightBlock)
+        {
+            if(slice.WallBlock is LightBlock)
+            {
+                LightPositions.Add(worldPosition);
+            }
+            else
+            {
+                LightPositions.Remove(worldPosition);
+            }
+        }
+        CalcLight(worldPosition);
+        ChangedSlice(worldPosition, slice);
+    }
+
+    void ChangedSlice(Vector2Int worldPosition, BlockSlice slice)
     {
         curGenerator.SaveChunk(this);
         OnBlockChanged?.Invoke(this, worldPosition, ChunkPos, slice);

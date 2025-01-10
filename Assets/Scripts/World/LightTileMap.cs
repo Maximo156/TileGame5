@@ -9,7 +9,7 @@ public class LightTileMap : MonoBehaviour
 {
     Tilemap Map;
     public TileBase Tile;
-    public Color ShadowColor;
+    //public Color ShadowColor;
 
     public void Start()
     {
@@ -48,7 +48,7 @@ public class LightTileMap : MonoBehaviour
     public Color GetScaledColor(int lightLevel)
     {
         var alpha = 1 - Mathf.Clamp01((lightLevel / 2) * 1f / WorldSettings.MaxLightLevel);
-        return new Color(ShadowColor.r, ShadowColor.g, ShadowColor.b, ShadowColor.a * alpha);
+        return new Color(1, 1, 1, alpha);
     }
 
     void LightingUpdated(Dictionary<Vector3Int, int> updated)
@@ -57,5 +57,10 @@ public class LightTileMap : MonoBehaviour
         {
             Map.SetColor(kvp.Key, GetScaledColor(kvp.Value));
         }
+    }
+
+    public void SetColor(Color color)
+    {
+        Map.color = color;
     }
 }

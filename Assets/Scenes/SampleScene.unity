@@ -2281,8 +2281,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.000058850273, y: 0}
+  m_SizeDelta: {x: 445, y: 0}
   m_Pivot: {x: -0.0000001322478, y: 1}
 --- !u!114 &370629287
 MonoBehaviour:
@@ -7389,7 +7389,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 251.825, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1461943349
@@ -7888,7 +7888,6 @@ GameObject:
   - component: {fileID: 1644079600}
   - component: {fileID: 1644079601}
   - component: {fileID: 1644079602}
-  - component: {fileID: 1644079604}
   - component: {fileID: 1644079603}
   m_Layer: 6
   m_Name: WorldDisplay
@@ -7957,7 +7956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024bcc4bcf2b37344bb3b5f30303525d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerLoadTime: 0.05
+  layerLoadTime: 0.025
   Water: {fileID: 665189651}
   Stone: {fileID: 10145128}
   Roof: {fileID: 1843275731}
@@ -7965,19 +7964,6 @@ MonoBehaviour:
   Ground: {fileID: 772444702}
   Wall: {fileID: 2050458972}
   PlacedItemPrefab: {fileID: 7036994213467656995, guid: a8d4307e953368a4c88b32468dd64c21, type: 3}
---- !u!114 &1644079604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1644079599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e1fc7dc6eb771b47b8b2a8eabe6e127, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MaxLightLevel: 16
 --- !u!1001 &1652292262
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9042,8 +9028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78ad14a7f2d59094daef7a7b8c213697, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tile: {fileID: 11400000, guid: bebb944f8626e594daf66b893c0a85a8, type: 2}
-  ShadowColor: {r: 0, g: 0, b: 0, a: 0.9137255}
+  Tile: {fileID: 11400000, guid: 22bc765a579da1e44bfdd1119f9fb804, type: 2}
 --- !u!1 &1829188578
 GameObject:
   m_ObjectHideFlags: 0
@@ -9687,7 +9672,7 @@ Tilemap:
   m_TileColorArray: []
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.9137255}
   m_Origin: {x: 0, y: 0, z: 0}
   m_Size: {x: 0, y: 0, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
@@ -9722,7 +9707,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tile: {fileID: 11400000, guid: bebb944f8626e594daf66b893c0a85a8, type: 2}
-  ShadowColor: {r: 0, g: 0, b: 0, a: 0.9137255}
 --- !u!1 &1918543952
 GameObject:
   m_ObjectHideFlags: 0
@@ -9734,6 +9718,8 @@ GameObject:
   - component: {fileID: 1918543953}
   - component: {fileID: 1918543954}
   - component: {fileID: 1918543955}
+  - component: {fileID: 1918543957}
+  - component: {fileID: 1918543956}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -9790,6 +9776,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CallbacksPerFrame: 100
+--- !u!114 &1918543956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918543952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b571caf8fde17e044a6d53ceb03f02da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameHoursPerMinute: 24
+  GameHoursPerGameDay: 24
+  Display: {fileID: 1811277840}
+  CurGameTime: 6
+--- !u!114 &1918543957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918543952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e1fc7dc6eb771b47b8b2a8eabe6e127, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MaxLightLevel: 8
 --- !u!1 &1979986990
 GameObject:
   m_ObjectHideFlags: 0

@@ -157,6 +157,6 @@ public class Structure: ScriptableObject
     private bool ValidLayer(BiomeInfo.BiomeBlockInfo layer, BuildingInformation structure)
     {
         if (layer.Water) return false;
-        return layer.layer.WallBlocks.Count == 0 || structure.AllowMountains;
+        return layer.layer?.WallBlocks?.Count is 0 or null || structure.AllowMountains;
     }
 }

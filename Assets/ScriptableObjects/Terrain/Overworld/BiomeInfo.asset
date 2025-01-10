@@ -42,4 +42,4 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 55da782d16942d749b1b92f564c9e703, type: 2}
     SparceSoundSettings: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
     SparceDensity: 0.5
-  waterLevel: 0.2
+  waterLevel: 0.21
