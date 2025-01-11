@@ -8,7 +8,7 @@ public class SingleInventoryDisplay : MonoBehaviour
 {
     public ItemDrag ItemDrag;
     public SingleChildLayoutController display;
-
+    Action<int, IGridItem, PointerEventData> onClickOverride;
     protected Action<int, IGridItem, PointerEventData> genOnClick(Inventory inv)
     {
         return (index, _, clickEvent) =>
@@ -17,10 +17,11 @@ public class SingleInventoryDisplay : MonoBehaviour
         };
     }
 
-    public void AttachInv(Inventory inv)
+    public void AttachInv(Inventory inv, Action<int, IGridItem, PointerEventData> onClickOverride = null)
     {
+        this.onClickOverride = onClickOverride;
         inv.OnItemChanged += OnInventoryChanged;
-        display.Render(inv, genOnClick(inv));
+        display.Render(inv, onClickOverride ?? genOnClick(inv));
     }
 
     public void DetachInv(Inventory inv)
@@ -31,8 +32,13 @@ public class SingleInventoryDisplay : MonoBehaviour
         }
     }
 
+    public void Clear()
+    {
+        display.Clear();
+    }
+
     private void OnInventoryChanged(Inventory inv)
     {
-        display.Render(inv, genOnClick(inv));
+        display.Render(inv, onClickOverride ?? genOnClick(inv));
     }
 }

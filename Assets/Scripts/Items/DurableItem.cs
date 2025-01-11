@@ -9,7 +9,7 @@ public class DurableItem : Item
 
     public override ItemState GetItemState()
     {
-        return new DurableState(MaxDurability, null);
+        return new DurableState(this, null);
     }
 }
 
@@ -21,13 +21,16 @@ public interface IDurableState
 public class DurableState : ItemState, IDurableState
 {
     public int CurDurability { get; private set; }
+    public int MaxDurability => item.MaxDurability;
 
     public DurableState Durability => this;
 
+    readonly DurableItem item;
     readonly Action onStateChange;
-    public DurableState(int durability, ItemState containingState)
+    public DurableState(DurableItem item, ItemState containingState)
     {
-        CurDurability = durability;
+        CurDurability = item.MaxDurability;
+        this.item = item;
         onStateChange = containingState is not null ? containingState.TriggerStateChange : TriggerStateChange;
     }
 

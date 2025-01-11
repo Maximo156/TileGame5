@@ -14,6 +14,7 @@ public class BuildingInformation : MonoBehaviour
         public int min;
         public int max;
         public Item Item;
+        public List<ItemStack> ItemFill;
     }
 
     public Tilemap Ground;
@@ -85,7 +86,14 @@ public class BuildingInformation : MonoBehaviour
         {
             if(rand.NextDouble() < entry.chance)
             {
-                res.Add(new ItemStack(entry.Item, rand.Next(entry.min, entry.max)));
+                var item = new ItemStack(entry.Item, rand.Next(entry.min, entry.max));
+                if(item.State is IItemInventoryState invState)
+                {
+                    foreach (var i in entry.ItemFill) {
+                        invState.Inventory.inv.AddItem(i);
+                    }
+                }
+                res.Add(item);
             }
         }
         return res;

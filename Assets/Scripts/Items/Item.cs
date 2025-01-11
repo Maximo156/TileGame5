@@ -96,7 +96,8 @@ public class ItemStack : IGridItem, IGridSource
     public (string, string) GetTooltipString()
     {
         var stateString = State?.GetStateString();
-        string StatsString = Item.GetStatsString() + (string.IsNullOrWhiteSpace(stateString) ? "" : $"\n{stateString}");
+        var statsString = Item.GetStatsString();
+        string StatsString = string.Join('\n', (new []{ statsString, stateString }).Where(s => !string.IsNullOrWhiteSpace(s)));
         return (Item.formatedName, StatsString);
     }
 
@@ -124,11 +125,10 @@ public class Item : ScriptableObject, ISpriteful, ISaveable
 
     public virtual string GetStatsString()
     {
-
         var stats = this.ReadStats();
         return string.Join('\n', stats.OrderBy(kvp => kvp.Key)
                                   .Where(kvp => kvp.Value != null)
-                                  .Select(s => s.Key + ": " + s.Value));
+                                  .Select(s => s.Key.ToString().SplitCamelCase() + ": " + s.Value));
     }
 
     public virtual void Use(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
@@ -184,4 +184,5 @@ public struct UseInfo
     public Inventory UsedFrom;
     public int UsedIndex;
     public UserInfo UserInfo;
+    public Collider2D ignoreCollider;
 }

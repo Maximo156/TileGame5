@@ -98,7 +98,7 @@ public class MiningToolState : ItemState, IDurableState, ICyclable
 
     public MiningToolState(MiningTool tool)
     {
-        Durability = new(tool.MaxDurability, this);
+        Durability = new(tool, this);
     }
 
     public void Cycle()

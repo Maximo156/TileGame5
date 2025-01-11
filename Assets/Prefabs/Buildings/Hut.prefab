@@ -443,10 +443,19 @@ MonoBehaviour:
     min: 1
     max: 5
     Item: {fileID: 11400000, guid: 9d625386a764e074fb736996f5a62345, type: 2}
+    ItemFill: []
   - chance: 1
     min: 1
     max: 3
     Item: {fileID: 11400000, guid: 89e05cb5ef19ea64e9a963950f6a4e58, type: 2}
+    ItemFill: []
+  - chance: 1
+    min: 1
+    max: 1
+    Item: {fileID: 11400000, guid: 807ba9643f790ab48a06d9b474bf193e, type: 2}
+    ItemFill:
+    - Item: {fileID: 11400000, guid: 64953c23444c6e44a8de9efcc1ff07d5, type: 2}
+      Count: 1
   Importance: 1
   AllowMountains: 0
 --- !u!1 &4474875856038431228

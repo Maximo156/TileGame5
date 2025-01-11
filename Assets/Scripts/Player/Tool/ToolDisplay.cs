@@ -24,6 +24,9 @@ public class ToolDisplay : MonoBehaviour
     public List<ItemDisplayInfo> ItemDisplayInfos;
 
     public ItemUseGridControl gridControl;
+    public Collider2D IgnoreCollider;
+
+    public Sprite Sprite { get => display.sprite; set => display.sprite = value; }
 
     private Animator animator;
     private SpriteRenderer display;
@@ -52,9 +55,10 @@ public class ToolDisplay : MonoBehaviour
         {
             Health = GetComponentInParent<Health>(),
             Hunger = GetComponentInParent<Hunger>(),
+            Mana = GetComponentInParent<Mana>(),
             transform = transform.parent
         };
-        Physics2D.IgnoreCollision(m_collider2D, m_collider2D);
+        Physics2D.IgnoreCollision(m_collider2D, IgnoreCollider);
     }
 
     public void MoveMouse(InputAction.CallbackContext value)
@@ -157,7 +161,8 @@ public class ToolDisplay : MonoBehaviour
                 availableInventory = inventory,
                 UsedFrom = inventory.HotbarInv,
                 UsedIndex = curSlot,
-                UserInfo = userInfo
+                UserInfo = userInfo,
+                ignoreCollider = IgnoreCollider
             });
     }
 

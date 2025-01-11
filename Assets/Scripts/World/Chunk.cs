@@ -238,8 +238,6 @@ public class Chunk
 
     void CalcLight(Vector2Int worldPosition)
     {
-        var timer = new Timer(1, "LightCalc");
-        timer.StartInterval("Whole");
         Queue<Vector2Int> toCheck = new();
         Dictionary<Vector3Int, int> updated = new();
         toCheck.Enqueue(worldPosition);
@@ -256,12 +254,10 @@ public class Chunk
                 updated[cur.ToVector3Int()] = curBlock.LightLevel;
                 continue;
             }
-            timer.StartInterval("GetBlock");
             ChunkManager.TryGetBlock(cur + Vector2Int.up, out var up);
             ChunkManager.TryGetBlock(cur + Vector2Int.down, out var down);
             ChunkManager.TryGetBlock(cur + Vector2Int.left, out var left);
             ChunkManager.TryGetBlock(cur + Vector2Int.right, out var right);
-            timer.StopInterval("GetBlock");
             var lrMax = Mathf.Max(AvailableLight(left), AvailableLight(right));
             bool lrSame = left.LightLevel == right.LightLevel;
             var udMax = Mathf.Max(AvailableLight(up), AvailableLight(down));
@@ -277,8 +273,6 @@ public class Chunk
                 }
             }
         }
-        timer.StopInterval("Whole");
-        timer.printIntervals();
         CallbackManager.AddCallback(() =>
         {
             OnLightingUpdated?.Invoke(updated);

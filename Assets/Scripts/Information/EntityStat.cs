@@ -10,6 +10,7 @@ public abstract class EntityStat : MonoBehaviour
     public float Starting = 100;
     public float BaseRegen;
     public float TickSeconds = 1;
+    public float NegativeChangeWaitSeconds = 0;
 
     public float current { get; protected set; }
 
@@ -26,8 +27,10 @@ public abstract class EntityStat : MonoBehaviour
         OnChange?.Invoke();
     }
 
+    float lastNegative = 0;
     public virtual void ChangeStat(float dif)
     {
+        lastNegative = dif < 0 ? Time.time : lastNegative;
         current = Mathf.Clamp(current + dif, 0, Max);
         OnChangeStat();
         OnChange?.Invoke();
@@ -35,7 +38,10 @@ public abstract class EntityStat : MonoBehaviour
 
     protected virtual void OnTick()
     {
-        ChangeStat(Regen);
+        if (Time.time > lastNegative + NegativeChangeWaitSeconds)
+        {
+            ChangeStat(Regen);
+        }
     }
 
     private IEnumerator Tick()

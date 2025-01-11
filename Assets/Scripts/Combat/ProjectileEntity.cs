@@ -1,37 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class ProjectileEntity : MonoBehaviour
 {
     Rigidbody2D rb;
-    BoxCollider2D col;
+    PolygonCollider2D col;
     SpriteRenderer sr;
 
+
+    // ProjectileInfo;
+    Transform Perpetrator;
     float damage;
+    float AOE;
+    float pierces;
+    AnimatedProjectile.AnimationInfo HitAnimation;
 
     void Awake()
     {
         rb = gameObject.AddComponent<Rigidbody2D>();
         rb.gravityScale = 0;
         rb.freezeRotation = true;
-        col = gameObject.AddComponent<BoxCollider2D>();
         sr = gameObject.AddComponent<SpriteRenderer>();
+        gameObject.layer = LayerMask.NameToLayer("Projectile");
     }
 
-    public void Setup(Projectile projectileBase, Vector2 position, Vector2 dir, ProjectileModifier modifier, Transform target = null)
+    public void Setup(Projectile projectileBase, Vector2 position, Vector2 dir, ProjectileInfo projectileInfo, int renderLayer, Transform perpetrator, Transform target = null)
     {
-        transform.localScale = projectileBase.scale * modifier.scaleMultiplier * Vector3.one;
+        transform.localScale = projectileBase.scale * projectileInfo.scaleMultiplier * Vector3.one;
         transform.position = position;
         transform.right = dir;
-        rb.velocity = projectileBase.speed * modifier.speedMultiplier * dir.normalized;
-        damage = projectileBase.damage * modifier.damageMultiplier;
+        rb.velocity = projectileBase.speed * projectileInfo.speedMultiplier * dir.normalized;
+        damage = projectileBase.damage * projectileInfo.damageMultiplier;
         sr.sprite = projectileBase.sprite;
         sr.color = projectileBase.color;
-
-        if(projectileBase is AnimatedProjectile animatedProj && animatedProj.Sprites.Count > 0)
+        sr.sortingOrder = renderLayer;
+        col = gameObject.AddComponent<PolygonCollider2D>();
+        col.isTrigger = true;
+        Perpetrator = perpetrator;
+        AOE = projectileBase.AOE;
+        pierces = projectileBase.peirce;
+        Physics2D.IgnoreCollision(col, projectileInfo.UserCollider);
+        if (projectileBase is AnimatedProjectile animatedProj)
         {
-            StartCoroutine(Animate(animatedProj));
+            HitAnimation = animatedProj.HitAnimation;
+            if (animatedProj.FlyingAnimation.ShouldAnimate)
+            {
+                StartCoroutine(Animate(animatedProj.FlyingAnimation, true));
+            }
         }
         if(projectileBase is TrackingProjectile trackingProj && target != null)
         {
@@ -40,15 +57,18 @@ public class ProjectileEntity : MonoBehaviour
         StartCoroutine(LifeTimer(projectileBase.lifeTime));
     }
 
-    public IEnumerator Animate(AnimatedProjectile proj)
+    private IEnumerator Animate(AnimatedProjectile.AnimationInfo animation, bool loop)
     {
-        int curSprite = 0;
-        while (true)
+        int CurSprite = 0;
+        while (CurSprite < animation.Sprites.Length)
         {
-            sr.sprite = proj.Sprites[curSprite];
-            curSprite = (curSprite + 1) % proj.Sprites.Count;
-            yield return new WaitForSeconds(1f/proj.fps);
+            sr.sprite = animation.Sprites[CurSprite];
+            CurSprite++;
+            if(loop)
+                CurSprite %= animation.Sprites.Length;
+            yield return new WaitForSeconds(1f/animation.fps);
         }
+        gameObject.SetActive(false);
     }
 
     public IEnumerator LifeTimer(float aliveSeconds)
@@ -74,10 +94,41 @@ public class ProjectileEntity : MonoBehaviour
             yield return null;
         }
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (collision is TilemapCollider2D)
+        {
+            HitTarget();
+        }
+        else if (pierces >= 0)
+        {
+            collision.attachedRigidbody.SendMessage("Hit", new HitData { Damage = damage, Perpetrator = Perpetrator }, SendMessageOptions.DontRequireReceiver);
+            if (pierces == 0) HitTarget();
+            pierces -= 1;
+        }
+    }
+
+    private void HitTarget()
+    {
+        StopAllCoroutines();
+        if (AOE > 0)
+        {
+            var hits = Physics2D.OverlapCircleAll(transform.position, AOE);
+            foreach (var hit in hits)
+            {
+                var dist = Vector3.Distance(hit.transform.position, transform.position);
+                hit.attachedRigidbody?.SendMessage("Hit", new HitData { Damage = damage * (1 - dist / AOE), Perpetrator = Perpetrator }, SendMessageOptions.DontRequireReceiver);
+            }
+        }
+        if (HitAnimation.ShouldAnimate)
+        {
+            rb.velocity = Vector2.zero;
+            StartCoroutine(Animate(HitAnimation, false));
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnDisable()

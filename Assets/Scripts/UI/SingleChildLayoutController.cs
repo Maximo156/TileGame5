@@ -53,6 +53,11 @@ public class SingleChildLayoutController : MonoBehaviour
         }
     }
 
+    public void Clear()
+    {
+        SetupChildren(0);
+    }
+
     public void Render(IGridSource source, Action<int, IGridItem, PointerEventData> onClick = null, Action<int, IGridItem, PointerEventData> onMouseUp = null)
     {
         var items = source.GetGridItems().ToList();

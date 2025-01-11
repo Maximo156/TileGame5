@@ -6,4 +6,9 @@ using UnityEngine;
 public class ItemCharm : Item
 {
     public Weapon.WeaponType? WeaponType;
+    public bool Exclusive = true;
+    [Stat(Stat.StatType.ManaCost)]
+    public float manaCost;
+    [Stat(Stat.StatType.CostModifier)]
+    public float CostModifier = 0;
 }

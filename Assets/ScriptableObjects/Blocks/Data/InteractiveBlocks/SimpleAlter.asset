@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a740b837d13d6b4893b267ff1ebbc01, type: 3}
+  m_Name: SimpleAlter
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: c7a4e8ba9c783b7428dd5b7d5cb08142, type: 2}
+  HitsToBreak: 3
+  Drops: []
+  UiSprite: {fileID: -920270343234752220, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
+  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  structural: 0
+  solid: 0
+  MustBePlacedOn: []
+  AllowedCharms:
+  - {fileID: 11400000, guid: 64953c23444c6e44a8de9efcc1ff07d5, type: 2}

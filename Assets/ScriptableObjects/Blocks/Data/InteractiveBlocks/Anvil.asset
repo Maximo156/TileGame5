@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0664067da0443824ead999662763426e, type: 3}
+  m_Name: Anvil
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: 1e4557eef66922245a638ef5c8dbe2df, type: 2}
+  HitsToBreak: 0
+  Drops: []
+  UiSprite: {fileID: -3218448313562763201, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
+  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  structural: 0
+  solid: 0
+  MustBePlacedOn: []
+  Recipes:
+  - RequiredItems:
+    - Item: {fileID: 11400000, guid: 60cdf15cb46d464458b4a0760a572eb0, type: 2}
+      Count: 3
+    - Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
+      Count: 1
+    Result:
+      Item: {fileID: 11400000, guid: 63dcd34babbc16542aac5496525343db, type: 2}
+      Count: 1
+    craftingTime: 5
+  - RequiredItems:
+    - Item: {fileID: 11400000, guid: b47515d8c3730c141acf622480b894ae, type: 2}
+      Count: 3
+    - Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
+      Count: 1
+    Result:
+      Item: {fileID: 11400000, guid: 94215b4d806521f4283b576e2cb29f65, type: 2}
+      Count: 1
+    craftingTime: 10

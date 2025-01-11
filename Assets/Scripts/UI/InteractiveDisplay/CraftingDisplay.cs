@@ -19,7 +19,7 @@ public class CraftingDisplay : InteractiveDislay
     CraftingBlock block;
     IInventoryContainer otherInv;
     Vector2 worldPos;
-    public override void DisplayInventory(Vector2 worldPos, BlockSlice slice, IInventoryContainer otherInv)
+    public override void DisplayInventory(Vector2Int worldPos, BlockSlice slice, IInventoryContainer otherInv)
     {
         Completion.fillAmount = 0;
         block = slice.WallBlock as CraftingBlock;

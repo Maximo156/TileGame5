@@ -7,7 +7,7 @@ using UnityEngine;
 public abstract class InteractiveDislay : MonoBehaviour
 {
     public abstract Type TypeMatch();
-    public abstract void DisplayInventory(Vector2 worldPos, BlockSlice slice, IInventoryContainer otherInventory);
+    public abstract void DisplayInventory(Vector2Int worldPos, BlockSlice slice, IInventoryContainer otherInventory);
     public abstract void Detach();
 }
 
@@ -87,6 +87,7 @@ public class InteractiveDisplayController : MonoBehaviour
         if(BlockPos == curPos && curBlock != block.WallBlock)
         {
             Detach();
+            Close();
         }
     }
 

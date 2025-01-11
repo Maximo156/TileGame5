@@ -43,7 +43,7 @@ public class BuildingToolState : ItemState, IDurableState, IGridClickListener
 
     public BuildingToolState(BuildingTool tool)
     {
-        Durability = new DurableState(tool.MaxDurability, this);
+        Durability = new DurableState(tool, this);
     }
 
     public void OnClick(IGridItem item)

@@ -47,7 +47,7 @@ public class ProcessingBlockState : BlockState
     public ProcessingBlockState(ProcessingBlock block)
     {
         this.block = block;
-        fuels = new LimitedInventory(i => block.Fuels.Contains(i), 1);
+        fuels = new LimitedInventory((i, _) => block.Fuels.Contains(i), 1);
         inputs = new Inventory(block.inputs);
         inputs.OnItemChanged += InventoriesUpdate;
         fuels.OnItemChanged += InventoriesUpdate;

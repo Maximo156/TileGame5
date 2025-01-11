@@ -23,9 +23,9 @@ public interface IInventoryContainer
         }
     }
 
-    public IEnumerable<ItemStack> GetAllItems()
+    public IEnumerable<ItemStack> GetAllItems(bool returnEmpty = true)
     {
-        return GetIndividualInventories().SelectMany(inv => inv.GetAllItems());
+        return GetIndividualInventories().SelectMany(inv => inv.GetAllItems(returnEmpty));
     }
 
     public Dictionary<Item, int> GetItemCounts()

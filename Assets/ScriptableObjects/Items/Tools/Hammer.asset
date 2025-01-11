@@ -41,6 +41,7 @@ MonoBehaviour:
     - block: {fileID: 11400000, guid: 489608da660464b4ab3d01086315d64c, type: 2}
     - block: {fileID: 11400000, guid: f844abd22f88f4a43a37000770b00e94, type: 2}
     - block: {fileID: 11400000, guid: f4d2680b03ddb1547a26e7223c6adc68, type: 2}
+    - block: {fileID: 11400000, guid: 857e1c2aa7784e547a21222ccd65a265, type: 2}
   - name: Roofs
     sprite: {fileID: -1552312805, guid: 7d966fb53b128bd4b9f88fa7adc43765, type: 3}
     color: {r: 1, g: 1, b: 1, a: 1}

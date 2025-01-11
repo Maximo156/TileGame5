@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12b7fa5645c07184ba005ef0a93bba28, type: 3}
+  m_Name: WoodenArrow
+  m_EditorClassIdentifier: 
+  Sprite: {fileID: 553074792, guid: 847fb7761b2672f45bddb1184db5863b, type: 3}
+  Color: {r: 1, g: 1, b: 1, a: 1}
+  MaxStackSize: 99
+  BurnTime: 0
+  projectile: {fileID: 11400000, guid: 0de233b159898334496765f2657e54ad, type: 2}
+  Type: 0

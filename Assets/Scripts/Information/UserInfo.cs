@@ -7,4 +7,5 @@ public struct UserInfo
     public Transform transform;
     public Health Health;
     public Hunger Hunger;
+    public Mana Mana;
 }
