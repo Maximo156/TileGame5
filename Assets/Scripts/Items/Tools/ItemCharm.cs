@@ -7,8 +7,8 @@ public class ItemCharm : Item
 {
     public Weapon.WeaponType? WeaponType;
     public bool Exclusive = true;
-    [Stat(Stat.StatType.ManaCost)]
+    [Stat("ManaCost")]
     public float manaCost;
-    [Stat(Stat.StatType.CostModifier)]
+    [Stat("CostModifier")]
     public float CostModifier = 0;
 }

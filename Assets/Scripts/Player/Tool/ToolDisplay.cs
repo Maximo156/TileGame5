@@ -182,6 +182,11 @@ public class ToolDisplay : MonoBehaviour
         }
     }
 
+    public void CloseDisplay()
+    {
+        gridControl?.Close();
+    }
+
     bool itemDamaged = false;
     private void OnTriggerStay2D(Collider2D collision)
     {

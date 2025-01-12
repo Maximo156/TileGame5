@@ -37,7 +37,6 @@ public class DEBUGStructureGen : ChunkSubGenerator
                     var StructureBlock = structure[x, y];
                     var initialBlock = blocks[x, y];
                     StructureBlock.Water = initialBlock.Water;
-                    StructureBlock.MovementSpeed = initialBlock.MovementSpeed;
                     blocks[x, y] = StructureBlock;
                 }
             }

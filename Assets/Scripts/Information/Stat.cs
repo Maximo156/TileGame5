@@ -3,30 +3,12 @@ using System;
 [AttributeUsage(AttributeTargets.Field)]
 public class Stat : Attribute
 {
-    public enum StatType
+    public readonly string ValueOverride;
+    public readonly string Name;
+
+    public Stat(string Name, string ValueOverride = null)
     {
-        Defense,
-        Damage,
-        Hardness,
-        Efficiency,
-        Range,
-        Peircing,
-        ManaRegen,
-        HealthRegen,
-        ManaCost,
-        CostModifier,
-        Healing,
-        Food,
-        ManaRestoration,
-        WeaponType
+        this.Name = Name;
+        this.ValueOverride = ValueOverride;
     }
-
-    private StatType type;
-
-    public Stat(StatType type)
-    {
-        this.type = type;
-    }
-
-    public StatType GetStatType() => type;
 }

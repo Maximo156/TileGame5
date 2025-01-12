@@ -9361,7 +9361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 149b62ddbf633a64fac280de1e486ba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxProjectiles: 200
+  maxProjectiles: 1000
   ProjectileRenderLayer: 100
 --- !u!1001 &1484731502
 PrefabInstance:
@@ -11043,7 +11043,7 @@ MonoBehaviour:
   speed: 30
   acceleration: 4
   deceletation: 6
-  useModifier: 0
+  useModifier: 1
 --- !u!114 &1837090603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11075,6 +11075,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: OnMovement
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1837090610}
+        m_TargetAssemblyTypeName: PlayerMouseInput, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -11320,11 +11332,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainStartingItems:
-  - Item: {fileID: 11400000, guid: 64953c23444c6e44a8de9efcc1ff07d5, type: 2}
+  - Item: {fileID: 11400000, guid: bbd99bb00aaefd246bf455b2fe11ebf0, type: 2}
     Count: 99
   - Item: {fileID: 11400000, guid: 807ba9643f790ab48a06d9b474bf193e, type: 2}
     Count: 99
   - Item: {fileID: 11400000, guid: 847d4e36e401098458c722f68f96a896, type: 2}
+    Count: 99
+  - Item: {fileID: 11400000, guid: 502ab55c8dcd5774486116e9a4e22183, type: 2}
+    Count: 99
+  - Item: {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
+    Count: 99
+  - Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
     Count: 99
   MainSize: 20
   HotbarStartingItems:
@@ -11334,7 +11352,7 @@ MonoBehaviour:
     Count: 1
   - Item: {fileID: 11400000, guid: c73024e07bf50bb48b561c91c68d2f49, type: 2}
     Count: 1
-  - Item: {fileID: 11400000, guid: 674aa75823b6f144b94bd2c588de0912, type: 2}
+  - Item: {fileID: 11400000, guid: 79ae11fe49e3e3546bf3ef47db99a6c0, type: 2}
     Count: 1
   - Item: {fileID: 11400000, guid: 851039e123ef6bf47b51224a6ccd3e6a, type: 2}
     Count: 99
@@ -11353,6 +11371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tool: {fileID: 3815062563903556757}
+  InteractiveReach: 7
 --- !u!114 &1837090611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11978,6 +11997,7 @@ MonoBehaviour:
   MainInventoryDisplay: {fileID: 778024768}
   AccessoryInventoryDisplay: {fileID: 1829188581}
   TogglableInv: {fileID: 268814864}
+  OtherDisplay: {fileID: 1501472324}
 --- !u!1 &2026188035
 GameObject:
   m_ObjectHideFlags: 0
@@ -13434,7 +13454,7 @@ MonoBehaviour:
     m_Right: 10
     m_Top: 10
     m_Bottom: 10
-  m_ChildAlignment: 4
+  m_ChildAlignment: 3
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
@@ -13609,14 +13629,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0

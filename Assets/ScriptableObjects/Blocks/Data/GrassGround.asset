@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Display: {fileID: 11400000, guid: a15de075d8807ca48b896f4e8e90533e, type: 2}
   HitsToBreak: 2
+  MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: 391352f8f1052a644869b6f2cca92a3f, type: 2}
     Count: 1

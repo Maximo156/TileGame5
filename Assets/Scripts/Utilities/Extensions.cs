@@ -70,12 +70,12 @@ public static class Extensions
         return System.Text.RegularExpressions.Regex.Replace(input, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
     }
 
-    public static Dictionary<Stat.StatType, string> ReadStats(this object obj)
+    public static Dictionary<string, string> ReadStats(this object obj)
     {
         var all = obj.GetType().GetFields()
         .Where(_ => _.GetCustomAttributes(typeof(Stat), true).Length >= 1);
 
-        var attrib = all.ToDictionary(f => f.GetCustomAttributes(typeof(Stat), true).Cast<Stat>().First().GetStatType(), 
+        var attrib = all.ToDictionary(f => f.GetCustomAttributes(typeof(Stat), true).Cast<Stat>().First().Name, 
             f =>
             {
                 var val = f.GetValue(obj);
@@ -83,10 +83,7 @@ public static class Extensions
                 if (float.TryParse(Convert.ToString(val), out var floatVal))
                 {
                     if (floatVal == 0) return null;
-                    if (floatVal == -1 && f.GetCustomAttributes(typeof(Stat), true).Cast<Stat>().First().GetStatType() == Stat.StatType.Peircing)
-                    {
-                        return "Infinite";
-                    }
+                    if (floatVal == -1) return f.GetCustomAttributes(typeof(Stat), true).Cast<Stat>().First().ValueOverride;
                 }
                 return val.ToString();
             });

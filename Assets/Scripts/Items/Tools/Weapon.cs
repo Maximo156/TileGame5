@@ -86,7 +86,15 @@ public class InfusableState : ItemState, IItemInventoryState, IDurableState, IGr
         Durability = new DurableState(durability, this);
     }
 
-    public override string GetStateString() => $"Mana Cost: {Cost}";
+    public override string GetStateString()
+    {
+        var cost = Cost;
+        if(cost != 0)
+        {
+            return $"Mana Cost: {cost}";
+        }
+        return "";
+    }
 
     public IEnumerable<IGridItem> GetGridItems() => Inventory.inv.GetAllItems(false);
 

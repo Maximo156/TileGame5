@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public delegate void PlayerChangedChunks(Vector2Int newChunk);
     public static event PlayerChangedChunks OnPlayerChangedChunks;
+
     public static Transform PlayerTransform;
 
     public float speed;

@@ -6,8 +6,9 @@ using UnityEngine.Tilemaps;
 public class ProjectileEntity : MonoBehaviour
 {
     Rigidbody2D rb;
-    PolygonCollider2D col;
     SpriteRenderer sr;
+
+    PolygonCollider2D col;
 
 
     // ProjectileInfo;
@@ -120,7 +121,7 @@ public class ProjectileEntity : MonoBehaviour
                 hit.attachedRigidbody?.SendMessage("Hit", new HitData { Damage = damage * (1 - dist / AOE), Perpetrator = Perpetrator }, SendMessageOptions.DontRequireReceiver);
             }
         }
-        if (HitAnimation.ShouldAnimate)
+        if (HitAnimation?.ShouldAnimate == true)
         {
             rb.velocity = Vector2.zero;
             StartCoroutine(Animate(HitAnimation, false));
@@ -133,6 +134,8 @@ public class ProjectileEntity : MonoBehaviour
 
     private void OnDisable()
     {
+        Destroy(col);
+        HitAnimation = null;
         StopAllCoroutines();
     }
 }

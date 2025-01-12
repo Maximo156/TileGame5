@@ -12,6 +12,9 @@ public class PlayerMouseInput : MonoBehaviour
     public delegate void BlockInterfaced(Vector2Int pos, BlockSlice slice, IInventoryContainer inv);
     public static event BlockInterfaced OnBlockInterfaced;
 
+    public delegate void InterfaceRangeExceeded();
+    public static event InterfaceRangeExceeded OnInterfaceRangeExceeded;
+
     private Camera mainCamera;
     private Vector2 mouseWorldPosition;
     private Vector2Int mouseBlockPosition;
@@ -20,6 +23,7 @@ public class PlayerMouseInput : MonoBehaviour
 
     [Header("Controls")]
     public ToolDisplay tool;
+    public int InteractiveReach = 7;
 
     Inventory HotBarInv;
     PlayerInventories playerInventory;
@@ -58,7 +62,8 @@ public class PlayerMouseInput : MonoBehaviour
     {
         if (!overGUI && value.started)
         {
-            if (Keyboard.current.shiftKey.isPressed)
+            bool canInteract = Vector3.Distance(transform.position, mouseWorldPosition) <= InteractiveReach;
+            if (Keyboard.current.shiftKey.isPressed && canInteract)
             {
                 if(curInHand == null)
                 {
@@ -77,9 +82,13 @@ public class PlayerMouseInput : MonoBehaviour
                     }
                 }
             }
-            else if (!BlockInteract())
+            else if (!canInteract || !BlockInteract())
             {
                 tool.OnRightClick(screenPosition);
+            }
+            else
+            {
+                tool.CloseDisplay();
             }
         }
     }
@@ -112,13 +121,24 @@ public class PlayerMouseInput : MonoBehaviour
         handPosition = pos;
     }
 
+    Vector2Int? CurInteractPos;
     private bool BlockInteract()
     {
         if(!ChunkManager.Interact(mouseBlockPosition) && ChunkManager.TryGetBlock(mouseBlockPosition, out var slice) && slice.WallBlock is IInterfaceBlock)
         {
+            CurInteractPos = CurInteractPos == mouseBlockPosition ? null : mouseBlockPosition;
             OnBlockInterfaced?.Invoke(mouseBlockPosition, slice, playerInventory);
             return true;
         }
         return false;
+    }
+
+    public void OnMove()
+    {
+        if(CurInteractPos is not null && Vector2.Distance(CurInteractPos.Value, PlayerMovement.PlayerTransform.position) > InteractiveReach)
+        {
+            CurInteractPos = null;
+            OnInterfaceRangeExceeded?.Invoke();
+        }
     }
 }

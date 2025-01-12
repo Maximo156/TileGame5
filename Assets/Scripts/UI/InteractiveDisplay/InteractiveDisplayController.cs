@@ -28,6 +28,7 @@ public class InteractiveDisplayController : MonoBehaviour
     {
         Chunk.OnBlockChanged += BlockChanged;
         PlayerMouseInput.OnBlockInterfaced += OnInteract;
+        PlayerMouseInput.OnInterfaceRangeExceeded += Close;
         gameObject.SetActive(false);
         foreach (var display in displays)
         {
@@ -99,7 +100,7 @@ public class InteractiveDisplayController : MonoBehaviour
         }
     }
 
-    private void Close()
+    public void Close()
     {
         gameObject.SetActive(false);
         curPos = null;

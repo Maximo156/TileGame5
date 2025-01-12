@@ -7,6 +7,7 @@ public class Block : ScriptableObject, ISpriteful, ISaveable
 {
     public TileBase Display;
     public int HitsToBreak;
+    public float MovementModifier = 0;
     public List<ItemStack> Drops;
 
     [SerializeField]

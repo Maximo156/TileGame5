@@ -6,13 +6,13 @@ using UnityEngine;
 public class Consumable : Item
 {
     [Header("Consumable Stats")]
-    [Stat(Stat.StatType.Healing)]
+    [Stat("Healing")]
     public int Healing;
 
-    [Stat(Stat.StatType.ManaRestoration)]
+    [Stat("ManaRestoration")]
     public int ManaRestoration;
 
-    [Stat(Stat.StatType.Food)]
+    [Stat("Food")]
     public int HungerRestoration;
 
     public override void Use(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)

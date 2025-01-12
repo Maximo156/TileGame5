@@ -18,10 +18,13 @@ public class PlayerInventoryDisplay : MonoBehaviour
 
     public GameObject TogglableInv;
 
+    public InteractiveDisplayController OtherDisplay;
+
     public void Start()
     {
         HotBarSelector.NewSelection(null, 0);
         PlayerInventories.OnHotBarChanged += HotBarSelector.NewSelection;
+        PlayerMouseInput.OnBlockInterfaced += BlockInterfaced;
 
         HotBarDisplay.AttachInv(inventory.HotbarInv);
         MainInventoryDisplay.AttachInv(inventory.MainInv);
@@ -33,5 +36,14 @@ public class PlayerInventoryDisplay : MonoBehaviour
     public void OnInvToggle()
     {
         TogglableInv.SetActive(!TogglableInv.activeSelf);
+        if (!TogglableInv.activeSelf)
+        {
+            OtherDisplay.Close();
+        }
+    }
+
+    private void BlockInterfaced(Vector2Int pos, BlockSlice slice, IInventoryContainer inv)
+    {
+        TogglableInv.SetActive(true);
     }
 }
