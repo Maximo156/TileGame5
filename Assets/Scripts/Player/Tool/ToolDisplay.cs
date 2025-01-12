@@ -16,7 +16,7 @@ public class ToolDisplay : MonoBehaviour
         public Item item;
         public float scale = 1;
         public float zRotation = 45;
-        public string AnimationName = "BasicSwing";
+        public AnimationClip animation;
         public float AnimationSpeed = 1;
     }
 
@@ -28,7 +28,7 @@ public class ToolDisplay : MonoBehaviour
 
     public Sprite Sprite { get => display.sprite; set => display.sprite = value; }
 
-    private Animator animator;
+    private Animation anim;
     private SpriteRenderer display;
     private Dictionary<Item, ItemDisplayInfo> ItemDisplayDict;
     private ItemDisplayInfo curSelected;
@@ -42,7 +42,7 @@ public class ToolDisplay : MonoBehaviour
     {
         mainCamera = Camera.main;
         ItemDisplayDict = ItemDisplayInfos.ToDictionary(e => e.item, e => e);
-        animator = GetComponent<Animator>();
+        anim = GetComponent<Animation>();
         display = GetComponentInChildren<SpriteRenderer>();
         PlayerInventories.OnHotBarChanged += ChangeHand;
         gameObject.SetActive(false);
@@ -90,8 +90,7 @@ public class ToolDisplay : MonoBehaviour
         curSlot = slot;
         if (gameObject.activeInHierarchy)
         {
-            animating = false;
-            animator.Play("Null");
+            anim.clip = null;
         }
         if(newInHand == null)
         {
@@ -108,7 +107,8 @@ public class ToolDisplay : MonoBehaviour
         UpdateCollider();
         display.transform.localScale = curSelected.scale * Vector3.one;
         display.transform.localEulerAngles = Vector3.forward * curSelected.zRotation;
-        animator.SetFloat("Speed", curSelected.AnimationSpeed);
+        anim.clip = curSelected.animation;
+        anim[anim.clip.name].speed = curSelected.AnimationSpeed;
     }
 
 
@@ -137,7 +137,7 @@ public class ToolDisplay : MonoBehaviour
         }
     }
 
-    public bool animating { get; private set; }
+    public bool animating => anim.isPlaying;
     Action onAnimFinished;
     public void OnStartAttack(Action onAnimFinished)
     {
@@ -146,8 +146,7 @@ public class ToolDisplay : MonoBehaviour
         if (curSelected != null && !animating && gameObject.activeInHierarchy)
         {
             m_collider2D.enabled = useCollider;
-            animating = true;
-            animator.Play(curSelected.AnimationName);
+            anim.Play();
         }
     }
 
@@ -168,7 +167,7 @@ public class ToolDisplay : MonoBehaviour
 
     public void AnimationEnd()
     {
-        animating = false;
+        anim.Stop();
         itemDamaged = false;
         m_collider2D.enabled = false;
         onAnimFinished?.Invoke();

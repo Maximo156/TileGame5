@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4118381537963404290}
   - component: {fileID: 1311553054196662146}
   - component: {fileID: 6698309672397072507}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Display
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,10 +143,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8681250985421450814}
+  - component: {fileID: 5889489077807753435}
   - component: {fileID: 3815062563964477980}
-  - component: {fileID: 8056413111158611219}
   - component: {fileID: 7946276518981851966}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,6 +169,23 @@ Transform:
   - {fileID: 4118381537963404290}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!111 &5889489077807753435
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5024657108852077814}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: d0f8e0bbb55a55840ae885a30133d6c6, type: 2}
+  - {fileID: 7400000, guid: 8088cdd69df1ffb40923d6f0b2506354, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &3815062563964477980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,41 +204,16 @@ MonoBehaviour:
     item: {fileID: 0}
     scale: 0.6
     zRotation: 45
-    AnimationName: BasicSwing
+    animation: {fileID: 7400000, guid: d0f8e0bbb55a55840ae885a30133d6c6, type: 2}
     AnimationSpeed: 2
   ItemDisplayInfos:
-  - item: {fileID: 11400000, guid: eb88c07e14b2ff54287fdcb9d46c0900, type: 2}
-    scale: 0.6
-    zRotation: 45
-    AnimationName: BasicSwing
-    AnimationSpeed: 2
-  - item: {fileID: 11400000, guid: 17adc76d701a8734dbd7db6e98ccb0fc, type: 2}
-    scale: 0.6
-    zRotation: 45
-    AnimationName: BasicSwing
+  - item: {fileID: 11400000, guid: c73024e07bf50bb48b561c91c68d2f49, type: 2}
+    scale: 1
+    zRotation: 0
+    animation: {fileID: 7400000, guid: 8088cdd69df1ffb40923d6f0b2506354, type: 2}
     AnimationSpeed: 2
   gridControl: {fileID: 0}
---- !u!95 &8056413111158611219
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5024657108852077814}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d96779e87664ac146bd7e04f5a10c693, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  IgnoreCollider: {fileID: 0}
 --- !u!50 &7946276518981851966
 Rigidbody2D:
   serializedVersion: 4
@@ -230,7 +222,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5024657108852077814}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -244,7 +236,7 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
