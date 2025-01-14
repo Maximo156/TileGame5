@@ -15,5 +15,7 @@ public class Wall : Block
     /// </summary>
     public bool solid = false;
 
+    public bool Walkable = false;
+
     public List<Ground> MustBePlacedOn;  
 }

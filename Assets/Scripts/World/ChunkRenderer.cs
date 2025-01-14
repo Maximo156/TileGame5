@@ -24,9 +24,21 @@ public class ChunkRenderer : MonoBehaviour
         Renderer = this;
         Display = GetComponent<WorldDisplay>();
         PlayerMovement.OnPlayerChangedChunks += PlayerChangedChunks;
-        Chunk.OnChunkChanged += RefreshChunk;
-        Chunk.OnBlockChanged += PlaceTile;
-        Chunk.OnBlockRefreshed += RefreshTile;
+        ChunkManager.OnRealmChange += OnRealmChange;
+    }
+
+    void OnRealmChange(Realm old, Realm newRealm)
+    {
+        if (old != null)
+        {
+            old.OnChunkChanged -= RefreshChunk;
+            old.OnBlockChanged -= PlaceTile;
+            old.OnBlockRefreshed -= RefreshTile;
+        }
+
+        newRealm.OnChunkChanged += RefreshChunk;
+        newRealm.OnBlockChanged += PlaceTile;
+        newRealm.OnBlockRefreshed += RefreshTile;
     }
 
     private void FixedUpdate()

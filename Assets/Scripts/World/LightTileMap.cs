@@ -9,13 +9,21 @@ public class LightTileMap : MonoBehaviour
 {
     Tilemap Map;
     public TileBase Tile;
-    //public Color ShadowColor;
 
     public void Start()
     {
-        Chunk.OnLightingUpdated += LightingUpdated;
+        ChunkManager.OnRealmChange += OnRealmChange;
         Map = GetComponent<Tilemap>();
         ClearAllTiles();
+    }
+
+    void OnRealmChange(Realm old, Realm newRealm)
+    {
+        if (old != null)
+        {
+            old.OnLightingUpdated -= LightingUpdated;
+        }
+        newRealm.OnLightingUpdated += LightingUpdated;
     }
 
     public void SetTiles(Dictionary<Vector3Int, int> locations, bool render)

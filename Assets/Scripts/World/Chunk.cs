@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 public class Chunk
 {
     public delegate void BlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, BlockSlice block);
-    public static event BlockChanged OnBlockChanged;
+    public event BlockChanged OnBlockChanged;
 
     public delegate void BlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos);
-    public static event BlockRefreshed OnBlockRefreshed;
+    public event BlockRefreshed OnBlockRefreshed;
 
     public delegate void LightingUpdated(Dictionary<Vector3Int, int> updated);
-    public static event LightingUpdated OnLightingUpdated;
+    public event LightingUpdated OnLightingUpdated;
 
     public delegate void ChunkChanged(Chunk chunk);
-    public static event ChunkChanged OnChunkChanged;
+    public event ChunkChanged OnChunkChanged;
 
     public Vector2Int ChunkPos;
     public Vector2Int BlockPos => ChunkPos * width;

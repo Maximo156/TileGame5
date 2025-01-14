@@ -8,155 +8,93 @@ using UnityEngine.InputSystem;
 
 public class ChunkManager : MonoBehaviour
 {
-    public delegate void GeneratorChange();
-    public static event GeneratorChange OnGeneratorChange;
+    public delegate void RealmChange(Realm oldRealm, Realm newRealm);
+    public static event RealmChange OnRealmChange;
 
     static ChunkManager Manager;
     public static int ChunkWidth => Manager.chunkWidth;
     public static int MsPerTick => Manager.msPerTick;
-    public static ChunkGenerator CurRealm => Manager.terrainGenerator;
+    public static Realm CurRealm => Manager.ActiveRealm;
     public static string DataPath;
 
-    public ChunkGenerator OverworldGenerator;
-    public ChunkGenerator CaveGenerator;
+    [Header("Realm Settings")]
+    public string startingRealm;
+    public List<Realm> Realms;
+    public GameObject EntityContainerPrefab;
 
-    ChunkGenerator _terrainGenerator;
-    public ChunkGenerator terrainGenerator { 
-        get => _terrainGenerator; 
-        set
-        {
-            _terrainGenerator = value;
-            OnGeneratorChange?.Invoke();
-        }
-    }
+    [Header("World Settings")]
     public int chunkWidth;
     public int chunkGenDistance;
     public int chunkTickDistance;
     public int msPerTick = 30;
     public bool debug;
 
-    readonly Queue<Vector2Int> needGen = new Queue<Vector2Int>();
-    Dictionary<Vector2Int, Chunk> LoadedChunks = new Dictionary<Vector2Int, Chunk>();
+    Realm _activeRealm;
+    Realm ActiveRealm
+    {
+        get => _activeRealm;
+        set {
+            _activeRealm?.SetContainerActive(false);
+            OnRealmChange?.Invoke(_activeRealm, value);
+            _activeRealm = value;
+            _activeRealm.PlayerChangedChunks(curChunk, chunkGenDistance, chunkWidth, AllTaskShutdown.Token);
+            _activeRealm.RefreshAllChunks();
+            _activeRealm?.SetContainerActive(true);
+        }
+    }
 
     public void Awake()
     { 
         Manager = this;
-        terrainGenerator = OverworldGenerator;
+        PlayerMovement.OnPlayerChangedChunks += PlayerChangedChunks;
+        PortalBlock.OnPortalBlockUsed += PortalUsed;
         DataPath = Application.persistentDataPath;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        PlayerMovement.OnPlayerChangedChunks += PlayerChangedChunks;
-        PortalBlock.OnPortalBlockUsed += PortalUsed;
+        foreach(var realm in Realms)
+        {
+            realm.Initialize(EntityContainerPrefab, transform);
+            realm.SetContainerActive(false);
+        }
+        ActiveRealm = Realms.First(r => r.name == startingRealm);
         Task.Run(() => ChunkTick());
     }
 
-
     private CancellationTokenSource AllTaskShutdown = new CancellationTokenSource();
-    private Task GenerateNewChunksTask;
-    // Update is called once per frame
-    void Update()
-    {
-        if (needGen.Count > 0 && (GenerateNewChunksTask == null || GenerateNewChunksTask.IsCompleted))
-        {
-            var newTask = Task.Run(() => GenerateNewChunks(needGen.Dequeue(), chunkGenDistance));
-            GenerateNewChunksTask = newTask;
-        }
-    }
 
     Vector2Int curChunk;
-    public void PlayerChangedChunks(Vector2Int curChunk)
+    private void PlayerChangedChunks(Vector2Int curChunk)
     {
-        this.curChunk = curChunk;
-        needGen.Enqueue(curChunk);
+        ActiveRealm.PlayerChangedChunks(curChunk, chunkGenDistance, chunkWidth, AllTaskShutdown.Token);
     }
 
     public async void ChunkTick()
     {
         while (true && !AllTaskShutdown.Token.IsCancellationRequested)
         {
-            try
-            {
-                List<Task> chunkTasks = new List<Task>()
-                {
-                    Task.Delay(msPerTick)
-                };
-                for (int x = -chunkTickDistance; x <= chunkTickDistance; x++)
-                {
-                    for (int y = -chunkTickDistance; y <= chunkTickDistance; y++)
-                    {
-                        if (LoadedChunks.TryGetValue(new Vector2Int(x, y) + curChunk, out var chunk))
-                        {
-                            chunkTasks.Add(Task.Run(() => chunk.ChunkTick(AllTaskShutdown.Token)));
-                        }
-                    }
-                }
-                await Task.WhenAll(chunkTasks);
-            }
-            catch(Exception e)
-            {
-                Debug.LogError(e);
-            }
+            await ActiveRealm.ChunkTick(msPerTick, AllTaskShutdown.Token);
         }
         Debug.Log("Stopping Tick");
-    }
-
-    public async void GenerateNewChunks(Vector2Int curChunk, int dist)
-    {
-        try 
-        {
-            foreach (var newChunk in Utilities.Spiral(curChunk, (uint)dist))
-            {
-                if (AllTaskShutdown.Token.IsCancellationRequested) return;
-                if (!LoadedChunks.ContainsKey(newChunk))
-                {
-                    var chunk = new Chunk(newChunk, ChunkWidth);
-                    await chunk.Generate(terrainGenerator);
-                    LoadedChunks[newChunk] = chunk;
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError(e);
-        }
     }
 
     public static bool TryGetBlock(Vector2Int position, out BlockSlice block)
     {
         block = default;
         if (Manager == null) return false;
-
-        var chunkPos = Vector2Int.FloorToInt(new Vector2(position.x, position.y) / ChunkWidth);
-        if (Manager.LoadedChunks.TryGetValue(chunkPos, out var chunk))
-        {
-            block = chunk.GetBlock(position);
-            return true;
-        }
-        return false;
+        return Manager.ActiveRealm.TryGetBlock(position, ChunkWidth, out block);
     }
 
-    private void PortalUsed(ChunkGenerator newDim, PortalBlock exitBlock, Vector2Int worldPos)
+    private void PortalUsed(string newDim, PortalBlock exitBlock, Vector2Int worldPos)
     {
-        terrainGenerator = newDim;
-        Task.Run(async () =>
+        ActiveRealm = Realms.First(r => r.name == newDim);
+        int count = 0;
+        while(!PlaceBlock(worldPos, exitBlock, true) && count++ < 1000)
         {
-            try
-            {
-                foreach (var chunk in new Dictionary<Vector2Int, Chunk>(LoadedChunks))
-                {
-                    if (AllTaskShutdown.Token.IsCancellationRequested) return;
-                    var chunkPos = Vector2Int.FloorToInt((new Vector2(worldPos.x, worldPos.y) / ChunkWidth));
-                    await chunk.Value.Generate(terrainGenerator, chunkPos == chunk.Key ? worldPos : null, exitBlock);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
-        });
+            Thread.Sleep(1);
+        }
     }
 
     public static float GetMovementSpeed(Vector2Int position)
@@ -167,42 +105,32 @@ public class ChunkManager : MonoBehaviour
 
     public static bool TryGetChunk(Vector2Int chunk, out Chunk chunkObj)
     {
-        return Manager.LoadedChunks.TryGetValue(chunk, out chunkObj);
+        return Manager.ActiveRealm.TryGetChunk(chunk, out chunkObj);
     }
 
-    public static bool PlaceBlock(Vector2Int position, Block block)
+    public static bool PlaceBlock(Vector2Int position, Block block, bool force = false)
     {
-        return PerformChunkAction(position, chunk => chunk.PlaceBlock(position, block));
+        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, chunk => chunk.PlaceBlock(position, block, force));
     }
 
     public static bool Interact(Vector2Int position)
     {
-        return PerformChunkAction(position, chunk => chunk.Interact(position));
+        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, chunk => chunk.Interact(position));
     }
 
     public static bool BreakBlock(Vector2Int position, bool roof, bool drop = true)
     {
-        return PerformChunkAction(position, chunk => chunk.BreakBlock(position, roof, drop));
+        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, chunk => chunk.BreakBlock(position, roof, drop));
     }
 
     public static bool PlaceItem(Vector2Int position, ItemStack item)
     {
-        return PerformChunkAction(position, chunk => chunk.PlaceItem(position, item));
+        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, chunk => chunk.PlaceItem(position, item));
     }
 
     public static ItemStack PopItem(Vector2Int position)
     {
-        return PerformChunkAction(position, chunk => chunk.PopItem(position));
-    }
-
-    private static T PerformChunkAction<T>(Vector2Int position, Func<Chunk, T> action)
-    {
-        var chunkPos = Vector2Int.FloorToInt(new Vector2(position.x, position.y) / ChunkWidth);
-        if (Manager.LoadedChunks.TryGetValue(chunkPos, out var chunk))
-        {
-            return action(chunk);
-        }
-        return default;
+        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, chunk => chunk.PopItem(position));
     }
 
 
@@ -215,11 +143,7 @@ public class ChunkManager : MonoBehaviour
     {
         if (debug)
         {
-            var structure = terrainGenerator?.Generators.FirstOrDefault(g => g is StructureGenerator);
-            if(structure is StructureGenerator s)
-            {
-                s.DebugDraw();
-            }
+            
         }
     }
 }

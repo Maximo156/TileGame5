@@ -64,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
         movementDir = value.ReadValue<Vector2>();
     }
 
-    private void PortalUsed(ChunkGenerator _, PortalBlock __, Vector2Int worldPos)
+    private void PortalUsed(string _, PortalBlock __, Vector2Int worldPos)
     {
         transform.position = worldPos.ToVector3Int() + Vector3.one * 0.5f;
     }

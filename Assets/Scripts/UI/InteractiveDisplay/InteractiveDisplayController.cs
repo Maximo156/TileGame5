@@ -26,7 +26,7 @@ public class InteractiveDisplayController : MonoBehaviour
 
     void Awake()
     {
-        Chunk.OnBlockChanged += BlockChanged;
+        ChunkManager.OnRealmChange += OnRealmChange;
         PlayerMouseInput.OnBlockInterfaced += OnInteract;
         PlayerMouseInput.OnInterfaceRangeExceeded += Close;
         gameObject.SetActive(false);
@@ -34,6 +34,15 @@ public class InteractiveDisplayController : MonoBehaviour
         {
             display.display.gameObject.SetActive(false);
         }
+    }
+
+    void OnRealmChange(Realm old, Realm newRealm)
+    {
+        if (old != null)
+        {
+            old.OnBlockChanged -= BlockChanged;
+        }
+        newRealm.OnBlockChanged += BlockChanged;
     }
 
     private void Start()

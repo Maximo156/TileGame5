@@ -34,6 +34,11 @@ public static class Utilities
         return Vector3Int.FloorToInt(pos);
     }
 
+    public static Vector2 GetBlockCenter(Vector2Int pos)
+    {
+        return pos + 0.5f * Vector2.one;
+    }
+
     public static Vector2Int RandomVector2Int(int range)
     {
         return new Vector2Int(Random.Range(-range, range), Random.Range(-range, range));

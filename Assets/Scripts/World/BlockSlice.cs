@@ -8,7 +8,8 @@ using System.Linq;
 public class BlockSlice
 {
     public bool Water = true;
-    public float MovementSpeed => Water ? 0.5f : (1 + (GroundBlock?.MovementModifier ?? 0) + (WallBlock?.MovementModifier ?? 0));
+    public float MovementSpeed => Water && GroundBlock is null ? 0.5f : (1 + (GroundBlock?.MovementModifier ?? 0) + (WallBlock?.MovementModifier ?? 0));
+    public bool Walkable => WallBlock is null || WallBlock.Walkable;
 
     [JsonProperty]
     public Ground GroundBlock { get; private set; }

@@ -26,16 +26,12 @@ public class ProjectileManager : MonoBehaviour
     public int maxProjectiles;
     public int ProjectileRenderLayer = 100;
     Queue<ProjectileEntity> ExistingProjectiles = new Queue<ProjectileEntity>();
-    static ProjectileManager manager;
-    void Awake()
-    {
-        manager = this;
-    }
 
     public static void FireProjectile(Projectile projectileBase, Vector2 position, Vector2 dir, ProjectileInfo modifier, Transform perp, Transform target = null)
     {
         ProjectileEntity projEntity;
-        if(manager.ExistingProjectiles.Count >= manager.maxProjectiles)
+        ProjectileManager manager = ChunkManager.CurRealm.EntityContainer.ProjectileManager;
+        if (manager.ExistingProjectiles.Count >= manager.maxProjectiles)
         {
             projEntity = manager.ExistingProjectiles.Dequeue();
             projEntity.gameObject.SetActive(true);

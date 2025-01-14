@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class ItemEntityManager : MonoBehaviour
 {
-    public static ItemEntityManager manager;
     public GameObject ItemEntityPrefab;
 
     public float DespawnSeconds;
 
     Queue<(float expiry, ItemEntity entity)> entities = new Queue<(float expiry, ItemEntity entity)>();
-
-    private void Awake()
-    {
-        manager = this;
-    }
 
     public void FixedUpdate()
     {
@@ -48,6 +42,6 @@ public class ItemEntityManager : MonoBehaviour
 
     public static void SpawnItem(Vector2Int pos, ItemStack stack, bool randomMovement = true)
     {
-        manager.SpawnItemPriv(pos, stack, randomMovement);
+         ChunkManager.CurRealm.EntityContainer.ItemManager.SpawnItemPriv(pos, stack, randomMovement);
     }
 }

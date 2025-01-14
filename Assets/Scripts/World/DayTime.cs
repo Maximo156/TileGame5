@@ -17,6 +17,6 @@ public class DayTime : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Display.SetColor(ChunkManager.CurRealm.GetColor(GameHoursPerGameDay, CurGameTime));
+        Display.SetColor(ChunkManager.CurRealm.Generator.GetColor(GameHoursPerGameDay, CurGameTime));
     }
 }

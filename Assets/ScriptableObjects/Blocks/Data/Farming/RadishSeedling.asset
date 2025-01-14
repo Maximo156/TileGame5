@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Display: {fileID: 11400000, guid: b5cf636907da59a46b54a6b8e7181b4a, type: 2}
   HitsToBreak: 1
+  MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: bbd99bb00aaefd246bf455b2fe11ebf0, type: 2}
     Count: 1
@@ -21,6 +22,7 @@ MonoBehaviour:
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0
+  Walkable: 1
   MustBePlacedOn:
   - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
   nextBlock: {fileID: 11400000, guid: 7d9418a80ebfc5e47828cb3b671aa057, type: 2}

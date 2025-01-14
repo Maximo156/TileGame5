@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Display: {fileID: 11400000, guid: fe82e1179e371e94798d139617ee28b1, type: 2}
   HitsToBreak: 1000
+  MovementModifier: 0
   Drops: []
   UiSprite: {fileID: -703367221, guid: 581d88950f593a74887ce8ee6c22bc6f, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0
+  Walkable: 1
   MustBePlacedOn: []
-  NewDim: {fileID: 11400000, guid: c18f0422c9491464ea2ca8b8b2bef22f, type: 2}
+  NewDim: Caves
   Exit: {fileID: 11400000, guid: 17fa6eecb574cc94686dbf918f71bda1, type: 2}

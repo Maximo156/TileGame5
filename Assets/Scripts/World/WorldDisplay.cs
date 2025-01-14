@@ -23,7 +23,7 @@ public class WorldDisplay : MonoBehaviour
 
     private void Start()
     {
-        ChunkManager.OnGeneratorChange += Clear;
+        ChunkManager.OnRealmChange += Clear;
     }
 
     public IEnumerator RenderChunk(TileDisplayCache tileDisplayInfo, bool clear)
@@ -99,7 +99,7 @@ public class WorldDisplay : MonoBehaviour
         return newItem;
     }
 
-    public void Clear()
+    public void Clear(Realm _, Realm __)
     {
         Water.ClearAllTiles();
         Stone.ClearAllTiles();

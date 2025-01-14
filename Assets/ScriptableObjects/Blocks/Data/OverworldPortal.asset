@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Display: {fileID: 11400000, guid: f8082110958844e4d9e79992b2c54326, type: 2}
   HitsToBreak: 1000
+  MovementModifier: 0
   Drops: []
   UiSprite: {fileID: 7880635831719066056, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0
+  Walkable: 1
   MustBePlacedOn: []
-  NewDim: {fileID: 11400000, guid: a924afc1afeadfd4eaa3f1495083cc62, type: 2}
+  NewDim: Overworld
   Exit: {fileID: 11400000, guid: b1678367436a8f54b92bb8f649e302a1, type: 2}
