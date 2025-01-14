@@ -14,7 +14,7 @@ public class TestAI : MonoBehaviour, IStepable
         {
             AIManager.Register(this);
         }
-        navigator.onFailedPathing = SetRandomGoal;
+        navigator.onFailedPathing = (PathFindingResult _) => print(name +" stuck");
     }
 
     public void Update()
@@ -37,6 +37,6 @@ public class TestAI : MonoBehaviour, IStepable
 
     public void SetRandomGoal(PathFindingResult _)
     {
-        navigator.Goal = Utilities.RandomVector2Int(10);
+        navigator.Goal = Utilities.RandomVector2Int(100);
     }
 }

@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public class Timer
 {
@@ -45,6 +47,16 @@ public class Timer
         }
     }
 
+    public long GetInterval(string key)
+    {
+        return intervalsSums[key];
+    }
+
+    public void printInterval(string key)
+    {
+        UnityEngine.Debug.Log($"{intervalsSums[key]}");
+    }
+
     Dictionary<string, long> openIntervals = new();
     Dictionary<string, long> intervalsSums = new();
     public void StartInterval(string key)
@@ -62,6 +74,26 @@ public class Timer
         else
         {
             throw new InvalidOperationException("Interval has not started");
+        }
+        var AvgKey = $"{tag}: {key}";
+        if(average.TryGetValue(AvgKey, out var info))
+        {
+            var newAvg = info.avg + ((intervalsSums[key] - info.avg) / (info.count + 1));
+            average[AvgKey] = (info.count + 1, newAvg);
+        }
+        else
+        {
+            average[AvgKey] = (1, intervalsSums[key]);
+        }
+    }
+
+    static ConcurrentDictionary<string, (int count, long avg)> average = new();
+
+    public static void PrintAverages()
+    {
+        foreach (var kvp in average.ToList())
+        {
+            UnityEngine.Debug.Log($"{kvp.Key}: {kvp.Value.avg}");
         }
     }
 }

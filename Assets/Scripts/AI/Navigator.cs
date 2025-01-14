@@ -13,9 +13,7 @@ public class Navigator : MonoBehaviour
 
     public enum State
     {
-        Success,
-        Failure,
-        Searching,
+        Navigating,
         Idle
     }
 
@@ -51,7 +49,7 @@ public class Navigator : MonoBehaviour
             throw new InvalidOperationException("Starting new pathfinding before completing old");
         }
         LatestResult = null;
-        state = State.Searching;
+        state = State.Navigating;
         CancellationToken = new CancellationTokenSource();
         RunPathFinding(Utilities.GetBlockPos(transform.position).ToVector2Int(), Goal);
     }
@@ -62,11 +60,11 @@ public class Navigator : MonoBehaviour
         {
             try
             {
-                var res = Astar.FindPathNonCo(Start, End, Astar.GetAdjacentNodes, CanUseDoors, 100, CancellationToken.Token);
-                state = res.FoundGoal ? State.Success : State.Failure;
+                var res = Astar.FindPathNonCo(Start, End, Astar.GetAdjacentNodes, CanUseDoors, 500, CancellationToken.Token);
                 CancellationToken = null;
                 if (!res.FoundGoal && !res.canceled)
                 {
+                    state = State.Idle;
                     CallbackManager.AddCallback(() => onFailedPathing?.Invoke(res));
                     return;
                 }
@@ -75,14 +73,20 @@ public class Navigator : MonoBehaviour
             catch (Exception e)
             {
                 Debug.LogError(e);
-                state = State.Failure;
+                state = State.Idle;
+                CancellationToken = null;
             }
         });
     }
 
     public void Move(float deltaTime)
     {
-        if (LatestResult is null) return;
+        if (CancellationToken is not null) return;
+        if (LatestResult is null || LatestResult.path is null || LatestResult.path.Count == 0) {
+            state = State.Idle;
+            LatestResult = null;
+            return;
+        }
         var next = LatestResult.path.Peek();
         if(!ChunkManager.TryGetBlock(next, out var block) || !block.Walkable || (block.WallBlock is Door && !CanUseDoors))
         {
@@ -98,12 +102,14 @@ public class Navigator : MonoBehaviour
         if (difference.magnitude < 0.2)
         {
             LatestResult.path.Pop();
-            if (LatestResult.path.Count == 0)
-            {
-                state = State.Idle;
-                LatestResult = null;
-            }
         }
-        
+    }
+
+    private void OnDisable()
+    {
+        if (CancellationToken is not null)
+        {
+            CancellationToken.Cancel();
+        }
     }
 }

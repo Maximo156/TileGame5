@@ -79,13 +79,13 @@ namespace AStarSharp
         }
     }
 
+    
     public class Astar
     {
-        public static PathFindingResult FindPathNonCo(Vector2Int Start, Vector2Int End, Func<Node, Dictionary<Vector2Int, Node>, List<Node>> GetAdjacent, bool canUseDoors, int MaxDistance = 30, CancellationToken cancelationToken = default)
+        public static PathFindingResult FindPathNonCo(Vector2Int Start, Vector2Int End, Func<Node, List<Node>> GetAdjacent, bool canUseDoors, int MaxDistance = 30, CancellationToken cancelationToken = default)
         {
-            Dictionary<Vector2Int, Node> NodeCache = new();
-            Node start = GetNode(Start, NodeCache);
-            Node end = GetNode(End, NodeCache);
+            Node start = GetNode(Start);
+            Node end = GetNode(End);
 
             SortedSet<Node> OpenList = new SortedSet<Node>(new ByF());
             SortedSet<Node> OpenListBACK = new SortedSet<Node>(new ByF());
@@ -95,11 +95,10 @@ namespace AStarSharp
 
             HashSet<Node> ClosedList = new HashSet<Node>();
             HashSet<Node> ClosedListBACK = new HashSet<Node>();
-
+            List<Node> adjacencies;
             // add start node to Open List
             OpenList.Add(start);
             OpenListBACK.Add(end);
-
             while (OpenList.Any() && OpenListBACK.Any())
             {
                 if (cancelationToken.IsCancellationRequested)
@@ -117,7 +116,7 @@ namespace AStarSharp
 
                 OpenList.Remove(OpenList.First());
                 ClosedList.Add(current);
-                List<Node> adjacencies = GetAdjacent(current, NodeCache);
+                adjacencies = GetAdjacent(current);
 
                 bool found = false;
                 foreach (Node n in adjacencies)
@@ -147,10 +146,9 @@ namespace AStarSharp
 
                 // Backwards
                 Node currentBACK = OpenListBACK.First();
-
                 OpenListBACK.Remove(OpenListBACK.First());
                 ClosedListBACK.Add(currentBACK);
-                List<Node> adjacenciesBACK = GetAdjacent(currentBACK, NodeCache);
+                List<Node> adjacenciesBACK = GetAdjacent(currentBACK);
 
                 bool foundBACK = false;
                 foreach (Node n in adjacenciesBACK)
@@ -178,7 +176,6 @@ namespace AStarSharp
                 }
                 if (foundBACK) break;
             }
-
             Stack<Vector2Int> Result = new Stack<Vector2Int>();
             // if all good, return path
             Node tempForwards = ClosedList.MinBy(n => Vector2.Distance(n.Position, end.Position));
@@ -227,14 +224,14 @@ namespace AStarSharp
             };
         }
 
-        public static List<Node> GetAdjacentNodes(Node n, Dictionary<Vector2Int, Node> CurNodes)
+        public static List<Node> GetAdjacentNodes(Node n)
         {
             List<Node> temp = new List<Node>();
 
-            var top = GetNode(n.Position + Vector2Int.up, CurNodes);
-            var bottom = GetNode(n.Position + Vector2Int.down, CurNodes);
-            var left = GetNode(n.Position + Vector2Int.left, CurNodes);
-            var right = GetNode(n.Position + Vector2Int.right, CurNodes);
+            var top = GetNode(n.Position + Vector2Int.up);
+            var bottom = GetNode(n.Position + Vector2Int.down);
+            var left = GetNode(n.Position + Vector2Int.left);
+            var right = GetNode(n.Position + Vector2Int.right);
 
 
             temp.Add(top);
@@ -243,27 +240,22 @@ namespace AStarSharp
             temp.Add(right);
 
             if (top.Walkable && right.Walkable)
-                temp.Add(GetNode(n.Position + Vector2Int.up + Vector2Int.right, CurNodes));
+                temp.Add(GetNode(n.Position + Vector2Int.up + Vector2Int.right));
             if (top.Walkable && left.Walkable)
-                temp.Add(GetNode(n.Position + Vector2Int.up + Vector2Int.left, CurNodes));
+                temp.Add(GetNode(n.Position + Vector2Int.up + Vector2Int.left));
             if (bottom.Walkable && right.Walkable)
-                temp.Add(GetNode(n.Position + Vector2Int.down + Vector2Int.right, CurNodes));
+                temp.Add(GetNode(n.Position + Vector2Int.down + Vector2Int.right));
             if (bottom.Walkable && left.Walkable)
-                temp.Add(GetNode(n.Position + Vector2Int.down + Vector2Int.left, CurNodes));
+                temp.Add(GetNode(n.Position + Vector2Int.down + Vector2Int.left));
 
             return temp;
         }
 
-        public static Node GetNode(Vector2Int pos, Dictionary<Vector2Int, Node> CurNodes)
+        public static Node GetNode(Vector2Int pos)
         {
-            Node node;
-            //if (!CurNodes.TryGetValue(pos, out node))
-            //{
-                var weight = ChunkManager.GetMovementSpeed(pos);
-                bool door = ChunkManager.TryGetBlock(pos, out var block) && weight != 0 && block.WallBlock is Door;
-                node = new Node(pos, block?.Walkable ?? false, door, weight);
-                CurNodes[pos] = node;
-            //}
+            var weight = ChunkManager.GetMovementSpeed(pos);
+            bool door = ChunkManager.TryGetBlock(pos, out var block) && weight != 0 && block.WallBlock is Door;
+            Node node = new Node(pos, block?.Walkable ?? false, door, weight);
             return node;
         }
     }
