@@ -30,11 +30,14 @@ public class Realm
     private CancellationTokenSource CurGenToken;
 
     public EntityManager EntityContainer;
+    Transform EntityContainerTransform;
 
-    public void Initialize(GameObject entityContainerPrefab, Transform parent)
+    public void Initialize(GameObject entityContainerPrefab, Transform parent, int ChunkWidth)
     {
         EntityContainer = GameObject.Instantiate(entityContainerPrefab, parent).GetComponent<EntityManager>();
         EntityContainer.name = $"{name} Entity Container";
+        EntityContainer.AIManager.Initialize(LoadedChunks, ChunkWidth);
+        EntityContainerTransform = EntityContainer.transform;
     }
 
     public void SetContainerActive(bool active)
@@ -49,6 +52,7 @@ public class Realm
             CurGenToken.Cancel();
         }
         CurGenToken = new CancellationTokenSource();
+        EntityContainer.AIManager.curChunk = curChunk;
         var newTask = Task.Run(() => GenerateNewChunks(curChunk, chunkGenDistance, ChunkGenWidth, CancellationTokenSource.CreateLinkedTokenSource(AllTaskShutdown, CurGenToken.Token).Token));
     }
 
@@ -91,6 +95,7 @@ public class Realm
                     await chunk.Generate(Generator);
                     LoadedChunks[newChunk] = chunk;
                     ConnectChunk(chunk);
+                    chunk.SetParent(EntityContainerTransform);
                 }
             }
         }
@@ -126,7 +131,7 @@ public class Realm
 
     public T PerformChunkAction<T>(Vector2Int position, int ChunkWidth, Func<Chunk, T> action)
     {
-        var chunkPos = Vector2Int.FloorToInt(new Vector2(position.x, position.y) / ChunkWidth);
+        var chunkPos = Utilities.GetChunk(position, ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
             return action(chunk);
@@ -142,7 +147,7 @@ public class Realm
     public bool TryGetBlock(Vector2Int position, int ChunkWidth, out BlockSlice block)
     {
         block = default;
-        var chunkPos = Vector2Int.FloorToInt(new Vector2(position.x, position.y) / ChunkWidth);
+        var chunkPos = Utilities.GetChunk(position, ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
             block = chunk.GetBlock(position);

@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
-using System.Threading.Tasks;
 using System.Threading;
-using Random = System.Random;
 
 namespace AStarSharp
 {
@@ -79,7 +76,6 @@ namespace AStarSharp
         }
     }
 
-    
     public class Astar
     {
         public static PathFindingResult FindPathNonCo(Vector2Int Start, Vector2Int End, Func<Node, List<Node>> GetAdjacent, bool canUseDoors, int MaxDistance = 30, CancellationToken cancelationToken = default)

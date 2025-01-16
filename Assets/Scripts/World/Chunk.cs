@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Linq;
 using System.Threading.Tasks;
 
-public class Chunk
+public partial class Chunk
 {
     public delegate void BlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, BlockSlice block);
     public event BlockChanged OnBlockChanged;
@@ -29,6 +29,7 @@ public class Chunk
     System.Random rand;
 
     ChunkGenerator curGenerator;
+    bool generated = false;
 
     public Chunk(Vector2Int chunkPos, int width)
     {
@@ -38,6 +39,8 @@ public class Chunk
 
     public async Task Generate(ChunkGenerator generator, Vector2Int? worldPos = null, Block portal = null)
     {
+        if (generated) return;
+        generated = true;
         curGenerator = generator;
         rand = new System.Random(ChunkPos.GetHashCode());
         blocks = await generator.GetBlockSlices(ChunkPos, BlockPos, width, rand);

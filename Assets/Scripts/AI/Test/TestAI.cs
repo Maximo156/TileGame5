@@ -8,26 +8,21 @@ public class TestAI : MonoBehaviour, IStepable
     public Navigator navigator;
     public bool useManager;
 
+    public Transform Transform => transform;
+
     private void Start()
     {
-        if (useManager)
-        {
-            AIManager.Register(this);
-        }
+        AIManager.Register(this);
         navigator.onFailedPathing = (PathFindingResult _) => print(name +" stuck");
     }
 
     public void Update()
     {
-        if (!useManager)
-        {
-            Step(Time.deltaTime);
-        }
+        navigator.Move(Time.deltaTime);
     }
 
     public Vector2Int Step(float deltaTime)
     {
-        navigator.Move(Time.deltaTime);
         if(navigator.state == Navigator.State.Idle)
         {
             SetRandomGoal(null);
@@ -37,6 +32,6 @@ public class TestAI : MonoBehaviour, IStepable
 
     public void SetRandomGoal(PathFindingResult _)
     {
-        navigator.Goal = Utilities.RandomVector2Int(100);
+        navigator.Goal = Utilities.RandomVector2Int(30);
     }
 }

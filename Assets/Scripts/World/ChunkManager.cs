@@ -56,7 +56,7 @@ public class ChunkManager : MonoBehaviour
     {
         foreach(var realm in Realms)
         {
-            realm.Initialize(EntityContainerPrefab, transform);
+            realm.Initialize(EntityContainerPrefab, transform, chunkWidth);
             realm.SetContainerActive(false);
         }
         ActiveRealm = Realms.First(r => r.name == startingRealm);

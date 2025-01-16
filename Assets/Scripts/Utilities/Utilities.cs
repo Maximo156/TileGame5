@@ -29,9 +29,14 @@ public static class Utilities
         return (float)(mean + std * randStdNormal);
     }
 
-    public static Vector3Int GetBlockPos(Vector3 pos)
+    public static Vector2Int GetChunk(Vector2Int block, int ChunkWidth)
     {
-        return Vector3Int.FloorToInt(pos);
+        return Vector2Int.FloorToInt(new Vector2(block.x, block.y) / ChunkWidth);
+    }
+
+    public static Vector2Int GetBlockPos(Vector2 pos)
+    {
+        return Vector2Int.FloorToInt(pos);
     }
 
     public static Vector2 GetBlockCenter(Vector2Int pos)
