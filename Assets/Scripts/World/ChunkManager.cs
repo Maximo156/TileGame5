@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Unity.Collections;
 
 public class ChunkManager : MonoBehaviour
 {
@@ -132,6 +133,23 @@ public class ChunkManager : MonoBehaviour
     {
         return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, chunk => chunk.PopItem(position));
     }
+
+    #region Burst
+    /*
+    NativeHashMap<float2, Chunk> nativeChunks = new NativeHashMap<float2, Chunk>();
+    public static float GetMovementSpeed(float2 position)
+    {
+        if (!TryGetBlock(position, out var block)) return 0;
+        return block.MovementSpeed;
+    }
+    public static bool TryGetBlock(float2 position, out BlockSlice block)
+    {
+        block = default;
+        if (Manager == null) return false;
+        return Manager.ActiveRealm.TryGetBlock(position, ChunkWidth, out block);
+    }
+    */
+    #endregion
 
 
     private void OnDestroy()

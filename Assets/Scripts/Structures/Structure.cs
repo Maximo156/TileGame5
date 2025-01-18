@@ -108,7 +108,7 @@ public class Structure: ScriptableObject
         bounds.position = start.ToVector3Int();
         foreach (var pos in bounds.allPositionsWithin)
         {
-            var biomeInfo = biomes.GetInfo(pos.ToVector2Int());
+            var biomeInfo = biomes.GetBiome(pos.ToVector2Int());
             if (!ValidLayer(biomeInfo, structure) ||
                 !area.TryGetBlock(pos.ToVector2Int(), out var block) || block?.HasBlock() == true)
             {
@@ -154,9 +154,9 @@ public class Structure: ScriptableObject
         return !rot.mirror ? res : new Vector2Int(res.y, res.x);
     }
 
-    private bool ValidLayer(BiomeInfo.BiomeBlockInfo layer, BuildingInformation structure)
+    private bool ValidLayer(BiomePreset layer, BuildingInformation structure)
     {
-        if (layer.Water) return false;
-        return layer.layer?.WallBlocks?.Count is 0 or null || structure.AllowMountains;
+        if (layer is null) return false;
+        return layer.WallBlock is null || structure.AllowMountains;
     }
 }

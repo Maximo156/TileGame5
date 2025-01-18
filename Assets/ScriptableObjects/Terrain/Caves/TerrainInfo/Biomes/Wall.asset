@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4cbab98e168b724bab2c8fd4b8a4ddf, type: 3}
+  m_Name: Wall
+  m_EditorClassIdentifier: 
+  minHeight: 0.3
+  minMoisture: 0
+  minHeat: 0
+  GroundBlock: {fileID: 11400000, guid: 22a8a340cdc98184188d3138c749b133, type: 2}
+  WallBlock: {fileID: 11400000, guid: e53702bea1537ea43863f3c884a887d4, type: 2}
+  RoofBlock: {fileID: 0}
+  replaceSolid: 1
+  SparceBlocks:
+  - {fileID: 11400000, guid: d20011c65aa066242bc45254c5a216c7, type: 2}
+  - {fileID: 11400000, guid: 4c2a950501215d54aba57937813c121d, type: 2}
+  - {fileID: 11400000, guid: f5eecd4268676924eb0d1c02ab8998e8, type: 2}
+  SparceSoundSettings: {fileID: 11400000, guid: e3f1f094c48ed894c949d57049711d52, type: 2}
+  SparceDensity: 0.3

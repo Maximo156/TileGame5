@@ -10,9 +10,13 @@ public class LightTileMap : MonoBehaviour
     Tilemap Map;
     public TileBase Tile;
 
-    public void Start()
+    private void Awake()
     {
         ChunkManager.OnRealmChange += OnRealmChange;
+    }
+
+    public void Start()
+    {
         Map = GetComponent<Tilemap>();
         ClearAllTiles();
     }

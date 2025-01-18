@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewSoundSettings", menuName = "Terrain/SoundSettings", order = 1)]
-public class SoundSettings : ScriptableObject
+public class SoundSettings : BaseSoundSettings
 {
     public int Seed;
     [Serializable]
@@ -19,7 +19,7 @@ public class SoundSettings : ScriptableObject
     public bool useWorld;
     public List<Octave> octaves = new List<Octave>();
 
-    public float GetSound(int x, int y)
+    public override float GetSound(int x, int y)
     {
         float res = octaves.Count == 0 ? 1 : 0;
         float ampSum = octaves.Sum(o => o.amplitude);
@@ -45,5 +45,18 @@ public class SoundSettings : ScriptableObject
             octave.offset = new Vector2Int(rand.Next(), rand.Next());
         }
         World.offset = new Vector2Int(rand.Next(), rand.Next());
+    }
+
+    public override float[,] GetSoundArray(int x1, int y1, int chunkWidth)
+    {
+        var res = new float[chunkWidth, chunkWidth];
+        for (int x = 0; x < res.GetLength(0); x++)
+        {
+            for (int y = 0; y < res.GetLength(1); y++)
+            {
+                res[x, y] = GetSound(x1+x, y1+y);
+            }
+        }
+        return res;
     }
 }
