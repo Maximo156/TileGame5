@@ -20,6 +20,6 @@ MonoBehaviour:
   RoofBlock: {fileID: 0}
   replaceSolid: 0
   SparceBlocks:
-  - {fileID: 11400000, guid: 0e267d7b6f060e545a266f15b4f0f478, type: 2}
+  - {fileID: 11400000, guid: 065efd7dede716943bc5be60062675f4, type: 2}
   SparceSoundSettings: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
   SparceDensity: 0.5

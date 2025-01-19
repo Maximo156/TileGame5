@@ -21,5 +21,9 @@ MonoBehaviour:
   replaceSolid: 0
   SparceBlocks:
   - {fileID: 11400000, guid: ea2e43765346a0d4db8a61dffc46fa53, type: 2}
+  - {fileID: 11400000, guid: 0e267d7b6f060e545a266f15b4f0f478, type: 2}
+  - {fileID: 11400000, guid: b7f4876881155e34a9e00c349b58eaa3, type: 2}
+  - {fileID: 11400000, guid: 754c590d4e0716e4995f6ab995998b16, type: 2}
+  - {fileID: 11400000, guid: 2b080dc3ff494a94496863448da50820, type: 2}
   SparceSoundSettings: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
   SparceDensity: 0.3

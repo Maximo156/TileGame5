@@ -4,7 +4,7 @@ using UnityEngine;
 
 public partial class Chunk
 {
-    public HashSet<IStepable> ais = new();
+    public HashSet<IAI> ais = new();
     GameObject EntityContainer;
     Transform parent;
     public void SetParent(Transform parent)
@@ -12,7 +12,7 @@ public partial class Chunk
         this.parent = parent;
     }
 
-    public void AddChild(IStepable ai)
+    public void AddChild(IAI ai)
     {
         if(EntityContainer == null)
         {

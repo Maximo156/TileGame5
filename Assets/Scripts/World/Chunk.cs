@@ -118,12 +118,20 @@ public partial class Chunk
         return blocks[localPos.x, localPos.y];
     }
 
-    public bool PlaceBlock(Vector2Int position, Block block, bool force = false)
+    public bool PlaceBlock(Vector2Int position, Vector2Int dir, Block block, bool force = false)
     {
+        if(block is IConditionalPlace cond && !cond.CanPlace(position, dir))
+        {
+            return false;
+        }
         var slice = GetBlock(position);
         var res = force ? slice.SetBlock(block) : slice.SafeSet(block);
         if (res)
         {
+            if(block is IOnPlace place)
+            {
+                place.OnPlace(position, dir);
+            }
             if (block is Roof roof) {
                 CalcRoofStrengthBFS(position, roof);
             }

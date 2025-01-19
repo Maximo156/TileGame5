@@ -15,7 +15,10 @@ public class BuildingTool : Tool, IGridSource
             recipe is not null &&
             recipe.CanProduce(useInfo.availableInventory.GetAllItems()))
         {
-            if (ChunkManager.PlaceBlock(Vector2Int.FloorToInt(targetPosition.ToVector2()), recipe.block))
+            var rawDir = (targetPosition - usePosition).ToVector2();
+            var xBig = Mathf.Abs(rawDir.x) > Mathf.Abs(rawDir.y);
+            var dir = new Vector2Int(xBig ? (int)Mathf.Sign(rawDir.x) : 0, !xBig ? (int)Mathf.Sign(rawDir.y) : 0);
+            if (ChunkManager.PlaceBlock(Vector2Int.FloorToInt(targetPosition.ToVector2()), dir, recipe.block))
             {
                 recipe.UseRecipe(useInfo.availableInventory);
                 return true;

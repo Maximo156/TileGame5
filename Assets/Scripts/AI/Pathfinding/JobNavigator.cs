@@ -8,17 +8,31 @@ using System;
 using Unity.Collections;
 using Unity.Mathematics;
 
-public class JobNavigator : MonoBehaviour
+public class JobNavigator : MonoBehaviour, IPathFinder
 {
     public bool CanUseDoors;
     public float MovementSpeed;
+
+    public int2 Position
+    {
+        get
+        {
+            var block = Utilities.GetBlockPos(transform.position);
+            return new int2(block.x, block.y);
+        }
+    }
+    public int2 Goal { get; set; }
+    public bool NeedPath => !_path.IsCreated || Path.Count == 0 || state == JobNavigator.State.Idle;
+
+    public bool CanUseDoor => CanUseDoors;
+
     public enum State
     {
         Navigating,
         Idle
     }
+
     public State state { get; private set; } = State.Idle;
-    public bool NeedPath => !_path.IsCreated || Path.Count == 0;
 
     NativeStack<int2> _path = default;
     NativeStack<int2> Path
@@ -33,6 +47,7 @@ public class JobNavigator : MonoBehaviour
             _path = value;
         }
     }
+
     public bool SetPath(NativeStack<int2> stack)
     {
         if(stack.Count == 0)

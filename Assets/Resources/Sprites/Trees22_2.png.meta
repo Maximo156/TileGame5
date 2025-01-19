@@ -276,9 +276,9 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 22
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -808,7 +808,7 @@ TextureImporter:
         width: 15
         height: 15
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -816,6 +816,27 @@ TextureImporter:
       bones: []
       spriteID: 5b2ed88f40d33284d9efaa4772316230
       internalID: -1552312805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Trees32_1
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 704
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c711a453f44978249882a9433a22fa19
+      internalID: 1642514165
       vertices: []
       indices: 
       edges: []
@@ -832,6 +853,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Trees32_0: -1552312805
+      Trees32_1: 1642514165
       Trees_0: 2572236292851511218
       Trees_1: 6224024930817484846
       Trees_10: 785381055666214426

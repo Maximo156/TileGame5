@@ -145,12 +145,16 @@ public class Realm
 
     private void Chunk_OnBlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos) => OnBlockRefreshed?.Invoke(chunk, BlockPos, ChunkPos);
 
-    public T PerformChunkAction<T>(Vector2Int position, int ChunkWidth, Func<Chunk, T> action)
+    public T PerformChunkAction<T>(Vector2Int position, int ChunkWidth, Func<Chunk, Vector2Int, T> action , bool useProxy = true)
     {
         var chunkPos = Utilities.GetChunk(position, ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
-            return action(chunk);
+            if(chunk.GetBlock(position).State is ProxyState proxy && useProxy)
+            {
+                return PerformChunkAction(proxy.ActualPos, ChunkWidth, action);
+            }
+            return action(chunk, position);
         }
         return default;
     }
@@ -160,13 +164,17 @@ public class Realm
         return LoadedChunks.TryGetValue(chunk, out chunkObj);
     }
 
-    public bool TryGetBlock(Vector2Int position, int ChunkWidth, out BlockSlice block)
+    public bool TryGetBlock(Vector2Int position, int ChunkWidth, out BlockSlice block, bool useProxy = true)
     {
         block = default;
         var chunkPos = Utilities.GetChunk(position, ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
             block = chunk.GetBlock(position);
+            if(useProxy && block.State is ProxyState proxy)
+            {
+                return TryGetBlock(proxy.ActualPos, ChunkWidth, out block);
+            }
             return true;
         }
         return false;

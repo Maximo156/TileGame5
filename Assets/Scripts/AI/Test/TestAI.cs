@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using AStarSharp;
 
-public class TestAI : MonoBehaviour, IStepable
+public class TestAI : MonoBehaviour, IAI, IBehavior
 {
     public Navigator navigator;
     public bool useManager;
 
     public Transform Transform => transform;
+
+    public IPathFinder pathfinder => null;
+
+    public IBehavior behavior => this;
 
     private void Start()
     {

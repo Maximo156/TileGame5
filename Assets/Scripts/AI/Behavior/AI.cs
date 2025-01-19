@@ -4,24 +4,15 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class AI : MonoBehaviour, IStepable, IPathFinder
+public class AI : MonoBehaviour, IBehavior, IAI
 {
     public JobNavigator navigator;
 
     public Transform Transform => transform;
 
-    public int2 Position
-    {
-        get
-        {
-            var block = Utilities.GetBlockPos(transform.position);
-            return new int2(block.x, block.y);
-        }
-    }
-    public int2 Goal { get; set; }
-    public bool NeedPath => navigator.NeedPath || navigator.state == JobNavigator.State.Idle;
+    public IPathFinder pathfinder => navigator;
 
-    public bool CanUseDoor => navigator.CanUseDoors;
+    public IBehavior behavior => this;
 
     private void Start()
     {
@@ -47,6 +38,6 @@ public class AI : MonoBehaviour, IStepable, IPathFinder
     public void SetRandomGoal()
     {
         var g = Utilities.RandomVector2Int(30);
-        Goal = new int2(g.x, g.y);
+        navigator.Goal = new int2(g.x, g.y);
     }
 }

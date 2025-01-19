@@ -38,7 +38,7 @@ public class ChunkManager : MonoBehaviour
             _activeRealm?.SetContainerActive(false);
             OnRealmChange?.Invoke(_activeRealm, value);
             _activeRealm = value;
-            _activeRealm.PlayerChangedChunks(curChunk, chunkGenDistance, chunkWidth, AllTaskShutdown.Token);
+            _activeRealm.PlayerChangedChunks(Vector2Int.zero, chunkGenDistance, chunkWidth, AllTaskShutdown.Token);
             _activeRealm.RefreshAllChunks();
             _activeRealm?.SetContainerActive(true);
         }
@@ -66,7 +66,6 @@ public class ChunkManager : MonoBehaviour
 
     private CancellationTokenSource AllTaskShutdown = new CancellationTokenSource();
 
-    Vector2Int curChunk;
     private void PlayerChangedChunks(Vector2Int curChunk)
     {
         ActiveRealm.PlayerChangedChunks(curChunk, chunkGenDistance, chunkWidth, AllTaskShutdown.Token);
@@ -81,18 +80,18 @@ public class ChunkManager : MonoBehaviour
         Debug.Log("Stopping Tick");
     }
 
-    public static bool TryGetBlock(Vector2Int position, out BlockSlice block)
+    public static bool TryGetBlock(Vector2Int position, out BlockSlice block, bool useProxy = true)
     {
         block = default;
         if (Manager == null) return false;
-        return Manager.ActiveRealm.TryGetBlock(position, ChunkWidth, out block);
+        return Manager.ActiveRealm.TryGetBlock(position, ChunkWidth, out block, useProxy);
     }
 
     private void PortalUsed(string newDim, PortalBlock exitBlock, Vector2Int worldPos)
     {
         ActiveRealm = Realms.First(r => r.name == newDim);
         int count = 0;
-        while(!PlaceBlock(worldPos, exitBlock, true) && count++ < 1000)
+        while(!PlaceBlock(worldPos, Vector2Int.zero, exitBlock, true) && count++ < 1000)
         {
             Thread.Sleep(1);
         }
@@ -109,29 +108,29 @@ public class ChunkManager : MonoBehaviour
         return Manager.ActiveRealm.TryGetChunk(chunk, out chunkObj);
     }
 
-    public static bool PlaceBlock(Vector2Int position, Block block, bool force = false)
+    public static bool PlaceBlock(Vector2Int position, Vector2Int dir, Block block, bool force = false)
     {
-        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, chunk => chunk.PlaceBlock(position, block, force));
+        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.PlaceBlock(pos, dir, block, force));
     }
 
     public static bool Interact(Vector2Int position)
     {
-        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, chunk => chunk.Interact(position));
+        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.Interact(pos));
     }
 
     public static bool BreakBlock(Vector2Int position, bool roof, bool drop = true)
     {
-        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, chunk => chunk.BreakBlock(position, roof, drop));
+        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.BreakBlock(pos, roof, drop));
     }
 
     public static bool PlaceItem(Vector2Int position, ItemStack item)
     {
-        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, chunk => chunk.PlaceItem(position, item));
+        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.PlaceItem(pos, item));
     }
 
     public static ItemStack PopItem(Vector2Int position)
     {
-        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, chunk => chunk.PopItem(position));
+        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.PopItem(pos));
     }
 
     #region Burst

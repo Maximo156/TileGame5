@@ -3,6 +3,16 @@ using UnityEngine.Tilemaps;
 using System.Collections;
 using System.Collections.Generic;
 
+public interface IConditionalPlace
+{
+    public bool CanPlace(Vector2Int Pos, Vector2Int dir);
+}
+
+public interface IOnPlace
+{
+    public void OnPlace(Vector2Int Pos, Vector2Int dir);
+}
+
 public class Block : ScriptableObject, ISpriteful, ISaveable
 {
     public TileBase Display;

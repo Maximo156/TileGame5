@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88e12392c8e05804db7cf8fea2bedb9f, type: 3}
+  m_Name: Bed
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: 799f6729df58f1f49b710ea7e4fafe8e, type: 2}
+  HitsToBreak: 3
+  MovementModifier: 0
+  Drops: []
+  UiSprite: {fileID: 289868107, guid: 9b21cfbe1f3e52f4e8df2e1924d73bc9, type: 3}
+  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  structural: 0
+  solid: 0
+  Walkable: 0
+  MustBePlacedOn: []
+  Dimensions: {x: 1, y: 2}
