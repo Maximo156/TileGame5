@@ -66,9 +66,8 @@ public class AIManager : MonoBehaviour
         {
             if (chunk.ais.Count > 0)
             {
-                print($"{chunkPos}: {chunk.ais.Count} ais running");
+                StartCoroutine(RunChunk(chunk));
             }
-            StartCoroutine(RunChunk(chunk));
         }
     }
 

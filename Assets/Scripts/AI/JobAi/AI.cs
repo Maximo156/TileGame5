@@ -19,7 +19,7 @@ public class AI : MonoBehaviour, IStepable, IPathFinder
         }
     }
     public int2 Goal { get; set; }
-    public bool NeedPath => navigator.NeedPath;
+    public bool NeedPath => navigator.NeedPath || navigator.state == JobNavigator.State.Idle;
 
     public bool CanUseDoor => navigator.CanUseDoors;
 

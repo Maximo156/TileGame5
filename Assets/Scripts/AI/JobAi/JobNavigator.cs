@@ -45,11 +45,14 @@ public class JobNavigator : MonoBehaviour
     }
 
     BlockSlice Target;
+    BlockSlice Current;
+    Vector2Int CurrentPos;
     public void Move(float deltaTime)
     {
         if (!Path.IsCreated || Path.Count == 0) {
             state = State.Idle;
             Path = default;
+            Target = null;
             return;
         }
         var nextInt = Path.Peek();
@@ -61,17 +64,27 @@ public class JobNavigator : MonoBehaviour
         if(Target is null || !Target.Walkable || (Target.WallBlock is Door && !CanUseDoors))
         {
             state = State.Idle;
+            Path = default;
+            Target = null;
             return;
         }
+        var curBlock = Utilities.GetBlockPos(transform.position);
+        if(curBlock != CurrentPos)
+        {
+            CurrentPos = curBlock;
+            ChunkManager.TryGetBlock(CurrentPos, out Current);
+        }
+
 
         var difference = (Utilities.GetBlockCenter(next).ToVector3() - transform.position);
         var dir = difference.normalized;
 
-        transform.position = transform.position + (Target.MovementSpeed * MovementSpeed * dir * deltaTime);
+        transform.position = transform.position + ((Current?.MovementSpeed ?? 1) * MovementSpeed * dir * deltaTime);
 
         if (difference.magnitude < 0.2)
         {
             Path.Pop();
+            Target = null;
         }
     }
 
