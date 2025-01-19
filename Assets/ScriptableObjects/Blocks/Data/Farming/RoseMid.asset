@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
+  m_Name: RoseMid
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: f38953a746050411a91257ed936056ef, type: 2}
+  HitsToBreak: 1
+  Drops:
+  - Item: {fileID: 11400000, guid: 5be3a9bce6cbf4320b2702b16810af66, type: 2}
+    Count: 1
+  UiSprite: {fileID: -1926208873, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
+  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  structural: 0
+  solid: 0
+  MustBePlacedOn:
+  - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
+  nextBlock: {fileID: 11400000, guid: 10d7fa141f46044dc8aeb7c4062af90e, type: 2}
+  MeanSecondsToHappen: 5
