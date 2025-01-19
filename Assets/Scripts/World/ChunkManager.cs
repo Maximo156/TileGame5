@@ -155,6 +155,10 @@ public class ChunkManager : MonoBehaviour
     private void OnDestroy()
     {
         AllTaskShutdown.Cancel();
+        foreach (var realm in Realms)
+        {
+            realm.Cleanup();
+        }
     }
 
     private void OnDrawGizmos()

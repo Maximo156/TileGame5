@@ -93,7 +93,7 @@ public static class Extensions
 
     public static T MinBy<T, TCompare>(this IEnumerable<T> enumerable, Func<T, TCompare> comp) where TCompare : IComparable<TCompare> 
     {
-        if (!enumerable.Any()) return default;
+        if (enumerable.Count() <= 0) return default;
         T min = enumerable.First();
         foreach(T t in enumerable.Skip(1))
         {

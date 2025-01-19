@@ -3,6 +3,8 @@ using System.Threading;
 using UnityEngine;
 using System.Linq;
 using System.Threading.Tasks;
+using Unity.Collections;
+using Unity.Mathematics;
 
 public partial class Chunk
 {
@@ -34,6 +36,17 @@ public partial class Chunk
     {
         this.width = width;
         ChunkPos = chunkPos;
+    }
+
+    public void UpdateBlockData(ref NativeHashMap<int2, BlockSliceData> data)
+    {
+        for(int x = 0; x < blocks.GetLength(0); x++)
+        {
+            for (int y = 0; y < blocks.GetLength(0); y++)
+            {
+                data[new int2(BlockPos.x + x, BlockPos.y + y)] = blocks[x, y].GetData();
+            }
+        }
     }
 
     public async Task Generate(ChunkGenerator generator, Vector2Int? worldPos = null, Block portal = null)

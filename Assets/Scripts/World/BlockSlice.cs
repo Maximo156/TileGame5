@@ -160,4 +160,21 @@ public class BlockSlice
     {
         return GroundBlock is not null || WallBlock is not null || RoofBlock is not null;
     }
+
+    public BlockSliceData GetData()
+    {
+        return new BlockSliceData
+        {
+            MovementSpeed = MovementSpeed,
+            Door = WallBlock is Door,
+            Walkable = Walkable
+        };
+    }
+}
+
+public struct BlockSliceData
+{
+    public float MovementSpeed;
+    public bool Door;
+    public bool Walkable;
 }

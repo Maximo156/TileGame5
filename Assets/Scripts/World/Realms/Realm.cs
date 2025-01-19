@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Unity.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 [Serializable]
@@ -26,7 +28,7 @@ public class Realm
     Dictionary<Vector2Int, Chunk> LoadedChunks = new Dictionary<Vector2Int, Chunk>();
     private int chunkTickDistance;
     Vector2Int curChunk;
-
+    
     private CancellationTokenSource CurGenToken;
 
     public EntityManager EntityContainer;
@@ -38,6 +40,11 @@ public class Realm
         EntityContainer.name = $"{name} Entity Container";
         EntityContainer.AIManager.Initialize(LoadedChunks, ChunkWidth);
         EntityContainerTransform = EntityContainer.transform;
+    }
+
+    public void Cleanup()
+    {
+        EntityContainer.AIManager.CleanUp();
     }
 
     public void SetContainerActive(bool active)
@@ -94,6 +101,7 @@ public class Realm
                     var chunk = new Chunk(newChunk, ChunkWidth);
                     await chunk.Generate(Generator);
                     LoadedChunks[newChunk] = chunk;
+                    EntityContainer.AIManager.OnChunkChanged(chunk);
                     ConnectChunk(chunk);
                     chunk.SetParent(EntityContainerTransform);
                 }
@@ -123,9 +131,17 @@ public class Realm
 
     private void Chunk_OnLightingUpdated(Dictionary<Vector3Int, int> updated) => OnLightingUpdated?.Invoke(updated);
 
-    private void Chunk_OnChunkChanged(Chunk chunk) => OnChunkChanged?.Invoke(chunk);
+    private void Chunk_OnChunkChanged(Chunk chunk)
+    {
+        EntityContainer.AIManager.OnChunkChanged(chunk);
+        OnChunkChanged?.Invoke(chunk);
+    }
 
-    private void Chunk_OnBlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, BlockSlice block) => OnBlockChanged?.Invoke(chunk, BlockPos, ChunkPos, block);
+    private void Chunk_OnBlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, BlockSlice block)
+    {
+        EntityContainer.AIManager.OnBlockChanged(BlockPos, block);
+        OnBlockChanged?.Invoke(chunk, BlockPos, ChunkPos, block);
+    }
 
     private void Chunk_OnBlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos) => OnBlockRefreshed?.Invoke(chunk, BlockPos, ChunkPos);
 
