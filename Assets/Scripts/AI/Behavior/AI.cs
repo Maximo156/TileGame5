@@ -19,8 +19,6 @@ public class AI : MonoBehaviour, IBehavior, IAI
         AIManager.Register(this);
     }
 
-    public bool SetPath(NativeStack<int2> stack) => navigator.SetPath(stack);
-
     public void Update()
     {
         navigator.Move(Time.deltaTime);
