@@ -53062,6 +53062,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 3facc945-1118-49c4-9feb-5fcae0b76950
     m_ActionName: Player/New action
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1837090609}
+        m_TargetAssemblyTypeName: PlayerInventories, Assembly-CSharp
+        m_MethodName: OnGetNumber
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8fe7a63e-00ce-4e88-8a2b-9a976ebd369b
+    m_ActionName: Player/GetNumber[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

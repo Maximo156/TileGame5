@@ -54,6 +54,16 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
         }
     }
 
+    public void OnGetNumber(InputAction.CallbackContext value)
+    {
+        if (value.started)
+        {
+            var input = (int)value.ReadValue<float>() % HotbarSize;
+            CurrentlySelectedHand = input;
+            HotBarItemsChanged(HotbarInv);
+        }
+    }
+
     ItemStack curInHand;
     private void HotBarItemsChanged(IInventory inv)
     {
