@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Display: {fileID: 11400000, guid: 33380e998d140f944964e3bb5397acb3, type: 2}
   HitsToBreak: 3
+  MovementModifier: 0
   Drops: []
   UiSprite: {fileID: 3489699743356552951, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
+  UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0
+  Walkable: 0
   MustBePlacedOn: []
