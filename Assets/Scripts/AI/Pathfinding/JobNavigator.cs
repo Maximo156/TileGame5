@@ -1,15 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
-using AStarSharp;
-using System;
 using Unity.Collections;
 using Unity.Mathematics;
 
 public class JobNavigator : MonoBehaviour, IPathFinder
 {
+    public int m_ReachableRange;
     public bool CanUseDoors;
     public float MovementSpeed;
 
@@ -21,20 +16,31 @@ public class JobNavigator : MonoBehaviour, IPathFinder
             return new int2(block.x, block.y);
         }
     }
-    public int2 Goal { get; set; }
-    public bool NeedPath => !_path.IsCreated || Path.Count == 0 || state == JobNavigator.State.Idle;
-
+    int2 _goal;
+    public int2 Goal { 
+        get => _goal; 
+        set 
+        {
+            Path = default;
+            state = State.Navigating;
+            _goal = value;
+        } 
+    }
+    public bool NeedPath => !Path.IsCreated && state != State.Stuck;
     public bool CanUseDoor => CanUseDoors;
+    public int ReachableRange => m_ReachableRange;
 
     public enum State
     {
         Navigating,
-        Idle
+        Idle,
+        Moving,
+        Stuck
     }
 
     public State state { get; private set; } = State.Idle;
 
-    NativeStack<int2> _path = default;
+    NativeStack<int2> _path;
     NativeStack<int2> Path
     {
         get => _path;
@@ -48,15 +54,49 @@ public class JobNavigator : MonoBehaviour, IPathFinder
         }
     }
 
-    public bool SetPath(NativeStack<int2> stack)
+    NativeList<int2> _reachable;
+    NativeList<int2> Reachable
     {
-        if(stack.Count == 0)
+        get => _reachable;
+        set
+        {
+            if (_reachable.IsCreated)
+            {
+                _reachable.Dispose();
+            }
+            _reachable = value;
+        }
+    }
+
+    private void Awake()
+    {
+        _path = new NativeStack<int2>(1, Allocator.Persistent);
+    } 
+
+    public bool SetPath(NativeStack<int2> stack, NativeList<int2> reachable)
+    {
+        Reachable = reachable;
+        if (stack.Count == 0)
         {
             Path = default;
+            state = State.Stuck;
             return false;
         }
+        state = State.Moving;
         Path = stack;
         return true;
+    }
+
+    public bool TryGetReachable(out Vector2Int outPos)
+    {
+        if (Reachable.Length > 0)
+        {
+            var pos = Reachable[UnityEngine.Random.Range(0, Reachable.Length)];
+            outPos = new Vector2Int(pos.x, pos.y);
+            return true;
+        }
+        outPos = default;
+        return false;
     }
 
     BlockSlice Target;
@@ -64,9 +104,9 @@ public class JobNavigator : MonoBehaviour, IPathFinder
     Vector2Int CurrentPos;
     public void Move(float deltaTime)
     {
+        if (state != State.Moving) return;
         if (!Path.IsCreated || Path.Count == 0) {
             state = State.Idle;
-            Path = default;
             Target = null;
             return;
         }
@@ -78,8 +118,7 @@ public class JobNavigator : MonoBehaviour, IPathFinder
         }
         if(Target is null || !Target.Walkable || (Target.WallBlock is Door && !CanUseDoors))
         {
-            state = State.Idle;
-            Path = default;
+            state = State.Stuck;
             Target = null;
             return;
         }
@@ -108,6 +147,23 @@ public class JobNavigator : MonoBehaviour, IPathFinder
         if (Path.IsCreated)
         {
             Path = default;
+        }
+        if (Reachable.IsCreated)
+        {
+            Reachable = default;
+        }
+    }
+
+    public Vector2 VectorGoal
+    {
+        get
+        {
+            return new Vector2(Goal.x, Goal.y);
+        }
+        set
+        {
+            var tmp = Vector2Int.FloorToInt(value);
+            Goal = new int2(tmp.x, tmp.y);
         }
     }
 }

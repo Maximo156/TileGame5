@@ -13,10 +13,10 @@ public class AIBehaviorManager
 {
     public IEnumerator RunChunk(IEnumerable<IBehavior> ais)
     {
+        yield return null;
         foreach (var ai in ais.Where(ai => ai is not null).ToList())
         {
             ai.Step(Time.deltaTime);
-            yield return null;
         }
     }
 }

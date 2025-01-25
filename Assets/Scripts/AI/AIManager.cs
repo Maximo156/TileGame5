@@ -11,11 +11,17 @@ public interface IAI
     public IPathFinder pathfinder { get; }
     public IBehavior behavior { get; }
     public Transform Transform { get; }
+
+    public void Register()
+    {
+        AIManager.Register(this);
+    }
 }
 
 public class AIManager : MonoBehaviour
 {
     public int AiSimDistance = 10;
+    public int AiPerEnumeration = 100;
     Dictionary<Vector2Int, Chunk> LoadedChunks;
 
     int ChunkWidth;
@@ -51,39 +57,66 @@ public class AIManager : MonoBehaviour
         {
             RegisterImpl(ai);
         }
+
+        var important = Utilities.Spiral(curChunk, (uint)AiSimDistance);
+
+        if (!chunksRunning)
+        {
+            StartCoroutine(RunChunks(important));
+        }
+
         if (SimQueue == null || SimQueue.Count == 0)
         {
-            SimQueue = new Queue<Vector2Int>(Utilities.Spiral(curChunk, (uint)AiSimDistance));
+            SimQueue = new Queue<Vector2Int>(important);
         }
-        if(!running && SimQueue.TryDequeue(out var chunkPos) && LoadedChunks.TryGetValue(chunkPos, out var chunk))
+
+        if(!AiRunning)
         {
-            if (chunk.ais.Count > 0)
+            var toRun = new List<IAI>();
+            while(toRun.Count() < AiPerEnumeration && SimQueue.TryDequeue(out var chunkPos))
             {
-                StartCoroutine(RunChunk(chunk));
+                if(ChunkManager.TryGetChunk(chunkPos, out var chunk))
+                {
+                    toRun.AddRange(chunk.ais);
+                }
             }
+            StartCoroutine(RunAis(toRun));
         }
     }
 
-    bool running;
-    public IEnumerator RunChunk(Chunk chunk)
+    bool AiRunning;
+    public IEnumerator RunAis(IEnumerable<IAI> ais)
     {
-        running = true;
+        AiRunning = true;
+        yield return PathFinder.RunChunk(ais.Select(ai => ai.pathfinder));
 
-        yield return PathFinder.RunChunk(chunk.ais.Select(ai => ai.pathfinder));
+        yield return BehaviorManager.RunChunk(ais.Select(ai => ai.behavior));
+        AiRunning = false;
+    }
 
-        yield return BehaviorManager.RunChunk(chunk.ais.Select(ai => ai.behavior));
-
-        foreach (var ai in chunk.ais.ToList())
+    bool chunksRunning;
+    public IEnumerator RunChunks(IEnumerable<Vector2Int> chunks)
+    {
+        chunksRunning = true;
+        foreach (var pos in chunks)
         {
-            var newChunkPos = Utilities.GetChunk(Utilities.GetBlockPos(ai.Transform.position), ChunkWidth);
-            if (newChunkPos != chunk.ChunkPos && LoadedChunks.TryGetValue(newChunkPos, out var newChunk))
+            if (LoadedChunks.TryGetValue(pos, out var chunk))
             {
-                chunk.ais.Remove(ai);
-                newChunk.AddChild(ai);
+                if (chunk.ais.Count == 0) continue;
+                foreach (var ai in chunk.ais.ToList())
+                {
+                    var newChunkPos = Utilities.GetChunk(Utilities.GetBlockPos(ai.Transform.position), ChunkWidth);
+                    if (newChunkPos != chunk.ChunkPos && LoadedChunks.TryGetValue(newChunkPos, out var newChunk))
+                    {
+                        chunk.ais.Remove(ai);
+                        newChunk.AddChild(ai);
+                    }
+                }
+
+                yield return null;
             }
         }
-
-        running = false;
+        chunksRunning = false;
     }
 
     private void RegisterImpl(IAI newAi)

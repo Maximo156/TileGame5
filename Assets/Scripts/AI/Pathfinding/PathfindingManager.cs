@@ -14,12 +14,14 @@ public interface IPathFinder
     public bool CanUseDoor { get; }
     public bool NeedPath { get; }
 
+    public int ReachableRange { get; }
+
     /// <summary>
     /// Sets a new path for the pathfinder
     /// </summary>
     /// <param name="stack">New path</param>
     /// <returns>True if pathfinder will dispose of path in the future: false if caller needs to dispose</returns>
-    public bool SetPath(NativeStack<int2> stack);
+    public bool SetPath(NativeStack<int2> stack, NativeList<int2> reachable);
 }
 
 public class PathfindingManager : IDisposable
@@ -44,6 +46,7 @@ public class PathfindingManager : IDisposable
         ChunkChanges.Enqueue(chunk);
     }
 
+    HashSet<(IPathFinder ai, JobHandle handle, NativeStack<int2> path, NativeList<int2> reachable)> activeJobs;
     public IEnumerator RunChunk(IEnumerable<IPathFinder> pathfinders)
     {
         while (ChunkChanges.TryDequeue(out var c))
@@ -55,10 +58,10 @@ public class PathfindingManager : IDisposable
             blockDataMirror[info.pos] = info.data;
         };
         yield return null;
-        var jobs = pathfinders.Where(ai => ai is not null && ai.NeedPath).Select(ai =>
+        activeJobs = new HashSet<(IPathFinder ai, JobHandle handle, NativeStack<int2> path, NativeList<int2> reachable)> (pathfinders.Where(ai => ai is not null && ai.NeedPath).Select(pathFinder =>
         {
-            var pathFinder = ai as IPathFinder;
             NativeStack<int2> path = new NativeStack<int2>(100, Allocator.Persistent);
+            NativeList<int2> reachable = new NativeList<int2>(100, Allocator.Persistent);
             var job = new AstarJob()
             {
                 BlockData = blockDataMirror,
@@ -66,23 +69,39 @@ public class PathfindingManager : IDisposable
                 End = pathFinder.Goal,
                 Start = pathFinder.Position,
                 MaxDistance = 300,
-                Path = path
+                ReachableRange = pathFinder.ReachableRange,
+                Path = path,
+                Reachable = reachable
             };
-            return (pathFinder, job.Schedule(), path);
-        });
+            return ( pathFinder, handle: job.Schedule(), path: path, reachable: reachable);
+        }));
         yield return null;
-        foreach (var (ai, job, path) in jobs)
+        while (activeJobs.Count > 0)
         {
-            job.Complete();
-            if (!ai.SetPath(path))
+            foreach (var info in activeJobs.ToList().Where(j => j.handle.IsCompleted))
             {
-                path.Dispose();
+                info.handle.Complete();
+                if (!info.ai.SetPath(info.path, info.reachable))
+                {
+                    info.path.Dispose();
+                }
+                activeJobs.Remove(info);
             }
+            yield return null;
         }
     }
 
     public void Dispose()
     {
+        if (activeJobs != null)
+        {
+            foreach (var job in activeJobs)
+            {
+                job.handle.Complete();
+                job.path.Dispose();
+                job.reachable.Dispose();
+            }
+        }
         blockDataMirror.Dispose();
     }
 }

@@ -63,13 +63,17 @@ public struct AstarJob : IJob
     [ReadOnly]
     public NativeHashMap<int2, BlockSliceData> BlockData;
 
+
     public int2 Start;
     public int2 End;
     public bool canUseDoors;
     public int MaxDistance;
+    public int ReachableRange;
 
     [WriteOnly]
     public NativeStack<int2> Path;
+    [WriteOnly]
+    public NativeList<int2> Reachable;
 
     [BurstCompile]
     public void Execute()
@@ -86,6 +90,10 @@ public struct AstarJob : IJob
         {
             Node current = RemoveAndReturnBest(ref OpenList);
             ClosedList.Add(current.Pos, current);
+            if (math.distance(Start, current.Pos) < ReachableRange)
+            {
+                Reachable.Add(current.Pos);
+            }
 
             GetAdjacentNodes(current, ref adjacencies);
 

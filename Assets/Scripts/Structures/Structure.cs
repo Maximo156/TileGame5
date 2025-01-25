@@ -94,7 +94,7 @@ public class Structure: ScriptableObject
 
     private Vector2Int? FindStartingPosition(Vector2Int start, StructureBuilder area, System.Random rand, Rotation rot, BuildingInformation StartingComponent, BiomeInfo biomes)
     {
-        var info = Utilities.BFS(start, v => v, pos => BuildingFits(area, pos, rot, StartingComponent, biomes), info => false);
+        var info = Utilities.BFS(start, v => v, pos => BuildingFits(area, pos, rot, StartingComponent, biomes), info => false, out var _);
         if(info != null)
         {
             return info?.position;

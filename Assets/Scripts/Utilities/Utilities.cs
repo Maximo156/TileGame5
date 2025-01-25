@@ -138,9 +138,9 @@ public static class Utilities
         return items.Where(s => s != null).GroupBy(s => s.Item).ToDictionary(g => g.Key, g => g.Sum(s => s.Count));
     }
 
-    public static (Vector2Int position, T result)? BFS<T>(Vector2Int start, Func<Vector2Int, T> getObject, Func<T, bool> isTarget, Func<T, bool> isInvalid, int limit = 100)
+    public static (Vector2Int position, T result)? BFS<T>(Vector2Int start, Func<Vector2Int, T> getObject, Func<T, bool> isTarget, Func<T, bool> isInvalid, out HashSet<Vector2Int> seen, int limit = 100)
     {
-        HashSet<Vector2Int> seen = new HashSet<Vector2Int>();
+        seen = new HashSet<Vector2Int>();
         Queue<Vector2Int> toCheck = new Queue<Vector2Int>();
 
         toCheck.Enqueue(start);

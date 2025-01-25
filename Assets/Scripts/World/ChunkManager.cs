@@ -87,6 +87,15 @@ public class ChunkManager : MonoBehaviour
         return Manager.ActiveRealm.TryGetBlock(position, ChunkWidth, out block, useProxy);
     }
 
+    public static BlockSlice GetBlock(Vector2Int position)
+    {
+        if(!TryGetBlock(position, out var block))
+        {
+            throw new InvalidOperationException("Checking ungenerated chunk");
+        }
+        return block;
+    }
+
     private void PortalUsed(string newDim, PortalBlock exitBlock, Vector2Int worldPos)
     {
         ActiveRealm = Realms.First(r => r.name == newDim);
