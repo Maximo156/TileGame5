@@ -6,15 +6,23 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewBiomePreset", menuName = "Terrain/Biome/BiomePreset", order = 1)]
 public class BiomePreset : ScriptableObject
 {
+    public class ReplacementInfo
+    {
+        public Block Original;
+        public Block Replacement;
+    }
+
     [Header("Gen Info")]
-    public float minHeight;
     public float minMoisture;
     public float minHeat;
+    public float minHeight;
 
     [Header("Block Info")]
     public Ground GroundBlock;
     public Wall WallBlock;
     public Roof RoofBlock;
+    public List<ReplacementInfo> ReplacementInfos = new();
+    Dictionary<Block, Block> ReplacementInfosDict;
 
     [Header("Sparce Blocks")]
     public bool replaceSolid = false;
@@ -22,14 +30,14 @@ public class BiomePreset : ScriptableObject
     public BaseSoundSettings SparceSoundSettings;
     public float SparceDensity;
 
-    public bool MatchCondition(float height, float moisture, float heat)
+    public bool MatchCondition(float moisture, float heat)
     {
-        return height >= minHeight && moisture >= minMoisture && heat >= minHeat;
+        return moisture >= minMoisture && heat >= minHeat;
     }
 
-    public float GetDiffValue(float height, float moisture, float heat)
+    public float GetDiffValue(float moisture, float heat)
     {
-        return (height - minHeight) + (moisture - minMoisture) + (heat - minHeat);
+        return (moisture - minMoisture) + (heat - minHeat);
     }
 
     public void SetSparce(Vector2Int worldPos, System.Random rand, BlockSlice slice)
@@ -43,5 +51,20 @@ public class BiomePreset : ScriptableObject
                 slice.SetBlock(sparce);
             }
         }
+    }
+
+    public Block GetReplacement(Block orig)
+    {
+        if (orig == null) return null;
+        if(ReplacementInfosDict.TryGetValue(orig, out var replacement))
+        {
+            return replacement;
+        }
+        return orig;
+    }
+
+    private void OnEnable()
+    {
+        ReplacementInfosDict = ReplacementInfos.ToDictionary(info => info.Original, info => info.Replacement);
     }
 }

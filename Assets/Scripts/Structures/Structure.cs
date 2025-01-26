@@ -157,6 +157,6 @@ public class Structure: ScriptableObject
     private bool ValidLayer(BiomePreset layer, BuildingInformation structure)
     {
         if (layer is null) return false;
-        return layer.WallBlock is null || structure.AllowMountains;
+        return true;// layer.WallBlock is null || structure.AllowMountains;
     }
 }
