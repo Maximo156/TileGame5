@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hunger : EntityStat
+public class Hunger : EntityVariableStat
 {
     public int DamageWhenStarving;
 

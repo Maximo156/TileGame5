@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class Health : EntityStat
+public class Health : EntityVariableStat
 {
     public Hunger hunger;
     public int HungerPerRegen;
 
-    protected override float Regen => hunger is null || hunger.current > hunger.Max/2 ? base.Regen : 0;
+    protected override float Regen => hunger is null || hunger.current > hunger.MaxValue /2 ? base.Regen : 0;
 
     protected override void OnChangeStat()
     {
@@ -17,7 +17,7 @@ public class Health : EntityStat
 
     protected override void OnTick()
     {
-        if(current < Max && Regen > 0 && hunger is not null)
+        if(current < MaxValue && Regen > 0 && hunger is not null)
         {
             hunger.ChangeStat(-HungerPerRegen);
         }

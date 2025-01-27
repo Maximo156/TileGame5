@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Mana : EntityStat
+public class Mana : EntityVariableStat
 {
     protected override void OnChangeStat()
     {

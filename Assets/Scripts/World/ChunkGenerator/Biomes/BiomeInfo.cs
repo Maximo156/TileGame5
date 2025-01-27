@@ -21,12 +21,12 @@ public class BiomeInfo : ScriptableObject
         return GetBiome(HeightSound.GetSound(worldPos.x, worldPos.y), MoistureSound?.GetSound(worldPos.x, worldPos.y) ?? 0, HeatSound?.GetSound(worldPos.x, worldPos.y) ?? 0);
     }
 
-    public void UpdateBlockSlices(Vector2Int worldPos, BlockSlice[,] blocks, System.Random rand)
+    public void UpdateBlockSlices(Vector2Int worldPos, BlockSlice[,] blocks, System.Random rand, GenerationCache cache)
     {
         int chunkWidth = blocks.GetLength(0);
-        var heightMap = HeightSound.GetSoundArray(worldPos.x, worldPos.y, chunkWidth);
-        var moistureMap = MoistureSound?.GetSoundArray(worldPos.x, worldPos.y, chunkWidth);
-        var heatMap = HeatSound?.GetSoundArray(worldPos.x, worldPos.y, chunkWidth);
+        var heightMap = cache.HeightMap = HeightSound.GetSoundArray(worldPos.x, worldPos.y, chunkWidth);
+        var moistureMap = cache.MoistureMap = MoistureSound?.GetSoundArray(worldPos.x, worldPos.y, chunkWidth);
+        var heatMap = cache.HeatMap = HeatSound?.GetSoundArray(worldPos.x, worldPos.y, chunkWidth);
 
         for(int x = 0; x< blocks.GetLength(0); x++)
         {
@@ -74,6 +74,11 @@ public class BiomeInfo : ScriptableObject
     BiomePreset GetWall(float height)
     {
         return WallBiomes.LastOrDefault(w => height > w.minHeight);
+    }
+
+    public bool IsWallBiome(float height)
+    {
+        return GetWall(height) is not null;
     }
 
     public void OnEnable()

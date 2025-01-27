@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b62a0990100b1041a0a948c94781667, type: 3}
-  m_Name: Structures
+  m_Script: {fileID: 11500000, guid: d6fd7b5be74fec5499f705dce71192a1, type: 3}
+  m_Name: ReducerSound
   m_EditorClassIdentifier: 
-  Priority: 10
-  seed: 213123
-  StructureNoiseChunkSize: 100
-  Structures:
-  - {fileID: 11400000, guid: 971f791bbf36545429c0caf7937c1bbd, type: 2}
+  Seed: 4523
+  Octaves: 2
+  Lacunarity: 1
+  Persistence: 0.5
+  Scale: 100
+  useBurst: 1

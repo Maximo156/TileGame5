@@ -22,9 +22,10 @@ public class ChunkGenerator: ScriptableObject, ISaveable
             return blocks;
         }
         blocks = new BlockSlice[chunkWidth, chunkWidth];
+        var cache = new GenerationCache();
         foreach (var generator in Generators)
         {
-            await generator.UpdateBlockSlices(blocks, ChunkPosition, WorldPosition, biomes, rand);
+            await generator.UpdateBlockSlices(blocks, ChunkPosition, WorldPosition, biomes, rand, cache);
         }
         return blocks;
     }

@@ -10,7 +10,7 @@ public class DEBUGStructureGen : ChunkSubGenerator
 {
     public Structure structure;
     ConcurrentDictionary<Vector2Int, BlockSlice[,]> Loaded = new();
-    public override Task UpdateBlockSlices(BlockSlice[,] blocks, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand)
+    public override Task UpdateBlockSlices(BlockSlice[,] blocks, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
     {
         if (ChunkPosition == Vector2Int.zero)
         {

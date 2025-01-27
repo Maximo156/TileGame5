@@ -16,6 +16,7 @@ MonoBehaviour:
   biomes: {fileID: 11400000, guid: f97f06548c96e9b43842bbc0e2d69ba0, type: 2}
   Generators:
   - {fileID: 11400000, guid: f29bf8024805d0d478333907b1d98b86, type: 2}
+  - {fileID: 11400000, guid: c6aef1f745e39044daaf742a1fff732e, type: 2}
   - {fileID: 11400000, guid: 1166cba243da1c6449f5515f9a884cf6, type: 2}
   ShadowColor:
     serializedVersion: 2

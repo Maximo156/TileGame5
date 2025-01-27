@@ -14,7 +14,7 @@ public class StructureGenerator : ChunkSubGenerator
     ConcurrentDictionary<Vector2Int, Task<Dictionary<Vector2Int, BlockSlice[,]>>> genTasks = new();
     ConcurrentDictionary<Vector2Int, (Vector2Int point, System.Random rand)> Chunks = new();
     //ConcurrentDictionary<Vector2Int, BlockSlice[,]> Loaded = new();
-    public override async Task UpdateBlockSlices(BlockSlice[,] blocks, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand)
+    public override async Task UpdateBlockSlices(BlockSlice[,] blocks, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
     {
         var inStructChunk = Vector2Int.FloorToInt(new Vector2(WorldPosition.x, WorldPosition.y) / StructureNoiseChunkSize);
         Vector2Int closestStructChunk = Vector2Int.one;

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52ad88372b9a51e41a2cec37574ba7f2, type: 3}
+  m_Name: RiverGenerator
+  m_EditorClassIdentifier: 
+  Priority: 2
+  RiverSound: {fileID: 11400000, guid: 60aac85ecc9007243807daebec583fbf, type: 2}
+  Reducer: {fileID: 11400000, guid: ebae57955073c9d49be8dc0a16060952, type: 2}
+  RiverCuttoff: 0.02

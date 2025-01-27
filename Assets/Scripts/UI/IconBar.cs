@@ -8,8 +8,8 @@ public class IconBar : MonoBehaviour, ITooltipSource
     public Sprite Sprite;
     public int IconValue;
 
-    private EntityStat _stat;
-    public EntityStat stat { get => _stat; 
+    private EntityVariableStat _stat;
+    public EntityVariableStat stat { get => _stat; 
         set 
         {
             if(_stat != null)
@@ -24,6 +24,7 @@ public class IconBar : MonoBehaviour, ITooltipSource
     private GameObject icon;
     private float curValue;
     private float maxValue;
+    private List<Image> images = new();
     public void Awake()
     {
         icon = new GameObject("icon");
@@ -33,24 +34,45 @@ public class IconBar : MonoBehaviour, ITooltipSource
 
     public void Render()
     {
-        maxValue = stat.Max;
+        maxValue = stat.MaxValue;
         var value = stat.current;
         if (curValue == value) return;
         curValue = value;
 
-        for (int i = 0; i< transform.childCount; i++)
+        var count = Mathf.CeilToInt(value / IconValue);
+        var solidCount = Mathf.FloorToInt(value / IconValue);
+        SpawnMaxChildren(count);
+
+        for (int i = 0; i < transform.childCount; i++)
         {
-            Destroy(transform.GetChild(i).gameObject);
+            if(i < solidCount)
+            {
+                images[i].color = Color.white;
+            }
+            else if(i < count)
+            {
+                images[i].color = new Color(1, 1, 1, value % IconValue / IconValue);
+            }
+            else
+            {
+                images[i].color = new Color(1, 1, 1, 0);
+            }
         }
-        var count = (int)(value / IconValue);
-        if (value % IconValue != 0)
+    }
+
+    public void SpawnMaxChildren(int count)
+    {
+        if(transform.childCount != images.Count)
         {
-            var lastImg = Instantiate(icon, transform).GetComponent<Image>();
-            lastImg.color -= new Color(0, 0, 0, 1 - (value % IconValue / IconValue));
+            images = new();
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                images.Add(transform.GetChild(i).GetComponent<Image>());
+            }
         }
-        for (int i = 0; i < count; i++)
+        while (transform.childCount < count)
         {
-            Instantiate(icon, transform);
+            images.Add(Instantiate(icon, transform).GetComponent<Image>());
         }
     }
 

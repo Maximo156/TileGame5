@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 public class TerrainGenerator : ChunkSubGenerator
 {
 
-    public override Task UpdateBlockSlices(BlockSlice[,] blocks, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand)
+    public override Task UpdateBlockSlices(BlockSlice[,] blocks, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
     {
-        biomeInfo.UpdateBlockSlices(WorldPosition, blocks, rand);
+        biomeInfo.UpdateBlockSlices(WorldPosition, blocks, rand, cache);
         return Task.CompletedTask;
     }
 }

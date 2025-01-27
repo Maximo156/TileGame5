@@ -1,24 +1,26 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class EntityStat : MonoBehaviour
+public abstract class EntityVariableStat : MonoBehaviour
 {
     public delegate void Change();
     public event Change OnChange;
 
-    public float Max = 100;
-    public float Starting = 100;
-    public float BaseRegen;
+    public EntityStats.Stat Type;
+    public EntityStats.Stat RegenType;
     public float TickSeconds = 1;
     public float NegativeChangeWaitSeconds = 0;
 
     public float current { get; protected set; }
+    protected virtual float Regen => stats.GetStat(RegenType);
+    public virtual float MaxValue => stats.GetStat(Type);
 
-    protected virtual float Regen => BaseRegen;
+    protected EntityStats stats;
 
     private void Awake()
     {
-        current = Starting;
+        stats = GetComponent<EntityStats>();
+        current = MaxValue;
         StartCoroutine(Tick());
     }
 
@@ -31,7 +33,7 @@ public abstract class EntityStat : MonoBehaviour
     public virtual void ChangeStat(float dif)
     {
         lastNegative = dif < 0 ? Time.time : lastNegative;
-        current = Mathf.Clamp(current + dif, 0, Max);
+        current = Mathf.Clamp(current + dif, 0, MaxValue);
         OnChangeStat();
         OnChange?.Invoke();
     }
