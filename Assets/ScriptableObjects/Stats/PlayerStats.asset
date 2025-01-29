@@ -21,3 +21,4 @@ MonoBehaviour:
   HealthRegen: 10
   ManaRegen: 10
   HungerDepletion: -1
+  PickupRange: 3

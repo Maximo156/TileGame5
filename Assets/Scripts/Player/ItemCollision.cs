@@ -8,7 +8,7 @@ public class ItemCollision : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        inventory = GetComponent<PlayerInventories>();
+        inventory = GetComponentInParent<PlayerInventories>();
     }
 
     //Detect collisions between the GameObjects with Colliders attached
