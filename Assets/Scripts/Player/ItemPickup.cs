@@ -36,8 +36,8 @@ public class ItemPickup : MonoBehaviour
         {
             if (itemBody == null)
                 continue;
-            
-            itemBody.AddForce((currPos - itemBody.position) * (forceFactor * Time.fixedDeltaTime));
+            var dir = (currPos - itemBody.position);
+            itemBody.AddForce(dir.normalized * (forceFactor * Time.fixedDeltaTime)/(dir.magnitude));
         }
 
         _pickedUpItems.RemoveAll(x => x == null);
@@ -47,11 +47,7 @@ public class ItemPickup : MonoBehaviour
     //Detect collisions between the GameObjects with Colliders attached
     void OnTriggerEnter2D(Collider2D collider)
     {
-        //Check for a match with the specified name on any GameObject that collides with your GameObject
-        if (collider.CompareTag("droppedItem"))
-        {
-            var test = collider.GetComponent<Rigidbody2D>();
-            _pickedUpItems.Add(test);
-        }
+        var test = collider.GetComponent<Rigidbody2D>();
+        _pickedUpItems.Add(test);
     }
 }

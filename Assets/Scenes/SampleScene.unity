@@ -12763,7 +12763,7 @@ GameObject:
   - component: {fileID: 322513023}
   - component: {fileID: 322513024}
   - component: {fileID: 322513025}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: ItemPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62345,6 +62345,8 @@ MonoBehaviour:
     Count: 99
   - Item: {fileID: 11400000, guid: 89e05cb5ef19ea64e9a963950f6a4e58, type: 2}
     Count: 99
+  - Item: {fileID: 11400000, guid: 64953c23444c6e44a8de9efcc1ff07d5, type: 2}
+    Count: 1
   MainSize: 20
   HotbarStartingItems:
   - Item: {fileID: 11400000, guid: cb6ca2667a18aa340b5e937f7061d17f, type: 2}

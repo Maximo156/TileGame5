@@ -18,11 +18,18 @@ MonoBehaviour:
   BurnTime: 0
   slotType: 0
   Modifiers:
-  - method: 1
+  - display: {fileID: 0}
+    method: 1
     StatType: 7
     value: 1
     Duration: 0
-  - method: 0
+  - display: {fileID: 0}
+    method: 0
     StatType: 0
     value: 100
+    Duration: 0
+  - display: {fileID: 0}
+    method: 0
+    StatType: 10
+    value: 30
     Duration: 0
