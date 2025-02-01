@@ -18,6 +18,7 @@ public class EntityStats : MonoBehaviour
         DamageModifier,
         Defense,
         MovementModifier,
+        PickupRange
     }
 
     public BaseStats baseStats;
