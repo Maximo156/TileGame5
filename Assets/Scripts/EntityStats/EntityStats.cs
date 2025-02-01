@@ -20,7 +20,8 @@ namespace EntityStatistics
             DamageModifier,
             Defense,
             MovementModifier,
-            DamageOverTime
+            DamageOverTime,
+            PickupRange
         }
 
         public BaseStats baseStats;

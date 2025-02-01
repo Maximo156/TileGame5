@@ -21,6 +21,7 @@ namespace EntityStatistics
         public float HealthRegen;
         public float ManaRegen;
         public float HungerDepletion;
+        public float PickupRange;
 
         public float GetStat(EntityStats.Stat type)
         {
@@ -44,6 +45,8 @@ namespace EntityStatistics
                     return ManaRegen;
                 case EntityStats.Stat.HungerDepletion:
                     return HungerDepletion;
+                case EntityStats.Stat.PickupRange:
+                    return PickupRange;
                 case EntityStats.Stat.DamageOverTime:
                     return 0;
                 default:

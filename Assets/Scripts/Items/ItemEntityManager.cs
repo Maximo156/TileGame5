@@ -30,6 +30,7 @@ public class ItemEntityManager : MonoBehaviour
     private void SpawnItemPriv(Vector2Int pos, ItemStack stack, bool randomMovement = true)
     {
         var itemEntity = Instantiate(ItemEntityPrefab, pos + new Vector2(0.5f, 0.5f), Quaternion.identity, transform).GetComponent<ItemEntity>();
+        itemEntity.tag = "droppedItem";
         itemEntity.stack = stack;
         itemEntity.sr.sprite = stack.Item.Sprite;
         itemEntity.sr.size = new Vector2(100, 100);
