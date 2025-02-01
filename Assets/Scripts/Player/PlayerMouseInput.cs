@@ -32,8 +32,8 @@ public class PlayerMouseInput : MonoBehaviour
     {
         mainCamera = Camera.main;
         events = FindFirstObjectByType<EventSystem>();
-        PlayerInventories.OnHotBarChanged += ChangeHand;
         playerInventory = GetComponent<PlayerInventories>();
+        playerInventory.OnHotBarChanged += ChangeHand;
         HotBarInv = playerInventory.HotbarInv;
     }
 

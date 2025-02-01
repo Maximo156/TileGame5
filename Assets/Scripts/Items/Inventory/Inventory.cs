@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using UnityEngine;
+using EntityStatistics;
 
 public interface IInventory
 {
@@ -212,11 +213,13 @@ public class Inventory : IInventory, IInventoryContainer, IGridSource
         return GetAllItems();
     }
 
-    private void SafeItemChange()
+    protected virtual void SafeItemChange()
     {
         if (!lockSafeItemChange)
         {
-            CallbackManager.AddCallback(() => OnItemChanged?.Invoke(this));
+            CallbackManager.AddCallback(() => {
+                OnItemChanged?.Invoke(this);
+                });
         }
     }
 
@@ -268,6 +271,8 @@ public class AccessoryInv : Inventory
     {
         inv = new ItemStack[Enum.GetNames(typeof(SlotType)).Count()];
     }
+
+    public Dictionary<Item, Modifier> Modifiers;
 
     public override bool CanAddSlot(ItemStack toAdd, int index)
     {

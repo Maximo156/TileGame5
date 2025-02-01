@@ -17,8 +17,12 @@ public class DynamicTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         FollowCursor
     }
     public TrackingStyle Tracking = TrackingStyle.Static;
+    public float refreshSeconds = 0.5f;
     private ITooltipSource source;
     private Canvas parent;
+
+    private Vector2 mousePos;
+
     public void Awake()
     {
         parent = GetComponentInParent<Canvas>();
@@ -36,15 +40,15 @@ public class DynamicTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (inside)
         {
-            inside = false;
-            ToolTip.instance.Hide();
+            Disconnect();
         }
     }
     public void OnPointerMove(PointerEventData eventData)
     {
+        mousePos = eventData.position;
         if (Tracking == TrackingStyle.FollowCursor)
         {
-            FollowCursor(eventData);
+            FollowCursor();
         }
     }
 
@@ -52,27 +56,44 @@ public class DynamicTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void OnPointerEnter(PointerEventData eventData)
     {
         inside = true;
-        if (source.TryGetTooltipInfo(out var title, out var body, out var items))
-        {
-            ToolTip.instance.Display((title, body, items), GetPosition(transform.position), (transform as RectTransform).rect.size / 2);
-            if(Tracking == TrackingStyle.FollowCursor)
-            {
-                FollowCursor(eventData);
-            }
-        }
+        mousePos = eventData.position;
+        StartCoroutine(Refresh());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        inside = false;
-        ToolTip.instance.Hide();
+        Disconnect();
     }
 
-    private void FollowCursor(PointerEventData eventData)
+    public IEnumerator Refresh()
+    {
+        
+        do
+        {
+            if (source.TryGetTooltipInfo(out var title, out var body, out var items))
+            {
+                ToolTip.instance.Display((title, body, items), GetPosition(transform.position), (transform as RectTransform).rect.size / 2);
+                if(Tracking == TrackingStyle.FollowCursor)
+                {
+                    FollowCursor();
+                }
+            }
+            yield return new WaitForSeconds(refreshSeconds);
+        }  while (inside && refreshSeconds > 0);
+    }
+
+    private void FollowCursor()
     {
         var offset = (ToolTip.instance.transform as RectTransform).rect.size / 2;
         offset.y *= -1;
-        ToolTip.instance.transform.position = eventData.position + offset;
+        ToolTip.instance.transform.position = mousePos + offset;
+    }
+
+    private void Disconnect()
+    {
+        inside = false;
+        ToolTip.instance.Hide();
+        StopAllCoroutines();
     }
 
     private Vector3 GetPosition(Vector3 position)

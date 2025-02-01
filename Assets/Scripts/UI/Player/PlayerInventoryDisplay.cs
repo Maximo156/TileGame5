@@ -1,13 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using EntityStatistics;
+using TMPro;
 
 public class PlayerInventoryDisplay : MonoBehaviour
 {
     public PlayerInventories inventory;
+    EntityStats Stats;
 
     public SingleInventoryDisplay HotBarDisplay;
     public HotBarSelector HotBarSelector;
@@ -17,25 +15,30 @@ public class PlayerInventoryDisplay : MonoBehaviour
     public SingleInventoryDisplay AccessoryInventoryDisplay;
 
     public GameObject TogglableInv;
+    public GameObject ModifierDisplay;
+    public TextMeshProUGUI Defence;
 
     public InteractiveDisplayController OtherDisplay;
 
     public void Start()
     {
         HotBarSelector.NewSelection(null, 0);
-        PlayerInventories.OnHotBarChanged += HotBarSelector.NewSelection;
+        inventory.OnHotBarChanged += HotBarSelector.NewSelection;
+        Stats = inventory.gameObject.GetComponent<EntityStats>();
+        Stats.OnStatChanged += OnStatChanged;
+        Defence.text = Stats.GetStat(EntityStats.Stat.Defense).ToString();
         PlayerMouseInput.OnBlockInterfaced += BlockInterfaced;
 
         HotBarDisplay.AttachInv(inventory.HotbarInv);
         MainInventoryDisplay.AttachInv(inventory.MainInv);
         AccessoryInventoryDisplay.AttachInv(inventory.AccessoryInv);
 
-        TogglableInv.SetActive(false);
+        InventorySetActive(false);
     }
 
     public void OnInvToggle()
     {
-        TogglableInv.SetActive(!TogglableInv.activeSelf);
+        InventorySetActive(!TogglableInv.activeSelf);
         if (!TogglableInv.activeSelf)
         {
             OtherDisplay.Close();
@@ -44,6 +47,20 @@ public class PlayerInventoryDisplay : MonoBehaviour
 
     private void BlockInterfaced(Vector2Int pos, BlockSlice slice, IInventoryContainer inv)
     {
-        TogglableInv.SetActive(true);
+        InventorySetActive(true);
+    }
+
+    void OnStatChanged(EntityStats.Stat stat)
+    {
+        if(stat == EntityStats.Stat.Defense)
+        {
+            Defence.text = Stats.GetStat(EntityStats.Stat.Defense).ToString();
+        }
+    }
+
+    private void InventorySetActive(bool active)
+    {
+        TogglableInv.SetActive(active);
+        ModifierDisplay.SetActive(!active);
     }
 }

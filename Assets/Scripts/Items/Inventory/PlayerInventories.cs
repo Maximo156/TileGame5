@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerInventories : MonoBehaviour, IInventoryContainer
 {
     public delegate void HotBarChanged(ItemStack newInHand, int newPos);
-    public static event HotBarChanged OnHotBarChanged;
+    public event HotBarChanged OnHotBarChanged;
 
     [Header("Main Inventory")]
     public List<ItemStack> MainStartingItems;
@@ -21,7 +21,7 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
     public ToolDisplay tool;
     public Inventory HotbarInv { get; private set; }
 
-    public Inventory AccessoryInv { get; private set; }
+    public AccessoryInv AccessoryInv { get; private set; }
 
     void Awake()
     {
@@ -34,6 +34,7 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
     public void Start()
     {
         HotBarItemsChanged(HotbarInv);
+        GetComponent<EntityStatistics.EntityStats>()?.AttachInv(AccessoryInv);
     }
 
     public void Scroll(InputAction.CallbackContext value)

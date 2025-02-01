@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Hunger : EntityVariableStat
 {
-    public int DamageWhenStarving;
+    public float DamageWhenStarving;
 
     protected override void OnChangeStat()
     {

@@ -26,8 +26,7 @@ public class Realm
     public ChunkGenerator Generator;
 
     Dictionary<Vector2Int, Chunk> LoadedChunks = new Dictionary<Vector2Int, Chunk>();
-    private int chunkTickDistance;
-    Vector2Int curChunk;
+    
     
     private CancellationTokenSource CurGenToken;
 
@@ -63,7 +62,7 @@ public class Realm
         var newTask = Task.Run(() => GenerateNewChunks(curChunk, chunkGenDistance, ChunkGenWidth, CancellationTokenSource.CreateLinkedTokenSource(AllTaskShutdown, CurGenToken.Token).Token));
     }
 
-    public async Task ChunkTick(int msPerTick, CancellationToken AllTaskShutdown)
+    public async Task ChunkTick(Vector2Int curChunk, int chunkTickDistance, int msPerTick, CancellationToken AllTaskShutdown)
     {
         try
         {
