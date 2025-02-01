@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using EntityStatistics;
 
 public abstract class EntityVariableStat : MonoBehaviour
 {
@@ -17,15 +18,11 @@ public abstract class EntityVariableStat : MonoBehaviour
 
     protected EntityStats stats;
 
-    private void Awake()
+    protected virtual void Start()
     {
         stats = GetComponent<EntityStats>();
         current = MaxValue;
         StartCoroutine(Tick());
-    }
-
-    protected virtual void Start()
-    {
         OnChange?.Invoke();
     }
 

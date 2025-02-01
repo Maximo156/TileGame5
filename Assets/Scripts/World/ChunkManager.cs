@@ -66,16 +66,18 @@ public class ChunkManager : MonoBehaviour
 
     private CancellationTokenSource AllTaskShutdown = new CancellationTokenSource();
 
+    Vector2Int currentChunk;
     private void PlayerChangedChunks(Vector2Int curChunk)
     {
-        ActiveRealm.PlayerChangedChunks(curChunk, chunkGenDistance, chunkWidth, AllTaskShutdown.Token);
+        currentChunk = curChunk;
+        ActiveRealm.PlayerChangedChunks(currentChunk, chunkGenDistance, chunkWidth, AllTaskShutdown.Token);
     }
 
     public async void ChunkTick()
     {
         while (true && !AllTaskShutdown.Token.IsCancellationRequested)
         {
-            await ActiveRealm.ChunkTick(msPerTick, AllTaskShutdown.Token);
+            await ActiveRealm.ChunkTick(currentChunk, chunkTickDistance, msPerTick, AllTaskShutdown.Token);
         }
         Debug.Log("Stopping Tick");
     }

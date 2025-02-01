@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
+using EntityStatistics;
 
 public class ItemPickup : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class ItemPickup : MonoBehaviour
     {
         _entityStats = GetComponentInParent<EntityStats>();
         col.radius = _entityStats.GetStat(EntityStats.Stat.PickupRange);
-        _entityStats.OnStatsChanged += UpdateRange;
+        _entityStats.OnStatChanged += UpdateRange;
     }
 
     private void UpdateRange(EntityStats.Stat changedStat)

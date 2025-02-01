@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using System.Linq;
+using EntityStatistics;
 
 public class ToolDisplay : MonoBehaviour
 {
@@ -44,10 +45,11 @@ public class ToolDisplay : MonoBehaviour
         ItemDisplayDict = ItemDisplayInfos.ToDictionary(e => e.item, e => e);
         anim = GetComponent<Animation>();
         display = GetComponentInChildren<SpriteRenderer>();
-        PlayerInventories.OnHotBarChanged += ChangeHand;
-        gameObject.SetActive(false);
 
         inventory = GetComponentInParent<PlayerInventories>();
+        inventory.OnHotBarChanged += ChangeHand;
+        gameObject.SetActive(false);
+
         m_collider2D = GetComponentInChildren<PolygonCollider2D>();
         m_collider2D.enabled = false;
 
@@ -56,6 +58,7 @@ public class ToolDisplay : MonoBehaviour
             Health = GetComponentInParent<Health>(),
             Hunger = GetComponentInParent<Hunger>(),
             Mana = GetComponentInParent<Mana>(),
+            Stats = GetComponentInParent<EntityStats>(),
             transform = transform.parent
         };
         Physics2D.IgnoreCollision(m_collider2D, IgnoreCollider);

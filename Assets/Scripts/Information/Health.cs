@@ -1,4 +1,5 @@
 using UnityEngine;
+using EntityStatistics;
 
 public class Health : EntityVariableStat
 {
@@ -22,9 +23,14 @@ public class Health : EntityVariableStat
             hunger.ChangeStat(-HungerPerRegen);
         }
         base.OnTick();
+        var damageOverTime = stats.GetStat(EntityStats.Stat.DamageOverTime);
+        if (damageOverTime > 0)
+        {
+            SendMessage("Damage", damageOverTime, SendMessageOptions.DontRequireReceiver);
+        }
     }
 
-    public void Damage(int damage)
+    public void Damage(float damage)
     {
         ChangeStat(-damage);
     }

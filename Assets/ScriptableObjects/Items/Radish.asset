@@ -13,8 +13,15 @@ MonoBehaviour:
   m_Name: Radish
   m_EditorClassIdentifier: 
   Sprite: {fileID: -1760689374, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
+  Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 99
   BurnTime: 0
   Healing: 10
   ManaRestoration: 0
   HungerRestoration: 20
+  Modifiers:
+  - display: {fileID: 5822913131450817141, guid: a268d0b0c05700744844059a6ffffe03, type: 3}
+    method: 0
+    StatType: 1
+    value: 10
+    Duration: 10

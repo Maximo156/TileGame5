@@ -1,35 +1,63 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class EntityStats : MonoBehaviour
+namespace EntityStatistics
 {
-    public delegate void StatsChanged(Stat type);
-    public event StatsChanged OnStatsChanged;
-
-    public enum Stat
+    public class EntityStats : MonoBehaviour, IGridSource
     {
-        Health,
-        HealthRegen,
-        Mana,
-        ManaRegen,
-        Hunger,
-        HungerDepletion,
-        DamageModifier,
-        Defense,
-        MovementModifier,
-        PickupRange
-    }
+        public event Action<Stat> OnStatChanged;
 
-    public BaseStats baseStats;
+        public enum Stat
+        {
+            Health,
+            Healing,
+            Mana,
+            ManaRegen,
+            Hunger,
+            HungerDepletion,
+            DamageModifier,
+            Defense,
+            MovementModifier,
+            DamageOverTime,
+            PickupRange
+        }
 
-    public void AttachInv(Inventory inv)
-    {
+        public BaseStats baseStats;
 
-    }
+        StatBroker broker;
+        private void Awake()
+        {
+            broker = new StatBroker();
+            broker.OnStatChanged += StatsChanged;
+        }
 
-    public float GetStat(Stat type)
-    {
-        return baseStats.GetStat(type);
+        public void AttachInv(AccessoryInv inv)
+        {
+            broker.AttachInv(inv);
+        }
+
+        public float GetStat(Stat type)
+        {
+            return broker.GetStat(type, baseStats.GetStat(type));
+        }
+
+        public void Update()
+        {
+            broker.Update();
+        }
+
+        public void ApplyModifiers(IEnumerable<Modifier> modifiers)
+        {
+            broker.ApplyModifiers(modifiers.ToList());
+        }
+
+        void StatsChanged(Stat type)
+        {
+            OnStatChanged?.Invoke(type);
+        }
+
+        public IEnumerable<IGridItem> GetGridItems() => broker.GetGridItems();
     }
 }
