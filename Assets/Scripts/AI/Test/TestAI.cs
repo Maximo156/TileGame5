@@ -14,6 +14,8 @@ public class TestAI : MonoBehaviour, IAI, IBehavior
 
     public IBehavior behavior => this;
 
+    public bool Natural => false;
+
     private void Start()
     {
         AIManager.Register(this);

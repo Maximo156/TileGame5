@@ -47,7 +47,7 @@ public class PathfindingManager : IDisposable
     }
 
     HashSet<(IPathFinder ai, JobHandle handle, NativeStack<int2> path, NativeList<int2> reachable)> activeJobs;
-    public IEnumerator RunChunk(IEnumerable<IPathFinder> pathfinders)
+    public IEnumerator RunPathfinders(IEnumerable<IPathFinder> pathfinders)
     {
         while (ChunkChanges.TryDequeue(out var c))
         {

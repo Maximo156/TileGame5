@@ -12,15 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4cbab98e168b724bab2c8fd4b8a4ddf, type: 3}
   m_Name: Tundra
   m_EditorClassIdentifier: 
-  minHeight: 0.2
   minMoisture: 0
   minHeat: 0
+  minHeight: 0.2
   GroundBlock: {fileID: 11400000, guid: 01b92af9e58d6bf4fa17c510c6acad6d, type: 2}
   WallBlock: {fileID: 0}
   RoofBlock: {fileID: 0}
+  ReplacementInfos: []
   replaceSolid: 0
   SparceBlocks:
   - {fileID: 11400000, guid: 55da782d16942d749b1b92f564c9e703, type: 2}
   - {fileID: 11400000, guid: 754c590d4e0716e4995f6ab995998b16, type: 2}
   SparceSoundSettings: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
   SparceDensity: 0.3
+  NaturalMobs:
+  - MinCount: 1
+    MaxCount: 3
+    Weight: 1
+    Prefab: {fileID: 6732792351147766889, guid: 17caf8d0532c26644a539b8acebd6a37, type: 3}
+  - MinCount: 1
+    MaxCount: 3
+    Weight: 1
+    Prefab: {fileID: 6732792351147766889, guid: 97c7d89dc3fddad48b4fde616dc2b77b, type: 3}

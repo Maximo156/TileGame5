@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5dbbaf7717ecbe479e6cfc764907c24, type: 3}
   m_Name: Shrub3Tile
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 5154625535158036097, guid: 7d966fb53b128bd4b9f88fa7adc43765, type: 3}
+  m_DefaultSprite: {fileID: 0}
   m_DefaultGameObject: {fileID: 2604606660418939028, guid: 2b053cc3f5054fc4397ade7643273e3d, type: 3}
   m_DefaultColliderType: 0
   m_TilingRules: []

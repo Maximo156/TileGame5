@@ -56,7 +56,7 @@ public static class Utilities
 
     public static Vector2Int RandomVector2Int(int min, int max)
     {
-        return Vector2Int.FloorToInt(Random.rotation * new Vector2(Random.Range(min, max), 0));
+        return new Vector2Int(Random.Range(min, max), Random.Range(min, max));
     }
 
     public static Vector2Int RandomVector2Int(int min, int max, System.Random rand)
@@ -170,6 +170,10 @@ public static class Utilities
         return null;
     }
 
+    public static Vector2Int? FindNearestEmptyBlock(Vector2Int start, int limit = 100)
+    {
+        return BFS(start, pos => ChunkManager.GetBlock(pos), slice => slice.WallBlock == null, _ => false, out var _, limit)?.position;
+    }
     public static void DropItems(Vector2Int worldPos, IEnumerable<ItemStack> drops)
     {
         foreach (var stack in drops)

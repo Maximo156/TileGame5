@@ -103,7 +103,7 @@ public class ProjectileEntity : MonoBehaviour
         }
         else if (pierces >= 0)
         {
-            collision.attachedRigidbody.SendMessage("Hit", new HitData { Damage = damage, Perpetrator = Perpetrator }, SendMessageOptions.DontRequireReceiver);
+            collision.SendMessage("Hit", new HitData { Damage = damage, Perpetrator = Perpetrator }, SendMessageOptions.DontRequireReceiver);
             if (pierces == 0) HitTarget();
             pierces -= 1;
         }

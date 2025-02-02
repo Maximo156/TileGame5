@@ -12,14 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4cbab98e168b724bab2c8fd4b8a4ddf, type: 3}
   m_Name: GrassLand
   m_EditorClassIdentifier: 
-  minHeight: 0.2
   minMoisture: 0.3
   minHeat: 0.3
+  minHeight: 0.2
   GroundBlock: {fileID: 11400000, guid: de22f042adbd6274d88bb5ec558d120f, type: 2}
   WallBlock: {fileID: 0}
   RoofBlock: {fileID: 0}
+  ReplacementInfos: []
   replaceSolid: 0
   SparceBlocks:
   - {fileID: 11400000, guid: 065efd7dede716943bc5be60062675f4, type: 2}
   SparceSoundSettings: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
   SparceDensity: 0.5
+  NaturalMobs:
+  - MinCount: 1
+    MaxCount: 3
+    Weight: 1
+    Prefab: {fileID: 6732792351147766889, guid: 43c3d07a6191cfa49a86fb5c6f00db8a, type: 3}
+  - MinCount: 1
+    MaxCount: 3
+    Weight: 1
+    Prefab: {fileID: 6732792351147766889, guid: 978238d02b5a3504685a63e8901c2f44, type: 3}
+  - MinCount: 1
+    MaxCount: 3
+    Weight: 1
+    Prefab: {fileID: 6732792351147766889, guid: 17caf8d0532c26644a539b8acebd6a37, type: 3}
+  - MinCount: 1
+    MaxCount: 3
+    Weight: 1
+    Prefab: {fileID: 6732792351147766889, guid: 7279f38a8ad9e114fb38a1a297f39e9e, type: 3}

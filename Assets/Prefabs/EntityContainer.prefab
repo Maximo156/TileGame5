@@ -87,3 +87,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b013fca0f31e9f745942a3f92cb7c39c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AiSimDistance: 3
+  AiPerEnumeration: 300
+  SpawnPassTime: 10

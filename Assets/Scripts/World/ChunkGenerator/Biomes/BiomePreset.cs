@@ -2,14 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 [CreateAssetMenu(fileName = "NewBiomePreset", menuName = "Terrain/Biome/BiomePreset", order = 1)]
 public class BiomePreset : ScriptableObject
 {
-    public class ReplacementInfo
+    [Serializable]
+    public struct ReplacementInfo
     {
         public Block Original;
         public Block Replacement;
+    }
+
+    [Serializable]
+    public class MobSpawnInfo
+    {
+        public int MinCount;
+        public int MaxCount;
+        public int Weight;
+
+        public GameObject Prefab;
     }
 
     [Header("Gen Info")]
@@ -29,6 +41,9 @@ public class BiomePreset : ScriptableObject
     public List<Block> SparceBlocks;
     public BaseSoundSettings SparceSoundSettings;
     public float SparceDensity;
+
+    [Header("SpawnInfo")]
+    public List<MobSpawnInfo> NaturalMobs;
 
     public bool MatchCondition(float moisture, float heat)
     {
