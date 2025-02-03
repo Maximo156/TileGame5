@@ -19,4 +19,5 @@ MonoBehaviour:
   MaxDurability: 100
   Type: 1
   CharmSlots: 0
+  m_Damage: 10
   AllowedTypes: 00000000

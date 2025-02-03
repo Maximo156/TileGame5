@@ -186,3 +186,8 @@ public struct UseInfo
     public UserInfo UserInfo;
     public Collider2D ignoreCollider;
 }
+
+public interface IDamageItem
+{
+    public int Damage { get; }
+}

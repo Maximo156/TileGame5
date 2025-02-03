@@ -1,13 +1,8 @@
 using UnityEngine;
 using EntityStatistics;
 
-public class Health : EntityVariableStat, IHittable
+public class SimpleHealth : EntityVariableStat, IHittable
 {
-    public Hunger hunger;
-    public int HungerPerRegen;
-
-    protected override float Regen => hunger is null || hunger.current > hunger.MaxValue /2 ? base.Regen : 0;
-
     HitIngress hitIngress;
     protected override void Start()
     {
@@ -25,10 +20,6 @@ public class Health : EntityVariableStat, IHittable
 
     protected override void OnTick()
     {
-        if(current < MaxValue && Regen > 0 && hunger is not null)
-        {
-            hunger.ChangeStat(-HungerPerRegen);
-        }
         base.OnTick();
         var damageOverTime = stats.GetStat(EntityStats.Stat.DamageOverTime);
         if (damageOverTime > 0)

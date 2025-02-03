@@ -6,6 +6,13 @@ public class Hunger : EntityVariableStat
 {
     public float DamageWhenStarving;
 
+    HitIngress hitIngress;
+    protected override void Start()
+    {
+        base.Start();
+        hitIngress = GetComponent<HitIngress>();
+    }
+
     protected override void OnChangeStat()
     {
         
@@ -16,7 +23,7 @@ public class Hunger : EntityVariableStat
         base.OnTick();
         if(current <= 0)
         {
-            SendMessage("Damage", DamageWhenStarving, SendMessageOptions.DontRequireReceiver);
+            hitIngress.Hit(new HitData() { Damage = DamageWhenStarving });
         }
     }
 }

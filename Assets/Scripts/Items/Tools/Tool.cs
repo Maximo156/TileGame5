@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Tool : DurableItem
+public abstract class Tool : DurableItem, IDamageItem
 {
     [Header("Tool Settings")]
     public float Reach;
+    public int m_Damage;
+
+    public int Damage => m_Damage;
 
     protected bool CanReach(Vector3 usePosition, Vector3 targetPosition)
     {

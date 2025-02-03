@@ -30,6 +30,8 @@ public class JobNavigator : MonoBehaviour, IPathFinder
     public bool CanUseDoor => CanUseDoors;
     public int ReachableRange { get; set; } = 20;
     public float MovementModifier { get; set; } = 1;
+    public bool isNull => this == null;
+
     State _state = State.Idle;
     public State state
     {

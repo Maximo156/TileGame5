@@ -205,8 +205,8 @@ public class ToolDisplay : MonoBehaviour
             });
             itemDamaged = true;
         }
-
-        collision.GetComponentInParent<HitIngress>()?.Hit();
+        
+        collision.GetComponentInParent<HitIngress>()?.Hit(new HitData { Damage = (curInHand?.Item as IDamageItem)?.Damage ?? 0, Perpetrator = transform.parent });
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

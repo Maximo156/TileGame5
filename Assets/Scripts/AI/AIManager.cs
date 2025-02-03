@@ -9,6 +9,7 @@ using System;
 
 public interface IAI
 {
+    public event Action<IAI> OnDespawn;
     public IPathFinder pathfinder { get; }
     public IBehavior behavior { get; }
     public Transform Transform { get; }
@@ -134,8 +135,8 @@ public class AIManager : MonoBehaviour
                     var newChunkPos = Utilities.GetChunk(Utilities.GetBlockPos(ai.Transform.position), ChunkWidth);
                     if (newChunkPos != chunk.ChunkPos && LoadedChunks.TryGetValue(newChunkPos, out var newChunk))
                     {
-                        chunk.ais.Remove(ai);
                         newChunk.AddChild(ai);
+                        chunk.RemoveChild(ai);
                     }
                 }
                 yield return null;
@@ -154,7 +155,6 @@ public class AIManager : MonoBehaviour
                 if (kvp.Value.SpawnAI())
                 {
                     yield return null;
-                    kvp.Value.EnableContainer(true);
                 }
             }
             yield return new WaitForSeconds(SpawnPassTime);
@@ -176,6 +176,7 @@ public class AIManager : MonoBehaviour
         {
             UnParentedAi.Add(newAi);
         }
+        newAi.OnDespawn += (ai) => requestedPathfinders.Remove(ai.pathfinder);
     }
 
     private void OnEnable()

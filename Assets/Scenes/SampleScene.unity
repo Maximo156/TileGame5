@@ -304,11 +304,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 274959}
   animator: {fileID: 274961}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &274959
 MonoBehaviour:
@@ -322,7 +323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 274961}
@@ -925,11 +925,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 34318364}
   animator: {fileID: 34318366}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &34318364
 MonoBehaviour:
@@ -943,7 +944,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 34318366}
@@ -1643,11 +1643,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 68632685}
   animator: {fileID: 68632687}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &68632685
 MonoBehaviour:
@@ -1661,7 +1662,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 68632687}
@@ -1935,11 +1935,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 70424809}
   animator: {fileID: 70424811}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &70424809
 MonoBehaviour:
@@ -1953,7 +1954,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 70424811}
@@ -2896,11 +2896,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 142268453}
   animator: {fileID: 142268455}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &142268453
 MonoBehaviour:
@@ -2914,7 +2915,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 142268455}
@@ -3597,11 +3597,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 176399326}
   animator: {fileID: 176399328}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &176399326
 MonoBehaviour:
@@ -3615,7 +3616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 176399328}
@@ -3980,11 +3980,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 182194751}
   animator: {fileID: 182194753}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &182194751
 MonoBehaviour:
@@ -3998,7 +3999,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 182194753}
@@ -4626,11 +4626,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 241913276}
   animator: {fileID: 241913278}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &241913276
 MonoBehaviour:
@@ -4644,7 +4645,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 241913278}
@@ -4918,11 +4918,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 250539780}
   animator: {fileID: 250539782}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &250539780
 MonoBehaviour:
@@ -4936,7 +4937,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 250539782}
@@ -5210,11 +5210,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 264171865}
   animator: {fileID: 264171867}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &264171865
 MonoBehaviour:
@@ -5228,7 +5229,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 264171867}
@@ -5539,11 +5539,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 275642476}
   animator: {fileID: 275642478}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &275642476
 MonoBehaviour:
@@ -5557,7 +5558,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 275642478}
@@ -6091,11 +6091,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 294372217}
   animator: {fileID: 294372219}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &294372217
 MonoBehaviour:
@@ -6109,7 +6110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 294372219}
@@ -6660,11 +6660,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 328120501}
   animator: {fileID: 328120503}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &328120501
 MonoBehaviour:
@@ -6678,7 +6679,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 328120503}
@@ -6952,11 +6952,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 333928411}
   animator: {fileID: 333928413}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &333928411
 MonoBehaviour:
@@ -6970,7 +6971,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 333928413}
@@ -7464,11 +7464,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 351476003}
   animator: {fileID: 351476005}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &351476003
 MonoBehaviour:
@@ -7482,7 +7483,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 351476005}
@@ -7615,8 +7615,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.000058850273, y: 0}
+  m_SizeDelta: {x: 445, y: 0}
   m_Pivot: {x: -0.0000001322478, y: 1}
 --- !u!114 &370629287
 MonoBehaviour:
@@ -7879,11 +7879,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 378757543}
   animator: {fileID: 378757545}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &378757543
 MonoBehaviour:
@@ -7897,7 +7898,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 378757545}
@@ -8171,11 +8171,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 385647533}
   animator: {fileID: 385647535}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &385647533
 MonoBehaviour:
@@ -8189,7 +8190,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 385647535}
@@ -8618,11 +8618,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 406546396}
   animator: {fileID: 406546398}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &406546396
 MonoBehaviour:
@@ -8636,7 +8637,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 406546398}
@@ -8910,11 +8910,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 410499995}
   animator: {fileID: 410499997}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &410499995
 MonoBehaviour:
@@ -8928,7 +8929,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 410499997}
@@ -9202,11 +9202,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 422038866}
   animator: {fileID: 422038868}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &422038866
 MonoBehaviour:
@@ -9220,7 +9221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 422038868}
@@ -9604,11 +9604,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 448110801}
   animator: {fileID: 448110803}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &448110801
 MonoBehaviour:
@@ -9622,7 +9623,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 448110803}
@@ -10105,11 +10105,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 487792076}
   animator: {fileID: 487792078}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &487792076
 MonoBehaviour:
@@ -10123,7 +10124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 487792078}
@@ -10611,11 +10611,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 514493819}
   animator: {fileID: 514493821}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &514493819
 MonoBehaviour:
@@ -10629,7 +10630,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 514493821}
@@ -11164,11 +11164,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 523925987}
   animator: {fileID: 523925989}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &523925987
 MonoBehaviour:
@@ -11182,7 +11183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 523925989}
@@ -11456,11 +11456,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 528208022}
   animator: {fileID: 528208024}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &528208022
 MonoBehaviour:
@@ -11474,7 +11475,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 528208024}
@@ -11858,11 +11858,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 536510429}
   animator: {fileID: 536510431}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &536510429
 MonoBehaviour:
@@ -11876,7 +11877,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 536510431}
@@ -12150,11 +12150,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 562915828}
   animator: {fileID: 562915830}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &562915828
 MonoBehaviour:
@@ -12168,7 +12169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 562915830}
@@ -12442,11 +12442,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 568616665}
   animator: {fileID: 568616667}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &568616665
 MonoBehaviour:
@@ -12460,7 +12461,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 568616667}
@@ -12919,11 +12919,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 587619476}
   animator: {fileID: 587619478}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &587619476
 MonoBehaviour:
@@ -12937,7 +12938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 587619478}
@@ -13211,11 +13211,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 601750460}
   animator: {fileID: 601750462}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &601750460
 MonoBehaviour:
@@ -13229,7 +13230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 601750462}
@@ -13578,11 +13578,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 628775649}
   animator: {fileID: 628775651}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &628775649
 MonoBehaviour:
@@ -13596,7 +13597,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 628775651}
@@ -13980,11 +13980,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 644932080}
   animator: {fileID: 644932082}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &644932080
 MonoBehaviour:
@@ -13998,7 +13999,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 644932082}
@@ -14272,11 +14272,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 649936744}
   animator: {fileID: 649936746}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &649936744
 MonoBehaviour:
@@ -14290,7 +14291,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 649936746}
@@ -14726,11 +14726,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 672872936}
   animator: {fileID: 672872938}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &672872936
 MonoBehaviour:
@@ -14744,7 +14745,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 672872938}
@@ -15018,11 +15018,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 693700646}
   animator: {fileID: 693700648}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &693700646
 MonoBehaviour:
@@ -15036,7 +15037,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 693700648}
@@ -15310,11 +15310,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 697970202}
   animator: {fileID: 697970204}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &697970202
 MonoBehaviour:
@@ -15328,7 +15329,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 697970204}
@@ -15900,11 +15900,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 747039232}
   animator: {fileID: 747039234}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &747039232
 MonoBehaviour:
@@ -15918,7 +15919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 747039234}
@@ -16267,11 +16267,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 772099107}
   animator: {fileID: 772099109}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &772099107
 MonoBehaviour:
@@ -16285,7 +16286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 772099109}
@@ -16883,11 +16883,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 777439316}
   animator: {fileID: 777439318}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &777439316
 MonoBehaviour:
@@ -16901,7 +16902,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 777439318}
@@ -17325,11 +17325,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 794737161}
   animator: {fileID: 794737163}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &794737161
 MonoBehaviour:
@@ -17343,7 +17344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 794737163}
@@ -17617,11 +17617,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 797971769}
   animator: {fileID: 797971771}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &797971769
 MonoBehaviour:
@@ -17635,7 +17636,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 797971771}
@@ -17909,11 +17909,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 804519255}
   animator: {fileID: 804519257}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &804519255
 MonoBehaviour:
@@ -17927,7 +17928,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 804519257}
@@ -18201,11 +18201,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 836086240}
   animator: {fileID: 836086242}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &836086240
 MonoBehaviour:
@@ -18219,7 +18220,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 836086242}
@@ -18493,11 +18493,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 839071630}
   animator: {fileID: 839071632}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &839071630
 MonoBehaviour:
@@ -18511,7 +18512,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 839071632}
@@ -18964,11 +18964,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 848033437}
   animator: {fileID: 848033439}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &848033437
 MonoBehaviour:
@@ -18982,7 +18983,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 848033439}
@@ -19256,11 +19256,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 857423434}
   animator: {fileID: 857423436}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &857423434
 MonoBehaviour:
@@ -19274,7 +19275,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 857423436}
@@ -19859,11 +19859,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 915064619}
   animator: {fileID: 915064621}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &915064619
 MonoBehaviour:
@@ -19877,7 +19878,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 915064621}
@@ -20299,11 +20299,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 928788848}
   animator: {fileID: 928788850}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &928788848
 MonoBehaviour:
@@ -20317,7 +20318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 928788850}
@@ -20921,11 +20921,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 954793112}
   animator: {fileID: 954793114}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &954793112
 MonoBehaviour:
@@ -20939,7 +20940,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 954793114}
@@ -21213,11 +21213,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 954855358}
   animator: {fileID: 954855360}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &954855358
 MonoBehaviour:
@@ -21231,7 +21232,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 954855360}
@@ -21505,11 +21505,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 957341176}
   animator: {fileID: 957341178}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &957341176
 MonoBehaviour:
@@ -21523,7 +21524,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 957341178}
@@ -21907,11 +21907,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 980776789}
   animator: {fileID: 980776791}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &980776789
 MonoBehaviour:
@@ -21925,7 +21926,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 980776791}
@@ -22824,11 +22824,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1091073150}
   animator: {fileID: 1091073152}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1091073150
 MonoBehaviour:
@@ -22842,7 +22843,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1091073152}
@@ -23193,11 +23193,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1102522926}
   animator: {fileID: 1102522928}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1102522926
 MonoBehaviour:
@@ -23211,7 +23212,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1102522928}
@@ -23560,11 +23560,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1111595711}
   animator: {fileID: 1111595713}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1111595711
 MonoBehaviour:
@@ -23578,7 +23579,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1111595713}
@@ -24277,11 +24277,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1146362490}
   animator: {fileID: 1146362492}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1146362490
 MonoBehaviour:
@@ -24295,7 +24296,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1146362492}
@@ -24660,11 +24660,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1161106868}
   animator: {fileID: 1161106870}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1161106868
 MonoBehaviour:
@@ -24678,7 +24679,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1161106870}
@@ -25062,11 +25062,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1186731456}
   animator: {fileID: 1186731458}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1186731456
 MonoBehaviour:
@@ -25080,7 +25081,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1186731458}
@@ -25681,11 +25681,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1218004232}
   animator: {fileID: 1218004234}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1218004232
 MonoBehaviour:
@@ -25699,7 +25700,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1218004234}
@@ -25973,11 +25973,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1220322196}
   animator: {fileID: 1220322198}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1220322196
 MonoBehaviour:
@@ -25991,7 +25992,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1220322198}
@@ -26340,11 +26340,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1225553616}
   animator: {fileID: 1225553618}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1225553616
 MonoBehaviour:
@@ -26358,7 +26359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1225553618}
@@ -26739,11 +26739,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1232148679}
   animator: {fileID: 1232148681}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1232148679
 MonoBehaviour:
@@ -26757,7 +26758,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1232148681}
@@ -27031,11 +27031,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1232764279}
   animator: {fileID: 1232764281}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1232764279
 MonoBehaviour:
@@ -27049,7 +27050,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1232764281}
@@ -27965,11 +27965,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1288128481}
   animator: {fileID: 1288128483}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1288128481
 MonoBehaviour:
@@ -27983,7 +27984,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1288128483}
@@ -28257,11 +28257,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1291359657}
   animator: {fileID: 1291359659}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1291359657
 MonoBehaviour:
@@ -28275,7 +28276,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1291359659}
@@ -28601,11 +28601,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1337185086}
   animator: {fileID: 1337185088}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1337185086
 MonoBehaviour:
@@ -28619,7 +28620,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1337185088}
@@ -28893,11 +28893,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1354913426}
   animator: {fileID: 1354913428}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1354913426
 MonoBehaviour:
@@ -28911,7 +28912,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1354913428}
@@ -29295,11 +29295,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1403983065}
   animator: {fileID: 1403983067}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1403983065
 MonoBehaviour:
@@ -29313,7 +29314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1403983067}
@@ -29587,11 +29587,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1410864982}
   animator: {fileID: 1410864984}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1410864982
 MonoBehaviour:
@@ -29605,7 +29606,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1410864984}
@@ -29879,11 +29879,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1419023834}
   animator: {fileID: 1419023836}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1419023834
 MonoBehaviour:
@@ -29897,7 +29898,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1419023836}
@@ -30171,11 +30171,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1424981381}
   animator: {fileID: 1424981383}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1424981381
 MonoBehaviour:
@@ -30189,7 +30190,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1424981383}
@@ -30650,7 +30650,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 251.825, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1461943349
@@ -31032,11 +31032,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1497446646}
   animator: {fileID: 1497446648}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1497446646
 MonoBehaviour:
@@ -31050,7 +31051,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1497446648}
@@ -31324,11 +31324,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1500058249}
   animator: {fileID: 1500058251}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1500058249
 MonoBehaviour:
@@ -31342,7 +31343,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1500058251}
@@ -31753,11 +31753,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1509722153}
   animator: {fileID: 1509722155}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1509722153
 MonoBehaviour:
@@ -31771,7 +31772,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1509722155}
@@ -32045,11 +32045,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1542643602}
   animator: {fileID: 1542643604}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1542643602
 MonoBehaviour:
@@ -32063,7 +32064,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1542643604}
@@ -32337,11 +32337,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1555867194}
   animator: {fileID: 1555867196}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1555867194
 MonoBehaviour:
@@ -32355,7 +32356,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1555867196}
@@ -32629,11 +32629,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1563667469}
   animator: {fileID: 1563667471}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1563667469
 MonoBehaviour:
@@ -32647,7 +32648,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1563667471}
@@ -33228,11 +33228,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1656384211}
   animator: {fileID: 1656384213}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1656384211
 MonoBehaviour:
@@ -33246,7 +33247,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1656384213}
@@ -33622,11 +33622,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1658878339}
   animator: {fileID: 1658878341}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1658878339
 MonoBehaviour:
@@ -33640,7 +33641,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1658878341}
@@ -33914,11 +33914,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1659135401}
   animator: {fileID: 1659135403}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1659135401
 MonoBehaviour:
@@ -33932,7 +33933,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1659135403}
@@ -34466,11 +34466,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1685473881}
   animator: {fileID: 1685473883}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1685473881
 MonoBehaviour:
@@ -34484,7 +34485,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1685473883}
@@ -34758,11 +34758,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1704518066}
   animator: {fileID: 1704518068}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1704518066
 MonoBehaviour:
@@ -34776,7 +34777,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1704518068}
@@ -35050,11 +35050,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1726167748}
   animator: {fileID: 1726167750}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1726167748
 MonoBehaviour:
@@ -35068,7 +35069,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1726167750}
@@ -35452,11 +35452,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1771999497}
   animator: {fileID: 1771999499}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1771999497
 MonoBehaviour:
@@ -35470,7 +35471,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1771999499}
@@ -35744,11 +35744,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1773092868}
   animator: {fileID: 1773092870}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1773092868
 MonoBehaviour:
@@ -35762,7 +35763,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1773092870}
@@ -36036,11 +36036,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1773540369}
   animator: {fileID: 1773540371}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1773540369
 MonoBehaviour:
@@ -36054,7 +36055,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1773540371}
@@ -37453,11 +37453,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1840032254}
   animator: {fileID: 1840032256}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1840032254
 MonoBehaviour:
@@ -37471,7 +37472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1840032256}
@@ -37954,11 +37954,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1860220797}
   animator: {fileID: 1860220799}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1860220797
 MonoBehaviour:
@@ -37972,7 +37973,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1860220799}
@@ -38246,11 +38246,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1861330909}
   animator: {fileID: 1861330911}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1861330909
 MonoBehaviour:
@@ -38264,7 +38265,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1861330911}
@@ -38764,11 +38764,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1928745783}
   animator: {fileID: 1928745785}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1928745783
 MonoBehaviour:
@@ -38782,7 +38783,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1928745785}
@@ -39056,11 +39056,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1933403879}
   animator: {fileID: 1933403881}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1933403879
 MonoBehaviour:
@@ -39074,7 +39075,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1933403881}
@@ -39167,63 +39167,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &1950672541
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 253881557139457378, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -2.477
-      objectReference: {fileID: 0}
-    - target: {fileID: 253881557139457378, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 253881557139457378, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 253881557139457378, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 253881557139457378, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 253881557139457378, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 253881557139457378, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 253881557139457378, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 253881557139457378, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 253881557139457378, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6732792351147766889, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
-      propertyPath: m_Name
-      value: Bird
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
 --- !u!1 &1954802266
 GameObject:
   m_ObjectHideFlags: 0
@@ -39405,11 +39348,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1954802273}
   animator: {fileID: 1954802275}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1954802273
 MonoBehaviour:
@@ -39423,7 +39367,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1954802275}
@@ -39697,11 +39640,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1966712165}
   animator: {fileID: 1966712167}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1966712165
 MonoBehaviour:
@@ -39715,7 +39659,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1966712167}
@@ -39989,11 +39932,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1976195336}
   animator: {fileID: 1976195338}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1976195336
 MonoBehaviour:
@@ -40007,7 +39951,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1976195338}
@@ -40356,11 +40299,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1983931858}
   animator: {fileID: 1983931860}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1983931858
 MonoBehaviour:
@@ -40374,7 +40318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1983931860}
@@ -40648,11 +40591,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 1988076831}
   animator: {fileID: 1988076833}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &1988076831
 MonoBehaviour:
@@ -40666,7 +40610,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 1988076833}
@@ -40940,11 +40883,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 2003304203}
   animator: {fileID: 2003304205}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &2003304203
 MonoBehaviour:
@@ -40958,7 +40902,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 2003304205}
@@ -41363,11 +41306,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 2014740148}
   animator: {fileID: 2014740150}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &2014740148
 MonoBehaviour:
@@ -41381,7 +41325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 2014740150}
@@ -41793,11 +41736,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 2044812387}
   animator: {fileID: 2044812389}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &2044812387
 MonoBehaviour:
@@ -41811,7 +41755,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 2044812389}
@@ -42787,11 +42730,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 2120015548}
   animator: {fileID: 2120015550}
-  runningModifier: 1.5
-  IdleTime: 2
-  PanicTime: 10
   Range: 10
   ViewRange: 0
+  runningModifier: 1.5
+  Drops: []
+  IdleTime: 2
+  PanicTime: 10
   Edible: []
 --- !u!114 &2120015548
 MonoBehaviour:
@@ -42805,7 +42749,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 2120015550}
@@ -44520,4 +44463,3 @@ SceneRoots:
   - {fileID: 75975805}
   - {fileID: 2005692310}
   - {fileID: 2081185242}
-  - {fileID: 1950672541}

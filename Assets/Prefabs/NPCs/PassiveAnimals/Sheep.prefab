@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 7744316435978888967}
   - component: {fileID: 625059372807967338}
   - component: {fileID: -1421574331014675638}
+  - component: {fileID: 7340857793055503004}
+  - component: {fileID: 2552330749766581175}
   m_Layer: 12
   m_Name: Sheep
   m_TagString: Untagged
@@ -227,6 +229,18 @@ MonoBehaviour:
     - m_Name: Hit_2
       m_Hash: 0
       m_Sprite: {fileID: 831108277, guid: 538aef91d64957b4aacc3dcf25563b95, type: 3}
+  - m_Name: Die
+    m_Hash: 0
+    m_CategoryList:
+    - m_Name: Die_0
+      m_Hash: 0
+      m_Sprite: {fileID: -2014010465, guid: 538aef91d64957b4aacc3dcf25563b95, type: 3}
+    - m_Name: New Label
+      m_Hash: 0
+      m_Sprite: {fileID: -2014010465, guid: 538aef91d64957b4aacc3dcf25563b95, type: 3}
+    - m_Name: New Label_0
+      m_Hash: 0
+      m_Sprite: {fileID: -2014010465, guid: 538aef91d64957b4aacc3dcf25563b95, type: 3}
   m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: a3734acc89e04ea48bf0c54c5d72369a, type: 3}
 --- !u!114 &5226047401262143773
 MonoBehaviour:
@@ -255,7 +269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa31dd6035f04a89673b2310bd977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReachableRange: 10
   CanUseDoors: 0
   MovementSpeed: 6
   animator: {fileID: 7873326469680123242}
@@ -274,11 +287,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigator: {fileID: 2574715429124650936}
   animator: {fileID: 7873326469680123242}
-  runningModifier: 1.5
-  IdleTime: 10
-  PanicTime: 10
   Range: 10
   ViewRange: 15
+  runningModifier: 1.5
+  Drops:
+  - Item: {fileID: 11400000, guid: bbd99bb00aaefd246bf455b2fe11ebf0, type: 2}
+    Count: 10
+  IdleTime: 10
+  PanicTime: 10
   Edible:
   - {fileID: 11400000, guid: 89e05cb5ef19ea64e9a963950f6a4e58, type: 2}
 --- !u!114 &625059372807967338
@@ -308,3 +324,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 7873326469680123242}
   Renderer: {fileID: 8965110494047570406}
+--- !u!114 &7340857793055503004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6732792351147766889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce507025ed7707d47b5dd984dc558103, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 0
+  RegenType: 0
+  TickSeconds: 1
+  NegativeChangeWaitSeconds: 0
+--- !u!114 &2552330749766581175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6732792351147766889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 920b73acab2d10246a2b9cc3eaf94818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseStats: {fileID: 11400000, guid: dc081f9c4d0b18249a3544179370f4c2, type: 2}

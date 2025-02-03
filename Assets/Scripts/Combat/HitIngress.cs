@@ -4,12 +4,12 @@ using UnityEngine;
 
 public interface IHittable
 {
-    public void Hit();
+    public void Hit(HitData info);
 }
 
 public class HitIngress : MonoBehaviour
 {
-    public event Action OnHit = delegate { };
+    public event Action<HitData> OnHit = delegate { };
     public float ImmuneSeconds = 0.3f;
     private Timer immunityTimer;
     // Start is called before the first frame update
@@ -21,13 +21,12 @@ public class HitIngress : MonoBehaviour
         }
     }
 
-    public void Hit()
+    public void Hit(HitData data)
     {
         if (immunityTimer?.Expired != false)
         {
-            print("Hit");
             immunityTimer = new Timer(ImmuneSeconds);
-            OnHit?.Invoke();
+            OnHit?.Invoke(data);
         }
     }
 }

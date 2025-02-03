@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewWeapon", menuName = "Inventory/Weapon", order = 1)]
-public class Weapon : DurableItem, IColliderListener
+public class Weapon : DurableItem, IColliderListener, IDamageItem
 {
     public enum WeaponType
     {
@@ -16,6 +16,9 @@ public class Weapon : DurableItem, IColliderListener
     [Header("Weapon Info")]
     public WeaponType Type;
     public int CharmSlots;
+    public int m_Damage;
+
+    public int Damage => m_Damage;
 
     public void OnCollision(CollisionInfo info)
     {
@@ -55,6 +58,7 @@ public class Weapon : DurableItem, IColliderListener
     {
         ProjectileInfo modifier = ProjectileInfo.one;
         modifier.UserCollider = useInfo.ignoreCollider;
+        modifier.WeaponDamage = Damage;
         if (useInfo.state is InfusableState infusableState)
         {
             modifier.Charms = infusableState.Charms;

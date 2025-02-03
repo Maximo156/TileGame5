@@ -81,6 +81,27 @@ MonoBehaviour:
       m_SpriteOverride: {fileID: -1953001220, guid: 14ed9a8e87ba65842947fa6b9faefba3, type: 3}
     m_FromMain: 0
     m_EntryOverrideCount: 2
+  - m_Name: Die
+    m_Hash: 20298039
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Die_0
+      m_Hash: 949602785
+      m_Sprite: {fileID: -1901635925, guid: 14ed9a8e87ba65842947fa6b9faefba3, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1901635925, guid: 14ed9a8e87ba65842947fa6b9faefba3, type: 3}
+    - m_Name: New Label
+      m_Hash: 259326342
+      m_Sprite: {fileID: 1725889949, guid: 14ed9a8e87ba65842947fa6b9faefba3, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1725889949, guid: 14ed9a8e87ba65842947fa6b9faefba3, type: 3}
+    - m_Name: New Label_0
+      m_Hash: 16589798
+      m_Sprite: {fileID: 686949264, guid: 14ed9a8e87ba65842947fa6b9faefba3, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 686949264, guid: 14ed9a8e87ba65842947fa6b9faefba3, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
   m_PrimaryLibraryGUID: 
-  m_ModificationHash: 638740291792028469
+  m_ModificationHash: 638741213947175850
   m_Version: 1

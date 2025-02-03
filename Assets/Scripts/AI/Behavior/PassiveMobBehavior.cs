@@ -41,6 +41,7 @@ public class PassiveMobBehaviour : BaseBehavior, IBehavior, IHittable
                     break;
                 case PassiveMobState.Dead:
                     Destroy(navigator);
+                    animator.Play("Die");
                     return;
                 case PassiveMobState.Wander:
                     break;
@@ -89,8 +90,6 @@ public class PassiveMobBehaviour : BaseBehavior, IBehavior, IHittable
                 }
                 else if (navigator.state == JobNavigator.State.Idle)
                 {
-                    print("Requesting panic path");
-                    navigator.RecievedPath += Debug;
                     SetRandomGoal();
                 }
                 break;
@@ -108,13 +107,7 @@ public class PassiveMobBehaviour : BaseBehavior, IBehavior, IHittable
         return default;
     }
 
-    void Debug(IPathFinder _)
-    {
-        print("Recieved Path: " + navigator.state);
-        navigator.RecievedPath -= Debug;
-    }
-
-    public void Hit()
+    public void Hit(HitData _)
     {
         if (State != PassiveMobState.Hit)
         {

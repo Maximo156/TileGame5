@@ -4,7 +4,7 @@ using UnityEngine;
 
 public struct ProjectileInfo
 {
-    public float damageMultiplier;
+    public float WeaponDamage;
     public float speedMultiplier;
     public float scaleMultiplier;
     public float powerModifier;
@@ -13,7 +13,7 @@ public struct ProjectileInfo
 
     public static ProjectileInfo one = new ProjectileInfo()
     {
-        damageMultiplier = 1,
+        WeaponDamage = 0,
         speedMultiplier = 1,
         scaleMultiplier = 1,
         powerModifier = 1,

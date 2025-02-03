@@ -23,6 +23,13 @@ public partial class Chunk
         }
         ais.Add(ai);
         ai.Transform.parent = EntityContainer.transform;
+        ai.OnDespawn += RemoveChild;
+    }
+
+    public void RemoveChild(IAI ai)
+    {
+        ais.Remove(ai);
+        ai.OnDespawn -= RemoveChild;
     }
 
     public void EnableContainer(bool enable)
