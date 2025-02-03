@@ -64,7 +64,7 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
             HotBarItemsChanged(HotbarInv);
         }
     }
-
+    public Item curInHandItem => curInHand?.Item;
     ItemStack curInHand;
     private void HotBarItemsChanged(IInventory inv)
     {

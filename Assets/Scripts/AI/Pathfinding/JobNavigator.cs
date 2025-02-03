@@ -1,34 +1,23 @@
 using UnityEngine;
 using Unity.Collections;
 using Unity.Mathematics;
+using System;
 
 public class JobNavigator : MonoBehaviour, IPathFinder
 {
-    public int m_ReachableRange;
+    public event Action<IPathFinder> RequestPathfinding = delegate { };
+    public event Action<IPathFinder> RecievedPath = delegate { };
+
     public bool CanUseDoors;
     public float MovementSpeed;
 
-    public int2 Position
-    {
-        get
-        {
-            var block = Utilities.GetBlockPos(transform.position);
-            return new int2(block.x, block.y);
-        }
-    }
+    public Animator animator;
+    public SpriteRenderer sprite;
+
+    NativeStack<int2> _path;
     int2 _goal;
-    public int2 Goal { 
-        get => _goal; 
-        set 
-        {
-            Path = default;
-            state = State.Navigating;
-            _goal = value;
-        } 
-    }
-    public bool NeedPath => !Path.IsCreated && state != State.Stuck;
-    public bool CanUseDoor => CanUseDoors;
-    public int ReachableRange => m_ReachableRange;
+    NativeList<int2> _reachable;
+    Action<JobNavigator> onStuck;
 
     public enum State
     {
@@ -38,9 +27,45 @@ public class JobNavigator : MonoBehaviour, IPathFinder
         Stuck
     }
 
-    public State state { get; private set; } = State.Idle;
+    public bool CanUseDoor => CanUseDoors;
+    public int ReachableRange { get; set; } = 20;
+    public float MovementModifier { get; set; } = 1;
+    public bool isNull => this == null;
 
-    NativeStack<int2> _path;
+    State _state = State.Idle;
+    public State state
+    {
+        get => _state;
+        private set
+        {
+            _state = value;
+            switch (_state)
+            {
+                case State.Idle:
+                    SetMovementInfo(default);
+                    break;
+            }
+            TriggerPathFinding();
+        }
+    }
+    public int2 Position
+    {
+        get
+        {
+            var block = Utilities.GetBlockPos(transform.position);
+            return new int2(block.x, block.y);
+        }
+    }
+    public int2 Goal
+    {
+        get => _goal;
+        set
+        {
+            Path = default;
+            state = State.Navigating;
+            _goal = value;
+        }
+    }
     NativeStack<int2> Path
     {
         get => _path;
@@ -51,10 +76,9 @@ public class JobNavigator : MonoBehaviour, IPathFinder
                 _path.Dispose();
             }
             _path = value;
+            TriggerPathFinding();
         }
     }
-
-    NativeList<int2> _reachable;
     NativeList<int2> Reachable
     {
         get => _reachable;
@@ -68,9 +92,18 @@ public class JobNavigator : MonoBehaviour, IPathFinder
         }
     }
 
+    void TriggerPathFinding()
+    {
+        if(!Path.IsCreated && state != State.Stuck)
+        {
+            RequestPathfinding(this);
+        }
+    }
+
     private void Awake()
     {
         _path = new NativeStack<int2>(1, Allocator.Persistent);
+        onStuck = SelectAndSetRandomGoal;
     } 
 
     public bool SetPath(NativeStack<int2> stack, NativeList<int2> reachable)
@@ -80,10 +113,13 @@ public class JobNavigator : MonoBehaviour, IPathFinder
         {
             Path = default;
             state = State.Stuck;
+            onStuck(this);
+            RecievedPath(this);
             return false;
         }
         state = State.Moving;
         Path = stack;
+        RecievedPath(this);
         return true;
     }
 
@@ -102,6 +138,7 @@ public class JobNavigator : MonoBehaviour, IPathFinder
     BlockSlice Target;
     BlockSlice Current;
     Vector2Int CurrentPos;
+
     public void Move(float deltaTime)
     {
         if (state != State.Moving) return;
@@ -129,11 +166,11 @@ public class JobNavigator : MonoBehaviour, IPathFinder
             ChunkManager.TryGetBlock(CurrentPos, out Current);
         }
 
-
         var difference = (Utilities.GetBlockCenter(next).ToVector3() - transform.position);
         var dir = difference.normalized;
-
-        transform.position = transform.position + ((Current?.MovementSpeed ?? 1) * MovementSpeed * dir * deltaTime);
+        var movement = ((Current?.MovementSpeed ?? 1) * deltaTime * MovementModifier * MovementSpeed * dir);
+        SetMovementInfo(dir);
+        transform.position = transform.position + movement;
 
         if (difference.magnitude < 0.2)
         {
@@ -154,16 +191,35 @@ public class JobNavigator : MonoBehaviour, IPathFinder
         }
     }
 
-    public Vector2 VectorGoal
+    public Vector2Int VectorGoal
     {
         get
         {
-            return new Vector2(Goal.x, Goal.y);
+            return new Vector2Int(Goal.x, Goal.y);
         }
         set
         {
             var tmp = Vector2Int.FloorToInt(value);
             Goal = new int2(tmp.x, tmp.y);
         }
+    }
+
+    public void SetStuckBehavior(Action<JobNavigator> onStuck)
+    {
+        this.onStuck = onStuck ?? SelectAndSetRandomGoal;
+    }
+
+    void SelectAndSetRandomGoal(JobNavigator _)
+    {
+        if(TryGetReachable(out var newPos))
+        {
+            Goal = new int2(newPos.x, newPos.y);
+        }
+    }
+
+    void SetMovementInfo(Vector2 LatestDir)
+    {
+        animator.SetFloat("Speed", LatestDir.magnitude);
+        sprite.flipX = LatestDir.x < 0 || (LatestDir.magnitude == 0 && sprite.flipX);
     }
 }

@@ -18,3 +18,5 @@ MonoBehaviour:
   BurnTime: 0
   MaxDurability: 10
   Type: 0
+  CharmSlots: 0
+  m_Damage: 5

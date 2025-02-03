@@ -5,7 +5,7 @@ using System;
 public class MiningTool : Tool
 {
     [Header("Mining Settings")]
-    public int Damage;
+    public int BlockDamage;
 
     public override bool PerformAction(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
     {
@@ -19,7 +19,7 @@ public class MiningTool : Tool
             {
                 info.StartBreak(targetBlock, roof);
             }
-            if (info.Hit(targetBlock, roof, Damage))
+            if (info.Hit(targetBlock, roof, BlockDamage))
             {
                 if (ChunkManager.BreakBlock(targetBlock, roof))
                 {

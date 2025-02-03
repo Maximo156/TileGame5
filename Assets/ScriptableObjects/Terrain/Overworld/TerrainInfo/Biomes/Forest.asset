@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4cbab98e168b724bab2c8fd4b8a4ddf, type: 3}
   m_Name: Forest
   m_EditorClassIdentifier: 
-  minHeight: 0.2
   minMoisture: 0.4
   minHeat: 0.4
+  minHeight: 0.2
   GroundBlock: {fileID: 11400000, guid: de22f042adbd6274d88bb5ec558d120f, type: 2}
   WallBlock: {fileID: 0}
   RoofBlock: {fileID: 0}
+  ReplacementInfos: []
   replaceSolid: 0
   SparceBlocks:
   - {fileID: 11400000, guid: ea2e43765346a0d4db8a61dffc46fa53, type: 2}
@@ -27,3 +28,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2b080dc3ff494a94496863448da50820, type: 2}
   SparceSoundSettings: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
   SparceDensity: 0.3
+  NaturalMobs:
+  - MinCount: 1
+    MaxCount: 3
+    Weight: 1
+    Prefab: {fileID: 6732792351147766889, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
+  - MinCount: 1
+    MaxCount: 3
+    Weight: 1
+    Prefab: {fileID: 6732792351147766889, guid: 6ab70844f4127d644a2c043a381dc6cc, type: 3}
+  - MinCount: 1
+    MaxCount: 3
+    Weight: 1
+    Prefab: {fileID: 6732792351147766889, guid: 97c7d89dc3fddad48b4fde616dc2b77b, type: 3}

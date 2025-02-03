@@ -109,8 +109,8 @@ public struct AstarJob : IJob
                     found = true;
                     break;
                 }
-                float startDistance = math.pow(CalcDistance(n.Pos, Start), 0.5f);
-                float distance = CalcDistance(n.Pos, end.Pos);
+                float startDistance = math.max(math.distance(n.Pos.x, Start.x), math.distance(n.Pos.y, Start.y));
+                float distance = math.distancesq(n.Pos, end.Pos);
                 if (!ClosedList.ContainsKey(n.Pos) && n.Walkable && (canUseDoors || !n.IsDoor) && !OpenList.Contains(n) && startDistance < MaxDistance)
                 {
                     n.ParentPos = current.Pos;

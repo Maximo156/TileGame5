@@ -5,12 +5,15 @@ using System.Linq;
 using Unity.Mathematics;
 using Unity.Jobs;
 using Unity.Collections;
+using System;
 
 public interface IAI
 {
+    public event Action<IAI> OnDespawn;
     public IPathFinder pathfinder { get; }
     public IBehavior behavior { get; }
     public Transform Transform { get; }
+    public bool Natural { get; }
 
     public void Register()
     {
@@ -22,15 +25,18 @@ public class AIManager : MonoBehaviour
 {
     public int AiSimDistance = 10;
     public int AiPerEnumeration = 100;
+    public int SpawnPassTime = 10;
     Dictionary<Vector2Int, Chunk> LoadedChunks;
 
     int ChunkWidth;
-    public Vector2Int curChunk { get; set; }
-    Queue<Vector2Int> SimQueue;
+    Vector2Int curChunk { get; set; }
     HashSet<IAI> UnParentedAi = new();
+    Dictionary<Vector2Int, Chunk> SimulatedChunks = new();
 
     PathfindingManager PathFinder;
     AIBehaviorManager BehaviorManager;
+
+    List<IPathFinder> requestedPathfinders = new();
 
     public void Initialize(Dictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth)
     {
@@ -57,66 +63,102 @@ public class AIManager : MonoBehaviour
         {
             RegisterImpl(ai);
         }
-
-        var important = Utilities.Spiral(curChunk, (uint)AiSimDistance);
-
-        if (!chunksRunning)
+        foreach(var kvp in SimulatedChunks.ToList())
         {
-            StartCoroutine(RunChunks(important));
+            kvp.Value.EnableContainer(true);
         }
+    }
 
-        if (SimQueue == null || SimQueue.Count == 0)
+    public void OnChunkChanged(Vector2Int curChunk)
+    {
+        this.curChunk = curChunk;
+        var importantChunks = new HashSet<Vector2Int>(Utilities.Spiral(curChunk, (uint)AiSimDistance));
+        foreach (var chunkPos in importantChunks)
         {
-            SimQueue = new Queue<Vector2Int>(important);
-        }
-
-        if(!AiRunning)
-        {
-            var toRun = new List<IAI>();
-            while(toRun.Count() < AiPerEnumeration && SimQueue.TryDequeue(out var chunkPos))
+            if (!SimulatedChunks.TryGetValue(chunkPos, out var chunk) && ChunkManager.TryGetChunk(chunkPos, out chunk))
             {
-                if(ChunkManager.TryGetChunk(chunkPos, out var chunk))
+                SimulatedChunks[chunkPos] = chunk;
+                chunk.EnableContainer(true);
+            }
+        }
+        foreach (var chunk in SimulatedChunks.Where(chunk => !importantChunks.Contains(chunk.Key)).ToList())
+        {
+            chunk.Value.EnableContainer(false);
+            SimulatedChunks.Remove(chunk.Key);
+        }
+    }
+
+    public IEnumerator RunBehaviors()
+    {
+        while (true)
+        {
+            int count = 0;
+            foreach (var kvp in SimulatedChunks.ToList())
+            {
+                var ais = kvp.Value.ais;
+                BehaviorManager.RunBehaviors(ais.Select(ai => ai.behavior));
+                count += ais.Count;
+                if(count > AiPerEnumeration)
                 {
-                    toRun.AddRange(chunk.ais);
+                    yield return null;
+                    count = 0;
                 }
             }
-            StartCoroutine(RunAis(toRun));
+            yield return null;
         }
     }
 
-    bool AiRunning;
-    public IEnumerator RunAis(IEnumerable<IAI> ais)
+    public IEnumerator RunPathfinding()
     {
-        AiRunning = true;
-        yield return PathFinder.RunChunk(ais.Select(ai => ai.pathfinder));
-
-        yield return BehaviorManager.RunChunk(ais.Select(ai => ai.behavior));
-        AiRunning = false;
+        while (true)
+        {
+            if (PathFinder != null)
+            {
+                var tmp = requestedPathfinders;
+                requestedPathfinders = new();
+                yield return PathFinder.RunPathfinders(tmp);
+            }
+            yield return null;
+        }
     }
 
-    bool chunksRunning;
-    public IEnumerator RunChunks(IEnumerable<Vector2Int> chunks)
+    public IEnumerator RunChunks()
     {
-        chunksRunning = true;
-        foreach (var pos in chunks)
+        while (true)
         {
-            if (LoadedChunks.TryGetValue(pos, out var chunk))
+            foreach (var kvp in SimulatedChunks.ToList())
             {
+                var chunk = kvp.Value;
                 if (chunk.ais.Count == 0) continue;
                 foreach (var ai in chunk.ais.ToList())
                 {
                     var newChunkPos = Utilities.GetChunk(Utilities.GetBlockPos(ai.Transform.position), ChunkWidth);
                     if (newChunkPos != chunk.ChunkPos && LoadedChunks.TryGetValue(newChunkPos, out var newChunk))
                     {
-                        chunk.ais.Remove(ai);
                         newChunk.AddChild(ai);
+                        chunk.RemoveChild(ai);
                     }
                 }
-
                 yield return null;
             }
+            yield return new WaitForSeconds(1);
         }
-        chunksRunning = false;
+    }
+    
+    IEnumerator RunSpawnPass()
+    {
+        yield return new WaitForSeconds(1);
+        while (true)
+        {
+            foreach(var kvp in SimulatedChunks.ToList())
+            {
+                if (kvp.Value.SpawnAI())
+                {
+                    yield return null;
+                }
+            }
+            yield return new WaitForSeconds(SpawnPassTime);
+        }
     }
 
     private void RegisterImpl(IAI newAi)
@@ -126,11 +168,23 @@ public class AIManager : MonoBehaviour
         {
             UnParentedAi.Remove(newAi);
             Chunk.AddChild(newAi);
+            if (newAi.pathfinder != null) {
+                newAi.pathfinder.RequestPathfinding += (ai) => requestedPathfinders.Add(ai);
+            }
         }
         else
         {
             UnParentedAi.Add(newAi);
         }
+        newAi.OnDespawn += (ai) => requestedPathfinders.Remove(ai.pathfinder);
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(RunSpawnPass());
+        StartCoroutine(RunChunks());
+        StartCoroutine(RunPathfinding());
+        StartCoroutine(RunBehaviors());
     }
 
     public static void Register(IAI newAi)

@@ -33,7 +33,7 @@ public class ProjectileEntity : MonoBehaviour
         transform.position = position;
         transform.right = dir;
         rb.velocity = projectileBase.speed * projectileInfo.speedMultiplier * dir.normalized;
-        damage = projectileBase.damage * projectileInfo.damageMultiplier;
+        damage = projectileBase.damage + projectileInfo.WeaponDamage;
         sr.sprite = projectileBase.sprite;
         sr.color = projectileBase.color;
         sr.sortingOrder = renderLayer;
@@ -103,7 +103,7 @@ public class ProjectileEntity : MonoBehaviour
         }
         else if (pierces >= 0)
         {
-            collision.attachedRigidbody.SendMessage("Hit", new HitData { Damage = damage, Perpetrator = Perpetrator }, SendMessageOptions.DontRequireReceiver);
+            collision.GetComponent<HitIngress>()?.Hit(new HitData { Damage = damage, Perpetrator = Perpetrator });
             if (pierces == 0) HitTarget();
             pierces -= 1;
         }
@@ -118,7 +118,7 @@ public class ProjectileEntity : MonoBehaviour
             foreach (var hit in hits)
             {
                 var dist = Vector3.Distance(hit.transform.position, transform.position);
-                hit.attachedRigidbody?.SendMessage("Hit", new HitData { Damage = damage * (1 - dist / AOE), Perpetrator = Perpetrator }, SendMessageOptions.DontRequireReceiver);
+                hit.GetComponent<HitIngress>()?.Hit(new HitData { Damage = damage * (1 - dist / AOE), Perpetrator = Perpetrator });
             }
         }
         if (HitAnimation?.ShouldAnimate == true)

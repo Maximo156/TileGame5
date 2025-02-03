@@ -1,12 +1,19 @@
 using UnityEngine;
 using EntityStatistics;
 
-public class Health : EntityVariableStat
+public class Health : EntityVariableStat, IHittable
 {
     public Hunger hunger;
     public int HungerPerRegen;
 
     protected override float Regen => hunger is null || hunger.current > hunger.MaxValue /2 ? base.Regen : 0;
+
+    HitIngress hitIngress;
+    protected override void Start()
+    {
+        base.Start();
+        hitIngress = GetComponent<HitIngress>();
+    }
 
     protected override void OnChangeStat()
     {
@@ -26,12 +33,12 @@ public class Health : EntityVariableStat
         var damageOverTime = stats.GetStat(EntityStats.Stat.DamageOverTime);
         if (damageOverTime > 0)
         {
-            SendMessage("Damage", damageOverTime, SendMessageOptions.DontRequireReceiver);
+            hitIngress.Hit(new HitData() { Damage = damageOverTime });
         }
     }
 
-    public void Damage(float damage)
+    public void Hit(HitData data)
     {
-        ChangeStat(-damage);
+        ChangeStat(-data.Damage);
     }
 }

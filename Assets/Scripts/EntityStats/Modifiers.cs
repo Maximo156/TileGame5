@@ -5,17 +5,6 @@ using UnityEngine;
 
 namespace EntityStatistics
 {
-    public class Timer
-    {
-        float end;
-        public bool Expired => Time.time > end;
-        public float SecondsLeft => end - Time.time;
-        public Timer(float duration)
-        {
-            end = Time.time + duration;
-        }
-    }
-
     public abstract class Modifier : IDisposable, IGridItem
     {
         public enum Method

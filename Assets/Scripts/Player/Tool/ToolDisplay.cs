@@ -190,7 +190,7 @@ public class ToolDisplay : MonoBehaviour
     }
 
     bool itemDamaged = false;
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!animating)
         {
@@ -198,6 +198,25 @@ public class ToolDisplay : MonoBehaviour
         }
 
         if(!itemDamaged && curInHand.Item is IColliderListener listener)
+        {
+            listener.OnCollision(new CollisionInfo()
+            {
+                state = curInHand.State
+            });
+            itemDamaged = true;
+        }
+        
+        collision.GetComponentInParent<HitIngress>()?.Hit(new HitData { Damage = (curInHand?.Item as IDamageItem)?.Damage ?? 0, Perpetrator = transform.parent });
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!animating)
+        {
+            return;
+        }
+
+        if (!itemDamaged && curInHand.Item is IColliderListener listener)
         {
             listener.OnCollision(new CollisionInfo()
             {
