@@ -58,7 +58,7 @@ public class Realm
             CurGenToken.Cancel();
         }
         CurGenToken = new CancellationTokenSource();
-        EntityContainer.AIManager.curChunk = curChunk;
+        EntityContainer.AIManager.OnChunkChanged(curChunk);
         var newTask = Task.Run(() => GenerateNewChunks(curChunk, chunkGenDistance, ChunkGenWidth, CancellationTokenSource.CreateLinkedTokenSource(AllTaskShutdown, CurGenToken.Token).Token));
     }
 

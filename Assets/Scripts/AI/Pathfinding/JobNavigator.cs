@@ -5,7 +5,9 @@ using System;
 
 public class JobNavigator : MonoBehaviour, IPathFinder
 {
-    public int m_ReachableRange;
+    public event Action<IPathFinder> RequestPathfinding = delegate { };
+    public event Action<IPathFinder> RecievedPath = delegate { };
+
     public bool CanUseDoors;
     public float MovementSpeed;
 
@@ -24,9 +26,9 @@ public class JobNavigator : MonoBehaviour, IPathFinder
         Moving,
         Stuck
     }
-    public bool NeedPath => !Path.IsCreated && state != State.Stuck;
+
     public bool CanUseDoor => CanUseDoors;
-    public int ReachableRange => m_ReachableRange;
+    public int ReachableRange { get; set; } = 20;
     public float MovementModifier { get; set; } = 1;
     State _state = State.Idle;
     public State state
@@ -41,6 +43,7 @@ public class JobNavigator : MonoBehaviour, IPathFinder
                     SetMovementInfo(default);
                     break;
             }
+            TriggerPathFinding();
         }
     }
     public int2 Position
@@ -71,6 +74,7 @@ public class JobNavigator : MonoBehaviour, IPathFinder
                 _path.Dispose();
             }
             _path = value;
+            TriggerPathFinding();
         }
     }
     NativeList<int2> Reachable
@@ -83,6 +87,14 @@ public class JobNavigator : MonoBehaviour, IPathFinder
                 _reachable.Dispose();
             }
             _reachable = value;
+        }
+    }
+
+    void TriggerPathFinding()
+    {
+        if(!Path.IsCreated && state != State.Stuck)
+        {
+            RequestPathfinding(this);
         }
     }
 
@@ -100,10 +112,12 @@ public class JobNavigator : MonoBehaviour, IPathFinder
             Path = default;
             state = State.Stuck;
             onStuck(this);
+            RecievedPath(this);
             return false;
         }
         state = State.Moving;
         Path = stack;
+        RecievedPath(this);
         return true;
     }
 
@@ -122,6 +136,7 @@ public class JobNavigator : MonoBehaviour, IPathFinder
     BlockSlice Target;
     BlockSlice Current;
     Vector2Int CurrentPos;
+
     public void Move(float deltaTime)
     {
         if (state != State.Moving) return;

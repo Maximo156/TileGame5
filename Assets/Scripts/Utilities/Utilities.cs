@@ -172,8 +172,43 @@ public static class Utilities
 
     public static Vector2Int? FindNearestEmptyBlock(Vector2Int start, int limit = 100)
     {
-        return BFS(start, pos => ChunkManager.GetBlock(pos), slice => slice.WallBlock == null, _ => false, out var _, limit)?.position;
+        var width = ChunkManager.ChunkWidth;
+        var curChunkPos = GetChunk(start, width);
+        ChunkManager.TryGetChunk(curChunkPos, out var curChunk);
+        return BFS(start, pos =>
+        {
+            var tmp = GetChunk(pos, width);
+            if (curChunkPos != tmp)
+            {
+                curChunkPos = tmp;
+                ChunkManager.TryGetChunk(curChunkPos, out curChunk);
+            }
+            return curChunk?.GetBlock(pos);
+        }, slice => slice.WallBlock == null, _ => false, out var _, limit)?.position;
     }
+
+    public static HashSet<Vector2Int> FindReachableBlocks(Vector2Int start, int reach)
+    {
+        var width = ChunkManager.ChunkWidth;
+        var curChunkPos = GetChunk(start, width);
+        ChunkManager.TryGetChunk(curChunkPos, out var curChunk);
+        BFS(start, pos => pos, _ => false, pos => Vector2Int.Distance(pos, start) > reach || GetBlock(pos)?.Walkable != true, out var reachable, 10000);
+        
+        Debug.Log($"Count: {reachable.Count} Max dist: {Vector2Int.Distance(start, reachable.MaxBy(v => Vector2Int.Distance(v, start)))}");
+        return reachable;
+
+        BlockSlice GetBlock(Vector2Int pos)
+        {
+            var tmp = GetChunk(pos, width);
+            if (curChunkPos != tmp)
+            {
+                curChunkPos = tmp;
+                ChunkManager.TryGetChunk(curChunkPos, out curChunk);
+            }
+            return curChunk?.GetBlock(pos);
+        }
+    }
+
     public static void DropItems(Vector2Int worldPos, IEnumerable<ItemStack> drops)
     {
         foreach (var stack in drops)

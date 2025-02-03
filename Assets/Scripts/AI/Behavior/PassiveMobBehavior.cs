@@ -7,8 +7,6 @@ public class PassiveMobBehaviour : BaseBehavior, IBehavior, IHittable
 {
     public float IdleTime;
     public float PanicTime;
-    public int Range;
-    public int ViewRange;
     public List<Item> Edible;
 
     private PlayerInventories inv;
@@ -70,7 +68,7 @@ public class PassiveMobBehaviour : BaseBehavior, IBehavior, IHittable
                 }
                 else if (curTimer.Expired)
                 {
-                    SetRandomGoal(Range);
+                    SetRandomGoal();
                     State = PassiveMobState.Wander;
                 }
                 break;
@@ -91,7 +89,9 @@ public class PassiveMobBehaviour : BaseBehavior, IBehavior, IHittable
                 }
                 else if (navigator.state == JobNavigator.State.Idle)
                 {
-                    SetRandomGoal(Range);
+                    print("Requesting panic path");
+                    navigator.RecievedPath += Debug;
+                    SetRandomGoal();
                 }
                 break;
             case PassiveMobState.Follow:
@@ -106,6 +106,12 @@ public class PassiveMobBehaviour : BaseBehavior, IBehavior, IHittable
                 break;
         }
         return default;
+    }
+
+    void Debug(IPathFinder _)
+    {
+        print("Recieved Path: " + navigator.state);
+        navigator.RecievedPath -= Debug;
     }
 
     public void Hit()

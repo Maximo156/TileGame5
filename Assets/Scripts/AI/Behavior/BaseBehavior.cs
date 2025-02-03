@@ -5,13 +5,20 @@ public abstract class BaseBehavior : MonoBehaviour, IBehavior
 
     public JobNavigator navigator;
     public Animator animator;
+    public int Range;
+    public int ViewRange;
     public float runningModifier = 1;
 
     protected Timer curTimer;
 
+    private void Awake()
+    {
+        navigator.ReachableRange = Range + 10;
+    }
+
     public abstract Vector2Int Step(float deltaTime);
 
-    protected void SetRandomGoal(int Range)
+    protected void SetRandomGoal()
     {
         navigator.VectorGoal = Utilities.GetBlockPos(transform.position) + Utilities.RandomVector2Int(Range);
     }

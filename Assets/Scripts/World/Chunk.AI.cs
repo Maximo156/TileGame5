@@ -30,7 +30,7 @@ public partial class Chunk
         EntityContainer?.SetActive(enable);
     }
 
-    public void SpawnAI()
+    public bool SpawnAI()
     {
         var diff = WorldSettings.AnimalsPerChunk - ais.Count(ai => ai.Natural);
         if (diff > 0)
@@ -42,7 +42,9 @@ public partial class Chunk
                 tries++;
                 spawned += TrySpawnNatural();
             }
+            return spawned > 0;
         }
+        return false;
     }
 
     public int TrySpawnNatural()

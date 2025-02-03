@@ -9,10 +9,10 @@ using System;
 
 public interface IPathFinder
 {
+    public event Action<IPathFinder> RequestPathfinding;
     public int2 Position { get; }
     public int2 Goal { get; }
     public bool CanUseDoor { get; }
-    public bool NeedPath { get; }
 
     public int ReachableRange { get; }
 
@@ -58,7 +58,7 @@ public class PathfindingManager : IDisposable
             blockDataMirror[info.pos] = info.data;
         };
         yield return null;
-        activeJobs = new HashSet<(IPathFinder ai, JobHandle handle, NativeStack<int2> path, NativeList<int2> reachable)> (pathfinders.Where(ai => ai is not null && ai.NeedPath).Select(pathFinder =>
+        activeJobs = new HashSet<(IPathFinder ai, JobHandle handle, NativeStack<int2> path, NativeList<int2> reachable)> (pathfinders.Select(pathFinder =>
         {
             NativeStack<int2> path = new NativeStack<int2>(100, Allocator.Persistent);
             NativeList<int2> reachable = new NativeList<int2>(100, Allocator.Persistent);
@@ -68,13 +68,14 @@ public class PathfindingManager : IDisposable
                 canUseDoors = pathFinder.CanUseDoor,
                 End = pathFinder.Goal,
                 Start = pathFinder.Position,
-                MaxDistance = 300,
+                MaxDistance = pathFinder.ReachableRange,
                 ReachableRange = pathFinder.ReachableRange,
                 Path = path,
                 Reachable = reachable
             };
             return ( pathFinder, handle: job.Schedule(), path: path, reachable: reachable);
         }));
+        int count = 0;
         yield return null;
         while (activeJobs.Count > 0)
         {
@@ -87,7 +88,12 @@ public class PathfindingManager : IDisposable
                 }
                 activeJobs.Remove(info);
             }
+            count++;
             yield return null;
+        }
+        if (count > 30)
+        {
+            Debug.Log($"Handling paths took {count} frames");
         }
     }
 
