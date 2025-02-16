@@ -22,6 +22,7 @@ Finding a cave entrance allows the player to travel to the Cave Realm. While the
 
 ## World interaction
 The world is a sandbox, allowing the player to break and place any blocks
+
 <img src="https://github.com/user-attachments/assets/a9b96465-401a-4094-9f8f-ff817d3b3c7e" width="400">
 <img src="https://github.com/user-attachments/assets/f29394ae-5331-451a-9492-71d6bf130b11" width="400">
 
