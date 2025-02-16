@@ -69,6 +69,7 @@ The player can till soil, allowing them to plant seeds that can later be harvest
 
 https://github.com/user-attachments/assets/6e9978e4-b624-4a5a-8961-187a01e1a8db
 
+(The growth time was significantly sped up for demonstration purposes)
 
 ### Infusion
 The player can add charms to various items that change how they behave, such as adding a projectile to fire, or having the projectile split after some time to hit additional targets
