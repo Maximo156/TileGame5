@@ -18,4 +18,5 @@ MonoBehaviour:
   BurnTime: 0
   MaxDurability: 50
   Reach: 7
-  Damage: 1
+  m_Damage: 0
+  BlockDamage: 1

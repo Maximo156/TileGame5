@@ -82,8 +82,9 @@ public static class Extensions
                 if (val is null) return null;
                 if (float.TryParse(Convert.ToString(val), out var floatVal))
                 {
-                    if (floatVal == 0) return null;
-                    if (floatVal == -1) return f.GetCustomAttributes(typeof(Stat), true).Cast<Stat>().First().ValueOverride;
+                    var stat = f.GetCustomAttributes(typeof(Stat), true).Cast<Stat>().First();
+                    if (floatVal == stat.defaultValue) return null;
+                    if (floatVal == -1) return stat.ValueOverride;
                 }
                 return val.ToString();
             });

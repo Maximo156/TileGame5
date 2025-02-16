@@ -107,7 +107,7 @@ public class MiningToolState : ItemState, IDurableState, ICyclable
         TriggerStateChange();
     }
 
-    public override string GetStateString()
+    public override string GetStateString(Item _)
     {
         return "Mode: " + (mineRoof ? "Roof" : "Regular");
     }

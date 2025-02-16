@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using Unity.Jobs;
 using Unity.Collections;
 using System;
+using System.Collections.Concurrent;
 
 public interface IAI
 {
@@ -26,7 +27,7 @@ public class AIManager : MonoBehaviour
     public int AiSimDistance = 10;
     public int AiPerEnumeration = 100;
     public int SpawnPassTime = 10;
-    Dictionary<Vector2Int, Chunk> LoadedChunks;
+    ConcurrentDictionary<Vector2Int, Chunk> LoadedChunks;
 
     int ChunkWidth;
     Vector2Int curChunk { get; set; }
@@ -38,7 +39,7 @@ public class AIManager : MonoBehaviour
 
     List<IPathFinder> requestedPathfinders = new();
 
-    public void Initialize(Dictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth)
+    public void Initialize(ConcurrentDictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth)
     {
         this.LoadedChunks = LoadedChunks;
         this.ChunkWidth = ChunkWidth;

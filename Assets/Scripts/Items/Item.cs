@@ -95,7 +95,7 @@ public class ItemStack : IGridItem, IGridSource
 
     public (string, string) GetTooltipString()
     {
-        var stateString = State?.GetStateString();
+        var stateString = State?.GetStateString(Item);
         var statsString = Item.GetStatsString();
         string StatsString = string.Join('\n', (new []{ statsString, stateString }).Where(s => !string.IsNullOrWhiteSpace(s)));
         return (Item.formatedName, StatsString);
@@ -157,7 +157,7 @@ public abstract class ItemState
         OnStateChange?.Invoke();
     }
 
-    public virtual string GetStateString()
+    public virtual string GetStateString(Item item)
     {
         return "";
     }

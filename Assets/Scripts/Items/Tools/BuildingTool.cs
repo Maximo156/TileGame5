@@ -57,7 +57,7 @@ public class BuildingToolState : ItemState, IDurableState, IGridClickListener
         }
     }
 
-    public override string GetStateString()
+    public override string GetStateString(Item _)
     {
         return selectedRecipe is not null ? "Building: " +selectedRecipe.block.name.Replace("Block", "").Replace("Item", "").SplitCamelCase() : "";
     }

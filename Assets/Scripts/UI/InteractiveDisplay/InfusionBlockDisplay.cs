@@ -11,7 +11,8 @@ public class InfusionBlockDisplay : InteractiveDislay
     Inventory weaponSlot;
 
     public SingleInventoryDisplay WeaponInventoryDisplay;
-    Inventory weaponInventory;
+    InfusableState weaponState;
+    Inventory weaponInventory => weaponState?.Inventory.inv;
 
     public ItemDrag ItemDrag;
 
@@ -56,7 +57,7 @@ public class InfusionBlockDisplay : InteractiveDislay
         {
             return;
         }
-        weaponInventory = infusableState.Inventory.inv;
+        weaponState = infusableState;
         WeaponInventoryDisplay.AttachInv(weaponInventory, OnWeaponInventoryClick);
         CalcUsedSlots();
     }
@@ -79,7 +80,7 @@ public class InfusionBlockDisplay : InteractiveDislay
             }
             WeaponInventoryDisplay.Clear();
             WeaponInventoryDisplay.DetachInv(weaponInventory);
-            weaponInventory = null;
+            weaponState = null;
         }
     }
 
@@ -93,6 +94,11 @@ public class InfusionBlockDisplay : InteractiveDislay
 
     public void CalcUsedSlots()
     {
+        if (!weaponState.Validate())
+        {
+            throw new InvalidOperationException("Can't fuse, invalid state");
+        }
+        weaponState.UpdateStages();
         usedSlots = weaponInventory.GetAllItems().Select((item, index) => (item, index)).Where(t => t.item is not null).Select(t => t.index).ToList();
     }
 

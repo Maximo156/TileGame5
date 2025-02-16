@@ -11,7 +11,7 @@ public interface IItemInventoryState
 public class ItemInventoryState : ItemState, IGridSource, IItemInventoryState
 {
     public LimitedInventory inv { get; }
-    public ItemInventoryState(Func<Item, Inventory, bool> isAllowed, int slots)
+    public ItemInventoryState(Func<Item, ItemStack[], int, bool> isAllowed, int slots)
     {
         inv = new LimitedInventory(isAllowed, slots);
     }

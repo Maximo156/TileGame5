@@ -20,4 +20,6 @@ MonoBehaviour:
   Type: 1
   CharmSlots: 0
   m_Damage: 10
+  projectileScale: 1
+  projectileSpeed: 1
   AllowedTypes: 00000000

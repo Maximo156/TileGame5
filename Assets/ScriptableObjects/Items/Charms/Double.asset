@@ -9,17 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a3ed2107d81cd34abf01a20930a93c4, type: 3}
-  m_Name: WoodenStaff
+  m_Script: {fileID: 11500000, guid: b564d1120360aee45a72d820d8b68d78, type: 3}
+  m_Name: Double
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 266745953602077732, guid: a5983c79d9b5d824894da496e0acc63e, type: 3}
+  Sprite: {fileID: 1725865052, guid: 1eaa421d7357df44ebe15fc5ef1c19c3, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
-  MaxStackSize: 1
+  MaxStackSize: 99
   BurnTime: 0
-  MaxDurability: 100
-  Type: 3
-  CharmSlots: 2
-  m_Damage: 0
-  ManaModifier: 2
-  projectileScale: 1
-  projectileSpeed: 1
+  manaCost: 0
+  CostModifier: 1
+  splitCount: 2
+  splitDamageModifier: 0.5
+  SpreadAngle: 20
+  secondsBeforeSplit: 2

@@ -286,16 +286,16 @@ public class AccessoryInv : Inventory
 
 public class LimitedInventory : Inventory
 {
-    Func<Item, Inventory, bool> isAllowed;
+    Func<Item, ItemStack[], int, bool> isAllowed;
 
-    public LimitedInventory(Func<Item, Inventory, bool> isAllowed, int size) : base(size)
+    public LimitedInventory(Func<Item, ItemStack[], int, bool> isAllowed, int size) : base(size)
     {
         this.isAllowed = isAllowed;
     }
 
     public override bool CanAddSlot(ItemStack toAdd, int index)
     {
-        if (isAllowed(toAdd?.Item, this))
+        if (isAllowed(toAdd?.Item, inv.ToArray(), index))
         {
             return base.CanAddSlot(toAdd, index);
         }

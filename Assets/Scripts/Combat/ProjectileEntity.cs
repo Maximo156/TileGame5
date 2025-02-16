@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -17,6 +18,7 @@ public class ProjectileEntity : MonoBehaviour
     float AOE;
     float pierces;
     AnimatedProjectile.AnimationInfo HitAnimation;
+    FiredProjectileInfo info;
 
     void Awake()
     {
@@ -27,12 +29,13 @@ public class ProjectileEntity : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Projectile");
     }
 
-    public void Setup(Projectile projectileBase, Vector2 position, Vector2 dir, ProjectileInfo projectileInfo, int renderLayer, Transform perpetrator, Transform target = null)
+    public void Setup(Projectile projectileBase, Vector2 position, Vector2 dir, FiredProjectileInfo projectileInfo, int renderLayer, Transform perpetrator, Transform target = null)
     {
-        transform.localScale = projectileBase.scale * projectileInfo.scaleMultiplier * Vector3.one;
+        info = projectileInfo;
+        transform.localScale = projectileBase.scale * projectileInfo.WeaponScale * Vector3.one;
         transform.position = position;
         transform.right = dir;
-        rb.velocity = projectileBase.speed * projectileInfo.speedMultiplier * dir.normalized;
+        rb.velocity = projectileBase.speed * projectileInfo.WeaponSpeed * dir.normalized;
         damage = projectileBase.damage + projectileInfo.WeaponDamage;
         sr.sprite = projectileBase.sprite;
         sr.color = projectileBase.color;
@@ -42,7 +45,6 @@ public class ProjectileEntity : MonoBehaviour
         Perpetrator = perpetrator;
         AOE = projectileBase.AOE;
         pierces = projectileBase.peirce;
-        Physics2D.IgnoreCollision(col, projectileInfo.UserCollider);
         if (projectileBase is AnimatedProjectile animatedProj)
         {
             HitAnimation = animatedProj.HitAnimation;
@@ -55,7 +57,9 @@ public class ProjectileEntity : MonoBehaviour
         {
             StartCoroutine(Track(trackingProj, target));
         }
-        StartCoroutine(LifeTimer(projectileBase.lifeTime));
+        var splitTimer = projectileInfo.Stages.First().split?.secondsBeforeSplit ?? int.MaxValue;
+        splitTimer = splitTimer == -1 ? int.MaxValue : splitTimer;
+        StartCoroutine(LifeTimer(Mathf.Min(projectileBase.lifeTime, splitTimer)));
     }
 
     private IEnumerator Animate(AnimatedProjectile.AnimationInfo animation, bool loop)
@@ -97,12 +101,17 @@ public class ProjectileEntity : MonoBehaviour
     }
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        if(info.IgnoreColliders.Contains(collision))
+        {
+            return;
+        }
         if (collision is TilemapCollider2D)
         {
             HitTarget();
         }
         else if (pierces >= 0)
         {
+            info.IgnoreColliders.Add(collision);
             collision.GetComponent<HitIngress>()?.Hit(new HitData { Damage = damage, Perpetrator = Perpetrator });
             if (pierces == 0) HitTarget();
             pierces -= 1;
@@ -121,7 +130,7 @@ public class ProjectileEntity : MonoBehaviour
                 hit.GetComponent<HitIngress>()?.Hit(new HitData { Damage = damage * (1 - dist / AOE), Perpetrator = Perpetrator });
             }
         }
-        if (HitAnimation?.ShouldAnimate == true)
+        if (HitAnimation?.ShouldAnimate == true && info.Stages.Count <= 1)
         {
             rb.velocity = Vector2.zero;
             StartCoroutine(Animate(HitAnimation, false));
@@ -134,6 +143,10 @@ public class ProjectileEntity : MonoBehaviour
 
     private void OnDisable()
     {
+        if (info.Stages.Count > 1)
+        {
+            ProjectileManager.FireStages(transform.position, rb.velocity, info, Perpetrator);
+        }
         Destroy(col);
         HitAnimation = null;
         StopAllCoroutines();
