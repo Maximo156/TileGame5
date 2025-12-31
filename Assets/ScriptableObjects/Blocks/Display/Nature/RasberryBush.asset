@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5dbbaf7717ecbe479e6cfc764907c24, type: 3}
-  m_Name: Tree2
+  m_Name: RasberryBush
   m_EditorClassIdentifier: 
   m_DefaultSprite: {fileID: 0}
-  m_DefaultGameObject: {fileID: 6030160118752515778, guid: ee314064217679745b8dbece9f839dd0, type: 3}
+  m_DefaultGameObject: {fileID: 2604606660418939028, guid: 60ac567d61f427a4798894866617d3d9, type: 3}
   m_DefaultColliderType: 0
   m_TilingRules: []

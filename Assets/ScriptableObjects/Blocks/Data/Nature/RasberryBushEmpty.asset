@@ -10,15 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
-  m_Name: RoseSeedling
+  m_Name: RasberryBushEmpty
   m_EditorClassIdentifier: 
-  Display: {fileID: 0}
-  HitsToBreak: 0
-  Drops: []
-  UiSprite: {fileID: 0}
+  Display: {fileID: 11400000, guid: a6ffda57895d55640a46df76c2c5daf0, type: 2}
+  HitsToBreak: 1
+  MovementModifier: 0
+  Drops:
+  - Item: {fileID: 11400000, guid: 871d58d8e70c8924ea26852b3642cc12, type: 2}
+    Count: 1
+  UiSprite: {fileID: -8911251428918342384, guid: 7d966fb53b128bd4b9f88fa7adc43765, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0
+  Walkable: 1
   MustBePlacedOn: []
-  nextBlock: {fileID: 0}
-  MeanSecondsToHappen: 0
+  nextBlock: {fileID: 11400000, guid: 38e87c58971837445a5b42b38a04bd4c, type: 2}
+  MeanSecondsToHappen: 5
