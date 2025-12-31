@@ -26,6 +26,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b7f4876881155e34a9e00c349b58eaa3, type: 2}
   - {fileID: 11400000, guid: 754c590d4e0716e4995f6ab995998b16, type: 2}
   - {fileID: 11400000, guid: 2b080dc3ff494a94496863448da50820, type: 2}
+  - {fileID: 11400000, guid: 6f069c4377c1cc7499903011f6df5cce, type: 2}
   SparceSoundSettings: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
   SparceDensity: 0.3
   NaturalMobs:

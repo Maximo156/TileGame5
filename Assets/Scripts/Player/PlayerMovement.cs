@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IHittable
 {
     public delegate void PlayerChangedChunks(Vector2Int newChunk);
     public static event PlayerChangedChunks OnPlayerChangedChunks;
@@ -16,11 +16,11 @@ public class PlayerMovement : MonoBehaviour
     public float deceletation;
     public bool useModifier = true;
 
-    private float curSpeed;
-
     private Vector2 movementDir;
     private Vector2 oldMovementDir;
     private Rigidbody2D rb2d;
+
+    private Timer hitTimer;
 
     // Start is called before the first frame update
     void Awake()
@@ -38,7 +38,8 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(movementDir.magnitude > 0 && curSpeed >= 0)
+        var curSpeed = rb2d.velocity.magnitude;
+        if (movementDir.magnitude > 0 && curSpeed >= 0 && hitTimer?.Expired != false)
         {
             oldMovementDir = movementDir;
             curSpeed += acceleration * speed * Time.deltaTime;
@@ -67,5 +68,10 @@ public class PlayerMovement : MonoBehaviour
     private void PortalUsed(string _, PortalBlock __, Vector2Int worldPos)
     {
         transform.position = worldPos.ToVector3Int() + Vector3.one * 0.5f;
+    }
+
+    public void Hit(HitData info)
+    {
+        hitTimer = new Timer(0.2f);
     }
 }

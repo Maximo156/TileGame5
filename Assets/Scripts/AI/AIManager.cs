@@ -37,7 +37,7 @@ public class AIManager : MonoBehaviour
     PathfindingManager PathFinder;
     AIBehaviorManager BehaviorManager;
 
-    List<IPathFinder> requestedPathfinders = new();
+    HashSet<IPathFinder> requestedPathfinders = new();
 
     public void Initialize(ConcurrentDictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth)
     {
@@ -151,11 +151,14 @@ public class AIManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         while (true)
         {
-            foreach(var kvp in SimulatedChunks.ToList())
+            if (WorldSettings.NaturalSpawn)
             {
-                if (kvp.Value.SpawnAI())
+                foreach (var kvp in SimulatedChunks.ToList())
                 {
-                    yield return null;
+                    if (kvp.Value.SpawnAI())
+                    {
+                        yield return null;
+                    }
                 }
             }
             yield return new WaitForSeconds(SpawnPassTime);

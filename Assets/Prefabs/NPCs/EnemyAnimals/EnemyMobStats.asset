@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74a028021b62cdf40806aba6ae353c05, type: 3}
-  m_Name: PlayerStats
+  m_Name: EnemyMobStats
   m_EditorClassIdentifier: 
   MaxHealth: 100
-  MaxHunger: 100
-  MaxMana: 100
+  MaxHunger: 0
+  MaxMana: 0
   DamageModifier: 0
   Defense: 0
   MovementModifier: 0
-  HealthRegen: 10
-  ManaRegen: 10
+  HealthRegen: 0.1
+  ManaRegen: 0
   HungerDepletion: 0
-  PickupRange: 3
+  PickupRange: 0

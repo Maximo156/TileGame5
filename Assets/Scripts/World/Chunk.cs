@@ -277,10 +277,14 @@ public partial class Chunk
                 updated[cur.ToVector3Int()] = curBlock.LightLevel;
                 continue;
             }
-            ChunkManager.TryGetBlock(cur + Vector2Int.up, out var up);
-            ChunkManager.TryGetBlock(cur + Vector2Int.down, out var down);
-            ChunkManager.TryGetBlock(cur + Vector2Int.left, out var left);
-            ChunkManager.TryGetBlock(cur + Vector2Int.right, out var right);
+            var foundNull = false;
+            foundNull |= !ChunkManager.TryGetBlock(cur + Vector2Int.up, out var up);
+            foundNull |= !ChunkManager.TryGetBlock(cur + Vector2Int.down, out var down);
+            foundNull |= !ChunkManager.TryGetBlock(cur + Vector2Int.left, out var left);
+            foundNull |= !ChunkManager.TryGetBlock(cur + Vector2Int.right, out var right);
+
+            if (foundNull) continue;
+
             var lrMax = Mathf.Max(AvailableLight(left), AvailableLight(right));
             bool lrSame = left.LightLevel == right.LightLevel;
             var udMax = Mathf.Max(AvailableLight(up), AvailableLight(down));
@@ -300,7 +304,7 @@ public partial class Chunk
         {
             OnLightingUpdated?.Invoke(updated);
         });
-        int AvailableLight(BlockSlice slice) => slice.WallBlock?.solid == true ? 0 : slice.LightLevel;
+        int AvailableLight(BlockSlice slice) => slice == null || slice.WallBlock?.solid == true ? 0 : slice.LightLevel;
     }
 
     Vector2Int WorldToLocal(Vector2Int worldPos)

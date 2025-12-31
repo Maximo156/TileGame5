@@ -57,7 +57,7 @@ public class ProjectileEntity : MonoBehaviour
         {
             StartCoroutine(Track(trackingProj, target));
         }
-        var splitTimer = projectileInfo.Stages.First().split?.secondsBeforeSplit ?? int.MaxValue;
+        var splitTimer = projectileInfo.CurStage()?.split?.secondsBeforeSplit ?? int.MaxValue;
         splitTimer = splitTimer == -1 ? int.MaxValue : splitTimer;
         StartCoroutine(LifeTimer(Mathf.Min(projectileBase.lifeTime, splitTimer)));
     }

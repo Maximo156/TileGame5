@@ -16,6 +16,7 @@ MonoBehaviour:
   MoistureSound: {fileID: 0}
   HeatSound: {fileID: 0}
   Biomes:
-  - {fileID: 11400000, guid: 1d9a2e79f17827740a73717ba55d1565, type: 2}
   - {fileID: 11400000, guid: 82f98715925acca42a7cd8d062f49295, type: 2}
+  WallBiomes:
+  - {fileID: 11400000, guid: 1d9a2e79f17827740a73717ba55d1565, type: 2}
   waterLevel: -1

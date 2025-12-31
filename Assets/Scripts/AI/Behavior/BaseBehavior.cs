@@ -20,6 +20,7 @@ public abstract class BaseBehavior : MonoBehaviour, IBehavior
     private void Awake()
     {
         navigator.ReachableRange = Range + 10;
+        animator.keepAnimatorStateOnDisable = true;
     }
 
     public abstract Vector2Int Step(float deltaTime);

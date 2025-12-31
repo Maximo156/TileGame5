@@ -19,7 +19,7 @@ MonoBehaviour:
   UiSprite: {fileID: 289868107, guid: 9b21cfbe1f3e52f4e8df2e1924d73bc9, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
-  solid: 0
+  solid: 1
   Walkable: 0
   MustBePlacedOn: []
   Dimensions: {x: 1, y: 2}

@@ -23,7 +23,7 @@ public class Hunger : EntityVariableStat
         base.OnTick();
         if(current <= 0)
         {
-            hitIngress.Hit(new HitData() { Damage = DamageWhenStarving });
+            hitIngress.Hit(new HitData() { Damage = DamageWhenStarving, Perpetrator = this.transform });
         }
     }
 }

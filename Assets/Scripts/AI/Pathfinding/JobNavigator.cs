@@ -14,6 +14,9 @@ public class JobNavigator : MonoBehaviour, IPathFinder
     public Animator animator;
     public SpriteRenderer sprite;
 
+    [Header("DEBUG")]
+    public bool monitor;
+
     NativeStack<int2> _path;
     int2 _goal;
     NativeList<int2> _reachable;
