@@ -178,7 +178,7 @@ public partial class Chunk
             var oldDisplay = slice.WallBlock.Display;
             if (interactable.Interact(worldPosition, slice))
             {
-                if (oldDisplay == slice.WallBlock.Display)
+                if (oldDisplay == slice.WallBlock?.Display)
                 {
                     RefreshBlock(worldPosition);
                 }

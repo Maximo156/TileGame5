@@ -8,8 +8,15 @@ public class HarvistableBlock : Wall, IInteractableBlock
     public Block AfterHarvest;
     public bool Interact(Vector2Int worldPos, BlockSlice slice)
     {
-        slice.SetBlock(AfterHarvest);
-        Utilities.DropItems(worldPos, Drops);
+        if (AfterHarvest != null)
+        {
+            slice.SetBlock(AfterHarvest);
+            Utilities.DropItems(worldPos, Drops);
+        }
+        else
+        {
+            slice.Break(worldPos, false, out var _);
+        }
         return true;
     }
 }

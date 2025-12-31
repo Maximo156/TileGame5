@@ -9,21 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c391e9543f7e944796946cb5ce48a18, type: 3}
   m_Name: WheatPlant
   m_EditorClassIdentifier: 
-  Display: {fileID: 11400000, guid: 1643ee31fa9f16c4f82ffc31c5417543, type: 2}
+  Display: {fileID: 11400000, guid: 3a8e581744e19c544b2f183eed3c2625, type: 2}
   HitsToBreak: 1
   MovementModifier: 0
   Drops:
-  - Item: {fileID: 11400000, guid: 705bb1a06405e3a41837f51fbbad7d2f, type: 2}
+  - Item: {fileID: 11400000, guid: 764d13356481b4f4b9917e6d2bdd29dd, type: 2}
     Count: 1
-  - Item: {fileID: 11400000, guid: 19a17c1e9c4d7be408b07665eb2ed64d, type: 2}
+  - Item: {fileID: 11400000, guid: 75e7df615a8d87344a2f1c7a8e2c0c95, type: 2}
     Count: 2
-  UiSprite: {fileID: -1443576745, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
+  UiSprite: {fileID: -821712453, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0
   Walkable: 1
   MustBePlacedOn:
   - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
+  AfterHarvest: {fileID: 0}

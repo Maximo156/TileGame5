@@ -16,7 +16,7 @@ MonoBehaviour:
   HitsToBreak: 1
   MovementModifier: 0
   Drops:
-  - Item: {fileID: 11400000, guid: 705bb1a06405e3a41837f51fbbad7d2f, type: 2}
+  - Item: {fileID: 11400000, guid: 19a17c1e9c4d7be408b07665eb2ed64d, type: 2}
     Count: 1
   UiSprite: {fileID: -1418517896, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
