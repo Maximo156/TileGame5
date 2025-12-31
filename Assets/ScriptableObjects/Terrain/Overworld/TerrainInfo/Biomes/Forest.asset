@@ -20,13 +20,23 @@ MonoBehaviour:
   RoofBlock: {fileID: 0}
   ReplacementInfos: []
   replaceSolid: 0
-  SparceBlocks:
-  - {fileID: 11400000, guid: ea2e43765346a0d4db8a61dffc46fa53, type: 2}
-  - {fileID: 11400000, guid: 0e267d7b6f060e545a266f15b4f0f478, type: 2}
-  - {fileID: 11400000, guid: b7f4876881155e34a9e00c349b58eaa3, type: 2}
-  - {fileID: 11400000, guid: 754c590d4e0716e4995f6ab995998b16, type: 2}
-  - {fileID: 11400000, guid: 2b080dc3ff494a94496863448da50820, type: 2}
-  - {fileID: 11400000, guid: 6f069c4377c1cc7499903011f6df5cce, type: 2}
+  SparceBlockInfos:
+  - Weight: 10
+    block: {fileID: 11400000, guid: 00815e3686198e349920f87a23ae674c, type: 2}
+  - Weight: 10
+    block: {fileID: 11400000, guid: 0e267d7b6f060e545a266f15b4f0f478, type: 2}
+  - Weight: 10
+    block: {fileID: 11400000, guid: b7f4876881155e34a9e00c349b58eaa3, type: 2}
+  - Weight: 10
+    block: {fileID: 11400000, guid: 754c590d4e0716e4995f6ab995998b16, type: 2}
+  - Weight: 10
+    block: {fileID: 11400000, guid: 2b080dc3ff494a94496863448da50820, type: 2}
+  - Weight: 2
+    block: {fileID: 11400000, guid: 726125bd18e2fef4eaed33dca25baf77, type: 2}
+  - Weight: 1
+    block: {fileID: 11400000, guid: 06500d31aae579e4587ad5a6abeeb0d3, type: 2}
+  - Weight: 2
+    block: {fileID: 11400000, guid: 38e87c58971837445a5b42b38a04bd4c, type: 2}
   SparceSoundSettings: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
   SparceDensity: 0.3
   NaturalMobs:

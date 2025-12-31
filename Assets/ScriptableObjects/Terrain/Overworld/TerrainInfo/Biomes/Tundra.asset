@@ -20,9 +20,12 @@ MonoBehaviour:
   RoofBlock: {fileID: 0}
   ReplacementInfos: []
   replaceSolid: 0
-  SparceBlocks:
-  - {fileID: 11400000, guid: 55da782d16942d749b1b92f564c9e703, type: 2}
-  - {fileID: 11400000, guid: 754c590d4e0716e4995f6ab995998b16, type: 2}
+  SparceBlocks: []
+  SparceBlockInfos:
+  - Weight: 1
+    block: {fileID: 11400000, guid: 55da782d16942d749b1b92f564c9e703, type: 2}
+  - Weight: 1
+    block: {fileID: 11400000, guid: 754c590d4e0716e4995f6ab995998b16, type: 2}
   SparceSoundSettings: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
   SparceDensity: 0.3
   NaturalMobs:

@@ -36,9 +36,16 @@ public class BiomePreset : ScriptableObject
     public List<ReplacementInfo> ReplacementInfos = new();
     Dictionary<Block, Block> ReplacementInfosDict;
 
+    [Serializable]
+    public class SparceBlockInfo
+    {
+        public string Name => block.name;
+        public int Weight;
+        public Block block;
+    }
     [Header("Sparce Blocks")]
     public bool replaceSolid = false;
-    public List<Block> SparceBlocks;
+    public List<SparceBlockInfo> SparceBlockInfos;
     public BaseSoundSettings SparceSoundSettings;
     public float SparceDensity;
 
@@ -57,10 +64,10 @@ public class BiomePreset : ScriptableObject
 
     public void SetSparce(Vector2Int worldPos, System.Random rand, BlockSlice slice)
     {
-        if (SparceSoundSettings is not null && SparceBlocks.Any() &&
+        if (SparceSoundSettings is not null && SparceBlockInfos.Any() &&
                  Mathf.Pow(SparceDensity * SparceSoundSettings.GetSound(worldPos.x, worldPos.y), 1.7f) > rand.NextDouble())
         {
-            var sparce = SparceBlocks.SelectRandom(rand);
+            var sparce = SparceBlockInfos.SelectRandomWeighted(b => b.Weight, b => b.block, rand);
             if (replaceSolid || (sparce is Ground && slice.GroundBlock is null) || (sparce is Wall && slice.WallBlock is null))
             {
                 slice.SetBlock(sparce);

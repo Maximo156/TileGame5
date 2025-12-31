@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
+  m_Name: PotatoMid
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: 679613328bf487a429d3e1462ee9795b, type: 2}
+  HitsToBreak: 1
+  MovementModifier: 0
+  Drops:
+  - Item: {fileID: 11400000, guid: 19a17c1e9c4d7be408b07665eb2ed64d, type: 2}
+    Count: 1
+  UiSprite: {fileID: 1258715432, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
+  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  structural: 0
+  solid: 0
+  Walkable: 1
+  MustBePlacedOn:
+  - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
+  nextBlock: {fileID: 11400000, guid: 726125bd18e2fef4eaed33dca25baf77, type: 2}
+  MeanSecondsToHappen: 5

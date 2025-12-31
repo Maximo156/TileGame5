@@ -5,11 +5,22 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewHarvistableBlock", menuName = "Block/HarvistableBlock", order = 1)]
 public class HarvistableBlock : Wall, IInteractableBlock
 {
+    [Header("Harvest Info")]
     public Block AfterHarvest;
+    public bool useOverrides;
+    public List<ItemStack> HarvestOverrides;
+
     public bool Interact(Vector2Int worldPos, BlockSlice slice)
     {
-        slice.SetBlock(AfterHarvest);
-        Utilities.DropItems(worldPos, Drops);
+        if (AfterHarvest != null)
+        {
+            slice.SetBlock(AfterHarvest);
+            Utilities.DropItems(worldPos, useOverrides ? HarvestOverrides : Drops);
+        }
+        else
+        {
+            slice.Break(worldPos, false, out var _);
+        }
         return true;
     }
 }

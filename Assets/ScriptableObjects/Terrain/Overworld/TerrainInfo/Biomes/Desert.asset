@@ -12,16 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4cbab98e168b724bab2c8fd4b8a4ddf, type: 3}
   m_Name: Desert
   m_EditorClassIdentifier: 
-  minHeight: 0.2
   minMoisture: 0
   minHeat: 0.5
+  minHeight: 0.2
   GroundBlock: {fileID: 11400000, guid: 8d6c38a4e5012244d94af4db58ff9f4b, type: 2}
   WallBlock: {fileID: 0}
   RoofBlock: {fileID: 0}
+  ReplacementInfos: []
   replaceSolid: 0
-  SparceBlocks:
-  - {fileID: 11400000, guid: 79b4db2c55ca4a54d95d79033cb1c872, type: 2}
-  - {fileID: 11400000, guid: 407ba473c8382294e9ccb87e8e601050, type: 2}
-  - {fileID: 11400000, guid: ff7f2e12a3c70ff4396a55a8178dfc30, type: 2}
+  SparceBlocks: []
+  SparceBlockInfos:
+  - Weight: 1
+    block: {fileID: 11400000, guid: 79b4db2c55ca4a54d95d79033cb1c872, type: 2}
+  - Weight: 1
+    block: {fileID: 11400000, guid: 407ba473c8382294e9ccb87e8e601050, type: 2}
+  - Weight: 1
+    block: {fileID: 11400000, guid: ff7f2e12a3c70ff4396a55a8178dfc30, type: 2}
   SparceSoundSettings: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
   SparceDensity: 0.2
+  NaturalMobs: []
