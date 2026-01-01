@@ -131,7 +131,11 @@ public class PlayerMouseInput : MonoBehaviour
     Vector2Int? CurInteractPos;
     private bool BlockInteract()
     {
-        if(!ChunkManager.Interact(mouseBlockPosition) && ChunkManager.TryGetBlock(mouseBlockPosition, out var slice) && slice.WallBlock is IInterfaceBlock)
+        if (ChunkManager.Interact(mouseBlockPosition))
+        {
+            return true;
+        }
+        if(ChunkManager.TryGetBlock(mouseBlockPosition, out var slice) && slice.WallBlock is IInterfaceBlock)
         {
             CurInteractPos = CurInteractPos == mouseBlockPosition ? null : mouseBlockPosition;
             OnBlockInterfaced?.Invoke(mouseBlockPosition, slice, playerInventory);
