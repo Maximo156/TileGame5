@@ -81,6 +81,20 @@ public class Inventory : IInventory, IInventoryContainer, IGridSource
     {
         inv = new ItemStack[count];
     }
+    
+    /// <summary>
+    /// Checks if we can add an item to the inventory
+    /// </summary>
+    /// <param name="stack">Stack to add</param>
+    /// <returns></returns>
+    public bool CanAddItem(ItemStack stack)
+    {
+        var locStack = stack;
+        var stackableCount = inv.Count(s => s != null && s.Item == locStack.Item && s.Count < locStack.Item.MaxStackSize);
+        
+        int nullIndex = inv.ToList().IndexOf(null);
+        return stackableCount > 0 || nullIndex != -1;
+    }
 
     public bool AddItem(ItemStack stack)
     {
