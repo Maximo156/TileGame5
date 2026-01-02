@@ -272,6 +272,7 @@ MonoBehaviour:
   MovementSpeed: 6
   animator: {fileID: 7873326469680123242}
   sprite: {fileID: 8965110494047570406}
+  monitor: 0
 --- !u!114 &7744316435978888967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,8 +291,8 @@ MonoBehaviour:
   ViewRange: 15
   runningModifier: 1.5
   Drops:
-  - Item: {fileID: 11400000, guid: bbd99bb00aaefd246bf455b2fe11ebf0, type: 2}
-    Count: 10
+  - Item: {fileID: 11400000, guid: 7a510a48e3f8a4bbfae8c9a5141f998c, type: 2}
+    Count: 1
   IdleTime: 10
   PanicTime: 10
   Edible:
