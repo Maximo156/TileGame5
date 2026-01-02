@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// Keeps track of all the active Items
 public class ItemEntityManager : MonoBehaviour
 {
     public GameObject ItemEntityPrefab;
