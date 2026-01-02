@@ -13,5 +13,23 @@ MonoBehaviour:
   m_Name: SingleItem
   m_EditorClassIdentifier: 
   Sprite: {fileID: -2757887451555568444, guid: ee34e5a1c592e1d4a80a47c7e0f2188a, type: 3}
+  Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 1
+  BurnTime: 0
+  Behaviors:
+  - rid: 8730737001659891963
+  - rid: 8730737001659891964
   MaxDurability: 10
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737001659891963
+      type: {class: TestBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        name: TestBehavior
+        a: 1
+    - rid: 8730737001659891964
+      type: {class: TestBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        name: TestBehavior
+        a: 1

@@ -114,10 +114,15 @@ public class ItemStack : IGridItem, IGridSource
 [CreateAssetMenu(fileName = "NewItem", menuName = "Inventory/Item", order = 1)]
 public class Item : ScriptableObject, ISpriteful, ISaveable
 {
+
     public Sprite Sprite;
     public Color Color = Color.white;
     public int MaxStackSize;
     public int BurnTime = 0;
+
+    [SerializeReference]
+    [ItemBehaviourListAttribute]
+    public List<ItemBehavior> Behaviors = new List<ItemBehavior>() { new TestBehavior(), new TestBehavior2() };
 
     public string formatedName => name.Replace("Block", "").Replace("Item", "").SplitCamelCase();
     public string Identifier { get; set; } 

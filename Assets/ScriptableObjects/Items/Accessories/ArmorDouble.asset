@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491e286e79cb0b24e8e45c7e57f68a2d, type: 3}
   m_Name: ArmorDouble
   m_EditorClassIdentifier: 
+  Behaviors:
+  - rid: 8730736998842368543
+  - rid: 8730736998842368544
   Sprite: {fileID: 3966636543240989683, guid: ee34e5a1c592e1d4a80a47c7e0f2188a, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 1
@@ -33,3 +36,16 @@ MonoBehaviour:
     StatType: 10
     value: 30
     Duration: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730736998842368543
+      type: {class: TestBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        name: 
+        a: 1
+    - rid: 8730736998842368544
+      type: {class: TestBehavior2, ns: , asm: Assembly-CSharp}
+      data:
+        name: 
+        b: 1
