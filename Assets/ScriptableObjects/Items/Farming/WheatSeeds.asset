@@ -16,7 +16,11 @@ MonoBehaviour:
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 99
   BurnTime: 0
+  Behaviors: []
   MaxDurability: 1
   Reach: 7
   m_Damage: 0
-  block: {fileID: 0}
+  block: {fileID: 11400000, guid: 5e6e4fbebdd449646997cfd12b6afb7f, type: 2}
+  references:
+    version: 2
+    RefIds: []

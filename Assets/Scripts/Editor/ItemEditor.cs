@@ -27,9 +27,7 @@ public class ItemEditor : DisplaySpriteEditor
         root.Add(button);
         button.clicked += () =>
         {
-            var options = new List<string> { "Option A", "Option B", "Option C", "Another option" };
-
-            var ItemBehaviorClasses = Utilities.GetAllConcreteSubclassesOf<ItemBehavior>().ToDictionary(t => t.Name, t => t);
+            var ItemBehaviorClasses =ItemBehavior.Types.ToDictionary(t => t.Name, t => t);
 
             SearchablePopup.Show(GetScreenRect(button), ItemBehaviorClasses.Keys.ToList(), selected =>
             {

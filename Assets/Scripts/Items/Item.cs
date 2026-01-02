@@ -121,7 +121,6 @@ public class Item : ScriptableObject, ISpriteful, ISaveable
     public int BurnTime = 0;
 
     [SerializeReference]
-    [ItemBehaviourListAttribute]
     public List<ItemBehavior> Behaviors = new List<ItemBehavior>() { new TestBehavior(), new TestBehavior2() };
 
     public string formatedName => name.Replace("Block", "").Replace("Item", "").SplitCamelCase();
