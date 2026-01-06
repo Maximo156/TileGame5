@@ -22,6 +22,8 @@ public class InfusableBehaviourState : ItemInventoryBehaviourState, IStateString
 
     }
 
+    public override IEnumerable<IGridItem> GetGridItems() => inv.GetAllItems(false);
+
     public string GetStateString(Item item)
     {
         item.GetBehavior<WeaponBehaviour>(out var weapon);

@@ -7779,8 +7779,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.000058850273, y: 0}
+  m_SizeDelta: {x: 445, y: 0}
   m_Pivot: {x: -0.0000001322478, y: 1}
 --- !u!114 &370629287
 MonoBehaviour:
@@ -31112,7 +31112,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 251.825, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1461943349
@@ -38276,7 +38276,7 @@ MonoBehaviour:
     Count: 1
   - Item: {fileID: 11400000, guid: 5be3a9bce6cbf4320b2702b16810af66, type: 2}
     Count: 99
-  - Item: {fileID: 11400000, guid: 89e05cb5ef19ea64e9a963950f6a4e58, type: 2}
+  - Item: {fileID: 11400000, guid: 705bb1a06405e3a41837f51fbbad7d2f, type: 2}
     Count: 99
   - Item: {fileID: 11400000, guid: f7ec5cee466216640bd5375a935da166, type: 2}
     Count: 1

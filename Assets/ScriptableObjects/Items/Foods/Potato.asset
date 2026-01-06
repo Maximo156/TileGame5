@@ -17,6 +17,7 @@ MonoBehaviour:
   MaxStackSize: 99
   BurnTime: 0
   Behaviors:
+  - rid: 8730737108205436948
   - rid: 8730737108205436941
   references:
     version: 2
@@ -25,8 +26,15 @@ MonoBehaviour:
       type: {class: ConsumableBehaviour, ns: , asm: Assembly-CSharp}
       data:
         name: ConsumableBehaviour
-        priority: 0
+        priority: 1
         Healing: 0
         ManaRestoration: 0
         HungerRestoration: 5
         Modifiers: []
+    - rid: 8730737108205436948
+      type: {class: PlaceBlockBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: PlaceBlockBehaviour
+        priority: 0
+        Reach: 7
+        block: {fileID: 11400000, guid: 49d9151de37688746a911db67db6d56c, type: 2}

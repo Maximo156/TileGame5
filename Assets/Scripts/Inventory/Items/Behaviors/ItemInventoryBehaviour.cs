@@ -16,5 +16,5 @@ public class ItemInventoryBehaviourState : ItemBehaviourState, IGridSource
         inv = new LimitedInventory(isAllowed, slots);
     }
 
-    public IEnumerable<IGridItem> GetGridItems() => inv.GetGridItems();
+    public virtual IEnumerable<IGridItem> GetGridItems() => inv.GetGridItems();
 }
