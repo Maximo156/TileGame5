@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 491e286e79cb0b24e8e45c7e57f68a2d, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: IronChest
   m_EditorClassIdentifier: 
   Sprite: {fileID: 8057395214944995007, guid: ee34e5a1c592e1d4a80a47c7e0f2188a, type: 3}
@@ -18,13 +18,7 @@ MonoBehaviour:
   BurnTime: 0
   Behaviors:
   - rid: 8730737013787721736
-  slotType: 1
-  Modifiers:
-  - display: {fileID: 0}
-    method: 0
-    StatType: 7
-    value: 10
-    Duration: 0
+  - rid: 8730737108205436947
   references:
     version: 2
     RefIds:
@@ -33,3 +27,14 @@ MonoBehaviour:
       data:
         name: DurabilityBehaviour
         MaxDurability: 100
+    - rid: 8730737108205436947
+      type: {class: AccessoryBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: AccessoryBehaviour
+        slotType: 1
+        Modifiers:
+        - display: {fileID: 0}
+          method: 0
+          StatType: 7
+          value: 10
+          Duration: 0

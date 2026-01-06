@@ -45,6 +45,13 @@ public abstract class ItemBehaviour
     {
         name = GetType().Name;
     }
+
+    public virtual string GetStatsString()
+    {
+        return string.Join('\n', this.ReadStats().OrderBy(kvp => kvp.Key)
+                                  .Where(kvp => kvp.Value != null)
+                                  .Select(s => s.Key.ToString().SplitCamelCase() + ": " + s.Value));
+    }
 }
 
 public abstract class ItemBehaviourState

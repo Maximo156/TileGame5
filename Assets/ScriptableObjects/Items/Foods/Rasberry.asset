@@ -9,14 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b56a913cd06d4bb46bf4e43b5176d331, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: Rasberry
   m_EditorClassIdentifier: 
   Sprite: {fileID: -1099612036, guid: e61cb0123c1cd4440933fc2859b68142, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 99
   BurnTime: 0
-  Healing: 0
-  ManaRestoration: 0
-  HungerRestoration: 5
-  Modifiers: []
+  Behaviors:
+  - rid: 8730737108205436943
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737108205436943
+      type: {class: ConsumableBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: ConsumableBehaviour
+        priority: 0
+        Healing: 0
+        ManaRestoration: 0
+        HungerRestoration: 5
+        Modifiers: []

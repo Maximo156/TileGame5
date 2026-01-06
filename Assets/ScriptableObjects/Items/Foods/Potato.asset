@@ -9,14 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b56a913cd06d4bb46bf4e43b5176d331, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: Potato
   m_EditorClassIdentifier: 
   Sprite: {fileID: -181571940, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 99
   BurnTime: 0
-  Healing: 0
-  ManaRestoration: 0
-  HungerRestoration: 5
-  Modifiers: []
+  Behaviors:
+  - rid: 8730737108205436941
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737108205436941
+      type: {class: ConsumableBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: ConsumableBehaviour
+        priority: 0
+        Healing: 0
+        ManaRestoration: 0
+        HungerRestoration: 5
+        Modifiers: []

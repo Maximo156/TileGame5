@@ -1,11 +1,10 @@
+using EntityStatistics;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using EntityStatistics;
 using System.Linq;
+using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewAccessory", menuName = "Inventory/Accessory", order = 1)]
-public class Accessory : Item
+public class AccessoryBehaviour : ItemBehaviour
 {
     public AccessoryInv.SlotType slotType;
 

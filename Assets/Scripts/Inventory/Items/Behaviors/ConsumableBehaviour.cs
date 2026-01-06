@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using EntityStatistics;
-using System.Linq;
 
-[CreateAssetMenu(fileName = "NewConsumableItem", menuName = "Inventory/ConsumableItem", order = 1)]
-public class Consumable : Item
+public class ConsumableBehaviour : UseBehavior
 {
     [Header("Consumable Stats")]
     [Stat("Health")]
@@ -19,12 +18,13 @@ public class Consumable : Item
 
     public List<BasicModifier.Info> Modifiers;
 
-    public override void Use(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
+    protected override(bool used, bool useDurability) UseImpl(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
     {
         useInfo.UserInfo.Health.ChangeStat(Healing);
         useInfo.UserInfo.Hunger.ChangeStat(HungerRestoration);
         useInfo.UserInfo.Stats.ApplyModifiers(Modifiers.Select(info => new BasicModifier(info)));
         useInfo.UsedFrom.RemoveItemIndex(useInfo.UsedIndex, 1);
+        return (true, false);
     }
 
     public override string GetStatsString()

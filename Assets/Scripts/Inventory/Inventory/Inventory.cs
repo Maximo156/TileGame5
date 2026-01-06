@@ -276,7 +276,7 @@ public class AccessoryInv : Inventory
 
     public override bool CanAddSlot(ItemStack toAdd, int index)
     {
-        if (toAdd?.Item is Accessory accessory)
+        if (toAdd.GetBehaviour<AccessoryBehaviour>(out var accessory))
         {
             return ((int)accessory.slotType == index) && base.CanAddSlot(toAdd, index);
         }

@@ -180,13 +180,10 @@ public class Item : ScriptableObject, ISpriteful, ISaveable
 
     public virtual string GetStatsString()
     {
-        var stats = Behaviors.SelectMany(b => b.ReadStats());
-        return string.Join('\n', stats.OrderBy(kvp => kvp.Key)
-                                  .Where(kvp => kvp.Value != null)
-                                  .Select(s => s.Key.ToString().SplitCamelCase() + ": " + s.Value));
+        return string.Join('\n', Behaviors.Select(b => b.GetStatsString()).Where(s => !string.IsNullOrEmpty(s)));
     }
 
-    public virtual void Use(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
+    public void Use(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
     {
         foreach(var useBehavior in Behaviors.Where(b => b is UseBehavior).Select(b => b as UseBehavior).OrderBy(b => b.priority))
         {
