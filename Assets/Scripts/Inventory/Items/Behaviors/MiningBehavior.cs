@@ -1,39 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-[CreateAssetMenu(fileName = "NewMiningTool", menuName = "Inventory/MiningTool", order = 1)]
-public class MiningTool : Tool
+public class MiningBehavior : RangedUseBehavior, IStatefulItemBehaviour
 {
-    [Header("Mining Settings")]
     public int BlockDamage;
-
-    public override bool PerformAction(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
+    protected override (bool used, bool useDurability) UseRanged(Vector3 usePosition, Vector3 targetPosition, UseInfo useInfo)
     {
-        if (CanReach(usePosition, targetPosition))
+        useInfo.stack.GetState<MiningBehaviorState>(out var miningState);
+        var targetBlock = Vector2Int.FloorToInt(targetPosition.ToVector2());
+        var info = BreakInfo.GetInfo();
+        var roof = miningState?.mineRoof ?? false;
+        if (info.dirty)
         {
-            var miningState = useInfo.state as MiningToolState;
-            var targetBlock = Vector2Int.FloorToInt(targetPosition.ToVector2());
-            var info = BreakInfo.GetInfo();
-            var roof = miningState.mineRoof;
-            if (info.dirty)
+            info.StartBreak(targetBlock, roof);
+        }
+        if (info.Hit(targetBlock, roof, BlockDamage))
+        {
+            if (ChunkManager.BreakBlock(targetBlock, roof) && useInfo.stack.GetState<DurabilityState>(out var durability))
             {
-                info.StartBreak(targetBlock, roof);
-            }
-            if (info.Hit(targetBlock, roof, BlockDamage))
-            {
-                if (ChunkManager.BreakBlock(targetBlock, roof) && useInfo.stack.GetState<DurabilityState>(out var state))
-                {
-                    state.ChangeDurability(-1);
-                    return true;
-                }
+                return (true, true);
             }
         }
-        return false;
+        return (true, false);
     }
 
-    public override ItemState GetItemState()
+    public ItemBehaviourState GetNewState()
     {
-        return new MiningToolState();
+        return new MiningBehaviorState();
     }
 
     private class BreakInfo
@@ -64,14 +58,14 @@ public class MiningTool : Tool
         public bool Hit(Vector2Int pos, bool roof, int Damage)
         {
             if (!ChunkManager.TryGetBlock(pos, out var _) ||
-                dirty || 
+                dirty ||
                 block == null)
             {
                 SetDirty();
                 return false;
             }
             hits += Damage;
-            if(hits >= block.HitsToBreak)
+            if (hits >= block.HitsToBreak)
             {
                 dirty = true;
                 return true;
@@ -91,7 +85,7 @@ public class MiningTool : Tool
     }
 }
 
-public class MiningToolState : ItemState, ICyclable
+public class MiningBehaviorState : ItemBehaviourState, IStateStringProvider, ICyclable
 {
     public bool mineRoof;
 
@@ -101,8 +95,10 @@ public class MiningToolState : ItemState, ICyclable
         TriggerStateChange();
     }
 
-    public override string GetStateString(Item _)
+    public string GetStateString(Item _)
     {
         return "Mode: " + (mineRoof ? "Roof" : "Regular");
     }
 }
+
+

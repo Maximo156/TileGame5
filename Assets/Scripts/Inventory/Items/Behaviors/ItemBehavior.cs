@@ -47,12 +47,6 @@ public abstract class ItemBehaviour
     }
 }
 
-[Serializable]
-public abstract class StatefulItemBehaviour : ItemBehaviour
-{
-    public abstract ItemBehaviourState GetNewState();
-}
-
 public abstract class ItemBehaviourState
 {
     public event Action OnStateChange;
@@ -61,4 +55,14 @@ public abstract class ItemBehaviourState
     {
         OnStateChange?.Invoke();
     }
+}
+
+public interface IStatefulItemBehaviour
+{
+    public ItemBehaviourState GetNewState();
+}
+
+public interface IStateStringProvider
+{
+    public string GetStateString(Item item);
 }

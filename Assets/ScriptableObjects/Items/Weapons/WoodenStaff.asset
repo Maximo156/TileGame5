@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a3ed2107d81cd34abf01a20930a93c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: WoodenStaff
   m_EditorClassIdentifier: 
   Sprite: {fileID: 266745953602077732, guid: a5983c79d9b5d824894da496e0acc63e, type: 3}
@@ -18,12 +18,9 @@ MonoBehaviour:
   BurnTime: 0
   Behaviors:
   - rid: 8730737013787721728
-  Type: 0
-  CharmSlots: 2
-  m_Damage: 0
-  ManaModifier: 2
-  projectileScale: 1
-  projectileSpeed: 1
+  - rid: 8730737108205436934
+  - rid: 8730737108205436935
+  - rid: 8730737108205436936
   references:
     version: 2
     RefIds:
@@ -32,3 +29,22 @@ MonoBehaviour:
       data:
         name: DurabilityBehaviour
         MaxDurability: 100
+    - rid: 8730737108205436934
+      type: {class: DamageBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DamageBehaviour
+        Damage: 10
+    - rid: 8730737108205436935
+      type: {class: WeaponBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: WeaponBehaviour
+        priority: 0
+        Type: 3
+        ManaModifier: 2
+        projectileScale: 1
+        projectileSpeed: 1
+    - rid: 8730737108205436936
+      type: {class: InfusableBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: InfusableBehaviour
+        charmSlots: 2

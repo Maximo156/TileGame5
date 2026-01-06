@@ -11,8 +11,8 @@ public class InfusionBlockDisplay : InteractiveDislay
     Inventory weaponSlot;
 
     public SingleInventoryDisplay WeaponInventoryDisplay;
-    InfusableState weaponState;
-    Inventory weaponInventory => weaponState?.Inventory.inv;
+    InfusableBehaviourState weaponState;
+    Inventory weaponInventory => weaponState?.inv;
 
     public ItemDrag ItemDrag;
 
@@ -53,7 +53,7 @@ public class InfusionBlockDisplay : InteractiveDislay
     {
         DetachWeaponInv();
         var item = weaponSlot.CheckSlot(0);
-        if(item is null || item.State is not InfusableState infusableState)
+        if(item is null || !item.GetState<InfusableBehaviourState>(out var infusableState))
         {
             return;
         }

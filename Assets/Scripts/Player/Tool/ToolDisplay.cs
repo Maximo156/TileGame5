@@ -130,11 +130,11 @@ public class ToolDisplay : MonoBehaviour
     public void OnRightClick(Vector3 ScreenPos)
     {
         if (curInHand is null) return;
-        if (curInHand.Item is IGridSource source)
+        if (curInHand.GetBehaviour<IGridSource>(out var source) && curInHand.GetState<IGridClickListener>(out var state))
         {
-            gridControl?.Display(ScreenPos, source, curInHand.State as IGridClickListener);
+            gridControl?.Display(ScreenPos, source, state);
         }
-        if(curInHand.State is ICyclable cycle)
+        if(curInHand.GetState<ICyclable>(out var cycle))
         {
             cycle.Cycle();
         }
@@ -160,7 +160,6 @@ public class ToolDisplay : MonoBehaviour
             mainCamera.ScreenToWorldPoint(ScreenPos),
             new UseInfo() {
                 stack = curInHand,
-                state = curInHand.State,
                 availableInventory = inventory,
                 UsedFrom = inventory.HotbarInv,
                 UsedIndex = curSlot,
@@ -198,11 +197,10 @@ public class ToolDisplay : MonoBehaviour
             return;
         }
 
-        if(!itemDamaged && curInHand.Item is IColliderListener listener)
+        if(!itemDamaged && curInHand.GetBehaviour<ICollisionBehaviour>(out var listener))
         {
             listener.OnCollision(new CollisionInfo()
             {
-                state = curInHand.State,
                 stack = curInHand
             });
             itemDamaged = true;
@@ -218,11 +216,10 @@ public class ToolDisplay : MonoBehaviour
             return;
         }
 
-        if (!itemDamaged && curInHand.Item is IColliderListener listener)
+        if (!itemDamaged && curInHand.GetBehaviour<ICollisionBehaviour>(out var listener))
         {
             listener.OnCollision(new CollisionInfo()
             {
-                state = curInHand.State,
                 stack = curInHand
             });
             itemDamaged = true;

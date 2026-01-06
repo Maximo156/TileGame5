@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ItemCharm : Item
 {
-    public Weapon.WeaponType? WeaponType;
+    public WeaponBehaviour.WeaponType? WeaponType;
     [Stat("ManaCost")]
     public float manaCost;
     [Stat("CostModifier")]

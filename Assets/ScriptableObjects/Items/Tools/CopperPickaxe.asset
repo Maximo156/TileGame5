@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06a3c9e25f2713c428ab33f58845afd6, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: CopperPickaxe
   m_EditorClassIdentifier: 
   Sprite: {fileID: -39060655, guid: 57083b8bbaa162d469074b66d7056608, type: 3}
@@ -18,9 +18,8 @@ MonoBehaviour:
   BurnTime: 0
   Behaviors:
   - rid: 8730737013787721732
-  Reach: 7
-  m_Damage: 0
-  BlockDamage: 1
+  - rid: 8730737088419332098
+  - rid: 8730737088419332099
   references:
     version: 2
     RefIds:
@@ -29,3 +28,15 @@ MonoBehaviour:
       data:
         name: DurabilityBehaviour
         MaxDurability: 100
+    - rid: 8730737088419332098
+      type: {class: DamageBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DamageBehaviour
+        Damage: 1
+    - rid: 8730737088419332099
+      type: {class: MiningBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        name: MiningBehavior
+        priority: 0
+        Reach: 7
+        BlockDamage: 1

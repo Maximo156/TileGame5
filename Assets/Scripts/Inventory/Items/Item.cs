@@ -13,22 +13,6 @@ public class ItemStack : IGridItem, IGridSource
     public Item Item;
     public int Count;
 
-    private ItemState _state;
-    public ItemState State { get => _state; 
-        private set
-        {
-            if (_state != null)
-            {
-                _state.OnStateChange -= TriggerStateChange;
-            }
-            _state = value;
-            if (_state != null)
-            {
-                _state.OnStateChange += TriggerStateChange;
-            }
-        }
-    }
-
     private Dictionary<Type, ItemBehaviourState> _behaviorStates;
 
     private Dictionary<Type, ItemBehaviourState> BehaviorStates
@@ -48,9 +32,9 @@ public class ItemStack : IGridItem, IGridSource
         }
     }
 
-    public bool GetBehaviour<T, TState>(out T behaviour, out TState state) where T : StatefulItemBehaviour where TState : ItemBehaviourState
+    public bool GetBehaviour<T, TState>(out T behaviour, out TState state) where T : class, IStatefulItemBehaviour where TState : ItemBehaviourState
     {
-        behaviour = (T)Item.Behaviors?.FirstOrDefault(b => b.GetType() == typeof(T));
+        behaviour = Item.Behaviors?.FirstOrDefault(b => b.GetType() == typeof(T)) as T;
         
         if (behaviour == null)
         {
@@ -70,16 +54,14 @@ public class ItemStack : IGridItem, IGridSource
         return true;
     }
 
-    public bool GetBehaviour<T>(out T behaviour) where T : ItemBehaviour
+    public bool GetBehaviour<T>(out T behaviour) where T : class
     {
-        behaviour = (T)Item.Behaviors.FirstOrDefault(b => b.GetType() == typeof(T));
-
-        return behaviour != null;
+        return Item.GetBehavior<T>(out behaviour);
     }
 
-    public bool GetState<T>(out T state) where T : ItemBehaviourState
+    public bool GetState<T>(out T state) where T : class
     {
-        state = (T)BehaviorStates.Values.FirstOrDefault(b => b.GetType() == typeof(T));
+        state = BehaviorStates.Values.FirstOrDefault(b => typeof(T).IsAssignableFrom(b.GetType())) as T;
 
         return state != null;
     }
@@ -95,7 +77,6 @@ public class ItemStack : IGridItem, IGridSource
     {
         Item = item;
         Count = count;
-        State = item.GetItemState();
         BehaviorStates = item.GetBehaviorStates();
     }
 
@@ -103,7 +84,6 @@ public class ItemStack : IGridItem, IGridSource
     {
         Item = ItemStack.Item;
         Count = ItemStack.Count;
-        State = ItemStack.State ?? Item.GetItemState();
         BehaviorStates = ItemStack.BehaviorStates ?? Item.GetBehaviorStates();
     }
 
@@ -153,9 +133,8 @@ public class ItemStack : IGridItem, IGridSource
 
     public (string, string) GetTooltipString()
     {
-        var stateString = State?.GetStateString(Item);
-        var statsString = Item.GetStatsString();
-        string StatsString = string.Join('\n', (new []{ statsString, stateString }).Where(s => !string.IsNullOrWhiteSpace(s)));
+        var strings = BehaviorStates.Values.Select(s => (s as IStateStringProvider)?.GetStateString(Item) ?? "").Append(Item.GetStatsString());
+        string StatsString = string.Join('\n',strings.Where(s => !string.IsNullOrWhiteSpace(s)));
         return (Item.formatedName, StatsString);
     }
 
@@ -166,7 +145,14 @@ public class ItemStack : IGridItem, IGridSource
 
     public Color GetColor() => Item.Color;
 
-    public IEnumerable<IGridItem> GetGridItems() => (State as IGridSource)?.GetGridItems() ?? Enumerable.Empty<IGridItem>();
+    public IEnumerable<IGridItem> GetGridItems()
+    {
+        if(GetState<IGridSource>(out var source))
+        {
+            return source.GetGridItems();
+        }
+        return Enumerable.Empty<IGridItem>();
+    }
 }
 
 [CreateAssetMenu(fileName = "NewItem", menuName = "Inventory/Item", order = 1)]
@@ -185,9 +171,16 @@ public class Item : ScriptableObject, ISpriteful, ISaveable
     public string Identifier { get; set; } 
     Sprite ISpriteful.Sprite => Sprite;
 
+    public bool GetBehavior<T>(out T behaviour) where T : class
+    {
+        behaviour = Behaviors.FirstOrDefault(b => typeof(T).IsAssignableFrom(b.GetType())) as T;
+
+        return behaviour != null;
+    }
+
     public virtual string GetStatsString()
     {
-        var stats = this.ReadStats();
+        var stats = Behaviors.SelectMany(b => b.ReadStats());
         return string.Join('\n', stats.OrderBy(kvp => kvp.Key)
                                   .Where(kvp => kvp.Value != null)
                                   .Select(s => s.Key.ToString().SplitCamelCase() + ": " + s.Value));
@@ -209,30 +202,9 @@ public class Item : ScriptableObject, ISpriteful, ISaveable
         Identifier = name;
     }
 
-    public virtual ItemState GetItemState()
-    {
-        return null;
-    }
-
     public Dictionary<Type, ItemBehaviourState> GetBehaviorStates()
     {
-        return Behaviors.Where(b => b is StatefulItemBehaviour).ToDictionary(b => b.GetType(), b => (b as StatefulItemBehaviour).GetNewState());
-    }
-}
-
-public abstract class ItemState
-{
-    public delegate void ItemStateChanged();
-    public event ItemStateChanged OnStateChange;
-
-    public void TriggerStateChange()
-    {
-        OnStateChange?.Invoke();
-    }
-
-    public virtual string GetStateString(Item item)
-    {
-        return "";
+        return Behaviors.Where(b => b is IStatefulItemBehaviour).ToDictionary(b => b.GetType(), b => (b as IStatefulItemBehaviour).GetNewState());
     }
 }
 
@@ -247,13 +219,11 @@ public interface IColliderListener
 
 public struct CollisionInfo
 {
-    public ItemState state;
     public ItemStack stack;
 }
 
 public struct UseInfo
 {
-    public ItemState state;
     public ItemStack stack;
     public IInventoryContainer availableInventory;
     public Inventory UsedFrom;

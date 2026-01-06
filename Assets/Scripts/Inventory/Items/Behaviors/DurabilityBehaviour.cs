@@ -1,11 +1,11 @@
 using System;
 
 [Serializable]
-public class DurabilityBehaviour : StatefulItemBehaviour
+public class DurabilityBehaviour : ItemBehaviour, IStatefulItemBehaviour
 {
     public float MaxDurability = 100;
 
-    public override ItemBehaviourState GetNewState()
+    public ItemBehaviourState GetNewState()
     {
         return new DurabilityState(MaxDurability);
     }
