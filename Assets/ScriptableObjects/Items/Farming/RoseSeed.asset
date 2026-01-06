@@ -9,13 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4aa4439cdb41bdc4ca5158b32b5e39e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: RoseSeed
   m_EditorClassIdentifier: 
   Sprite: {fileID: -1756735466, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 99
   BurnTime: 0
-  MaxDurability: 0
-  Reach: 7
-  block: {fileID: 11400000, guid: 7b576f882fac045b4a8a534aca77f9fb, type: 2}
+  Behaviors:
+  - rid: 8730737013787721740
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737013787721740
+      type: {class: PlaceBlockBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: PlaceBlockBehaviour
+        priority: 0
+        Reach: 7
+        block: {fileID: 11400000, guid: 7b576f882fac045b4a8a534aca77f9fb, type: 2}

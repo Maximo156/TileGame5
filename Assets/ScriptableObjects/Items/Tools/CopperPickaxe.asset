@@ -16,7 +16,16 @@ MonoBehaviour:
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 1
   BurnTime: 0
-  MaxDurability: 50
+  Behaviors:
+  - rid: 8730737013787721732
   Reach: 7
   m_Damage: 0
   BlockDamage: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737013787721732
+      type: {class: DurabilityBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DurabilityBehaviour
+        MaxDurability: 100

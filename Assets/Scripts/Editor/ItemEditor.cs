@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [CustomEditor(typeof(Item), true)]
+[CanEditMultipleObjects]
 public class ItemEditor : DisplaySpriteEditor
 {
     public override VisualElement CreateInspectorGUI()
@@ -27,11 +28,11 @@ public class ItemEditor : DisplaySpriteEditor
         root.Add(button);
         button.clicked += () =>
         {
-            var ItemBehaviorClasses =ItemBehavior.Types.ToDictionary(t => t.Name, t => t);
+            var ItemBehaviorClasses =ItemBehaviour.Types.ToDictionary(t => t.Name, t => t);
 
             SearchablePopup.Show(GetScreenRect(button), ItemBehaviorClasses.Keys.ToList(), selected =>
             {
-                ItemBehavior instance = (ItemBehavior)Activator.CreateInstance(ItemBehaviorClasses[selected]);
+                ItemBehaviour instance = (ItemBehaviour)Activator.CreateInstance(ItemBehaviorClasses[selected]);
 
                 int index = itemBehaviors.arraySize;
                 itemBehaviors.InsertArrayElementAtIndex(index);

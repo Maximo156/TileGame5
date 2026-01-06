@@ -21,9 +21,9 @@ public class MiningTool : Tool
             }
             if (info.Hit(targetBlock, roof, BlockDamage))
             {
-                if (ChunkManager.BreakBlock(targetBlock, roof))
+                if (ChunkManager.BreakBlock(targetBlock, roof) && useInfo.stack.GetState<DurabilityState>(out var state))
                 {
-                    miningState.Durability.ChangeDurability(-1);
+                    state.ChangeDurability(-1);
                     return true;
                 }
             }
@@ -33,7 +33,7 @@ public class MiningTool : Tool
 
     public override ItemState GetItemState()
     {
-        return new MiningToolState(this);
+        return new MiningToolState();
     }
 
     private class BreakInfo
@@ -91,15 +91,9 @@ public class MiningTool : Tool
     }
 }
 
-public class MiningToolState : ItemState, IDurableState, ICyclable
+public class MiningToolState : ItemState, ICyclable
 {
     public bool mineRoof;
-    public DurableState Durability { get; }
-
-    public MiningToolState(MiningTool tool)
-    {
-        Durability = new(tool, this);
-    }
 
     public void Cycle()
     {

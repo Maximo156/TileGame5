@@ -16,7 +16,19 @@ MonoBehaviour:
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 1
   BurnTime: 0
-  MaxDurability: 10
+  Behaviors:
+  - rid: 8730737013787721729
   Type: 0
   CharmSlots: 0
   m_Damage: 5
+  ManaModifier: 1
+  projectileScale: 0
+  projectileSpeed: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737013787721729
+      type: {class: DurabilityBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DurabilityBehaviour
+        MaxDurability: 100

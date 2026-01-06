@@ -16,9 +16,20 @@ MonoBehaviour:
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 1
   BurnTime: 0
+  Behaviors:
+  - rid: 8730737013787721736
   slotType: 1
   Modifiers:
-  - method: 0
+  - display: {fileID: 0}
+    method: 0
     StatType: 7
     value: 10
     Duration: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737013787721736
+      type: {class: DurabilityBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DurabilityBehaviour
+        MaxDurability: 100

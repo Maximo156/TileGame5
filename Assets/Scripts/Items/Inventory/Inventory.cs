@@ -54,7 +54,7 @@ public class Inventory : IInventory, IInventoryContainer, IGridSource
     private bool ItemIsValid(ItemStack stack)
     {
         if (stack == null) return false;
-        if (stack.State is IDurableState durable && durable.Durability.CurDurability <= 0) return false;
+        if (stack.GetState<DurabilityState>(out var durability) && durability.CurDurability <= 0) return false;
         return true;
     }
 

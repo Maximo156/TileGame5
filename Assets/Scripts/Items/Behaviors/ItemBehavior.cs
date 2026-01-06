@@ -6,7 +6,7 @@ using UnityEditor.Compilation;
 using UnityEngine;
 
 [Serializable]
-public abstract class ItemBehavior
+public abstract class ItemBehaviour
 {
     #region Static Caching
     private static List<Type> cachedTypes;
@@ -21,7 +21,7 @@ public abstract class ItemBehavior
         }
     }
 
-    static ItemBehavior()
+    static ItemBehaviour()
     {
         BuildCache();
 
@@ -34,27 +34,31 @@ public abstract class ItemBehavior
 
     private static void BuildCache()
     {
-        cachedTypes = Utilities.GetAllConcreteSubclassesOf<ItemBehavior>();
+        cachedTypes = Utilities.GetAllConcreteSubclassesOf<ItemBehaviour>();
     }
     #endregion
 
     [HideInInspector]
     public string name;
 
-    public ItemBehavior() 
+    public ItemBehaviour() 
     {
         name = GetType().Name;
     }
 }
 
 [Serializable]
-public class TestBehavior : ItemBehavior
+public abstract class StatefulItemBehaviour : ItemBehaviour
 {
-    public int a = 1;
+    public abstract ItemBehaviourState GetNewState();
 }
 
-[Serializable]
-public class TestBehavior2 : ItemBehavior
+public abstract class ItemBehaviourState
 {
-    public int b = 1;
+    public event Action OnStateChange;
+
+    protected void TriggerStateChange()
+    {
+        OnStateChange?.Invoke();
+    }
 }

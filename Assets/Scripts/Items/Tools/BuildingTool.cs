@@ -34,20 +34,13 @@ public class BuildingTool : Tool, IGridSource
 
     public override ItemState GetItemState()
     {
-        return new BuildingToolState(this);
+        return new BuildingToolState();
     }
 }
 
-public class BuildingToolState : ItemState, IDurableState, IGridClickListener
+public class BuildingToolState : ItemState, IGridClickListener
 {
     public BlockRecipe selectedRecipe;
-
-    public DurableState Durability { get; }
-
-    public BuildingToolState(BuildingTool tool)
-    {
-        Durability = new DurableState(tool, this);
-    }
 
     public void OnClick(IGridItem item)
     {

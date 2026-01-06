@@ -114,7 +114,7 @@ public class InfusionBlockDisplay : InteractiveDislay
     public void FractureItem()
     {
         if (weaponInventory is null || WorldPos is null) return;
-        var chance = weaponSlot.CheckSlot(0)?.State is IDurableState durable ? durable.Durability.CurDurability * 1f / durable.Durability.MaxDurability : 1;
+        var chance = (weaponSlot.CheckSlot(0)?.GetBehaviour<DurabilityBehaviour, DurabilityState>(out var behaviour, out var durability) ?? false )? durability.CurDurability * 1f / behaviour.MaxDurability : 1;
         var toDrop = weaponInventory.GetAllItems(false).Where(i => UnityEngine.Random.Range(0, 1f) < chance);
         Utilities.DropItems(WorldPos.Value, toDrop);
         weaponSlot.RemoveItemIndex(0);

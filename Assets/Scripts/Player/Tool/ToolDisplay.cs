@@ -159,6 +159,7 @@ public class ToolDisplay : MonoBehaviour
             transform.parent.position, 
             mainCamera.ScreenToWorldPoint(ScreenPos),
             new UseInfo() {
+                stack = curInHand,
                 state = curInHand.State,
                 availableInventory = inventory,
                 UsedFrom = inventory.HotbarInv,
@@ -201,12 +202,13 @@ public class ToolDisplay : MonoBehaviour
         {
             listener.OnCollision(new CollisionInfo()
             {
-                state = curInHand.State
+                state = curInHand.State,
+                stack = curInHand
             });
             itemDamaged = true;
         }
         
-        collision.GetComponentInParent<HitIngress>()?.Hit(new HitData { Damage = (curInHand?.Item as IDamageItem)?.Damage ?? 0, Perpetrator = transform.parent });
+        collision.GetComponentInParent<HitIngress>()?.Hit(new HitData { Damage = (curInHand?.GetBehaviour<DamageBehaviour>(out var damage) ?? false) ? damage.Damage : 0, Perpetrator = transform.parent });
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -220,7 +222,8 @@ public class ToolDisplay : MonoBehaviour
         {
             listener.OnCollision(new CollisionInfo()
             {
-                state = curInHand.State
+                state = curInHand.State,
+                stack = curInHand
             });
             itemDamaged = true;
         }

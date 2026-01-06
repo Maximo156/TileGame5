@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewWeapon", menuName = "Inventory/Weapon", order = 1)]
-public class Weapon : DurableItem, IColliderListener, IDamageItem
+public class Weapon : Item, IColliderListener
 {
     public enum WeaponType
     {
@@ -16,7 +16,7 @@ public class Weapon : DurableItem, IColliderListener, IDamageItem
     [Header("Weapon Info")]
     public WeaponType Type;
     public int CharmSlots;
-    public int m_Damage;
+    //public int m_Damage;
     [Stat("ManaModifier", defaultValue: 1)]
     public float ManaModifier = 1;
 
@@ -27,13 +27,13 @@ public class Weapon : DurableItem, IColliderListener, IDamageItem
     public float projectileSpeed;
 
 
-    public int Damage => m_Damage;
+    //public int Damage => m_Damage;
 
     public void OnCollision(CollisionInfo info)
     {
-        if (MaxDurability > 0)
+        if (info.stack.GetState<DurabilityState>(out var state))
         {
-            (info.state as IDurableState)?.Durability.ChangeDurability(-1);
+            state.ChangeDurability(-1);
         }
     }
 
@@ -58,14 +58,14 @@ public class Weapon : DurableItem, IColliderListener, IDamageItem
 
     public override ItemState GetItemState()
     {
-        return new InfusableState(this, CharmSlots);
+        return new InfusableState(CharmSlots);
     }
 
     protected void FireProjectile(Vector3 usePosition, Vector3 dir, UseInfo useInfo)
     {
         FiredProjectileInfo modifier = FiredProjectileInfo.one;
         modifier.IgnoreColliders.Add(useInfo.ignoreCollider);
-        modifier.WeaponDamage = Damage;
+        modifier.WeaponDamage = 100;
         modifier.WeaponScale = projectileScale;
         modifier.WeaponSpeed = projectileSpeed;
         modifier.Stages = GetStages(useInfo);
@@ -75,9 +75,9 @@ public class Weapon : DurableItem, IColliderListener, IDamageItem
             ProjectileManager.FireStages(usePosition, dir, modifier, useInfo.UserInfo.transform);
 
 
-            if (MaxDurability > 0)
+            if (useInfo.stack.GetState<DurabilityState>(out var state))
             {
-                (useInfo.state as IDurableState)?.Durability.ChangeDurability(-1);
+                state.ChangeDurability(-1);
             }
         }
 
@@ -105,18 +105,15 @@ public class Weapon : DurableItem, IColliderListener, IDamageItem
     }
 }
 
-public class InfusableState : ItemState, IItemInventoryState, IDurableState, IGridSource
+public class InfusableState : ItemState, IItemInventoryState, IGridSource
 {
     public ItemInventoryState Inventory { get; }
 
-    public DurableState Durability { get; }
-
     public List<Stage> stages = new List<Stage>();
 
-    public InfusableState(DurableItem durability, int charmSlots)
+    public InfusableState(int charmSlots)
     {
         Inventory = new ItemInventoryState(CharmAllowedInSlot, charmSlots);
-        Durability = new DurableState(durability, this);
     }
 
     bool CharmAllowedInSlot(Item item, ItemStack[] items, int index)

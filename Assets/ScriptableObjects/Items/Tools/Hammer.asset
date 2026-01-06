@@ -16,8 +16,10 @@ MonoBehaviour:
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 1
   BurnTime: 0
-  MaxDurability: 1000
+  Behaviors:
+  - rid: 8730737013787721733
   Reach: 7
+  m_Damage: 0
   BuildingCategories:
   - name: Floors
     sprite: {fileID: 44627939, guid: 581d88950f593a74887ce8ee6c22bc6f, type: 3}
@@ -56,3 +58,11 @@ MonoBehaviour:
     - block: {fileID: 11400000, guid: 21ea753720df4014d8264935c1fc2a07, type: 2}
     - block: {fileID: 11400000, guid: a0891015ee4d57243b9264b38c32dd83, type: 2}
     - block: {fileID: 11400000, guid: 435ff1008e43d43bc9d43e6d946213be, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737013787721733
+      type: {class: DurabilityBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DurabilityBehaviour
+        MaxDurability: 100
