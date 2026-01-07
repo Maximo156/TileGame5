@@ -20,7 +20,6 @@ MonoBehaviour:
   RoofBlock: {fileID: 0}
   ReplacementInfos: []
   replaceSolid: 0
-  SparceBlocks: []
   SparceBlockInfos:
   - Weight: 1
     block: {fileID: 11400000, guid: 55da782d16942d749b1b92f564c9e703, type: 2}
@@ -37,3 +36,12 @@ MonoBehaviour:
     MaxCount: 3
     Weight: 1
     Prefab: {fileID: 6732792351147766889, guid: 97c7d89dc3fddad48b4fde616dc2b77b, type: 3}
+  HostileMobs:
+  - MinCount: 1
+    MaxCount: 2
+    Weight: 1
+    Prefab: {fileID: 7384479284224186033, guid: 8f154a6188c0b3e4bb7e3696d1d440a3, type: 3}
+  - MinCount: 1
+    MaxCount: 2
+    Weight: 1
+    Prefab: {fileID: 7384479284224186033, guid: c9543cb63208c464b8000a4afd3c99c6, type: 3}

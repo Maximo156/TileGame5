@@ -17,6 +17,5 @@ public class KnockBack : MonoBehaviour, IHittable
     {
         var dif = transform.position - info.Perpetrator.position;
         rb.AddForce(force * dif.normalized, ForceMode2D.Impulse);
-        print(dif);
     }
 }

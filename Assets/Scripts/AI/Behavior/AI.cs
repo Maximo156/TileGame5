@@ -8,7 +8,7 @@ public class AI : MonoBehaviour, IAI
     public JobNavigator navigator;
     public BaseBehavior baseBehavior;
     public bool m_Natural = true;
-
+    public bool m_Hostile = false;
     public Transform Transform => transform;
 
     public IPathFinder pathfinder => navigator;
@@ -18,6 +18,7 @@ public class AI : MonoBehaviour, IAI
     public IAI ai => this;
 
     public bool Natural => m_Natural;
+    public bool Hostile => m_Hostile;
 
     private void Start()
     {

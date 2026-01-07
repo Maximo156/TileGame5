@@ -15,6 +15,7 @@ public interface IAI
     public IBehavior behavior { get; }
     public Transform Transform { get; }
     public bool Natural { get; }
+    public bool Hostile { get; }
 
     public void Register()
     {
@@ -80,6 +81,7 @@ public class AIManager : MonoBehaviour
             {
                 SimulatedChunks[chunkPos] = chunk;
                 chunk.EnableContainer(true);
+                chunk.SpawnAI();
             }
         }
         foreach (var chunk in SimulatedChunks.Where(chunk => !importantChunks.Contains(chunk.Key)).ToList())

@@ -343,6 +343,7 @@ MonoBehaviour:
   navigator: {fileID: 274959}
   baseBehavior: {fileID: 274958}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &274961
 Animator:
   serializedVersion: 5
@@ -965,6 +966,7 @@ MonoBehaviour:
   navigator: {fileID: 34318364}
   baseBehavior: {fileID: 34318363}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &34318366
 Animator:
   serializedVersion: 5
@@ -1684,6 +1686,7 @@ MonoBehaviour:
   navigator: {fileID: 68632685}
   baseBehavior: {fileID: 68632684}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &68632687
 Animator:
   serializedVersion: 5
@@ -1977,6 +1980,7 @@ MonoBehaviour:
   navigator: {fileID: 70424809}
   baseBehavior: {fileID: 70424808}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &70424811
 Animator:
   serializedVersion: 5
@@ -2949,6 +2953,7 @@ MonoBehaviour:
   navigator: {fileID: 142268453}
   baseBehavior: {fileID: 142268452}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &142268455
 Animator:
   serializedVersion: 5
@@ -3651,6 +3656,7 @@ MonoBehaviour:
   navigator: {fileID: 176399326}
   baseBehavior: {fileID: 176399325}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &176399328
 Animator:
   serializedVersion: 5
@@ -4110,6 +4116,7 @@ MonoBehaviour:
   navigator: {fileID: 182194751}
   baseBehavior: {fileID: 182194750}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &182194753
 Animator:
   serializedVersion: 5
@@ -4823,6 +4830,7 @@ MonoBehaviour:
   navigator: {fileID: 241913276}
   baseBehavior: {fileID: 241913275}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &241913278
 Animator:
   serializedVersion: 5
@@ -5116,6 +5124,7 @@ MonoBehaviour:
   navigator: {fileID: 250539780}
   baseBehavior: {fileID: 250539779}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &250539782
 Animator:
   serializedVersion: 5
@@ -5409,6 +5418,7 @@ MonoBehaviour:
   navigator: {fileID: 264171865}
   baseBehavior: {fileID: 264171864}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &264171867
 Animator:
   serializedVersion: 5
@@ -5739,6 +5749,7 @@ MonoBehaviour:
   navigator: {fileID: 275642476}
   baseBehavior: {fileID: 275642475}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &275642478
 Animator:
   serializedVersion: 5
@@ -6292,6 +6303,7 @@ MonoBehaviour:
   navigator: {fileID: 294372217}
   baseBehavior: {fileID: 294372216}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &294372219
 Animator:
   serializedVersion: 5
@@ -6862,6 +6874,7 @@ MonoBehaviour:
   navigator: {fileID: 328120501}
   baseBehavior: {fileID: 328120500}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &328120503
 Animator:
   serializedVersion: 5
@@ -7155,6 +7168,7 @@ MonoBehaviour:
   navigator: {fileID: 333928411}
   baseBehavior: {fileID: 333928410}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &333928413
 Animator:
   serializedVersion: 5
@@ -7666,6 +7680,7 @@ MonoBehaviour:
   navigator: {fileID: 351476003}
   baseBehavior: {fileID: 351476002}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &351476005
 Animator:
   serializedVersion: 5
@@ -8082,6 +8097,7 @@ MonoBehaviour:
   navigator: {fileID: 378757543}
   baseBehavior: {fileID: 378757542}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &378757545
 Animator:
   serializedVersion: 5
@@ -8375,6 +8391,7 @@ MonoBehaviour:
   navigator: {fileID: 385647533}
   baseBehavior: {fileID: 385647532}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &385647535
 Animator:
   serializedVersion: 5
@@ -8823,6 +8840,7 @@ MonoBehaviour:
   navigator: {fileID: 406546396}
   baseBehavior: {fileID: 406546395}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &406546398
 Animator:
   serializedVersion: 5
@@ -9116,6 +9134,7 @@ MonoBehaviour:
   navigator: {fileID: 410499995}
   baseBehavior: {fileID: 410499994}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &410499997
 Animator:
   serializedVersion: 5
@@ -9409,6 +9428,7 @@ MonoBehaviour:
   navigator: {fileID: 422038866}
   baseBehavior: {fileID: 422038865}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &422038868
 Animator:
   serializedVersion: 5
@@ -9812,6 +9832,7 @@ MonoBehaviour:
   navigator: {fileID: 448110801}
   baseBehavior: {fileID: 448110800}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &448110803
 Animator:
   serializedVersion: 5
@@ -10389,6 +10410,7 @@ MonoBehaviour:
   navigator: {fileID: 487792076}
   baseBehavior: {fileID: 487792075}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &487792078
 Animator:
   serializedVersion: 5
@@ -10896,6 +10918,7 @@ MonoBehaviour:
   navigator: {fileID: 514493819}
   baseBehavior: {fileID: 514493818}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &514493821
 Animator:
   serializedVersion: 5
@@ -11391,6 +11414,7 @@ MonoBehaviour:
   navigator: {fileID: 523925987}
   baseBehavior: {fileID: 523925986}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &523925989
 Animator:
   serializedVersion: 5
@@ -11684,6 +11708,7 @@ MonoBehaviour:
   navigator: {fileID: 528208022}
   baseBehavior: {fileID: 528208021}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &528208024
 Animator:
   serializedVersion: 5
@@ -12087,6 +12112,7 @@ MonoBehaviour:
   navigator: {fileID: 536510429}
   baseBehavior: {fileID: 536510428}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &536510431
 Animator:
   serializedVersion: 5
@@ -12380,6 +12406,7 @@ MonoBehaviour:
   navigator: {fileID: 562915828}
   baseBehavior: {fileID: 562915827}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &562915830
 Animator:
   serializedVersion: 5
@@ -12673,6 +12700,7 @@ MonoBehaviour:
   navigator: {fileID: 568616665}
   baseBehavior: {fileID: 568616664}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &568616667
 Animator:
   serializedVersion: 5
@@ -13151,6 +13179,7 @@ MonoBehaviour:
   navigator: {fileID: 587619476}
   baseBehavior: {fileID: 587619475}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &587619478
 Animator:
   serializedVersion: 5
@@ -13444,6 +13473,7 @@ MonoBehaviour:
   navigator: {fileID: 601750460}
   baseBehavior: {fileID: 601750459}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &601750462
 Animator:
   serializedVersion: 5
@@ -13812,6 +13842,7 @@ MonoBehaviour:
   navigator: {fileID: 628775649}
   baseBehavior: {fileID: 628775648}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &628775651
 Animator:
   serializedVersion: 5
@@ -14215,6 +14246,7 @@ MonoBehaviour:
   navigator: {fileID: 644932080}
   baseBehavior: {fileID: 644932079}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &644932082
 Animator:
   serializedVersion: 5
@@ -14508,6 +14540,7 @@ MonoBehaviour:
   navigator: {fileID: 649936744}
   baseBehavior: {fileID: 649936743}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &649936746
 Animator:
   serializedVersion: 5
@@ -14963,6 +14996,7 @@ MonoBehaviour:
   navigator: {fileID: 672872936}
   baseBehavior: {fileID: 672872935}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &672872938
 Animator:
   serializedVersion: 5
@@ -15256,6 +15290,7 @@ MonoBehaviour:
   navigator: {fileID: 693700646}
   baseBehavior: {fileID: 693700645}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &693700648
 Animator:
   serializedVersion: 5
@@ -15549,6 +15584,7 @@ MonoBehaviour:
   navigator: {fileID: 697970202}
   baseBehavior: {fileID: 697970201}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &697970204
 Animator:
   serializedVersion: 5
@@ -16140,6 +16176,7 @@ MonoBehaviour:
   navigator: {fileID: 747039232}
   baseBehavior: {fileID: 747039231}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &747039234
 Animator:
   serializedVersion: 5
@@ -16508,6 +16545,7 @@ MonoBehaviour:
   navigator: {fileID: 772099107}
   baseBehavior: {fileID: 772099106}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &772099109
 Animator:
   serializedVersion: 5
@@ -17125,6 +17163,7 @@ MonoBehaviour:
   navigator: {fileID: 777439316}
   baseBehavior: {fileID: 777439315}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &777439318
 Animator:
   serializedVersion: 5
@@ -17568,6 +17607,7 @@ MonoBehaviour:
   navigator: {fileID: 794737161}
   baseBehavior: {fileID: 794737160}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &794737163
 Animator:
   serializedVersion: 5
@@ -17861,6 +17901,7 @@ MonoBehaviour:
   navigator: {fileID: 797971769}
   baseBehavior: {fileID: 797971768}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &797971771
 Animator:
   serializedVersion: 5
@@ -18154,6 +18195,7 @@ MonoBehaviour:
   navigator: {fileID: 804519255}
   baseBehavior: {fileID: 804519254}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &804519257
 Animator:
   serializedVersion: 5
@@ -18447,6 +18489,7 @@ MonoBehaviour:
   navigator: {fileID: 836086240}
   baseBehavior: {fileID: 836086239}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &836086242
 Animator:
   serializedVersion: 5
@@ -18740,6 +18783,7 @@ MonoBehaviour:
   navigator: {fileID: 839071630}
   baseBehavior: {fileID: 839071629}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &839071632
 Animator:
   serializedVersion: 5
@@ -19212,6 +19256,7 @@ MonoBehaviour:
   navigator: {fileID: 848033437}
   baseBehavior: {fileID: 848033436}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &848033439
 Animator:
   serializedVersion: 5
@@ -19505,6 +19550,7 @@ MonoBehaviour:
   navigator: {fileID: 857423434}
   baseBehavior: {fileID: 857423433}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &857423436
 Animator:
   serializedVersion: 5
@@ -20109,6 +20155,7 @@ MonoBehaviour:
   navigator: {fileID: 915064619}
   baseBehavior: {fileID: 915064618}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &915064621
 Animator:
   serializedVersion: 5
@@ -20550,6 +20597,7 @@ MonoBehaviour:
   navigator: {fileID: 928788848}
   baseBehavior: {fileID: 928788847}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &928788850
 Animator:
   serializedVersion: 5
@@ -21173,6 +21221,7 @@ MonoBehaviour:
   navigator: {fileID: 954793112}
   baseBehavior: {fileID: 954793111}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &954793114
 Animator:
   serializedVersion: 5
@@ -21466,6 +21515,7 @@ MonoBehaviour:
   navigator: {fileID: 954855358}
   baseBehavior: {fileID: 954855357}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &954855360
 Animator:
   serializedVersion: 5
@@ -21759,6 +21809,7 @@ MonoBehaviour:
   navigator: {fileID: 957341176}
   baseBehavior: {fileID: 957341175}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &957341178
 Animator:
   serializedVersion: 5
@@ -22162,6 +22213,7 @@ MonoBehaviour:
   navigator: {fileID: 980776789}
   baseBehavior: {fileID: 980776788}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &980776791
 Animator:
   serializedVersion: 5
@@ -23080,6 +23132,7 @@ MonoBehaviour:
   navigator: {fileID: 1091073150}
   baseBehavior: {fileID: 1091073149}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1091073152
 Animator:
   serializedVersion: 5
@@ -23450,6 +23503,7 @@ MonoBehaviour:
   navigator: {fileID: 1102522926}
   baseBehavior: {fileID: 1102522925}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1102522928
 Animator:
   serializedVersion: 5
@@ -23818,6 +23872,7 @@ MonoBehaviour:
   navigator: {fileID: 1111595711}
   baseBehavior: {fileID: 1111595710}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1111595713
 Animator:
   serializedVersion: 5
@@ -24536,6 +24591,7 @@ MonoBehaviour:
   navigator: {fileID: 1146362490}
   baseBehavior: {fileID: 1146362489}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1146362492
 Animator:
   serializedVersion: 5
@@ -24921,6 +24977,7 @@ MonoBehaviour:
   navigator: {fileID: 1161106868}
   baseBehavior: {fileID: 1161106867}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1161106870
 Animator:
   serializedVersion: 5
@@ -25324,6 +25381,7 @@ MonoBehaviour:
   navigator: {fileID: 1186731456}
   baseBehavior: {fileID: 1186731455}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1186731458
 Animator:
   serializedVersion: 5
@@ -25944,6 +26002,7 @@ MonoBehaviour:
   navigator: {fileID: 1218004232}
   baseBehavior: {fileID: 1218004231}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1218004234
 Animator:
   serializedVersion: 5
@@ -26237,6 +26296,7 @@ MonoBehaviour:
   navigator: {fileID: 1220322196}
   baseBehavior: {fileID: 1220322195}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1220322198
 Animator:
   serializedVersion: 5
@@ -26605,6 +26665,7 @@ MonoBehaviour:
   navigator: {fileID: 1225553616}
   baseBehavior: {fileID: 1225553615}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1225553618
 Animator:
   serializedVersion: 5
@@ -27005,6 +27066,7 @@ MonoBehaviour:
   navigator: {fileID: 1232148679}
   baseBehavior: {fileID: 1232148678}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1232148681
 Animator:
   serializedVersion: 5
@@ -27298,6 +27360,7 @@ MonoBehaviour:
   navigator: {fileID: 1232764279}
   baseBehavior: {fileID: 1232764278}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1232764281
 Animator:
   serializedVersion: 5
@@ -28233,6 +28296,7 @@ MonoBehaviour:
   navigator: {fileID: 1288128481}
   baseBehavior: {fileID: 1288128480}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1288128483
 Animator:
   serializedVersion: 5
@@ -28526,6 +28590,7 @@ MonoBehaviour:
   navigator: {fileID: 1291359657}
   baseBehavior: {fileID: 1291359656}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1291359659
 Animator:
   serializedVersion: 5
@@ -28871,6 +28936,7 @@ MonoBehaviour:
   navigator: {fileID: 1337185086}
   baseBehavior: {fileID: 1337185085}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1337185088
 Animator:
   serializedVersion: 5
@@ -29389,6 +29455,7 @@ MonoBehaviour:
   navigator: {fileID: 1354913426}
   baseBehavior: {fileID: 1354913425}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1354913428
 Animator:
   serializedVersion: 5
@@ -29792,6 +29859,7 @@ MonoBehaviour:
   navigator: {fileID: 1403983065}
   baseBehavior: {fileID: 1403983064}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1403983067
 Animator:
   serializedVersion: 5
@@ -30085,6 +30153,7 @@ MonoBehaviour:
   navigator: {fileID: 1410864982}
   baseBehavior: {fileID: 1410864981}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1410864984
 Animator:
   serializedVersion: 5
@@ -30378,6 +30447,7 @@ MonoBehaviour:
   navigator: {fileID: 1419023834}
   baseBehavior: {fileID: 1419023833}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1419023836
 Animator:
   serializedVersion: 5
@@ -30671,6 +30741,7 @@ MonoBehaviour:
   navigator: {fileID: 1424981381}
   baseBehavior: {fileID: 1424981380}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1424981383
 Animator:
   serializedVersion: 5
@@ -31758,6 +31829,7 @@ MonoBehaviour:
   navigator: {fileID: 1497446646}
   baseBehavior: {fileID: 1497446645}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1497446648
 Animator:
   serializedVersion: 5
@@ -32051,6 +32123,7 @@ MonoBehaviour:
   navigator: {fileID: 1500058249}
   baseBehavior: {fileID: 1500058248}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1500058251
 Animator:
   serializedVersion: 5
@@ -32542,6 +32615,7 @@ MonoBehaviour:
   navigator: {fileID: 1509722153}
   baseBehavior: {fileID: 1509722152}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1509722155
 Animator:
   serializedVersion: 5
@@ -33060,6 +33134,7 @@ MonoBehaviour:
   navigator: {fileID: 1542643602}
   baseBehavior: {fileID: 1542643601}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1542643604
 Animator:
   serializedVersion: 5
@@ -33353,6 +33428,7 @@ MonoBehaviour:
   navigator: {fileID: 1555867194}
   baseBehavior: {fileID: 1555867193}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1555867196
 Animator:
   serializedVersion: 5
@@ -33646,6 +33722,7 @@ MonoBehaviour:
   navigator: {fileID: 1563667469}
   baseBehavior: {fileID: 1563667468}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1563667471
 Animator:
   serializedVersion: 5
@@ -34246,6 +34323,7 @@ MonoBehaviour:
   navigator: {fileID: 1656384211}
   baseBehavior: {fileID: 1656384210}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1656384213
 Animator:
   serializedVersion: 5
@@ -34641,6 +34719,7 @@ MonoBehaviour:
   navigator: {fileID: 1658878339}
   baseBehavior: {fileID: 1658878338}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1658878341
 Animator:
   serializedVersion: 5
@@ -34934,6 +35013,7 @@ MonoBehaviour:
   navigator: {fileID: 1659135401}
   baseBehavior: {fileID: 1659135400}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1659135403
 Animator:
   serializedVersion: 5
@@ -35487,6 +35567,7 @@ MonoBehaviour:
   navigator: {fileID: 1685473881}
   baseBehavior: {fileID: 1685473880}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1685473883
 Animator:
   serializedVersion: 5
@@ -35780,6 +35861,7 @@ MonoBehaviour:
   navigator: {fileID: 1704518066}
   baseBehavior: {fileID: 1704518065}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1704518068
 Animator:
   serializedVersion: 5
@@ -36073,6 +36155,7 @@ MonoBehaviour:
   navigator: {fileID: 1726167748}
   baseBehavior: {fileID: 1726167747}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1726167750
 Animator:
   serializedVersion: 5
@@ -36476,6 +36559,7 @@ MonoBehaviour:
   navigator: {fileID: 1771999497}
   baseBehavior: {fileID: 1771999496}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1771999499
 Animator:
   serializedVersion: 5
@@ -36769,6 +36853,7 @@ MonoBehaviour:
   navigator: {fileID: 1773092868}
   baseBehavior: {fileID: 1773092867}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1773092870
 Animator:
   serializedVersion: 5
@@ -37062,6 +37147,7 @@ MonoBehaviour:
   navigator: {fileID: 1773540369}
   baseBehavior: {fileID: 1773540368}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1773540371
 Animator:
   serializedVersion: 5
@@ -38326,6 +38412,7 @@ MonoBehaviour:
   RegenType: 1
   TickSeconds: 1
   NegativeChangeWaitSeconds: 2
+  current: 0
   hunger: {fileID: 1837090613}
   HungerPerRegen: 5
 --- !u!114 &1837090613
@@ -38344,6 +38431,7 @@ MonoBehaviour:
   RegenType: 5
   TickSeconds: 1
   NegativeChangeWaitSeconds: 0
+  current: 0
   DamageWhenStarving: 5
 --- !u!114 &1837090614
 MonoBehaviour:
@@ -38361,6 +38449,7 @@ MonoBehaviour:
   RegenType: 3
   TickSeconds: 1
   NegativeChangeWaitSeconds: 2
+  current: 0
 --- !u!114 &1837090615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38399,7 +38488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50c922c3a4492484b9768516ba30b15f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 600
+  force: 15
 --- !u!1 &1840032247
 GameObject:
   m_ObjectHideFlags: 0
@@ -38620,6 +38709,7 @@ MonoBehaviour:
   navigator: {fileID: 1840032254}
   baseBehavior: {fileID: 1840032253}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1840032256
 Animator:
   serializedVersion: 5
@@ -39122,6 +39212,7 @@ MonoBehaviour:
   navigator: {fileID: 1860220797}
   baseBehavior: {fileID: 1860220796}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1860220799
 Animator:
   serializedVersion: 5
@@ -39415,6 +39506,7 @@ MonoBehaviour:
   navigator: {fileID: 1861330909}
   baseBehavior: {fileID: 1861330908}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1861330911
 Animator:
   serializedVersion: 5
@@ -39714,7 +39806,9 @@ MonoBehaviour:
   GameHoursPerMinute: 1
   GameHoursPerGameDay: 24
   Display: {fileID: 1811277840}
-  CurGameTime: 7
+  CurGameTime: 6
+  Night: 19
+  Morining: 6
 --- !u!114 &1918543957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39729,6 +39823,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MaxLightLevel: 8
   m_AnimalsPerChunk: 3
+  m_HostilesPerChunk: 5
   m_NaturalSpawn: 1
 --- !u!1 &1928745776
 GameObject:
@@ -39950,6 +40045,7 @@ MonoBehaviour:
   navigator: {fileID: 1928745783}
   baseBehavior: {fileID: 1928745782}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1928745785
 Animator:
   serializedVersion: 5
@@ -40243,6 +40339,7 @@ MonoBehaviour:
   navigator: {fileID: 1933403879}
   baseBehavior: {fileID: 1933403878}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1933403881
 Animator:
   serializedVersion: 5
@@ -40761,6 +40858,7 @@ MonoBehaviour:
   navigator: {fileID: 1954802273}
   baseBehavior: {fileID: 1954802272}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1954802275
 Animator:
   serializedVersion: 5
@@ -41054,6 +41152,7 @@ MonoBehaviour:
   navigator: {fileID: 1966712165}
   baseBehavior: {fileID: 1966712164}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1966712167
 Animator:
   serializedVersion: 5
@@ -41347,6 +41446,7 @@ MonoBehaviour:
   navigator: {fileID: 1976195336}
   baseBehavior: {fileID: 1976195335}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1976195338
 Animator:
   serializedVersion: 5
@@ -41715,6 +41815,7 @@ MonoBehaviour:
   navigator: {fileID: 1983931858}
   baseBehavior: {fileID: 1983931857}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1983931860
 Animator:
   serializedVersion: 5
@@ -42008,6 +42109,7 @@ MonoBehaviour:
   navigator: {fileID: 1988076831}
   baseBehavior: {fileID: 1988076830}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &1988076833
 Animator:
   serializedVersion: 5
@@ -42301,6 +42403,7 @@ MonoBehaviour:
   navigator: {fileID: 2003304203}
   baseBehavior: {fileID: 2003304202}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &2003304205
 Animator:
   serializedVersion: 5
@@ -42725,6 +42828,7 @@ MonoBehaviour:
   navigator: {fileID: 2014740148}
   baseBehavior: {fileID: 2014740147}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &2014740150
 Animator:
   serializedVersion: 5
@@ -43156,6 +43260,7 @@ MonoBehaviour:
   navigator: {fileID: 2044812387}
   baseBehavior: {fileID: 2044812386}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &2044812389
 Animator:
   serializedVersion: 5
@@ -44022,6 +44127,7 @@ MonoBehaviour:
   navigator: {fileID: 2120015548}
   baseBehavior: {fileID: 2120015547}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!95 &2120015550
 Animator:
   serializedVersion: 5

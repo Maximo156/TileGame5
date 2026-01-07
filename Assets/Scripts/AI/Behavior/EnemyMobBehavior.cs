@@ -37,6 +37,7 @@ public class EnemyMobBehaviour : BaseBehavior, IBehavior, IHittable
             {
                 return;
             }
+
             _state = value;
             lockState = false;
             SwitchState();
@@ -50,8 +51,11 @@ public class EnemyMobBehaviour : BaseBehavior, IBehavior, IHittable
                     break;
                 case EnemyMobState.Dead:
                     lockState = true;
+                    animator.ResetTrigger("Hit");
+                    animator.ResetTrigger("Attack1"); 
+                    animator.ResetTrigger("Attack2");
+                    animator.SetTrigger("Die");
                     Destroy(navigator);
-                    animator.Play("Die");
                     break;
                 case EnemyMobState.Hit:
                     lockState = true;
@@ -137,11 +141,21 @@ public class EnemyMobBehaviour : BaseBehavior, IBehavior, IHittable
             Debug.LogWarning("Needed recovery from attack");
             ExitAttack();
         }
+        if (State == EnemyMobState.Hit && !animator.GetCurrentAnimatorClipInfo(0).Any(c => c.clip.name.Contains("Hit", System.StringComparison.OrdinalIgnoreCase)))
+        {
+
+            Debug.LogWarning("Needed recovery from Hit");
+            ExitHit();
+        }
     }
 
     private bool CanChangeState(EnemyMobState newState)
     {
-        if(State == EnemyMobState.Hit && newState != EnemyMobState.Idle)
+        if (State != EnemyMobState.Dead && newState == EnemyMobState.Dead)
+        {
+            return true;
+        }
+        if (State == EnemyMobState.Hit && newState != EnemyMobState.Idle)
         {
             return false;
         }
@@ -154,7 +168,7 @@ public class EnemyMobBehaviour : BaseBehavior, IBehavior, IHittable
 
     public void Hit(HitData _)
     {
-        if (State != EnemyMobState.Hit)
+        if (State != EnemyMobState.Hit && State != EnemyMobState.Dead)
         {
             State = EnemyMobState.Hit;
         }
@@ -162,7 +176,10 @@ public class EnemyMobBehaviour : BaseBehavior, IBehavior, IHittable
 
     void Die()
     {
-        State = EnemyMobState.Dead;
+        if (State != EnemyMobState.Dead)
+        {
+            State = EnemyMobState.Dead;
+        }
     }
 
     void SwitchState()

@@ -51,6 +51,7 @@ public class BiomePreset : ScriptableObject
 
     [Header("SpawnInfo")]
     public List<MobSpawnInfo> NaturalMobs;
+    public List<MobSpawnInfo> HostileMobs;
 
     public bool MatchCondition(float moisture, float heat)
     {
