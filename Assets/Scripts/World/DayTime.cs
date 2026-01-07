@@ -11,6 +11,11 @@ public class DayTime : MonoBehaviour
     public LightTileMap Display;
     public float CurGameTime = 6;
 
+    public float Night = 19;
+    public float Morining = 6;
+
+    public bool IsNight => CurGameTime > Night || CurGameTime < Morining;
+
     private void Awake()
     {
         dayTime = this;

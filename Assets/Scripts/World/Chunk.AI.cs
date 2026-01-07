@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 public partial class Chunk
 {
@@ -40,21 +43,35 @@ public partial class Chunk
     public bool SpawnAI()
     {
         var diff = WorldSettings.AnimalsPerChunk - ais.Count(ai => ai.Natural);
+        var naturalSpawned = 0;
+        var hostileSpawned = 0;
         if (diff > 0)
         {
             int tries = 0;
-            int spawned = 0;
-            while (tries < 3 && spawned < diff)
+            while (tries < 3 && naturalSpawned < diff)
             {
                 tries++;
-                spawned += TrySpawnNatural();
+                naturalSpawned += TrySpawnMob(b => b.NaturalMobs);
             }
-            return spawned > 0;
         }
-        return false;
+
+        if (DayTime.dayTime.IsNight)
+        {
+            var hostileDif = WorldSettings.HostilesPerChunk - ais.Count(ai => ai.Hostile);
+            if (hostileDif > 0)
+            {
+                int tries = 0;
+                while (tries < 3 && hostileSpawned < diff)
+                {
+                    tries++;
+                    hostileSpawned += TrySpawnMob(b => b.HostileMobs);
+                }
+            }
+        }
+        return hostileSpawned > 0 || naturalSpawned > 0;
     }
 
-    public int TrySpawnNatural()
+    public int TrySpawnMob(Func<BiomePreset, IEnumerable<BiomePreset.MobSpawnInfo>> getSpawnables)
     {
         var pos = FindOpenBlock();
         if (pos == null)
@@ -62,7 +79,11 @@ public partial class Chunk
             return 0;
         }
         var biome = curGenerator.biomes.GetBiome(BlockPos + pos.Value);
-        var info = biome?.NaturalMobs?.SelectRandomWeighted(m => m.Weight, m => m);
+        if(biome == null)
+        {
+            return 0;
+        }
+        var info = getSpawnables(biome).SelectRandomWeighted(m => m.Weight, m => m);
         if (info == null) return 0;
 
         var amount = Random.Range(info.MinCount, info.MaxCount);
