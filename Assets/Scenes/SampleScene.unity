@@ -4420,6 +4420,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tool
       objectReference: {fileID: 0}
+    - target: {fileID: 5889489077807753435, guid: bc4b6bc6b68bc144fbc6df1bd6903915, type: 3}
+      propertyPath: m_Animation
+      value: 
+      objectReference: {fileID: 7400000, guid: 6ac65bc7f2e6e1b409acf8d44e228633, type: 2}
+    - target: {fileID: 5889489077807753435, guid: bc4b6bc6b68bc144fbc6df1bd6903915, type: 3}
+      propertyPath: m_Animations.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889489077807753435, guid: bc4b6bc6b68bc144fbc6df1bd6903915, type: 3}
+      propertyPath: m_Animations.Array.data[2]
+      value: 
+      objectReference: {fileID: 7400000, guid: 6ac65bc7f2e6e1b409acf8d44e228633, type: 2}
+    - target: {fileID: 5889489077807753435, guid: bc4b6bc6b68bc144fbc6df1bd6903915, type: 3}
+      propertyPath: m_Animations.Array.data[3]
+      value: 
+      objectReference: {fileID: 7400000, guid: 0eb66b7859b01b948b3244001230f8f8, type: 2}
     - target: {fileID: 8681250985421450814, guid: bc4b6bc6b68bc144fbc6df1bd6903915, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
