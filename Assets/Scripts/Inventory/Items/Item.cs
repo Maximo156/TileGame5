@@ -209,11 +209,6 @@ public interface ICyclable {
     public void Cycle();
 }
 
-public interface IColliderListener
-{
-    public void OnCollision(CollisionInfo info);
-}
-
 public struct CollisionInfo
 {
     public ItemStack stack;
