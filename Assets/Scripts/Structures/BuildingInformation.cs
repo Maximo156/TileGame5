@@ -87,10 +87,10 @@ public class BuildingInformation : MonoBehaviour
             if(rand.NextDouble() < entry.chance)
             {
                 var item = new ItemStack(entry.Item, rand.Next(entry.min, entry.max));
-                if(item.State is IItemInventoryState invState)
+                if(item.GetState<ItemInventoryBehaviourState>(out var invState))
                 {
                     foreach (var i in entry.ItemFill) {
-                        invState.Inventory.inv.AddItem(i);
+                        invState.inv.AddItem(i);
                     }
                 }
                 res.Add(item);

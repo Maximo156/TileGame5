@@ -9,17 +9,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a3ed2107d81cd34abf01a20930a93c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: Zenith Staff
   m_EditorClassIdentifier: 
   Sprite: {fileID: -7069668517599331636, guid: a5983c79d9b5d824894da496e0acc63e, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 1
   BurnTime: 0
-  MaxDurability: 100
-  Type: 3
-  CharmSlots: 10
-  m_Damage: 10
-  ManaModifier: 0.1
-  projectileScale: 1
-  projectileSpeed: 1
+  Behaviors:
+  - rid: 8730737013787721730
+  - rid: 8730737108205436937
+  - rid: 8730737108205436938
+  - rid: 8730737108205436939
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737013787721730
+      type: {class: DurabilityBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DurabilityBehaviour
+        MaxDurability: 100
+    - rid: 8730737108205436937
+      type: {class: DamageBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DamageBehaviour
+        Damage: 20
+    - rid: 8730737108205436938
+      type: {class: WeaponBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: WeaponBehaviour
+        priority: 0
+        Type: 3
+        ManaModifier: 0.1
+        projectileScale: 1
+        projectileSpeed: 1
+    - rid: 8730737108205436939
+      type: {class: InfusableBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: InfusableBehaviour
+        charmSlots: 10

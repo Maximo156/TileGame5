@@ -17,9 +17,7 @@ MonoBehaviour:
   MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: 705bb1a06405e3a41837f51fbbad7d2f, type: 2}
-    Count: 1
-  - Item: {fileID: 11400000, guid: 19a17c1e9c4d7be408b07665eb2ed64d, type: 2}
-    Count: 2
+    Count: 3
   UiSprite: {fileID: -1443576745, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
@@ -28,3 +26,5 @@ MonoBehaviour:
   MustBePlacedOn:
   - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
   AfterHarvest: {fileID: 0}
+  useOverrides: 0
+  HarvestOverrides: []

@@ -130,11 +130,11 @@ public class ToolDisplay : MonoBehaviour
     public void OnRightClick(Vector3 ScreenPos)
     {
         if (curInHand is null) return;
-        if (curInHand.Item is IGridSource source)
+        if (curInHand.GetBehaviour<IGridSource>(out var source) && curInHand.GetState<IGridClickListener>(out var state))
         {
-            gridControl?.Display(ScreenPos, source, curInHand.State as IGridClickListener);
+            gridControl?.Display(ScreenPos, source, state);
         }
-        if(curInHand.State is ICyclable cycle)
+        if(curInHand.GetState<ICyclable>(out var cycle))
         {
             cycle.Cycle();
         }
@@ -159,7 +159,7 @@ public class ToolDisplay : MonoBehaviour
             transform.parent.position, 
             mainCamera.ScreenToWorldPoint(ScreenPos),
             new UseInfo() {
-                state = curInHand.State,
+                stack = curInHand,
                 availableInventory = inventory,
                 UsedFrom = inventory.HotbarInv,
                 UsedIndex = curSlot,
@@ -197,16 +197,16 @@ public class ToolDisplay : MonoBehaviour
             return;
         }
 
-        if(!itemDamaged && curInHand.Item is IColliderListener listener)
+        if(!itemDamaged && curInHand.GetBehaviour<ICollisionBehaviour>(out var listener))
         {
             listener.OnCollision(new CollisionInfo()
             {
-                state = curInHand.State
+                stack = curInHand
             });
             itemDamaged = true;
         }
         
-        collision.GetComponentInParent<HitIngress>()?.Hit(new HitData { Damage = (curInHand?.Item as IDamageItem)?.Damage ?? 0, Perpetrator = transform.parent });
+        collision.GetComponentInParent<HitIngress>()?.Hit(new HitData { Damage = (curInHand?.GetBehaviour<DamageBehaviour>(out var damage) ?? false) ? damage.Damage : 0, Perpetrator = transform.parent });
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -216,11 +216,11 @@ public class ToolDisplay : MonoBehaviour
             return;
         }
 
-        if (!itemDamaged && curInHand.Item is IColliderListener listener)
+        if (!itemDamaged && curInHand.GetBehaviour<ICollisionBehaviour>(out var listener))
         {
             listener.OnCollision(new CollisionInfo()
             {
-                state = curInHand.State
+                stack = curInHand
             });
             itemDamaged = true;
         }

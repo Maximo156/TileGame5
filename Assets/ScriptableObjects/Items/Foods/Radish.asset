@@ -9,19 +9,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b56a913cd06d4bb46bf4e43b5176d331, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: Radish
   m_EditorClassIdentifier: 
   Sprite: {fileID: -1760689374, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 99
   BurnTime: 0
-  Healing: 10
-  ManaRestoration: 0
-  HungerRestoration: 20
-  Modifiers:
-  - display: {fileID: 5822913131450817141, guid: a268d0b0c05700744844059a6ffffe03, type: 3}
-    method: 0
-    StatType: 1
-    value: 10
-    Duration: 10
+  Behaviors:
+  - rid: 8730737108205436942
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737108205436942
+      type: {class: ConsumableBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: ConsumableBehaviour
+        priority: 0
+        Healing: 10
+        ManaRestoration: 0
+        HungerRestoration: 20
+        Modifiers:
+        - display: {fileID: 5822913131450817141, guid: a268d0b0c05700744844059a6ffffe03, type: 3}
+          method: 0
+          StatType: 1
+          value: 10
+          Duration: 10

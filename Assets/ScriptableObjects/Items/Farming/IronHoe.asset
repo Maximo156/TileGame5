@@ -9,13 +9,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4aa4439cdb41bdc4ca5158b32b5e39e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: IronHoe
   m_EditorClassIdentifier: 
   Sprite: {fileID: -254571558, guid: 8927c507d0c87ad449d51320febf1320, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 1
   BurnTime: 0
-  MaxDurability: 100
-  Reach: 7
-  block: {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
+  Behaviors:
+  - rid: 8730737013787721734
+  - rid: 8730737013787721737
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737013787721734
+      type: {class: DurabilityBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DurabilityBehaviour
+        MaxDurability: 100
+    - rid: 8730737013787721737
+      type: {class: PlaceBlockBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: PlaceBlockBehaviour
+        priority: 0
+        Reach: 7
+        block: {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}

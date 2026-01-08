@@ -217,6 +217,24 @@ public static class Utilities
         }
     }
 
+    public static List<Type> GetAllConcreteSubclassesOf<T>()
+    {
+        Type baseType = typeof(T);
+
+        return AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(assembly =>
+            {
+                // Try-catch protects against ReflectionTypeLoadException
+                try { return assembly.GetTypes(); }
+                catch { return Array.Empty<Type>(); }
+            })
+            .Where(type =>
+                baseType.IsAssignableFrom(type) &&
+                type.IsClass &&
+                !type.IsAbstract)
+            .ToList();
+    }
+
     public static Vector2Int[] QuadAdjacent =
     {
         Vector2Int.up,

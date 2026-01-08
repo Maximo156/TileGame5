@@ -38362,17 +38362,21 @@ MonoBehaviour:
     Count: 1
   - Item: {fileID: 11400000, guid: 5be3a9bce6cbf4320b2702b16810af66, type: 2}
     Count: 99
-  - Item: {fileID: 11400000, guid: 89e05cb5ef19ea64e9a963950f6a4e58, type: 2}
+  - Item: {fileID: 11400000, guid: 705bb1a06405e3a41837f51fbbad7d2f, type: 2}
     Count: 99
   - Item: {fileID: 11400000, guid: f7ec5cee466216640bd5375a935da166, type: 2}
     Count: 1
   - Item: {fileID: 11400000, guid: 43ebe2086396c7542966cb3558318400, type: 2}
     Count: 1
+  - Item: {fileID: 11400000, guid: 64953c23444c6e44a8de9efcc1ff07d5, type: 2}
+    Count: 1
+  - Item: {fileID: 11400000, guid: 847d4e36e401098458c722f68f96a896, type: 2}
+    Count: 99
   MainSize: 20
   HotbarStartingItems:
   - Item: {fileID: 11400000, guid: cb6ca2667a18aa340b5e937f7061d17f, type: 2}
     Count: 1
-  - Item: {fileID: 11400000, guid: 94215b4d806521f4283b576e2cb29f65, type: 2}
+  - Item: {fileID: 11400000, guid: 63dcd34babbc16542aac5496525343db, type: 2}
     Count: 1
   - Item: {fileID: 11400000, guid: c73024e07bf50bb48b561c91c68d2f49, type: 2}
     Count: 1

@@ -16,7 +16,7 @@ namespace EntityStatistics
         LinkedList<Modifier> TimedModifiers = new();
         LinkedList<Modifier> AllModifiers = new();
 
-        Dictionary<Item, List<Modifier>> AccessoryModifiers = new();
+        Dictionary<AccessoryBehaviour, List<Modifier>> AccessoryModifiers = new();
         AccessoryInv m_AccessoryInv;
 
         Action<Query> Queries = delegate { };
@@ -34,8 +34,8 @@ namespace EntityStatistics
 
         void OnInvChange(Inventory _)
         {
-            var items = m_AccessoryInv.GetAllItems(false).Select(i => i.Item as Accessory);
-            var newModifiers = new Dictionary<Item, List<Modifier>>();
+            var items = m_AccessoryInv.GetAllItems(false).Select(i => { i.GetBehaviour<AccessoryBehaviour>(out var b); return b; });
+            var newModifiers = new Dictionary<AccessoryBehaviour, List<Modifier>>();
             foreach(var item in items)
             {
                 if(AccessoryModifiers.TryGetValue(item, out var found))
