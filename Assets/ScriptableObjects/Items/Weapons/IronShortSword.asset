@@ -17,24 +17,23 @@ MonoBehaviour:
   MaxStackSize: 1
   BurnTime: 0
   Behaviors:
-  - rid: 8730737013787721729
-  - rid: 8730737108205436929
-  - rid: 8730737108205436930
-  - rid: 8730737108205436931
+  - rid: 8730737133799866377
+  - rid: 8730737133799866378
+  - rid: 8730737133799866379
   references:
     version: 2
     RefIds:
-    - rid: 8730737013787721729
+    - rid: 8730737133799866377
+      type: {class: DamageBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DamageBehaviour
+        Damage: 5
+    - rid: 8730737133799866378
       type: {class: DurabilityBehaviour, ns: , asm: Assembly-CSharp}
       data:
         name: DurabilityBehaviour
         MaxDurability: 100
-    - rid: 8730737108205436929
-      type: {class: DamageBehaviour, ns: , asm: Assembly-CSharp}
-      data:
-        name: DamageBehaviour
-        Damage: 3
-    - rid: 8730737108205436930
+    - rid: 8730737133799866379
       type: {class: WeaponBehaviour, ns: , asm: Assembly-CSharp}
       data:
         name: WeaponBehaviour
@@ -43,8 +42,3 @@ MonoBehaviour:
         ManaModifier: 1
         projectileScale: 0
         projectileSpeed: 0
-    - rid: 8730737108205436931
-      type: {class: InfusableBehaviour, ns: , asm: Assembly-CSharp}
-      data:
-        name: InfusableBehaviour
-        charmSlots: 1
