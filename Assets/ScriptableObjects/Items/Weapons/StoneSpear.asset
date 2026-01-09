@@ -27,12 +27,12 @@ MonoBehaviour:
       type: {class: DamageBehaviour, ns: , asm: Assembly-CSharp}
       data:
         name: DamageBehaviour
-        Damage: 15
+        Damage: 8
     - rid: 8730737133799866375
       type: {class: DurabilityBehaviour, ns: , asm: Assembly-CSharp}
       data:
         name: DurabilityBehaviour
-        MaxDurability: 100
+        MaxDurability: 25
     - rid: 8730737133799866376
       type: {class: WeaponBehaviour, ns: , asm: Assembly-CSharp}
       data:

@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sprite: {fileID: -779877759, guid: 57083b8bbaa162d469074b66d7056608, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
-  MaxStackSize: 0
+  MaxStackSize: 1
   BurnTime: 0
   Behaviors:
   - rid: 8730737133799866371
   - rid: 8730737133799866372
   - rid: 8730737133799866373
+  - rid: 8730737133799866380
   references:
     version: 2
     RefIds:
@@ -32,13 +33,20 @@ MonoBehaviour:
       type: {class: DurabilityBehaviour, ns: , asm: Assembly-CSharp}
       data:
         name: DurabilityBehaviour
-        MaxDurability: 100
+        MaxDurability: 30
     - rid: 8730737133799866373
       type: {class: WeaponBehaviour, ns: , asm: Assembly-CSharp}
       data:
         name: WeaponBehaviour
-        priority: 0
+        priority: 1
         Type: 0
         ManaModifier: 1
         projectileScale: 0
         projectileSpeed: 0
+    - rid: 8730737133799866380
+      type: {class: MiningBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        name: MiningBehavior
+        priority: 0
+        Reach: 7
+        BlockDamage: 1
