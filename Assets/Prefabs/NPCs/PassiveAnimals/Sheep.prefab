@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 625059372807967338}
   - component: {fileID: 7340857793055503004}
   - component: {fileID: 2552330749766581175}
+  - component: {fileID: -4173910085097268836}
   m_Layer: 12
   m_Name: Sheep
   m_TagString: Untagged
@@ -104,7 +105,7 @@ Animator:
   m_GameObject: {fileID: 6732792351147766889}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1c421a96f9e4cf1429bee83a6d385b7e, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -256,6 +257,7 @@ MonoBehaviour:
   navigator: {fileID: 2574715429124650936}
   baseBehavior: {fileID: 7744316435978888967}
   m_Natural: 1
+  m_Hostile: 0
 --- !u!114 &2574715429124650936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,8 +272,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 7873326469680123242}
-  sprite: {fileID: 8965110494047570406}
   monitor: 0
 --- !u!114 &7744316435978888967
 MonoBehaviour:
@@ -285,8 +285,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 2574715429124650936}
-  animator: {fileID: 7873326469680123242}
   Range: 10
   ViewRange: 15
   runningModifier: 1.5
@@ -341,3 +339,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: dc081f9c4d0b18249a3544179370f4c2, type: 2}
+--- !u!114 &-4173910085097268836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6732792351147766889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53d63e821cc092e48b55937c9cec8112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 8965110494047570406, guid: 208521b687797304c9f6d9aa597ea41d, type: 3}
+  Idle: {fileID: 7400000, guid: 13d867a16288ba547bca31dad2452f6e, type: 2}
+  Walk: {fileID: 7400000, guid: 779b1935c430146498641e8da4811212, type: 2}
+  additionalAnimations:
+  - name: Hit
+    clip: {fileID: 7400000, guid: 77d1ee03051954e4bb4008bec3605b35, type: 2}
+  - name: Die
+    clip: {fileID: 7400000, guid: a7be0d2fdec82f84fb85796f0913736c, type: 2}

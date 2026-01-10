@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 8261994090955775288}
   - component: {fileID: 6441231078991175938}
   - component: {fileID: 190217645150619927}
+  - component: {fileID: -5732206868741197609}
   m_Layer: 12
   m_Name: Zombie
   m_TagString: Untagged
@@ -106,7 +107,7 @@ Animator:
   m_GameObject: {fileID: 7384479284224186033}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1c421a96f9e4cf1429bee83a6d385b7e, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -294,7 +295,7 @@ MonoBehaviour:
   navigator: {fileID: 8540834848178779436}
   baseBehavior: {fileID: 8261994090955775288}
   m_Natural: 1
-  m_Hostile: 0
+  m_Hostile: 1
 --- !u!114 &8540834848178779436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,8 +310,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 2
-  animator: {fileID: 5528660755882797888}
-  sprite: {fileID: 4206214718463340452}
   monitor: 0
 --- !u!114 &5742638830674189606
 MonoBehaviour:
@@ -366,8 +365,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a66c41e6d391ef84fba880ae517a20e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 8540834848178779436}
-  animator: {fileID: 5528660755882797888}
   Range: 10
   ViewRange: 15
   runningModifier: 1
@@ -375,6 +372,7 @@ MonoBehaviour:
   AttackRange: 0.75
   IdleTime: 10
   AttackDamage: 10
+  _state: 0
 --- !u!114 &6441231078991175938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,3 +399,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DamagePerHit: 10
+--- !u!114 &-5732206868741197609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7384479284224186033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53d63e821cc092e48b55937c9cec8112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 8965110494047570406, guid: aa13b969e4998464a83f55a7a6fb80d0, type: 3}
+  Idle: {fileID: 7400000, guid: 13d867a16288ba547bca31dad2452f6e, type: 2}
+  Walk: {fileID: 7400000, guid: 779b1935c430146498641e8da4811212, type: 2}
+  additionalAnimations:
+  - name: Hit
+    clip: {fileID: 7400000, guid: 77d1ee03051954e4bb4008bec3605b35, type: 2}
+  - name: Die
+    clip: {fileID: 7400000, guid: a7be0d2fdec82f84fb85796f0913736c, type: 2}
+  - name: Attack
+    clip: {fileID: 7400000, guid: 47edecf53f724c1419b7e3253d4fdad6, type: 2}

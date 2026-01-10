@@ -11,8 +11,7 @@ public class JobNavigator : MonoBehaviour, IPathFinder
     public bool CanUseDoors;
     public float MovementSpeed;
 
-    public Animator animator;
-    public SpriteRenderer sprite;
+    MobAnimator animator;
 
     [Header("DEBUG")]
     public bool monitor;
@@ -107,6 +106,7 @@ public class JobNavigator : MonoBehaviour, IPathFinder
     {
         _path = new NativeStack<int2>(1, Allocator.Persistent);
         onStuck = SelectAndSetRandomGoal;
+        animator = GetComponent<MobAnimator>();
     } 
 
     public bool SetPath(NativeStack<int2> stack, NativeList<int2> reachable)
@@ -222,7 +222,6 @@ public class JobNavigator : MonoBehaviour, IPathFinder
 
     void SetMovementInfo(Vector2 LatestDir)
     {
-        animator.SetFloat("Speed", LatestDir.magnitude);
-        sprite.flipX = LatestDir.x < 0 || (LatestDir.magnitude == 0 && sprite.flipX);
+        animator.UpdateLocomotion(LatestDir);
     }
 }

@@ -41,19 +41,20 @@ public class PassiveMobBehaviour : BaseBehavior, IBehavior, IHittable
                     break;
                 case PassiveMobState.Dead:
                     Destroy(navigator);
-                    animator.Play("Die");
+                    animator.PlayAnimation("Die", Despawn);
                     return;
                 case PassiveMobState.Wander:
                     break;
                 case PassiveMobState.Hit:
-                    animator.Play("Hit");
+                    animator.PlayAnimation("Hit", ExitHit);
                     break;
             }
         }
     }
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         State = PassiveMobState.Wander;
         inv = GameObject.FindObjectOfType<PlayerInventories>();
     }

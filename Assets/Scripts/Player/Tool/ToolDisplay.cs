@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using EntityStatistics;
 
-public class ToolDisplay : MonoBehaviour
+public class ToolDisplay : MonoBehaviour, IAnimationClipSource
 {
     public float a;
     public float b;
@@ -29,10 +29,9 @@ public class ToolDisplay : MonoBehaviour
 
     public Sprite Sprite { get => display.sprite; set => display.sprite = value; }
 
-    private Animation anim;
+    private ToolAnimator anim;
     private SpriteRenderer display;
     private Dictionary<Item, ItemDisplayInfo> ItemDisplayDict;
-    private ItemDisplayInfo curSelected;
     private Camera mainCamera;
     private Vector2 ScreenPos;
     private PlayerInventories inventory;
@@ -43,7 +42,8 @@ public class ToolDisplay : MonoBehaviour
     {
         mainCamera = Camera.main;
         ItemDisplayDict = ItemDisplayInfos.ToDictionary(e => e.item, e => e);
-        anim = GetComponent<Animation>();
+        anim = GetComponent<ToolAnimator>();
+        anim.Init(DefaultInfo, ItemDisplayInfos);
         display = GetComponentInChildren<SpriteRenderer>();
 
         inventory = GetComponentInParent<PlayerInventories>();
@@ -86,22 +86,20 @@ public class ToolDisplay : MonoBehaviour
     int curSlot;
     private void ChangeHand(ItemStack newInHand, int slot)
     {
-        onAnimFinished = null;
         AnimationEnd();
         gridControl.Close();
         curInHand = newInHand;
         curSlot = slot;
         if (gameObject.activeInHierarchy)
         {
-            anim.clip = null;
+            anim.InteruptAnim();
         }
         if(newInHand == null)
         {
-            curSelected = null;
             gameObject.SetActive(false);
             return;
         }
-        if(!ItemDisplayDict.TryGetValue(newInHand.Item, out curSelected))
+        if(!ItemDisplayDict.TryGetValue(newInHand.Item, out var curSelected))
         {
             curSelected = DefaultInfo;
         }
@@ -110,8 +108,6 @@ public class ToolDisplay : MonoBehaviour
         UpdateCollider();
         display.transform.localScale = curSelected.scale * Vector3.one;
         display.transform.localEulerAngles = Vector3.forward * curSelected.zRotation;
-        anim.clip = curSelected.animation;
-        anim[anim.clip.name].speed = curSelected.AnimationSpeed;
     }
 
 
@@ -141,15 +137,17 @@ public class ToolDisplay : MonoBehaviour
     }
 
     public bool animating => anim.isPlaying;
-    Action onAnimFinished;
+
     public void OnStartAttack(Action onAnimFinished)
     {
         gridControl?.Close();
-        this.onAnimFinished = onAnimFinished;
-        if (curSelected != null && !animating && gameObject.activeInHierarchy)
+        if (curInHand != null && !animating && gameObject.activeInHierarchy)
         {
             m_collider2D.enabled = useCollider;
-            anim.Play();
+            anim.PlayAnimation(curInHand.Item, () => {
+                AnimationEnd();
+                onAnimFinished?.Invoke();
+            });
         }
     }
 
@@ -170,10 +168,8 @@ public class ToolDisplay : MonoBehaviour
 
     public void AnimationEnd()
     {
-        anim.Stop();
         itemDamaged = false;
         m_collider2D.enabled = false;
-        onAnimFinished?.Invoke();
     }
 
     public void OnEnable()
@@ -224,5 +220,19 @@ public class ToolDisplay : MonoBehaviour
             });
             itemDamaged = true;
         }
+    }
+
+    public void GetAnimationClips(List<AnimationClip> results)
+    {
+        results.Add(DefaultInfo.animation);
+        foreach(var info in ItemDisplayInfos)
+        {
+            results.Add(info.animation);
+        }
+    }
+
+    public void Debug(string message)
+    {
+        print(message);
     }
 }

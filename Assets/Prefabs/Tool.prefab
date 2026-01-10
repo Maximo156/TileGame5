@@ -143,9 +143,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8681250985421450814}
-  - component: {fileID: 5889489077807753435}
+  - component: {fileID: 3384400152054711166}
   - component: {fileID: 3815062563964477980}
   - component: {fileID: 7946276518981851966}
+  - component: {fileID: 3591419961476540503}
   m_Layer: 7
   m_Name: Tool
   m_TagString: Untagged
@@ -169,23 +170,27 @@ Transform:
   - {fileID: 4118381537963404290}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!111 &5889489077807753435
-Animation:
+--- !u!95 &3384400152054711166
+Animator:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5024657108852077814}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 0}
-  m_Animations:
-  - {fileID: 7400000, guid: d0f8e0bbb55a55840ae885a30133d6c6, type: 2}
-  - {fileID: 7400000, guid: 8088cdd69df1ffb40923d6f0b2506354, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &3815062563964477980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,7 +214,7 @@ MonoBehaviour:
   ItemDisplayInfos:
   - item: {fileID: 11400000, guid: c73024e07bf50bb48b561c91c68d2f49, type: 2}
     scale: 1
-    zRotation: 0
+    zRotation: 90
     animation: {fileID: 7400000, guid: 8088cdd69df1ffb40923d6f0b2506354, type: 2}
     AnimationSpeed: 2
   gridControl: {fileID: 0}
@@ -241,3 +246,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &3591419961476540503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5024657108852077814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b535ae6560f23a245806e0cd9f7d7f30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
