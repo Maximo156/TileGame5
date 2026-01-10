@@ -6,6 +6,8 @@ using EntityStatistics;
 
 public interface IInventory
 {
+    public delegate void ItemChanged(Inventory inv);
+    public event ItemChanged OnItemChanged;
     public bool AddItem(ItemStack ItemStack);
 
     public bool AddItemIndex(ItemStack ItemStack, int index);
@@ -25,8 +27,7 @@ public interface IInventory
 
 public class Inventory : IInventory, IInventoryContainer, IGridSource
 {
-    public delegate void ItemChanged(Inventory inv);
-    public event ItemChanged OnItemChanged;
+    public event IInventory.ItemChanged OnItemChanged;
 
     protected int count;
     protected ItemStack[] inv;

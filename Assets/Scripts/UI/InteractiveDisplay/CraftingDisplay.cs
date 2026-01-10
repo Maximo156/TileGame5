@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class CraftingDisplay : InteractiveDislay
 {
@@ -13,19 +14,37 @@ public class CraftingDisplay : InteractiveDislay
 
     public override void Detach()
     {
+        if(otherInv != null)
+        {
+            foreach (var inv in otherInv.GetIndividualInventories())
+            {
+                inv.OnItemChanged -= Render;
+            }
+        }
         block = null;
+        otherInv=null; 
     }
 
     CraftingBlock block;
     IInventoryContainer otherInv;
     Vector2 worldPos;
+
     public override void DisplayInventory(Vector2Int worldPos, BlockSlice slice, IInventoryContainer otherInv)
     {
         Completion.fillAmount = 0;
         block = slice.WallBlock as CraftingBlock;
         this.otherInv = otherInv;
         this.worldPos = worldPos;
-        CraftingGrid.Render(block, OnSlotDown, OnSlotUp);
+        foreach (var inv in otherInv.GetIndividualInventories())
+        {
+            inv.OnItemChanged += Render;
+        }
+        Render(null);
+    }
+
+    void Render(Inventory _)
+    {
+        CraftingGrid.Render(block, OnSlotDown, OnSlotUp, ItemDisplayOverride);
     }
 
     public override Type TypeMatch()
@@ -57,6 +76,18 @@ public class CraftingDisplay : InteractiveDislay
             StopCoroutine(craftingRoutine);
         }
         Completion.fillAmount = 0;
+    }
+
+    private GridItemDisplay.CleanupOverride ItemDisplayOverride(IGridItem item, Image img, TextMeshProUGUI text, Slider slider)
+    {
+        if(item is not ItemRecipe recipe || CanCraft(recipe)) { return null; }
+        var origColor = img.color;
+        var color = origColor;
+
+        color.a = 0.5f;
+        img.color = color;
+
+        return null;
     }
 
     public IEnumerator CraftItem(ItemRecipe recipe)
