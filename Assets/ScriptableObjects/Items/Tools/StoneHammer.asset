@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
+  m_Name: StoneHammer
+  m_EditorClassIdentifier: 
+  Sprite: {fileID: 1528543260, guid: 57083b8bbaa162d469074b66d7056608, type: 3}
+  Color: {r: 1, g: 1, b: 1, a: 1}
+  MaxStackSize: 1
+  BurnTime: 0
+  Behaviors:
+  - rid: 8730737013787721733
+  - rid: 8730737108205436928
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737013787721733
+      type: {class: DurabilityBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DurabilityBehaviour
+        MaxDurability: 100
+    - rid: 8730737108205436928
+      type: {class: BuildingBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: BuildingBehaviour
+        priority: 0
+        Reach: 7
+        BuildingCategories:
+        - name: Floors
+          sprite: {fileID: 44627939, guid: 581d88950f593a74887ce8ee6c22bc6f, type: 3}
+          color: {r: 1, g: 1, b: 1, a: 1}
+          recipes:
+          - block: {fileID: 11400000, guid: 22a8a340cdc98184188d3138c749b133, type: 2}
+          - block: {fileID: 11400000, guid: de22f042adbd6274d88bb5ec558d120f, type: 2}
+          - block: {fileID: 11400000, guid: 73aa9743d88fb3745b4f751df253f6ae, type: 2}
+        - name: Walls
+          sprite: {fileID: -1090782670, guid: c1feb689ca067a54f9a5630e03013c4e, type: 3}
+          color: {r: 1, g: 1, b: 1, a: 1}
+          recipes:
+          - block: {fileID: 11400000, guid: d6a31c90c8754504db6c78ca0ec62b7b, type: 2}
+          - block: {fileID: 11400000, guid: 1148db4af37bbeb4ba170bd1fecfa8e4, type: 2}
+          - block: {fileID: 11400000, guid: b0854aeffe452b14ea70fda3ce04e9d5, type: 2}
+        - name: Crafting
+          sprite: {fileID: 1385272632488264903, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
+          color: {r: 1, g: 1, b: 1, a: 1}
+          recipes:
+          - block: {fileID: 11400000, guid: 8de5631cf40ae6d4299eb7a0e0bc6a0a, type: 2}
+          - block: {fileID: 11400000, guid: 489608da660464b4ab3d01086315d64c, type: 2}
+          - block: {fileID: 11400000, guid: f844abd22f88f4a43a37000770b00e94, type: 2}
+          - block: {fileID: 11400000, guid: f4d2680b03ddb1547a26e7223c6adc68, type: 2}
+          - block: {fileID: 11400000, guid: 857e1c2aa7784e547a21222ccd65a265, type: 2}
+        - name: Roofs
+          sprite: {fileID: -1552312805, guid: 7d966fb53b128bd4b9f88fa7adc43765, type: 3}
+          color: {r: 1, g: 1, b: 1, a: 1}
+          recipes:
+          - block: {fileID: 11400000, guid: fc180aad4f4559a4e87455ed54a8ac54, type: 2}
+        - name: TEST
+          sprite: {fileID: 21300000, guid: c4c9dbddd2e54d3439e6318760829a64, type: 3}
+          color: {r: 1, g: 1, b: 1, a: 1}
+          recipes:
+          - block: {fileID: 11400000, guid: f190cce03727c234aaaa1b058e5e3cac, type: 2}
+          - block: {fileID: 11400000, guid: b1678367436a8f54b92bb8f649e302a1, type: 2}
+          - block: {fileID: 11400000, guid: 21ea753720df4014d8264935c1fc2a07, type: 2}
+          - block: {fileID: 11400000, guid: a0891015ee4d57243b9264b38c32dd83, type: 2}
+          - block: {fileID: 11400000, guid: 435ff1008e43d43bc9d43e6d946213be, type: 2}

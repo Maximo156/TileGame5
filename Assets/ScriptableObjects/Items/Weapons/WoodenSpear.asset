@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
+  m_Name: WoodenSpear
+  m_EditorClassIdentifier: 
+  Sprite: {fileID: -1338745299, guid: 57083b8bbaa162d469074b66d7056608, type: 3}
+  Color: {r: 1, g: 1, b: 1, a: 1}
+  MaxStackSize: 1
+  BurnTime: 0
+  Behaviors:
+  - rid: 8730737133799866368
+  - rid: 8730737133799866369
+  - rid: 8730737133799866370
+  references:
+    version: 2
+    RefIds:
+    - rid: 8730737133799866368
+      type: {class: DamageBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DamageBehaviour
+        Damage: 4
+    - rid: 8730737133799866369
+      type: {class: DurabilityBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: DurabilityBehaviour
+        MaxDurability: 15
+    - rid: 8730737133799866370
+      type: {class: WeaponBehaviour, ns: , asm: Assembly-CSharp}
+      data:
+        name: WeaponBehaviour
+        priority: 0
+        Type: 4
+        ManaModifier: 1
+        projectileScale: 0
+        projectileSpeed: 0

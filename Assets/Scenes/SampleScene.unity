@@ -7794,7 +7794,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 75, y: 75}
-  m_Spacing: {x: 10, y: 0}
+  m_Spacing: {x: 10, y: 10}
   m_Constraint: 1
   m_ConstraintCount: 5
 --- !u!1 &378757536
@@ -38000,10 +38000,6 @@ MonoBehaviour:
     Count: 99
   - Item: {fileID: 11400000, guid: 705bb1a06405e3a41837f51fbbad7d2f, type: 2}
     Count: 99
-  - Item: {fileID: 11400000, guid: f7ec5cee466216640bd5375a935da166, type: 2}
-    Count: 1
-  - Item: {fileID: 11400000, guid: 43ebe2086396c7542966cb3558318400, type: 2}
-    Count: 1
   - Item: {fileID: 11400000, guid: 64953c23444c6e44a8de9efcc1ff07d5, type: 2}
     Count: 1
   - Item: {fileID: 11400000, guid: 847d4e36e401098458c722f68f96a896, type: 2}
@@ -38014,12 +38010,12 @@ MonoBehaviour:
     Count: 1
   - Item: {fileID: 11400000, guid: 63dcd34babbc16542aac5496525343db, type: 2}
     Count: 1
-  - Item: {fileID: 11400000, guid: c73024e07bf50bb48b561c91c68d2f49, type: 2}
+  - Item: {fileID: 11400000, guid: fdb0d608330aa8641ad4dd86c605ca1f, type: 2}
     Count: 1
-  - Item: {fileID: 11400000, guid: 674aa75823b6f144b94bd2c588de0912, type: 2}
+  - Item: {fileID: 11400000, guid: ad7c3e0c7e1db01419b1d173058d3441, type: 2}
     Count: 1
-  - Item: {fileID: 11400000, guid: 851039e123ef6bf47b51224a6ccd3e6a, type: 2}
-    Count: 99
+  - Item: {fileID: 11400000, guid: 2649c64e201ebc94bb441d9434f16a49, type: 2}
+    Count: 1
   HotbarSize: 5
   tool: {fileID: 3815062563903556757}
 --- !u!114 &1837090610

@@ -10,7 +10,8 @@ public class WeaponBehaviour : UseBehavior, ICollisionBehaviour
         Sword,
         Bow,
         CrossBow,
-        Staff
+        Staff,
+        Spear
     }
 
     [Header("Weapon Info")]
