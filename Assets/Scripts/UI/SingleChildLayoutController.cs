@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -58,7 +59,10 @@ public class SingleChildLayoutController : MonoBehaviour
         SetupChildren(0);
     }
 
-    public void Render(IGridSource source, Action<int, IGridItem, PointerEventData> onClick = null, Action<int, IGridItem, PointerEventData> onMouseUp = null)
+    public void Render(IGridSource source, 
+        Action<int, IGridItem, PointerEventData> onClick = null, 
+        Action<int, IGridItem, PointerEventData> onMouseUp = null, 
+        GridItemDisplay.DisplayOverride overrideDisplay = null)
     {
         var items = source.GetGridItems().ToList();
 
@@ -70,7 +74,7 @@ public class SingleChildLayoutController : MonoBehaviour
         SetupChildren(items.Count);
         for(int i = 0; i< items.Count; i++)
         {
-            currentChildren[i].SetDisplay(items[i], i, onClick, onMouseUp);
+            currentChildren[i].SetDisplay(items[i], i, onClick, onMouseUp, overrideDisplay);
         }
     }
 

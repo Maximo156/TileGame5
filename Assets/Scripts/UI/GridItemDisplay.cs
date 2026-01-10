@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,6 +6,9 @@ using UnityEngine.UI;
 
 public class GridItemDisplay : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ITooltipSource
 {
+    public delegate int CleanupOverride(Image img, TextMeshProUGUI text, Slider slider);
+    public delegate CleanupOverride DisplayOverride(IGridItem item, Image img, TextMeshProUGUI text, Slider slider);
+
     public Image img;
     public TextMeshProUGUI text;
     public Slider Durability;
@@ -16,22 +17,32 @@ public class GridItemDisplay : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     Action<int, IGridItem, PointerEventData> onClick;
     Action<int, IGridItem, PointerEventData> onMouseUp;
+    DisplayOverride overrideDisplay;
+    CleanupOverride cleanupOverride;
     int selfIndex;
 
-    public virtual void SetDisplay(IGridItem item, int selfIndex, Action<int, IGridItem, PointerEventData> onClick = null, Action<int, IGridItem, PointerEventData> onMouseUp = null)
+    public virtual void SetDisplay(
+        IGridItem item, 
+        int selfIndex, 
+        Action<int, IGridItem, PointerEventData> onClick = null, 
+        Action<int, IGridItem, PointerEventData> onMouseUp = null,
+        DisplayOverride overrideDisplay = null)
     {
         this.onClick = onClick;
         this.onMouseUp = onMouseUp;
         this.selfIndex = selfIndex;
+        this.overrideDisplay = overrideDisplay;
         displayed = item;
         Render();
     }
 
     private void Render()
     {
+        cleanupOverride?.Invoke(img, text, Durability);
         SetImage();
         SetText();
         SetDurability();
+        cleanupOverride = overrideDisplay?.Invoke(displayed, img, text, Durability);
     }
 
     public void OnPointerDown(PointerEventData eventData)

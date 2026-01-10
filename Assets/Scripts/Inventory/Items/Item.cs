@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 [Serializable]
 public class ItemStack : IGridItem, IGridSource
@@ -133,7 +132,15 @@ public class ItemStack : IGridItem, IGridSource
 
     public (string, string) GetTooltipString()
     {
-        var strings = BehaviorStates.Values.Select(s => (s as IStateStringProvider)?.GetStateString(Item) ?? "").Append(Item.GetStatsString());
+        IEnumerable<string> strings;
+        if(BehaviorStates != null)
+        {
+            strings = BehaviorStates.Values.Select(s => (s as IStateStringProvider)?.GetStateString(Item) ?? "").Append(Item.GetStatsString());
+        }
+        else
+        {
+            strings = new string[] { Item.GetStatsString() };
+        }
         string StatsString = string.Join('\n',strings.Where(s => !string.IsNullOrWhiteSpace(s)));
         return (Item.formatedName, StatsString);
     }
