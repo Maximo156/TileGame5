@@ -14,7 +14,7 @@ public class EnemyMobBehaviour : BaseBehavior, IBehavior, IHittable
     private HitIngress playerHit;
     private Transform player => playerHit.transform;
 
-    enum EnemyMobState
+    public enum EnemyMobState
     {
         Wander,
         Hit,
@@ -26,7 +26,7 @@ public class EnemyMobBehaviour : BaseBehavior, IBehavior, IHittable
 
     bool lockState;
 
-    EnemyMobState _state;
+    public EnemyMobState _state;
 
     EnemyMobState State
     {
@@ -37,7 +37,6 @@ public class EnemyMobBehaviour : BaseBehavior, IBehavior, IHittable
             {
                 return;
             }
-
             _state = value;
             lockState = false;
             SwitchState();
@@ -51,41 +50,30 @@ public class EnemyMobBehaviour : BaseBehavior, IBehavior, IHittable
                     break;
                 case EnemyMobState.Dead:
                     lockState = true;
-                    animator.ResetTrigger("Hit");
-                    animator.ResetTrigger("Attack1"); 
-                    animator.ResetTrigger("Attack2");
-                    animator.SetTrigger("Die");
+                    animator.PlayAnimation("Die", Despawn);
                     Destroy(navigator);
                     break;
                 case EnemyMobState.Hit:
                     lockState = true;
-                    animator.SetTrigger("Hit");
+                    animator.PlayAnimation("Hit", ExitHit);
                     break;
                 case EnemyMobState.Attack:
-                    lockState = true;
-                    if (Random.Range(0f, 1) > 0.5)
-                    {
-                        animator.SetTrigger("Attack1");
-                    }
-                    else
-                    {
-                        animator.SetTrigger("Attack2");
-                    }
+                    lockState = true; 
+                    animator.PlayAnimation("Attack", ExitAttack);
                     break;
             }
         }
     }
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         State = EnemyMobState.Wander;
         playerHit = Camera.main.transform.parent.GetComponent<HitIngress>();
     }
 
     public override Vector2Int Step(float deltaTime)
     {
-        RecoverFromAnimation();
-
         if (lockState)
         {
             return default;
@@ -132,23 +120,6 @@ public class EnemyMobBehaviour : BaseBehavior, IBehavior, IHittable
         return default;
     }
 
-    // Needed until bug causing OnStateExit to not be called is fixed
-    private void RecoverFromAnimation()
-    {
-        if(State == EnemyMobState.Attack && !animator.GetCurrentAnimatorClipInfo(0).Any(c => c.clip.name.Contains("Attack", System.StringComparison.OrdinalIgnoreCase)))
-        {
-            
-            Debug.LogWarning("Needed recovery from attack");
-            ExitAttack();
-        }
-        if (State == EnemyMobState.Hit && !animator.GetCurrentAnimatorClipInfo(0).Any(c => c.clip.name.Contains("Hit", System.StringComparison.OrdinalIgnoreCase)))
-        {
-
-            Debug.LogWarning("Needed recovery from Hit");
-            ExitHit();
-        }
-    }
-
     private bool CanChangeState(EnemyMobState newState)
     {
         if (State != EnemyMobState.Dead && newState == EnemyMobState.Dead)
@@ -190,14 +161,11 @@ public class EnemyMobBehaviour : BaseBehavior, IBehavior, IHittable
 
     void ExitHit()
     {
-        animator.ResetTrigger("Hit");
         State = EnemyMobState.Idle;
     }
 
     void ExitAttack()
     {
-        animator.ResetTrigger("Attack1");
-        animator.ResetTrigger("Attack2");
         State = EnemyMobState.Chase;
     }
 

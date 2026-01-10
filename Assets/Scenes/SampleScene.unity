@@ -302,8 +302,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 274959}
-  animator: {fileID: 274961}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -325,8 +323,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 274961}
-  sprite: {fileID: 274962}
   monitor: 0
 --- !u!114 &274960
 MonoBehaviour:
@@ -925,8 +921,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 34318364}
-  animator: {fileID: 34318366}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -948,8 +942,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 34318366}
-  sprite: {fileID: 34318367}
   monitor: 0
 --- !u!114 &34318365
 MonoBehaviour:
@@ -1645,8 +1637,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 68632685}
-  animator: {fileID: 68632687}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -1668,8 +1658,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 68632687}
-  sprite: {fileID: 68632688}
   monitor: 0
 --- !u!114 &68632686
 MonoBehaviour:
@@ -1939,8 +1927,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 70424809}
-  animator: {fileID: 70424811}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -1962,8 +1948,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 70424811}
-  sprite: {fileID: 70424812}
   monitor: 0
 --- !u!114 &70424810
 MonoBehaviour:
@@ -2912,8 +2896,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 142268453}
-  animator: {fileID: 142268455}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -2935,8 +2917,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 142268455}
-  sprite: {fileID: 142268456}
   monitor: 0
 --- !u!114 &142268454
 MonoBehaviour:
@@ -3615,8 +3595,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 176399326}
-  animator: {fileID: 176399328}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -3638,8 +3616,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 176399328}
-  sprite: {fileID: 176399329}
   monitor: 0
 --- !u!114 &176399327
 MonoBehaviour:
@@ -4075,8 +4051,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 182194751}
-  animator: {fileID: 182194753}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -4098,8 +4072,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 182194753}
-  sprite: {fileID: 182194754}
   monitor: 0
 --- !u!114 &182194752
 MonoBehaviour:
@@ -4444,30 +4416,10 @@ PrefabInstance:
       propertyPath: IgnoreCollider
       value: 
       objectReference: {fileID: 1031619403}
-    - target: {fileID: 3815062563964477980, guid: bc4b6bc6b68bc144fbc6df1bd6903915, type: 3}
-      propertyPath: ItemDisplayInfos.Array.data[0].zRotation
-      value: 90
-      objectReference: {fileID: 0}
     - target: {fileID: 5024657108852077814, guid: bc4b6bc6b68bc144fbc6df1bd6903915, type: 3}
       propertyPath: m_Name
       value: Tool
       objectReference: {fileID: 0}
-    - target: {fileID: 5889489077807753435, guid: bc4b6bc6b68bc144fbc6df1bd6903915, type: 3}
-      propertyPath: m_Animation
-      value: 
-      objectReference: {fileID: 7400000, guid: 6ac65bc7f2e6e1b409acf8d44e228633, type: 2}
-    - target: {fileID: 5889489077807753435, guid: bc4b6bc6b68bc144fbc6df1bd6903915, type: 3}
-      propertyPath: m_Animations.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5889489077807753435, guid: bc4b6bc6b68bc144fbc6df1bd6903915, type: 3}
-      propertyPath: m_Animations.Array.data[2]
-      value: 
-      objectReference: {fileID: 7400000, guid: 6ac65bc7f2e6e1b409acf8d44e228633, type: 2}
-    - target: {fileID: 5889489077807753435, guid: bc4b6bc6b68bc144fbc6df1bd6903915, type: 3}
-      propertyPath: m_Animations.Array.data[3]
-      value: 
-      objectReference: {fileID: 7400000, guid: 0eb66b7859b01b948b3244001230f8f8, type: 2}
     - target: {fileID: 8681250985421450814, guid: bc4b6bc6b68bc144fbc6df1bd6903915, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4789,8 +4741,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 241913276}
-  animator: {fileID: 241913278}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -4812,8 +4762,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 241913278}
-  sprite: {fileID: 241913279}
   monitor: 0
 --- !u!114 &241913277
 MonoBehaviour:
@@ -5083,8 +5031,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 250539780}
-  animator: {fileID: 250539782}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -5106,8 +5052,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 250539782}
-  sprite: {fileID: 250539783}
   monitor: 0
 --- !u!114 &250539781
 MonoBehaviour:
@@ -5377,8 +5321,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 264171865}
-  animator: {fileID: 264171867}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -5400,8 +5342,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 264171867}
-  sprite: {fileID: 264171868}
   monitor: 0
 --- !u!114 &264171866
 MonoBehaviour:
@@ -5708,8 +5648,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 275642476}
-  animator: {fileID: 275642478}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -5731,8 +5669,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 275642478}
-  sprite: {fileID: 275642479}
   monitor: 0
 --- !u!114 &275642477
 MonoBehaviour:
@@ -6262,8 +6198,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 294372217}
-  animator: {fileID: 294372219}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -6285,8 +6219,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 294372219}
-  sprite: {fileID: 294372220}
   monitor: 0
 --- !u!114 &294372218
 MonoBehaviour:
@@ -6833,8 +6765,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 328120501}
-  animator: {fileID: 328120503}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -6856,8 +6786,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 328120503}
-  sprite: {fileID: 328120504}
   monitor: 0
 --- !u!114 &328120502
 MonoBehaviour:
@@ -7127,8 +7055,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 333928411}
-  animator: {fileID: 333928413}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -7150,8 +7076,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 333928413}
-  sprite: {fileID: 333928414}
   monitor: 0
 --- !u!114 &333928412
 MonoBehaviour:
@@ -7639,8 +7563,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 351476003}
-  animator: {fileID: 351476005}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -7662,8 +7584,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 351476005}
-  sprite: {fileID: 351476006}
   monitor: 0
 --- !u!114 &351476004
 MonoBehaviour:
@@ -7794,8 +7714,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.000058850273, y: 0}
-  m_SizeDelta: {x: 445, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: -0.0000001322478, y: 1}
 --- !u!114 &370629287
 MonoBehaviour:
@@ -8056,8 +7976,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 378757543}
-  animator: {fileID: 378757545}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -8079,8 +7997,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 378757545}
-  sprite: {fileID: 378757546}
   monitor: 0
 --- !u!114 &378757544
 MonoBehaviour:
@@ -8350,8 +8266,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 385647533}
-  animator: {fileID: 385647535}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -8373,8 +8287,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 385647535}
-  sprite: {fileID: 385647536}
   monitor: 0
 --- !u!114 &385647534
 MonoBehaviour:
@@ -8799,8 +8711,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 406546396}
-  animator: {fileID: 406546398}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -8822,8 +8732,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 406546398}
-  sprite: {fileID: 406546399}
   monitor: 0
 --- !u!114 &406546397
 MonoBehaviour:
@@ -9093,8 +9001,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 410499995}
-  animator: {fileID: 410499997}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -9116,8 +9022,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 410499997}
-  sprite: {fileID: 410499998}
   monitor: 0
 --- !u!114 &410499996
 MonoBehaviour:
@@ -9387,8 +9291,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 422038866}
-  animator: {fileID: 422038868}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -9410,8 +9312,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 422038868}
-  sprite: {fileID: 422038869}
   monitor: 0
 --- !u!114 &422038867
 MonoBehaviour:
@@ -9791,8 +9691,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 448110801}
-  animator: {fileID: 448110803}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -9814,8 +9712,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 448110803}
-  sprite: {fileID: 448110804}
   monitor: 0
 --- !u!114 &448110802
 MonoBehaviour:
@@ -10369,8 +10265,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 487792076}
-  animator: {fileID: 487792078}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -10392,8 +10286,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 487792078}
-  sprite: {fileID: 487792079}
   monitor: 0
 --- !u!114 &487792077
 MonoBehaviour:
@@ -10877,8 +10769,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 514493819}
-  animator: {fileID: 514493821}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -10900,8 +10790,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 514493821}
-  sprite: {fileID: 514493822}
   monitor: 0
 --- !u!114 &514493820
 MonoBehaviour:
@@ -11373,8 +11261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 523925987}
-  animator: {fileID: 523925989}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -11396,8 +11282,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 523925989}
-  sprite: {fileID: 523925990}
   monitor: 0
 --- !u!114 &523925988
 MonoBehaviour:
@@ -11667,8 +11551,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 528208022}
-  animator: {fileID: 528208024}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -11690,8 +11572,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 528208024}
-  sprite: {fileID: 528208025}
   monitor: 0
 --- !u!114 &528208023
 MonoBehaviour:
@@ -12071,8 +11951,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 536510429}
-  animator: {fileID: 536510431}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -12094,8 +11972,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 536510431}
-  sprite: {fileID: 536510432}
   monitor: 0
 --- !u!114 &536510430
 MonoBehaviour:
@@ -12365,8 +12241,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 562915828}
-  animator: {fileID: 562915830}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -12388,8 +12262,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 562915830}
-  sprite: {fileID: 562915831}
   monitor: 0
 --- !u!114 &562915829
 MonoBehaviour:
@@ -12659,8 +12531,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 568616665}
-  animator: {fileID: 568616667}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -12682,8 +12552,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 568616667}
-  sprite: {fileID: 568616668}
   monitor: 0
 --- !u!114 &568616666
 MonoBehaviour:
@@ -13138,8 +13006,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 587619476}
-  animator: {fileID: 587619478}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -13161,8 +13027,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 587619478}
-  sprite: {fileID: 587619479}
   monitor: 0
 --- !u!114 &587619477
 MonoBehaviour:
@@ -13432,8 +13296,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 601750460}
-  animator: {fileID: 601750462}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -13455,8 +13317,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 601750462}
-  sprite: {fileID: 601750463}
   monitor: 0
 --- !u!114 &601750461
 MonoBehaviour:
@@ -13801,8 +13661,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 628775649}
-  animator: {fileID: 628775651}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -13824,8 +13682,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 628775651}
-  sprite: {fileID: 628775652}
   monitor: 0
 --- !u!114 &628775650
 MonoBehaviour:
@@ -14205,8 +14061,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 644932080}
-  animator: {fileID: 644932082}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -14228,8 +14082,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 644932082}
-  sprite: {fileID: 644932083}
   monitor: 0
 --- !u!114 &644932081
 MonoBehaviour:
@@ -14499,8 +14351,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 649936744}
-  animator: {fileID: 649936746}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -14522,8 +14372,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 649936746}
-  sprite: {fileID: 649936747}
   monitor: 0
 --- !u!114 &649936745
 MonoBehaviour:
@@ -14955,8 +14803,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 672872936}
-  animator: {fileID: 672872938}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -14978,8 +14824,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 672872938}
-  sprite: {fileID: 672872939}
   monitor: 0
 --- !u!114 &672872937
 MonoBehaviour:
@@ -15249,8 +15093,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 693700646}
-  animator: {fileID: 693700648}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -15272,8 +15114,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 693700648}
-  sprite: {fileID: 693700649}
   monitor: 0
 --- !u!114 &693700647
 MonoBehaviour:
@@ -15543,8 +15383,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 697970202}
-  animator: {fileID: 697970204}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -15566,8 +15404,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 697970204}
-  sprite: {fileID: 697970205}
   monitor: 0
 --- !u!114 &697970203
 MonoBehaviour:
@@ -16135,8 +15971,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 747039232}
-  animator: {fileID: 747039234}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -16158,8 +15992,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 747039234}
-  sprite: {fileID: 747039235}
   monitor: 0
 --- !u!114 &747039233
 MonoBehaviour:
@@ -16504,8 +16336,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 772099107}
-  animator: {fileID: 772099109}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -16527,8 +16357,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 772099109}
-  sprite: {fileID: 772099110}
   monitor: 0
 --- !u!114 &772099108
 MonoBehaviour:
@@ -17122,8 +16950,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 777439316}
-  animator: {fileID: 777439318}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -17145,8 +16971,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 777439318}
-  sprite: {fileID: 777439319}
   monitor: 0
 --- !u!114 &777439317
 MonoBehaviour:
@@ -17566,8 +17390,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 794737161}
-  animator: {fileID: 794737163}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -17589,8 +17411,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 794737163}
-  sprite: {fileID: 794737164}
   monitor: 0
 --- !u!114 &794737162
 MonoBehaviour:
@@ -17860,8 +17680,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 797971769}
-  animator: {fileID: 797971771}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -17883,8 +17701,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 797971771}
-  sprite: {fileID: 797971772}
   monitor: 0
 --- !u!114 &797971770
 MonoBehaviour:
@@ -18154,8 +17970,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 804519255}
-  animator: {fileID: 804519257}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -18177,8 +17991,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 804519257}
-  sprite: {fileID: 804519258}
   monitor: 0
 --- !u!114 &804519256
 MonoBehaviour:
@@ -18448,8 +18260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 836086240}
-  animator: {fileID: 836086242}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -18471,8 +18281,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 836086242}
-  sprite: {fileID: 836086243}
   monitor: 0
 --- !u!114 &836086241
 MonoBehaviour:
@@ -18742,8 +18550,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 839071630}
-  animator: {fileID: 839071632}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -18765,8 +18571,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 839071632}
-  sprite: {fileID: 839071633}
   monitor: 0
 --- !u!114 &839071631
 MonoBehaviour:
@@ -19215,8 +19019,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 848033437}
-  animator: {fileID: 848033439}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -19238,8 +19040,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 848033439}
-  sprite: {fileID: 848033440}
   monitor: 0
 --- !u!114 &848033438
 MonoBehaviour:
@@ -19509,8 +19309,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 857423434}
-  animator: {fileID: 857423436}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -19532,8 +19330,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 857423436}
-  sprite: {fileID: 857423437}
   monitor: 0
 --- !u!114 &857423435
 MonoBehaviour:
@@ -20114,8 +19910,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 915064619}
-  animator: {fileID: 915064621}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -20137,8 +19931,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 915064621}
-  sprite: {fileID: 915064622}
   monitor: 0
 --- !u!114 &915064620
 MonoBehaviour:
@@ -20556,8 +20348,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 928788848}
-  animator: {fileID: 928788850}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -20579,8 +20369,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 928788850}
-  sprite: {fileID: 928788851}
   monitor: 0
 --- !u!114 &928788849
 MonoBehaviour:
@@ -21180,8 +20968,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 954793112}
-  animator: {fileID: 954793114}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -21203,8 +20989,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 954793114}
-  sprite: {fileID: 954793115}
   monitor: 0
 --- !u!114 &954793113
 MonoBehaviour:
@@ -21474,8 +21258,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 954855358}
-  animator: {fileID: 954855360}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -21497,8 +21279,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 954855360}
-  sprite: {fileID: 954855361}
   monitor: 0
 --- !u!114 &954855359
 MonoBehaviour:
@@ -21768,8 +21548,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 957341176}
-  animator: {fileID: 957341178}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -21791,8 +21569,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 957341178}
-  sprite: {fileID: 957341179}
   monitor: 0
 --- !u!114 &957341177
 MonoBehaviour:
@@ -22172,8 +21948,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 980776789}
-  animator: {fileID: 980776791}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -22195,8 +21969,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 980776791}
-  sprite: {fileID: 980776792}
   monitor: 0
 --- !u!114 &980776790
 MonoBehaviour:
@@ -23091,8 +22863,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1091073150}
-  animator: {fileID: 1091073152}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -23114,8 +22884,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1091073152}
-  sprite: {fileID: 1091073153}
   monitor: 0
 --- !u!114 &1091073151
 MonoBehaviour:
@@ -23462,8 +23230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1102522926}
-  animator: {fileID: 1102522928}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -23485,8 +23251,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1102522928}
-  sprite: {fileID: 1102522929}
   monitor: 0
 --- !u!114 &1102522927
 MonoBehaviour:
@@ -23831,8 +23595,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1111595711}
-  animator: {fileID: 1111595713}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -23854,8 +23616,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1111595713}
-  sprite: {fileID: 1111595714}
   monitor: 0
 --- !u!114 &1111595712
 MonoBehaviour:
@@ -24550,8 +24310,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1146362490}
-  animator: {fileID: 1146362492}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -24573,8 +24331,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1146362492}
-  sprite: {fileID: 1146362493}
   monitor: 0
 --- !u!114 &1146362491
 MonoBehaviour:
@@ -24936,8 +24692,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1161106868}
-  animator: {fileID: 1161106870}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -24959,8 +24713,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1161106870}
-  sprite: {fileID: 1161106871}
   monitor: 0
 --- !u!114 &1161106869
 MonoBehaviour:
@@ -25340,8 +25092,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1186731456}
-  animator: {fileID: 1186731458}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -25363,8 +25113,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1186731458}
-  sprite: {fileID: 1186731459}
   monitor: 0
 --- !u!114 &1186731457
 MonoBehaviour:
@@ -25961,8 +25709,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1218004232}
-  animator: {fileID: 1218004234}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -25984,8 +25730,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1218004234}
-  sprite: {fileID: 1218004235}
   monitor: 0
 --- !u!114 &1218004233
 MonoBehaviour:
@@ -26255,8 +25999,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1220322196}
-  animator: {fileID: 1220322198}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -26278,8 +26020,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1220322198}
-  sprite: {fileID: 1220322199}
   monitor: 0
 --- !u!114 &1220322197
 MonoBehaviour:
@@ -26624,8 +26364,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1225553616}
-  animator: {fileID: 1225553618}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -26647,8 +26385,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1225553618}
-  sprite: {fileID: 1225553619}
   monitor: 0
 --- !u!114 &1225553617
 MonoBehaviour:
@@ -27025,8 +26761,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1232148679}
-  animator: {fileID: 1232148681}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -27048,8 +26782,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1232148681}
-  sprite: {fileID: 1232148682}
   monitor: 0
 --- !u!114 &1232148680
 MonoBehaviour:
@@ -27319,8 +27051,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1232764279}
-  animator: {fileID: 1232764281}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -27342,8 +27072,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1232764281}
-  sprite: {fileID: 1232764282}
   monitor: 0
 --- !u!114 &1232764280
 MonoBehaviour:
@@ -28255,8 +27983,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1288128481}
-  animator: {fileID: 1288128483}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -28278,8 +28004,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1288128483}
-  sprite: {fileID: 1288128484}
   monitor: 0
 --- !u!114 &1288128482
 MonoBehaviour:
@@ -28549,8 +28273,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1291359657}
-  animator: {fileID: 1291359659}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -28572,8 +28294,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1291359659}
-  sprite: {fileID: 1291359660}
   monitor: 0
 --- !u!114 &1291359658
 MonoBehaviour:
@@ -28895,8 +28615,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1337185086}
-  animator: {fileID: 1337185088}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -28918,8 +28636,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1337185088}
-  sprite: {fileID: 1337185089}
   monitor: 0
 --- !u!114 &1337185087
 MonoBehaviour:
@@ -29414,8 +29130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1354913426}
-  animator: {fileID: 1354913428}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -29437,8 +29151,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1354913428}
-  sprite: {fileID: 1354913429}
   monitor: 0
 --- !u!114 &1354913427
 MonoBehaviour:
@@ -29818,8 +29530,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1403983065}
-  animator: {fileID: 1403983067}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -29841,8 +29551,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1403983067}
-  sprite: {fileID: 1403983068}
   monitor: 0
 --- !u!114 &1403983066
 MonoBehaviour:
@@ -30112,8 +29820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1410864982}
-  animator: {fileID: 1410864984}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -30135,8 +29841,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1410864984}
-  sprite: {fileID: 1410864985}
   monitor: 0
 --- !u!114 &1410864983
 MonoBehaviour:
@@ -30406,8 +30110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1419023834}
-  animator: {fileID: 1419023836}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -30429,8 +30131,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1419023836}
-  sprite: {fileID: 1419023837}
   monitor: 0
 --- !u!114 &1419023835
 MonoBehaviour:
@@ -30700,8 +30400,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1424981381}
-  animator: {fileID: 1424981383}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -30723,8 +30421,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1424981383}
-  sprite: {fileID: 1424981384}
   monitor: 0
 --- !u!114 &1424981382
 MonoBehaviour:
@@ -31183,7 +30879,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 251.825, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1461943349
@@ -31788,8 +31484,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1497446646}
-  animator: {fileID: 1497446648}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -31811,8 +31505,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1497446648}
-  sprite: {fileID: 1497446649}
   monitor: 0
 --- !u!114 &1497446647
 MonoBehaviour:
@@ -32082,8 +31774,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1500058249}
-  animator: {fileID: 1500058251}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -32105,8 +31795,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1500058251}
-  sprite: {fileID: 1500058252}
   monitor: 0
 --- !u!114 &1500058250
 MonoBehaviour:
@@ -32574,8 +32262,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1509722153}
-  animator: {fileID: 1509722155}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -32597,8 +32283,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1509722155}
-  sprite: {fileID: 1509722156}
   monitor: 0
 --- !u!114 &1509722154
 MonoBehaviour:
@@ -33093,8 +32777,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1542643602}
-  animator: {fileID: 1542643604}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -33116,8 +32798,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1542643604}
-  sprite: {fileID: 1542643605}
   monitor: 0
 --- !u!114 &1542643603
 MonoBehaviour:
@@ -33387,8 +33067,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1555867194}
-  animator: {fileID: 1555867196}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -33410,8 +33088,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1555867196}
-  sprite: {fileID: 1555867197}
   monitor: 0
 --- !u!114 &1555867195
 MonoBehaviour:
@@ -33681,8 +33357,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1563667469}
-  animator: {fileID: 1563667471}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -33704,8 +33378,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1563667471}
-  sprite: {fileID: 1563667472}
   monitor: 0
 --- !u!114 &1563667470
 MonoBehaviour:
@@ -34282,8 +33954,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1656384211}
-  animator: {fileID: 1656384213}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -34305,8 +33975,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1656384213}
-  sprite: {fileID: 1656384214}
   monitor: 0
 --- !u!114 &1656384212
 MonoBehaviour:
@@ -34678,8 +34346,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1658878339}
-  animator: {fileID: 1658878341}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -34701,8 +34367,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1658878341}
-  sprite: {fileID: 1658878342}
   monitor: 0
 --- !u!114 &1658878340
 MonoBehaviour:
@@ -34972,8 +34636,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1659135401}
-  animator: {fileID: 1659135403}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -34995,8 +34657,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1659135403}
-  sprite: {fileID: 1659135404}
   monitor: 0
 --- !u!114 &1659135402
 MonoBehaviour:
@@ -35526,8 +35186,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1685473881}
-  animator: {fileID: 1685473883}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -35549,8 +35207,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1685473883}
-  sprite: {fileID: 1685473884}
   monitor: 0
 --- !u!114 &1685473882
 MonoBehaviour:
@@ -35820,8 +35476,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1704518066}
-  animator: {fileID: 1704518068}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -35843,8 +35497,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1704518068}
-  sprite: {fileID: 1704518069}
   monitor: 0
 --- !u!114 &1704518067
 MonoBehaviour:
@@ -36114,8 +35766,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1726167748}
-  animator: {fileID: 1726167750}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -36137,8 +35787,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1726167750}
-  sprite: {fileID: 1726167751}
   monitor: 0
 --- !u!114 &1726167749
 MonoBehaviour:
@@ -36518,8 +36166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1771999497}
-  animator: {fileID: 1771999499}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -36541,8 +36187,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1771999499}
-  sprite: {fileID: 1771999500}
   monitor: 0
 --- !u!114 &1771999498
 MonoBehaviour:
@@ -36812,8 +36456,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1773092868}
-  animator: {fileID: 1773092870}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -36835,8 +36477,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1773092870}
-  sprite: {fileID: 1773092871}
   monitor: 0
 --- !u!114 &1773092869
 MonoBehaviour:
@@ -37106,8 +36746,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1773540369}
-  animator: {fileID: 1773540371}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -37129,8 +36767,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1773540371}
-  sprite: {fileID: 1773540372}
   monitor: 0
 --- !u!114 &1773540370
 MonoBehaviour:
@@ -38416,7 +38052,6 @@ MonoBehaviour:
   RegenType: 1
   TickSeconds: 1
   NegativeChangeWaitSeconds: 2
-  current: 0
   hunger: {fileID: 1837090613}
   HungerPerRegen: 5
 --- !u!114 &1837090613
@@ -38435,7 +38070,6 @@ MonoBehaviour:
   RegenType: 5
   TickSeconds: 1
   NegativeChangeWaitSeconds: 0
-  current: 0
   DamageWhenStarving: 5
 --- !u!114 &1837090614
 MonoBehaviour:
@@ -38453,7 +38087,6 @@ MonoBehaviour:
   RegenType: 3
   TickSeconds: 1
   NegativeChangeWaitSeconds: 2
-  current: 0
 --- !u!114 &1837090615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38672,8 +38305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1840032254}
-  animator: {fileID: 1840032256}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -38695,8 +38326,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1840032256}
-  sprite: {fileID: 1840032257}
   monitor: 0
 --- !u!114 &1840032255
 MonoBehaviour:
@@ -39175,8 +38804,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1860220797}
-  animator: {fileID: 1860220799}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -39198,8 +38825,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1860220799}
-  sprite: {fileID: 1860220800}
   monitor: 0
 --- !u!114 &1860220798
 MonoBehaviour:
@@ -39469,8 +39094,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1861330909}
-  animator: {fileID: 1861330911}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -39492,8 +39115,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1861330911}
-  sprite: {fileID: 1861330912}
   monitor: 0
 --- !u!114 &1861330910
 MonoBehaviour:
@@ -39810,7 +39431,7 @@ MonoBehaviour:
   GameHoursPerMinute: 1
   GameHoursPerGameDay: 24
   Display: {fileID: 1811277840}
-  CurGameTime: 6
+  CurGameTime: 7
   Night: 19
   Morining: 6
 --- !u!114 &1918543957
@@ -39828,7 +39449,7 @@ MonoBehaviour:
   m_MaxLightLevel: 8
   m_AnimalsPerChunk: 3
   m_HostilesPerChunk: 5
-  m_NaturalSpawn: 1
+  m_NaturalSpawn: 0
 --- !u!1 &1928745776
 GameObject:
   m_ObjectHideFlags: 0
@@ -40008,8 +39629,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1928745783}
-  animator: {fileID: 1928745785}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -40031,8 +39650,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1928745785}
-  sprite: {fileID: 1928745786}
   monitor: 0
 --- !u!114 &1928745784
 MonoBehaviour:
@@ -40302,8 +39919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1933403879}
-  animator: {fileID: 1933403881}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -40325,8 +39940,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1933403881}
-  sprite: {fileID: 1933403882}
   monitor: 0
 --- !u!114 &1933403880
 MonoBehaviour:
@@ -40821,8 +40434,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1954802273}
-  animator: {fileID: 1954802275}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -40844,8 +40455,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1954802275}
-  sprite: {fileID: 1954802276}
   monitor: 0
 --- !u!114 &1954802274
 MonoBehaviour:
@@ -41115,8 +40724,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1966712165}
-  animator: {fileID: 1966712167}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -41138,8 +40745,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1966712167}
-  sprite: {fileID: 1966712168}
   monitor: 0
 --- !u!114 &1966712166
 MonoBehaviour:
@@ -41409,8 +41014,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1976195336}
-  animator: {fileID: 1976195338}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -41432,8 +41035,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1976195338}
-  sprite: {fileID: 1976195339}
   monitor: 0
 --- !u!114 &1976195337
 MonoBehaviour:
@@ -41778,8 +41379,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1983931858}
-  animator: {fileID: 1983931860}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -41801,8 +41400,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1983931860}
-  sprite: {fileID: 1983931861}
   monitor: 0
 --- !u!114 &1983931859
 MonoBehaviour:
@@ -42072,8 +41669,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 1988076831}
-  animator: {fileID: 1988076833}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -42095,8 +41690,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 1988076833}
-  sprite: {fileID: 1988076834}
   monitor: 0
 --- !u!114 &1988076832
 MonoBehaviour:
@@ -42366,8 +41959,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 2003304203}
-  animator: {fileID: 2003304205}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -42389,8 +41980,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 2003304205}
-  sprite: {fileID: 2003304206}
   monitor: 0
 --- !u!114 &2003304204
 MonoBehaviour:
@@ -42791,8 +42380,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 2014740148}
-  animator: {fileID: 2014740150}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -42814,8 +42401,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 2014740150}
-  sprite: {fileID: 2014740151}
   monitor: 0
 --- !u!114 &2014740149
 MonoBehaviour:
@@ -43223,8 +42808,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 2044812387}
-  animator: {fileID: 2044812389}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -43246,8 +42829,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 2044812389}
-  sprite: {fileID: 2044812390}
   monitor: 0
 --- !u!114 &2044812388
 MonoBehaviour:
@@ -44090,8 +43671,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56063b93a13d6024bb0750a499636046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigator: {fileID: 2120015548}
-  animator: {fileID: 2120015550}
   Range: 10
   ViewRange: 0
   runningModifier: 1.5
@@ -44113,8 +43692,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
-  animator: {fileID: 2120015550}
-  sprite: {fileID: 2120015551}
   monitor: 0
 --- !u!114 &2120015549
 MonoBehaviour:

@@ -3,9 +3,8 @@ using UnityEngine;
 
 public abstract class BaseBehavior : MonoBehaviour, IBehavior
 {
-    [Header("Components")]
-    public JobNavigator navigator;
-    public Animator animator;
+    protected JobNavigator navigator;
+    protected MobAnimator animator;
 
     [Header("Navigation Info")]
     public int Range;
@@ -17,10 +16,11 @@ public abstract class BaseBehavior : MonoBehaviour, IBehavior
 
     protected Timer curTimer;
 
-    private void Awake()
+    protected virtual void Awake()
     {
+        animator = GetComponent<MobAnimator>();
+        navigator = GetComponent<JobNavigator>();
         navigator.ReachableRange = Range + 10;
-        animator.keepAnimatorStateOnDisable = true;
     }
 
     public abstract Vector2Int Step(float deltaTime);
