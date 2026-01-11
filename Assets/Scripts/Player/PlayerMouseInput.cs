@@ -37,6 +37,7 @@ public class PlayerMouseInput : MonoBehaviour
         HotBarInv = playerInventory.HotbarInv;
     }
 
+    bool attackNextFrame;
     bool overGUI = false;
     public void Update()
     {
@@ -47,6 +48,11 @@ public class PlayerMouseInput : MonoBehaviour
             var worldInfo = ChunkManager.CurRealm.Generator.biomes.GetWorldInfo(Vector2Int.FloorToInt(transform.position.ToVector2()));
 
             print((biomeInfo != null ? biomeInfo.name : "Water") +" " + worldInfo);
+        }
+        if (attackNextFrame)
+        {
+            attackNextFrame = false;
+            tool.OnStartAttack(PlayerAttack);
         }
     }
 
@@ -116,7 +122,7 @@ public class PlayerMouseInput : MonoBehaviour
     {
         if (attackHeld)
         {
-            tool.OnStartAttack(PlayerAttack);
+            attackNextFrame = true;
         }
     }
 
