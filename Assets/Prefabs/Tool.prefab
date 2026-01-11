@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6698309672397072507}
   m_Layer: 7
   m_Name: Display
-  m_TagString: Untagged
+  m_TagString: Tool
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 3591419961476540503}
   m_Layer: 7
   m_Name: Tool
-  m_TagString: Untagged
+  m_TagString: Tool
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

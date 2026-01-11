@@ -66,7 +66,8 @@ public abstract class CallbackAnimator<TType> : MonoBehaviour where TType : clas
         {
             topLevelMixer.SetInputWeight(i, 0);
         }
-        curAnim = null;
+        curAnim = null; 
+        playableGraph.Evaluate(0);
     }
 
     private void OnDestroy()
