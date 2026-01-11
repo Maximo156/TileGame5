@@ -14,11 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Display: {fileID: 11400000, guid: f1e5072833d93774581a4ffc5bf9b41f, type: 2}
   HitsToBreak: 5
-  Drops: []
+  MovementModifier: 0
+  Drops:
+  - Item: {fileID: 11400000, guid: b47515d8c3730c141acf622480b894ae, type: 2}
+    Count: 10
+  - Item: {fileID: 11400000, guid: 502ab55c8dcd5774486116e9a4e22183, type: 2}
+    Count: 10
   UiSprite: {fileID: 9060946648489028373, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0
+  Walkable: 0
   MustBePlacedOn: []
   inputs: 2
   fuelEfficiency: 1.5

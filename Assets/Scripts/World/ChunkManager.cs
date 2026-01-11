@@ -23,7 +23,7 @@ public class ChunkManager : MonoBehaviour
     public List<Realm> Realms;
     public GameObject EntityContainerPrefab;
 
-    [Header("World Settings")]
+    [Header("Chunk Settings")]
     public int chunkWidth;
     public int chunkGenDistance;
     public int chunkTickDistance;

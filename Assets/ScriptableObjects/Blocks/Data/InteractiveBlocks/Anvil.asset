@@ -14,11 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Display: {fileID: 11400000, guid: 1e4557eef66922245a638ef5c8dbe2df, type: 2}
   HitsToBreak: 0
-  Drops: []
+  MovementModifier: 0
+  Drops:
+  - Item: {fileID: 11400000, guid: b47515d8c3730c141acf622480b894ae, type: 2}
+    Count: 10
   UiSprite: {fileID: -3218448313562763201, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0
+  Walkable: 0
   MustBePlacedOn: []
   Recipes:
   - RequiredItems:

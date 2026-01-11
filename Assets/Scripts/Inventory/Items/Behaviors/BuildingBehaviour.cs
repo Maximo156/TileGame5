@@ -9,14 +9,14 @@ public class BuildingBehaviour : RangedUseBehavior, IGridSource, IStatefulItemBe
     {
         if (useInfo.stack.GetState<BuildingBehaviourState>(out var state) &&
             state.selectedRecipe is not null &&
-            state.selectedRecipe.CanProduce(useInfo.availableInventory.GetAllItems()))
+            state.selectedRecipe.CanProduce(useInfo.availableInventory.GetAllItems(), true))
         {
             var rawDir = (targetPosition - usePosition).ToVector2();
             var xBig = Mathf.Abs(rawDir.x) > Mathf.Abs(rawDir.y);
             var dir = new Vector2Int(xBig ? (int)Mathf.Sign(rawDir.x) : 0, !xBig ? (int)Mathf.Sign(rawDir.y) : 0);
             if (ChunkManager.PlaceBlock(Vector2Int.FloorToInt(targetPosition.ToVector2()), dir, state.selectedRecipe.block))
             {
-                state.selectedRecipe.UseRecipe(useInfo.availableInventory);
+                state.selectedRecipe.UseRecipe(useInfo.availableInventory, true);
                 return (true, true);
             }
         }

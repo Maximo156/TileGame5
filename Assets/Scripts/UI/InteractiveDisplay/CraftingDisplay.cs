@@ -104,10 +104,7 @@ public class CraftingDisplay : InteractiveDislay
         {
             ItemEntityManager.SpawnItem(Vector2Int.FloorToInt(worldPos), leftover);
         }
-        foreach (var item in recipe.RequiredItems) 
-        {
-            otherInv.RemoveItemSafe(item);
-        }
+        recipe.UseRecipe(otherInv);
         Completion.fillAmount = 0;
         if (CanCraft(recipe))
         {

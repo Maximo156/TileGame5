@@ -15,7 +15,9 @@ MonoBehaviour:
   Display: {fileID: 11400000, guid: c7a4e8ba9c783b7428dd5b7d5cb08142, type: 2}
   HitsToBreak: 3
   MovementModifier: 0
-  Drops: []
+  Drops:
+  - Item: {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
+    Count: 5
   UiSprite: {fileID: -920270343234752220, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0

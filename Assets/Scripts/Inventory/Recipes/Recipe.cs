@@ -7,8 +7,9 @@ public abstract class Recipe: IGridItem, IGridSource
 {
     public abstract List<ItemStack> Required { get; }
 
-    public bool CanProduce(IEnumerable<ItemStack> items)
+    public bool CanProduce(IEnumerable<ItemStack> items, bool skipRecipePossible = false)
     {
+        if (skipRecipePossible && WorldSettings.UseRecipeInputs) return true;
         var dict = Utilities.ConvertToItemCounts(items);
         foreach (var itemstack in Required)
         {
@@ -20,8 +21,9 @@ public abstract class Recipe: IGridItem, IGridSource
         return true;
     }
 
-    public void UseRecipe(IInventoryContainer inventory)
+    public void UseRecipe(IInventoryContainer inventory, bool skipRecipePossible = false)
     {
+        if (skipRecipePossible && WorldSettings.UseRecipeInputs) return;
         foreach(var item in Required)
         {
             inventory.RemoveItemSafe(item);

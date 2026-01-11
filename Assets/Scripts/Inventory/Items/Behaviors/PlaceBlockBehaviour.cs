@@ -14,7 +14,6 @@ public class PlaceBlockBehaviour : RangedUseBehavior
         var rawDir = (targetPosition - usePosition).ToVector2();
         var xBig = Mathf.Abs(rawDir.x) > Mathf.Abs(rawDir.y);
         var dir = new Vector2Int(xBig ? (int)Mathf.Sign(rawDir.x) : 0, !xBig ? (int)Mathf.Sign(rawDir.y) : 0);
-        useInfo.stack.GetState<DurabilityState>(out var durability);
         if (TryReplace(blockPos, block, blockSlice, recipe))
         {
             ChunkManager.PlaceBlock(blockPos, dir, recipe.block);
@@ -25,7 +24,7 @@ public class PlaceBlockBehaviour : RangedUseBehavior
         {
             if (ChunkManager.PlaceBlock(blockPos, dir, recipe.block))
             {
-                recipe.UseRecipe(useInfo.availableInventory);
+                recipe.UseRecipe(useInfo.availableInventory, true);
                 return (true, true);
             }
         }
