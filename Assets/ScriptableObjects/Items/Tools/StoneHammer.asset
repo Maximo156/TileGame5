@@ -41,6 +41,7 @@ MonoBehaviour:
           - block: {fileID: 11400000, guid: 22a8a340cdc98184188d3138c749b133, type: 2}
           - block: {fileID: 11400000, guid: de22f042adbd6274d88bb5ec558d120f, type: 2}
           - block: {fileID: 11400000, guid: 73aa9743d88fb3745b4f751df253f6ae, type: 2}
+          - block: {fileID: 11400000, guid: a6552da4dc5e0344894479a425384711, type: 2}
         - name: Walls
           sprite: {fileID: -1090782670, guid: c1feb689ca067a54f9a5630e03013c4e, type: 3}
           color: {r: 1, g: 1, b: 1, a: 1}

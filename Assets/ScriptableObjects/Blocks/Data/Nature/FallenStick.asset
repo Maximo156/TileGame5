@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c391e9543f7e944796946cb5ce48a18, type: 3}
-  m_Name: Rock1
+  m_Name: FallenStick
   m_EditorClassIdentifier: 
-  Display: {fileID: 11400000, guid: dee3b5594ed96cd4a936e865e1274224, type: 2}
+  Display: {fileID: 11400000, guid: 4b63d04546bdb4641adc0e66754629be, type: 2}
   HitsToBreak: 1
   MovementModifier: 0
   Drops:
-  - Item: {fileID: 11400000, guid: 502ab55c8dcd5774486116e9a4e22183, type: 2}
+  - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
     Count: 1
-  UiSprite: {fileID: 2022009525, guid: 581d88950f593a74887ce8ee6c22bc6f, type: 3}
+  UiSprite: {fileID: -1678927330, guid: cb8c198214245924c9753f6e49bdb32a, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0

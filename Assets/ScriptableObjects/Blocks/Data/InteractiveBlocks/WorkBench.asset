@@ -15,7 +15,9 @@ MonoBehaviour:
   Display: {fileID: 11400000, guid: c2a0cd6331e0fdb4a83f6bd8ddc25c89, type: 2}
   HitsToBreak: 3
   MovementModifier: 0
-  Drops: []
+  Drops:
+  - Item: {fileID: 11400000, guid: aa840768f8676ad40835efb749abfc09, type: 2}
+    Count: 4
   UiSprite: {fileID: 1385272632488264903, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
@@ -70,8 +72,8 @@ MonoBehaviour:
       Count: 1
     craftingTime: 4
   - RequiredItems:
-    - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
-      Count: 4
+    - Item: {fileID: 11400000, guid: aa840768f8676ad40835efb749abfc09, type: 2}
+      Count: 1
     Result:
       Item: {fileID: 11400000, guid: 2649c64e201ebc94bb441d9434f16a49, type: 2}
       Count: 1

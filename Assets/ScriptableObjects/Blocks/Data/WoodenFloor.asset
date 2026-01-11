@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 072a6322a0a87ea46ab21de1b75b02c2, type: 3}
+  m_Name: WoodenFloor
+  m_EditorClassIdentifier: 
+  Display: {fileID: 11400000, guid: c6caf342fad63fe469de96e220fb7728, type: 2}
+  HitsToBreak: 3
+  MovementModifier: 0
+  Drops:
+  - Item: {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
+    Count: 3
+  UiSprite: {fileID: -160465477, guid: 581d88950f593a74887ce8ee6c22bc6f, type: 3}
+  UiColor: {r: 1, g: 1, b: 1, a: 1}
