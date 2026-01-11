@@ -71,7 +71,7 @@ public struct AstarJob : IJob
     public int ReachableRange;
 
     [WriteOnly]
-    public NativeStack<int2> Path;
+    public NativeStack<float2> Path;
     [WriteOnly]
     public NativeList<int2> Reachable;
 
@@ -127,7 +127,7 @@ public struct AstarJob : IJob
             var temp = ClosedList[end.Pos];
             do
             {
-                Path.Push(temp.Pos);
+                Path.Push(temp.Pos + math.float2(0.5f, 0.5f));
                 if(!ClosedList.TryGetValue(temp.ParentPos, out temp))
                 {
                     break;

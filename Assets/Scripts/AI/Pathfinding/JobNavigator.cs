@@ -11,12 +11,14 @@ public class JobNavigator : MonoBehaviour, IPathFinder
     public bool CanUseDoors;
     public float MovementSpeed;
 
+    public BaseBehavior behaviour;
+
     MobAnimator animator;
 
     [Header("DEBUG")]
     public bool monitor;
 
-    NativeStack<int2> _path;
+    NativeStack<float2> _path;
     int2 _goal;
     NativeList<int2> _reachable;
     Action<JobNavigator> onStuck;
@@ -68,7 +70,7 @@ public class JobNavigator : MonoBehaviour, IPathFinder
             _goal = value;
         }
     }
-    NativeStack<int2> Path
+    NativeStack<float2> Path
     {
         get => _path;
         set
@@ -104,12 +106,12 @@ public class JobNavigator : MonoBehaviour, IPathFinder
 
     private void Awake()
     {
-        _path = new NativeStack<int2>(1, Allocator.Persistent);
+        _path = new NativeStack<float2>(1, Allocator.Persistent);
         onStuck = SelectAndSetRandomGoal;
         animator = GetComponent<MobAnimator>();
     } 
 
-    public bool SetPath(NativeStack<int2> stack, NativeList<int2> reachable)
+    public bool SetPath(NativeStack<float2> stack, NativeList<int2> reachable)
     {
         Reachable = reachable;
         if (stack.Count == 0)
@@ -150,11 +152,15 @@ public class JobNavigator : MonoBehaviour, IPathFinder
             Target = null;
             return;
         }
-        var nextInt = Path.Peek();
-        var next = new Vector2Int(nextInt.x, nextInt.y);
+        var n = Path.Peek();
+        var next = new Vector2(n.x, n.y);
+        if(Path.Count == 0)
+        {
+            next = behaviour.OverrideLastPathPos(next);
+        }
         if(Target is null)
         {
-            ChunkManager.TryGetBlock(next, out Target);
+            ChunkManager.TryGetBlock(Utilities.GetBlockPos(next), out Target);
         }
         if(Target is null || !Target.Walkable || (Target.WallBlock is Door && !CanUseDoors))
         {
@@ -169,7 +175,7 @@ public class JobNavigator : MonoBehaviour, IPathFinder
             ChunkManager.TryGetBlock(CurrentPos, out Current);
         }
 
-        var difference = (Utilities.GetBlockCenter(next).ToVector3() - transform.position);
+        var difference = (next.ToVector3() - transform.position);
         var dir = difference.normalized;
         var movement = ((Current?.MovementSpeed ?? 1) * deltaTime * MovementModifier * MovementSpeed * dir);
         SetMovementInfo(dir);

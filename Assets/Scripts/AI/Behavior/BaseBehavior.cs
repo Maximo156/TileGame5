@@ -52,4 +52,9 @@ public abstract class BaseBehavior : MonoBehaviour, IBehavior
         Utilities.DropItems(Utilities.GetBlockPos(transform.position), Drops);
         Destroy(gameObject);
     }
+
+    public virtual Vector2 OverrideLastPathPos(Vector2 Target)
+    {
+        return Target;
+    }
 }

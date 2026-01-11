@@ -20,7 +20,7 @@ public interface IPathFinder
     /// </summary>
     /// <param name="stack">New path</param>
     /// <returns>True if pathfinder will dispose of path in the future: false if caller needs to dispose</returns>
-    public bool SetPath(NativeStack<int2> stack, NativeList<int2> reachable);
+    public bool SetPath(NativeStack<float2> stack, NativeList<int2> reachable);
 
     public bool isNull { get; }
 }
@@ -47,7 +47,7 @@ public class PathfindingManager : IDisposable
         ChunkChanges.Enqueue(chunk);
     }
 
-    HashSet<(IPathFinder ai, JobHandle handle, NativeStack<int2> path, NativeList<int2> reachable)> activeJobs;
+    HashSet<(IPathFinder ai, JobHandle handle, NativeStack<float2> path, NativeList<int2> reachable)> activeJobs;
     public IEnumerator RunPathfinders(IEnumerable<IPathFinder> pathfinders)
     {
         while (ChunkChanges.TryDequeue(out var c))
@@ -59,9 +59,9 @@ public class PathfindingManager : IDisposable
             blockDataMirror[info.pos] = info.data;
         };
         yield return null;
-        activeJobs = new HashSet<(IPathFinder ai, JobHandle handle, NativeStack<int2> path, NativeList<int2> reachable)> (pathfinders.Where(p => !p.isNull).Select(pathFinder =>
+        activeJobs = new HashSet<(IPathFinder ai, JobHandle handle, NativeStack<float2> path, NativeList<int2> reachable)> (pathfinders.Where(p => !p.isNull).Select(pathFinder =>
         {
-            NativeStack<int2> path = new NativeStack<int2>(100, Allocator.Persistent);
+            NativeStack<float2> path = new NativeStack<float2>(100, Allocator.Persistent);
             NativeList<int2> reachable = new NativeList<int2>(100, Allocator.Persistent);
             var job = new AstarJob()
             {

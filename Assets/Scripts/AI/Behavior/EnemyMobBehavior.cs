@@ -199,4 +199,9 @@ public class EnemyMobBehaviour : BaseBehavior, IBehavior, IHittable
 
     protected Vector3 difToTarget => player.position - transform.position;
     protected float distanceToTarget => difToTarget.magnitude;
+
+    public override Vector2 OverrideLastPathPos(Vector2 Target)
+    {
+        return player.position;
+    }
 }
