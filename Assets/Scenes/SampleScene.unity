@@ -39516,7 +39516,7 @@ MonoBehaviour:
   GameHoursPerMinute: 1
   GameHoursPerGameDay: 24
   Display: {fileID: 1811277840}
-  CurGameTime: 20
+  CurGameTime: 7
   Night: 19
   Morining: 6
 --- !u!114 &1918543957
