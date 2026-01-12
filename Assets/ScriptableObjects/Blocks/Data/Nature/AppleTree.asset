@@ -20,6 +20,8 @@ MonoBehaviour:
     Count: 3
   - Item: {fileID: 11400000, guid: cf5704fcc9262f3439a27e54cca442c0, type: 2}
     Count: 1
+  - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
+    Count: 3
   UiSprite: {fileID: 21300000, guid: 632e3ebf391900b4ca6e5be665fac2a7, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0

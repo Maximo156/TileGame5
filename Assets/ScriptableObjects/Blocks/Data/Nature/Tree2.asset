@@ -18,6 +18,8 @@ MonoBehaviour:
   Drops:
   - Item: {fileID: 11400000, guid: aa840768f8676ad40835efb749abfc09, type: 2}
     Count: 3
+  - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
+    Count: 2
   UiSprite: {fileID: 7026102079263425026, guid: 99f7ad5da9f171346826c9fe68ec7424, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
