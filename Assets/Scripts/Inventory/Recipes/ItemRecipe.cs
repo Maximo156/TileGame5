@@ -9,9 +9,9 @@ public class ItemRecipe : Recipe
     public override List<ItemStack> Required => RequiredItems;
 
     public ItemStack Result;
-    public int craftingTime;
+    public float craftingTime;
 
-    public int craftingTimeTicks => (craftingTime * 1000);// / WorldSettings.StructureTickMilliseconds;
+    public float craftingTimeTicks => (craftingTime * 1000);// / WorldSettings.StructureTickMilliseconds;
 
     public override Sprite GetSprite() => Result.GetSprite();
 

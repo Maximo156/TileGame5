@@ -25,14 +25,24 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
 
     void Awake()
     {
-        MainInv = new Inventory(MainSize, MainStartingItems);
-        HotbarInv = new Inventory(HotbarSize, HotbarStartingItems);
+        MainInv = new Inventory(MainSize);
+        HotbarInv = new Inventory(HotbarSize);
         HotbarInv.OnItemChanged += HotBarItemsChanged;
         AccessoryInv = new AccessoryInv();
     }
 
     public void Start()
     {
+        var useDefault = WorldSettings.UseDefaultInventory;
+        if (useDefault)
+        {
+            HotbarInv.AddItems(WorldSettings.StartingHotbar);
+        }
+        else
+        {
+            MainInv.AddItems(MainStartingItems);
+            HotbarInv.AddItems(HotbarStartingItems);
+        }
         HotBarItemsChanged(HotbarInv);
         GetComponent<EntityStatistics.EntityStats>()?.AttachInv(AccessoryInv);
     }

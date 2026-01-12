@@ -12905,6 +12905,10 @@ MonoBehaviour:
   m_HostilesPerChunk: 5
   m_NaturalSpawn: 1
   m_UseRecipeInputs: 0
+  m_UseDefaultInventory: 0
+  m_StartingHotbar:
+  - Item: {fileID: 11400000, guid: cb6ca2667a18aa340b5e937f7061d17f, type: 2}
+    Count: 1
 --- !u!1 &1979986990
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,21 +31,21 @@ MonoBehaviour:
     Result:
       Item: {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
       Count: 3
-    craftingTime: 5
+    craftingTime: 0.5
   - RequiredItems:
     - Item: {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
       Count: 1
     Result:
       Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
       Count: 3
-    craftingTime: 5
+    craftingTime: 0.5
   - RequiredItems:
     - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
       Count: 2
     Result:
       Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
       Count: 1
-    craftingTime: 5
+    craftingTime: 0.5
   - RequiredItems:
     - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
       Count: 2
@@ -61,7 +61,7 @@ MonoBehaviour:
     Result:
       Item: {fileID: 11400000, guid: fdb0d608330aa8641ad4dd86c605ca1f, type: 2}
       Count: 1
-    craftingTime: 4
+    craftingTime: 3
   - RequiredItems:
     - Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
       Count: 1
@@ -70,7 +70,7 @@ MonoBehaviour:
     Result:
       Item: {fileID: 11400000, guid: 94215b4d806521f4283b576e2cb29f65, type: 2}
       Count: 1
-    craftingTime: 4
+    craftingTime: 2
   - RequiredItems:
     - Item: {fileID: 11400000, guid: aa840768f8676ad40835efb749abfc09, type: 2}
       Count: 1
@@ -86,7 +86,7 @@ MonoBehaviour:
     Result:
       Item: {fileID: 11400000, guid: cb6ca2667a18aa340b5e937f7061d17f, type: 2}
       Count: 1
-    craftingTime: 4
+    craftingTime: 2
   - RequiredItems:
     - Item: {fileID: 11400000, guid: 0d5045cb3530d4a54aae38bc8498c024, type: 2}
       Count: 2

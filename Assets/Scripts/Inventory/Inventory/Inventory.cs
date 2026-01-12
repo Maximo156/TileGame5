@@ -104,6 +104,14 @@ public class Inventory : IInventory, IInventoryContainer, IGridSource
         return stack.Count == 0;
     }
 
+    public void AddItems(List<ItemStack> items)
+    {
+        foreach (var item in items)
+        {
+            AddItem(new ItemStack(item.Item, item.Count));
+        }
+    }
+
     public bool AddItemIndex(ItemStack stack, int index)
     {
         if (!CanAddSlot(stack, index)) return false;
