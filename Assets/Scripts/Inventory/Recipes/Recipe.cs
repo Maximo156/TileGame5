@@ -9,7 +9,7 @@ public abstract class Recipe: IGridItem, IGridSource
 
     public bool CanProduce(IEnumerable<ItemStack> items, bool skipRecipePossible = false)
     {
-        if (skipRecipePossible && WorldSettings.UseRecipeInputs) return true;
+        if (skipRecipePossible && WorldSettings.DontUseRecipeInputs) return true;
         var dict = Utilities.ConvertToItemCounts(items);
         foreach (var itemstack in Required)
         {
@@ -23,7 +23,7 @@ public abstract class Recipe: IGridItem, IGridSource
 
     public void UseRecipe(IInventoryContainer inventory, bool skipRecipePossible = false)
     {
-        if (skipRecipePossible && WorldSettings.UseRecipeInputs) return;
+        if (skipRecipePossible && WorldSettings.DontUseRecipeInputs) return;
         foreach(var item in Required)
         {
             inventory.RemoveItemSafe(item);
