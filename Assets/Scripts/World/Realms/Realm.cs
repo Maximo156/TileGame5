@@ -38,6 +38,21 @@ public class Realm
     public EntityManager EntityContainer;
     Transform EntityContainerTransform;
 
+    Queue<(Chunk chunk, Vector2Int pos, Action<Chunk, Vector2Int> action)> QueuedActions = new();
+
+    public void Step()
+    {
+        while(QueuedActions.TryDequeue(out var actionInfo))
+        {
+            actionInfo.action?.Invoke(actionInfo.chunk, actionInfo.pos);
+        }
+    }
+
+    public void LateStep()
+    {
+
+    }
+
     public void Initialize(GameObject entityContainerPrefab, Transform parent, int ChunkWidth, int chunkGenRadius)
     {
         EntityContainer = GameObject.Instantiate(entityContainerPrefab, parent).GetComponent<EntityManager>();
@@ -166,6 +181,44 @@ public class Realm
             return action(chunk, position);
         }
         return default;
+    }
+
+    public T QueueChunkAction<T>(Vector2Int position, int ChunkWidth, Action<Chunk, Vector2Int> action, Func<Chunk, Vector2Int, T> predictResult, bool useProxy = true)
+    {
+        var chunkPos = Utilities.GetChunk(position, ChunkWidth);
+        if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
+        {
+            if (useProxy)
+            {
+                var offset = chunk.GetBlock(position).GetProxyOffset();
+                if (offset != Vector2Int.zero)
+                {
+                    return QueueChunkAction(offset + position, ChunkWidth, action, predictResult);
+                }
+            }
+            QueuedActions.Enqueue((chunk, position, action));
+            return predictResult(chunk, position);
+        }
+        return default;
+    }
+
+    public void QueueChunkAction(Vector2Int position, int ChunkWidth, Action<Chunk, Vector2Int> action, bool useProxy = true)
+    {
+        var chunkPos = Utilities.GetChunk(position, ChunkWidth);
+        if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
+        {
+            if (useProxy)
+            {
+                var offset = chunk.GetBlock(position).GetProxyOffset();
+                if (offset != Vector2Int.zero)
+                {
+                    QueueChunkAction(offset + position, ChunkWidth, action);
+                    return;
+                }
+            }
+            Debug.LogWarning("Queue action");
+            action(chunk, position);
+        }
     }
 
     public bool TryGetChunk(Vector2Int chunk, out Chunk chunkObj)

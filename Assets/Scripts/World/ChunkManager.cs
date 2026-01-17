@@ -7,6 +7,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using Unity.Collections;
 using NativeRealm;
+using BlockDataRepos;
 
 public class ChunkManager : MonoBehaviour
 {
@@ -36,7 +37,8 @@ public class ChunkManager : MonoBehaviour
     {
         get => _activeRealm;
         set {
-            _activeRealm?.SetContainerActive(false);
+            _activeRealm.SetContainerActive(false);
+            _activeRealm?.LateStep();
             OnRealmChange?.Invoke(_activeRealm, value);
             _activeRealm = value;
             _activeRealm.PlayerChangedChunks(Vector2Int.zero, chunkGenDistance, chunkWidth, AllTaskShutdown.Token);
@@ -63,6 +65,22 @@ public class ChunkManager : MonoBehaviour
         }
         ActiveRealm = Realms.First(r => r.name == startingRealm);
         Task.Run(() => ChunkTick());
+    }
+
+    private void Update()
+    {
+        if (ActiveRealm != null)
+        {
+            ActiveRealm.Step();
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (ActiveRealm != null)
+        {
+            ActiveRealm.LateStep();
+        }
     }
 
     private CancellationTokenSource AllTaskShutdown = new CancellationTokenSource();
@@ -128,21 +146,6 @@ public class ChunkManager : MonoBehaviour
         return Manager.ActiveRealm.TryGetChunk(chunk, out chunkObj);
     }
 
-    public static bool PlaceBlock(Vector2Int position, Vector2Int dir, Block block, bool force = false, byte initialState = 0)
-    {
-        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.PlaceBlock(pos, dir, block, force, initialState));
-    }
-
-    public static bool Interact(Vector2Int position)
-    {
-        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.Interact(pos));
-    }
-
-    public static bool BreakBlock(Vector2Int position, bool roof, bool drop = true, bool useProxy = true)
-    {
-        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.BreakBlock(pos, roof, drop), useProxy);
-    }
-
     public static bool PlaceItem(Vector2Int position, ItemStack item)
     {
         return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.PlaceItem(pos, item));
@@ -153,23 +156,32 @@ public class ChunkManager : MonoBehaviour
         return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.PopItem(pos));
     }
 
-    #region Burst
-    /*
-    NativeHashMap<float2, Chunk> nativeChunks = new NativeHashMap<float2, Chunk>();
-    public static float GetMovementSpeed(float2 position)
+    #region write actions
+    public static bool PlaceBlock(Vector2Int position, Vector2Int dir, Block block, bool force = false, byte initialState = 0)
     {
-        if (!TryGetBlock(position, out var block)) return 0;
-        return block.MovementSpeed;
+        return Manager.ActiveRealm.QueueChunkAction(
+            position, 
+            ChunkWidth, 
+            (chunk, pos) => chunk.PlaceBlock(pos, dir, block, force, initialState),
+            (chunk, pos) => chunk.CanPlace(pos, block.Id)
+        );
     }
-    public static bool TryGetBlock(float2 position, out BlockSlice block)
-    {
-        block = default;
-        if (Manager == null) return false;
-        return Manager.ActiveRealm.TryGetBlock(position, ChunkWidth, out block);
-    }
-    */
-    #endregion
 
+    public static bool Interact(Vector2Int position)
+    {
+        return Manager.ActiveRealm.QueueChunkAction(
+            position, 
+            ChunkWidth, 
+            (chunk, pos) => chunk.Interact(pos),
+            (chunk, pos) => BlockDataRepo.TryGetBlock<Wall>(chunk.GetBlock(pos).wallBlock, out var b) && b is IInteractableBlock
+        );
+    }
+
+    public static void BreakBlock(Vector2Int position, bool roof, bool drop = true, bool useProxy = true)
+    {
+        Manager.ActiveRealm.QueueChunkAction(position, ChunkWidth, (chunk, pos) => chunk.BreakBlock(pos, roof, drop), useProxy);
+    }
+    #endregion
 
     private void OnDestroy()
     {
