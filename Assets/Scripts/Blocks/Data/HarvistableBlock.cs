@@ -1,3 +1,5 @@
+using NativeRealm;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,21 +8,14 @@ using UnityEngine;
 public class HarvistableBlock : Wall, IInteractableBlock
 {
     [Header("Harvest Info")]
-    public Block AfterHarvest;
+    public Wall AfterHarvest;
     public bool useOverrides;
     public List<ItemStack> HarvestOverrides;
 
-    public bool Interact(Vector2Int worldPos, BlockSlice slice)
+    public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice)
     {
-        if (AfterHarvest != null)
-        {
-            slice.SetBlock(AfterHarvest);
-            Utilities.DropItems(worldPos, useOverrides ? HarvestOverrides : Drops);
-        }
-        else
-        {
-            slice.Break(worldPos, false, out var _);
-        }
+        slice.wallBlock = AfterHarvest?.Id ?? 0;
+        Utilities.DropItems(worldPos, useOverrides ? HarvestOverrides : Drops);
         return true;
     }
 }

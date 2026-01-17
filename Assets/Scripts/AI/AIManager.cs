@@ -7,6 +7,8 @@ using Unity.Jobs;
 using Unity.Collections;
 using System;
 using System.Collections.Concurrent;
+using BlockDataRepos;
+using NativeRealm;
 
 public interface IAI
 {
@@ -40,12 +42,12 @@ public class AIManager : MonoBehaviour
 
     HashSet<IPathFinder> requestedPathfinders = new();
 
-    public void Initialize(ConcurrentDictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth)
+    public void Initialize(ConcurrentDictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth, RealmData worldData)
     {
         this.LoadedChunks = LoadedChunks;
         this.ChunkWidth = ChunkWidth;
 
-        PathFinder = new PathfindingManager();
+        PathFinder = new PathfindingManager(worldData);
         BehaviorManager = new AIBehaviorManager();
     }
 
@@ -53,10 +55,6 @@ public class AIManager : MonoBehaviour
     {
         PathFinder.Dispose();
     }
-
-    public void OnBlockChanged(Vector2Int worldPos, BlockSlice block) => PathFinder.OnBlockChanged(worldPos, block);
-
-    public void OnChunkChanged(Chunk chunk) => PathFinder.OnChunkChanged(chunk);
 
     // Update is called once per frame
     void Update()

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using NativeRealm;
+using UnityEditor.ShaderGraph.Internal;
+using BlockDataRepos;
 
 public class WorldDisplay : MonoBehaviour
 {
@@ -46,13 +49,15 @@ public class WorldDisplay : MonoBehaviour
         }
     }
 
-    public void UpdateBlock(Vector2Int pos, BlockSlice block)
+    public void UpdateBlock(Vector2Int pos, NativeBlockSlice block, BlockSliceState state)
     {
+        var groundBlock = BlockDataRepo.GetBlock<Ground>(block.groundBlock);
+        var wallBlock = BlockDataRepo.GetBlock<Wall>(block.wallBlock);
         var pos3 = pos.ToVector3Int();
-        Roof.SetTile(pos3, block.LightLevel, block.RoofBlock is not null);
-        Ground.SetTile(pos3, block.GroundBlock?.Display);
-        Wall.SetTile(pos3, block.WallBlock?.Display);
-        UpdateItems(pos, block.PlacedItems);
+        Roof.SetTile(pos3, block.lightLevel, block.roofBlock != 0);
+        Ground.SetTile(pos3, groundBlock?.Display);
+        Wall.SetTile(pos3, wallBlock?.Display);
+        UpdateItems(pos, state.placedItems);
     }
 
     public void RefreshTile(Vector2Int pos)

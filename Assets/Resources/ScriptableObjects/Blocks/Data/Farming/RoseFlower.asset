@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
   m_Name: RoseFlower
   m_EditorClassIdentifier: 
+  <Id>k__BackingField: 56
   Display: {fileID: 11400000, guid: 294669340e51a43f497c697a52741196, type: 2}
   HitsToBreak: 1
+  MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: 44ace8af99cdf4d0887392549e28cd11, type: 2}
     Count: 1
@@ -23,5 +25,6 @@ MonoBehaviour:
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0
+  Walkable: 0
   MustBePlacedOn:
   - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}

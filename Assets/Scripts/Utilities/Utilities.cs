@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 using System.Linq;
 using Random = UnityEngine.Random;
+using NativeRealm;
+using BlockDataRepos;
 
 public static class Utilities
 {
@@ -184,7 +186,7 @@ public static class Utilities
                 ChunkManager.TryGetChunk(curChunkPos, out curChunk);
             }
             return curChunk?.GetBlock(pos);
-        }, slice => slice.WallBlock == null, _ => false, out var _, limit)?.position;
+        }, slice => slice?.wallBlock == 0, _ => false, out var _, limit)?.position;
     }
 
     public static HashSet<Vector2Int> FindReachableBlocks(Vector2Int start, int reach)
@@ -192,12 +194,12 @@ public static class Utilities
         var width = ChunkManager.ChunkWidth;
         var curChunkPos = GetChunk(start, width);
         ChunkManager.TryGetChunk(curChunkPos, out var curChunk);
-        BFS(start, pos => pos, _ => false, pos => Vector2Int.Distance(pos, start) > reach || GetBlock(pos)?.Walkable != true, out var reachable, 10000);
+        BFS(start, pos => pos, _ => false, pos => Vector2Int.Distance(pos, start) > reach || GetBlock(pos)?.GetMovementInfo().walkable != true, out var reachable, 10000);
         
         Debug.Log($"Count: {reachable.Count} Max dist: {Vector2Int.Distance(start, reachable.MaxBy(v => Vector2Int.Distance(v, start)))}");
         return reachable;
 
-        BlockSlice GetBlock(Vector2Int pos)
+        NativeBlockSlice? GetBlock(Vector2Int pos)
         {
             var tmp = GetChunk(pos, width);
             if (curChunkPos != tmp)
@@ -233,6 +235,11 @@ public static class Utilities
                 type.IsClass &&
                 !type.IsAbstract)
             .ToList();
+    }
+
+    public static Block GetActionableBlock(bool roof, NativeBlockSlice slice)
+    {
+        return roof ? BlockDataRepo.GetBlock<Block>(slice.roofBlock): (BlockDataRepo.GetBlock<Block>(slice.wallBlock) ?? BlockDataRepo.GetBlock<Block>(slice.groundBlock));
     }
 
     public static Vector2Int[] QuadAdjacent =
@@ -273,4 +280,10 @@ public static class Utilities
         Vector3Int.down,
         Vector3Int.down + Vector3Int.right,
     };
+}
+
+public struct SliceData
+{
+    public int start;
+    public int length;
 }

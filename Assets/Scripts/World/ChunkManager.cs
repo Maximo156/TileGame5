@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 using Unity.Collections;
+using NativeRealm;
 
 public class ChunkManager : MonoBehaviour
 {
@@ -57,7 +58,7 @@ public class ChunkManager : MonoBehaviour
     {
         foreach(var realm in Realms)
         {
-            realm.Initialize(EntityContainerPrefab, transform, chunkWidth);
+            realm.Initialize(EntityContainerPrefab, transform, chunkWidth, chunkGenDistance);
             realm.SetContainerActive(false);
         }
         ActiveRealm = Realms.First(r => r.name == startingRealm);
@@ -82,14 +83,22 @@ public class ChunkManager : MonoBehaviour
         Debug.Log("Stopping Tick");
     }
 
-    public static bool TryGetBlock(Vector2Int position, out BlockSlice block, bool useProxy = true)
+    public static bool TryGetBlock(Vector2Int position, out NativeBlockSlice block, bool useProxy = true)
     {
         block = default;
         if (Manager == null) return false;
-        return Manager.ActiveRealm.TryGetBlock(position, ChunkWidth, out block, useProxy);
+        return Manager.ActiveRealm.TryGetBlock(position, ChunkWidth, out block, out var _, useProxy);
     }
 
-    public static BlockSlice GetBlock(Vector2Int position)
+    public static bool TryGetBlock(Vector2Int position, out NativeBlockSlice block, out BlockSliceState state, bool useProxy = true)
+    {
+        block = default;
+        state = null;
+        if (Manager == null) return false;
+        return Manager.ActiveRealm.TryGetBlock(position, ChunkWidth, out block, out state, useProxy);
+    }
+
+    public static NativeBlockSlice GetBlock(Vector2Int position)
     {
         if(!TryGetBlock(position, out var block))
         {
@@ -111,7 +120,7 @@ public class ChunkManager : MonoBehaviour
     public static float GetMovementSpeed(Vector2Int position)
     {
         if (!TryGetBlock(position, out var block)) return 0;
-        return block.MovementSpeed;
+        return block.GetMovementInfo().movementSpeed;
     }
 
     public static bool TryGetChunk(Vector2Int chunk, out Chunk chunkObj)
@@ -119,9 +128,9 @@ public class ChunkManager : MonoBehaviour
         return Manager.ActiveRealm.TryGetChunk(chunk, out chunkObj);
     }
 
-    public static bool PlaceBlock(Vector2Int position, Vector2Int dir, Block block, bool force = false)
+    public static bool PlaceBlock(Vector2Int position, Vector2Int dir, Block block, bool force = false, byte initialState = 0)
     {
-        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.PlaceBlock(pos, dir, block, force));
+        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.PlaceBlock(pos, dir, block, force, initialState));
     }
 
     public static bool Interact(Vector2Int position)
@@ -129,9 +138,9 @@ public class ChunkManager : MonoBehaviour
         return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.Interact(pos));
     }
 
-    public static bool BreakBlock(Vector2Int position, bool roof, bool drop = true)
+    public static bool BreakBlock(Vector2Int position, bool roof, bool drop = true, bool useProxy = true)
     {
-        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.BreakBlock(pos, roof, drop));
+        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.BreakBlock(pos, roof, drop), useProxy);
     }
 
     public static bool PlaceItem(Vector2Int position, ItemStack item)

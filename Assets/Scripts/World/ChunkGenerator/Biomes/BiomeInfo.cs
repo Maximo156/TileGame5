@@ -1,3 +1,4 @@
+using NativeRealm;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ public class BiomeInfo : ScriptableObject
         return GetBiome(HeightSound.GetSound(worldPos.x, worldPos.y), MoistureSound?.GetSound(worldPos.x, worldPos.y) ?? 0, HeatSound?.GetSound(worldPos.x, worldPos.y) ?? 0);
     }
 
-    public void UpdateBlockSlices(Vector2Int worldPos, BlockSlice[,] blocks, System.Random rand, GenerationCache cache)
+    public void UpdateBlockSlices(Vector2Int worldPos, BlockSliceState[,] blocks, ChunkData data, System.Random rand, GenerationCache cache)
     {
         int chunkWidth = blocks.GetLength(0);
         var heightMap = cache.HeightMap = HeightSound.GetSoundArray(worldPos.x, worldPos.y, chunkWidth);
@@ -32,30 +33,33 @@ public class BiomeInfo : ScriptableObject
         {
             for (int y = 0; y < blocks.GetLength(1); y++)
             {
+                blocks[x, y] = new();
                 var wallBiome = GetWall(heightMap[x, y]);
                 var biome = GetBiome(heightMap[x, y], moistureMap?[x, y] ?? 0, heatMap?[x, y] ?? 0);
 
-                var block = new BlockSlice();
-                blocks[x, y] = block;
+                var slice = data.GetSlice(x, y);
                 if(biome is null)
                 {
+                    slice.isWater = true;
+                    data.InitializeSlice(x, y, slice);
                     continue;
                 }
 
-                block.Water = false;
+                slice.isWater = false;
 
                 if (wallBiome is null)
                 {
-                    block.SetBlock(biome.GroundBlock);
-                    biome.SetSparce(worldPos, rand, block);
+                    slice.groundBlock = biome.GroundBlock.Id;
+                    biome.SetSparce(worldPos, rand, ref slice);
                 }
                 else
                 {
-                    block.SetBlock(biome.GetReplacement(wallBiome.GroundBlock));
-                    block.SetBlock(biome.GetReplacement(wallBiome.WallBlock));
-                    block.SetBlock(biome.GetReplacement(wallBiome.RoofBlock));
-                    wallBiome.SetSparce(worldPos, rand, block);
+                    slice.groundBlock = biome.GetReplacement(wallBiome.GroundBlock)?.Id ?? 0;
+                    slice.wallBlock = biome.GetReplacement(wallBiome.WallBlock)?.Id ?? 0;
+                    slice.roofBlock = biome.GetReplacement(wallBiome.RoofBlock)?.Id ?? 0;
+                    wallBiome.SetSparce(worldPos, rand, ref slice);
                 }
+                data.InitializeSlice(x, y, slice);
             }
         }
     }

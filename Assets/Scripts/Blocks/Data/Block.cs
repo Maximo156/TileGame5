@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Collections;
 using System.Collections.Generic;
+using BlockDataRepos;
+using NativeRealm;
 
 public interface IConditionalPlace
 {
@@ -10,11 +11,19 @@ public interface IConditionalPlace
 
 public interface IOnPlace
 {
-    public void OnPlace(Vector2Int Pos, Vector2Int dir);
+    public void OnPlace(Vector2Int Pos, Vector2Int dir, ref NativeBlockSlice slice);
 }
 
-public class Block : ScriptableObject, ISpriteful, ISaveable
+public class Block : ScriptableObject, ISpriteful
 {
+    ushort _id;
+    public ushort Id { get
+        {
+            if (_id == 0) throw new System.Exception($"{Identifier} has no id");
+            return _id;
+        }
+        set => _id = value;
+    }
     public TileBase Display;
     public int HitsToBreak;
     public float MovementModifier = 0;
@@ -27,8 +36,7 @@ public class Block : ScriptableObject, ISpriteful, ISaveable
     [SerializeField]
     private Color UiColor = Color.white;
     public Color Color => UiColor;
-
-    public string Identifier { get; set; }
+    string Identifier;
 
     private void OnValidate()
     {
@@ -40,6 +48,11 @@ public class Block : ScriptableObject, ISpriteful, ISaveable
         return null;
     }
 
+    public byte GetDefaultSimpleState()
+    {
+        return 0;
+    }
+     
     public virtual bool OnBreak(Vector2Int worldPos, BreakInfo info)
     {
         if (!info.dontDrop)
@@ -58,7 +71,32 @@ public class Block : ScriptableObject, ISpriteful, ISaveable
     public struct BreakInfo
     {
         public BlockState state;
+        public NativeBlockSlice slice;
         public bool dontDrop;
+    }
+
+    public virtual BlockData GetBlockData()
+    {
+        return new BlockData()
+        {
+            Level = GetLevel()
+        };
+    }
+
+    BlockLevel GetLevel()
+    {
+        if(this is Wall)
+        {
+            return BlockLevel.Wall;
+        }
+        else if(this is Ground)
+        {
+            return BlockLevel.Floor;
+        }
+        else
+        {
+            return BlockLevel.Roof;
+        }
     }
 }
 

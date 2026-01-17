@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ITickableBlock
 {
-    public bool Tick(Vector2Int worlPosition, BlockSlice slice, System.Random rand);
+    public ushort Tick(Vector2Int worlPosition, BlockState state, System.Random rand);
 }

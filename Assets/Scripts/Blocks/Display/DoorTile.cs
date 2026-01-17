@@ -41,9 +41,9 @@ public class DoorTile : TileBase, ISpriteful {
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
         bool isOpen = false;
-        if(ChunkManager.TryGetBlock(position.ToVector2Int(), out var slice) && slice.State is DoorState door)
+        if(ChunkManager.TryGetBlock(position.ToVector2Int(), out var slice))
         {
-            isOpen = door.isOpen;
+            isOpen = slice.simpleBlockState == 1;
         }
         tileData.colliderType = isOpen ? Tile.ColliderType.None : Tile.ColliderType.Sprite;
         tileData.color = m_ColorOverride;

@@ -106,12 +106,12 @@ public partial class Chunk
                 {
                     if (loc.x < 0 || loc.x >= width || loc.y < 0 || loc.y >= width)
                     {
-                        return null;
+                        return 0;
                     }
-                    return blocks[loc.x, loc.y];
+                    return data.GetWall(loc.x, loc.y);
                 },
-                slice => slice != null && slice.WallBlock == null,
-                slice => slice == null,
+                wall => wall != 0,
+                wall => wall != 0,
                 out _,
                 100)?.position;
         } while (pos != null && count <= 3);

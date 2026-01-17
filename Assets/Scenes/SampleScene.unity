@@ -12808,6 +12808,7 @@ GameObject:
   - component: {fileID: 1918543955}
   - component: {fileID: 1918543957}
   - component: {fileID: 1918543956}
+  - component: {fileID: 1918543958}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -12905,10 +12906,22 @@ MonoBehaviour:
   m_HostilesPerChunk: 5
   m_NaturalSpawn: 1
   m_DontUseRecipeInputs: 0
-  m_UseDefaultInventory: 1
+  m_UseDefaultInventory: 0
   m_StartingHotbar:
   - Item: {fileID: 11400000, guid: cb6ca2667a18aa340b5e937f7061d17f, type: 2}
     Count: 1
+--- !u!114 &1918543958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918543952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d92cfa38c9558a4c9b1f0089b54773e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1979986990
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,10 +13,10 @@ public class ProcessingBlock : Wall, ITickableBlock, IInterfaceBlock
     public List<ItemRecipe> Recipes;
     public List<Item> Fuels;
 
-    public bool Tick(Vector2Int worlPosition, BlockSlice slice, System.Random rand)
+    public ushort Tick(Vector2Int worlPosition, BlockState state, System.Random rand)
     {
-        (slice.State as ProcessingBlockState).Process();
-        return false;
+        (state as ProcessingBlockState).Process();
+        return 0;
     }
 
     public override BlockState GetState()

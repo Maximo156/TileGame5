@@ -13,13 +13,12 @@ public class ReplacableBlock : Wall, ITickableBlock
         return nextBlock;
     }
 
-    public bool Tick(Vector2Int worlPosition, BlockSlice slice, System.Random rand)
+    public ushort Tick(Vector2Int worlPosition, BlockState state, System.Random rand)
     {
         if (rand.NextDouble() < 1 - Mathf.Pow((float)System.Math.E, -1f * ChunkManager.MsPerTick / (1000 * MeanSecondsToHappen)))
         {
-            slice.SetBlock(NewBlock());
-            return true;
+            return NewBlock().Id;
         }
-        return false;
+        return 0;
     }
 }

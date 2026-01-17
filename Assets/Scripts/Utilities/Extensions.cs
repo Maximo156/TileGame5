@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using NativeRealm;
+using BlockDataRepos;
 
 public static class Extensions
 {
@@ -168,4 +170,62 @@ public static class Extensions
             return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
         }
     }
+
+    public static MoveInfo GetMovementInfo(this NativeBlockSlice slice, BlockData groundData, BlockData wallData)
+    {
+        var speed = slice.isWater && slice.groundBlock == 0 ? 0.5f : (1 + groundData.movementSpeed + wallData.movementSpeed);
+        return new()
+        {
+            movementSpeed = speed,
+            walkable = slice.wallBlock == 0 || wallData.walkable,
+        };
+    }
+
+    public static MoveInfo GetMovementInfo(this NativeBlockSlice slice, NativeBlockDataRepo dataRepo)
+    {
+        return slice.GetMovementInfo(dataRepo.GetBlock(slice.groundBlock), dataRepo.GetBlock(slice.wallBlock));
+    }
+
+    public static MoveInfo GetMovementInfo(this NativeBlockSlice slice)
+    {
+        return slice.GetMovementInfo(BlockDataRepo.NativeRepo);
+    }
+
+    public static byte ToOffsetStateEncoding(this Vector2Int offset)
+    {
+        var offsetX = offset.x + 8;
+        var offsetY = offset.y + 8;
+        var res = (byte)(((0b1111 & offsetX) << 4) | (0b1111 & offsetY));
+        return res;
+    }
+
+    public static Vector2Int ToOffsetState(this byte state)
+    {
+        var x = ((0b11110000 & state) >> 4) - 8;
+        var y = (0b1111 & state) - 8;
+        var res = new Vector2Int(x, y);
+        return res;
+    }
+
+    public static Vector2Int GetProxyOffset(this NativeBlockSlice slice, BlockData wallData)
+    {
+        if (!wallData.isProxy) return Vector2Int.zero;
+        return slice.simpleBlockState.ToOffsetState();
+    }
+
+    public static Vector2Int GetProxyOffset(this NativeBlockSlice slice, NativeBlockDataRepo dataRepo)
+    {
+        return slice.GetProxyOffset(dataRepo.GetBlock(slice.wallBlock));
+    }
+
+    public static Vector2Int GetProxyOffset(this NativeBlockSlice slice)
+    {
+        return slice.GetProxyOffset(BlockDataRepo.NativeRepo);
+    }
+}
+
+public struct MoveInfo
+{
+    public bool walkable;
+    public float movementSpeed;
 }

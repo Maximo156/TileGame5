@@ -1,3 +1,4 @@
+using NativeRealm;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -9,8 +10,8 @@ using UnityEngine;
 public class DEBUGStructureGen : ChunkSubGenerator
 {
     public Structure structure;
-    ConcurrentDictionary<Vector2Int, BlockSlice[,]> Loaded = new();
-    public override Task UpdateBlockSlices(BlockSlice[,] blocks, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
+    ConcurrentDictionary<Vector2Int, BuildingBlockSlice[,]> Loaded = new();
+    public override Task UpdateBlockSlices(BlockSliceState[,] blocks, ChunkData data, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
     {
         if (ChunkPosition == Vector2Int.zero)
         {
@@ -21,23 +22,27 @@ public class DEBUGStructureGen : ChunkSubGenerator
         }
         if (Loaded.Remove(ChunkPosition, out var structBlocks))
         {
-            Overlay(ref blocks, structBlocks);
+            Overlay(blocks, data, structBlocks);
         }
         return Task.CompletedTask;
     }
 
-    void Overlay(ref BlockSlice[,] blocks, BlockSlice[,] structure)
+    void Overlay(BlockSliceState[,] blocks, ChunkData data, BuildingBlockSlice[,] structure)
     {
-        for (int x = 0; x < blocks.GetLength(0); x++)
+        for (int x = 0; x < data.chunkWidth; x++)
         {
-            for (int y = 0; y < blocks.GetLength(0); y++)
+            for (int y = 0; y < data.chunkWidth; y++)
             {
-                if (structure[x, y]?.HasBlock() == true)
+                var StructureBlock = structure[x, y];
+                if (StructureBlock?.HasBlock() == true)
                 {
-                    var StructureBlock = structure[x, y];
-                    var initialBlock = blocks[x, y];
-                    StructureBlock.Water = initialBlock.Water;
-                    blocks[x, y] = StructureBlock;
+                    data.SetBlock(x, y, new()
+                    {
+                        groundBlock = StructureBlock.GroundBlock?.Id ?? 0,
+                        roofBlock = StructureBlock.RoofBlock?.Id ?? 0,
+                        wallBlock = StructureBlock.WallBlock?.Id ?? 0,
+                    });
+                    blocks[x,y].blockState = StructureBlock.State;
                 }
             }
         }

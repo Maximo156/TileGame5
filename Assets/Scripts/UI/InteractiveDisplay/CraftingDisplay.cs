@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using BlockDataRepos;
+using NativeRealm;
 
 public class CraftingDisplay : InteractiveDislay
 {
@@ -29,10 +31,10 @@ public class CraftingDisplay : InteractiveDislay
     IInventoryContainer otherInv;
     Vector2 worldPos;
 
-    public override void DisplayInventory(Vector2Int worldPos, BlockSlice slice, IInventoryContainer otherInv)
+    public override void DisplayInventory(Vector2Int worldPos, Wall interfacedBlock, BlockSliceState _, IInventoryContainer otherInv)
     {
         Completion.fillAmount = 0;
-        block = slice.WallBlock as CraftingBlock;
+        block = interfacedBlock as CraftingBlock;
         this.otherInv = otherInv;
         this.worldPos = worldPos;
         foreach (var inv in otherInv.GetIndividualInventories())

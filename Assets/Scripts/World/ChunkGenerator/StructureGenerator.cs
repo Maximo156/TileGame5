@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using NativeRealm;
 
 [CreateAssetMenu(fileName = "NewStructureGenerator", menuName = "Terrain/StructureGenerator", order = 1)]
 public class StructureGenerator : ChunkSubGenerator
@@ -11,10 +12,10 @@ public class StructureGenerator : ChunkSubGenerator
     public int StructureNoiseChunkSize;
     public List<Structure> Structures;
 
-    ConcurrentDictionary<Vector2Int, Task<Dictionary<Vector2Int, BlockSlice[,]>>> genTasks = new();
+    ConcurrentDictionary<Vector2Int, Task<Dictionary<Vector2Int, BuildingBlockSlice[,]>>> genTasks = new();
     ConcurrentDictionary<Vector2Int, (Vector2Int point, System.Random rand)> Chunks = new();
     //ConcurrentDictionary<Vector2Int, BlockSlice[,]> Loaded = new();
-    public override async Task UpdateBlockSlices(BlockSlice[,] blocks, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
+    public override async Task UpdateBlockSlices(BlockSliceState[,] blocks, ChunkData data, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
     {
         var inStructChunk = Vector2Int.FloorToInt(new Vector2(WorldPosition.x, WorldPosition.y) / StructureNoiseChunkSize);
         Vector2Int closestStructChunk = Vector2Int.one;
@@ -34,7 +35,7 @@ public class StructureGenerator : ChunkSubGenerator
                 dist = Vector2Int.Distance(WorldPosition, info.point);
             }
         }
-        Task<Dictionary<Vector2Int, BlockSlice[,]>> task;
+        Task<Dictionary<Vector2Int, BuildingBlockSlice[,]>> task;
         lock (genTasks) {
             if (!genTasks.TryGetValue(closestStructChunk, out task))
             {
@@ -45,7 +46,7 @@ public class StructureGenerator : ChunkSubGenerator
         var res = await task;
         if (res.Remove(ChunkPosition, out var structBlocks))
         {
-            Overlay(ref blocks, structBlocks);
+            Overlay(ref blocks, data, structBlocks);
         }
         
         /*
@@ -100,7 +101,7 @@ public class StructureGenerator : ChunkSubGenerator
         }*/
     }
 
-    Task<Dictionary<Vector2Int, BlockSlice[,]>> GenerateStructurePoint((Vector2Int point, System.Random rand) closest, Vector2Int closestStructChunk, BiomeInfo biomeInfo, int chunkWidth)
+    Task<Dictionary<Vector2Int, BuildingBlockSlice[,]>> GenerateStructurePoint((Vector2Int point, System.Random rand) closest, Vector2Int closestStructChunk, BiomeInfo biomeInfo, int chunkWidth)
     {
         return Task.Run(() =>
         {
@@ -123,18 +124,22 @@ public class StructureGenerator : ChunkSubGenerator
         });
     }
 
-    void Overlay(ref BlockSlice[,] blocks, BlockSlice[,] structure)
+    void Overlay(ref BlockSliceState[,] blocks, ChunkData data, BuildingBlockSlice[,] structure)
     {
-        for(int x = 0; x < blocks.GetLength(0); x++)
+        for (int x = 0; x < data.chunkWidth; x++)
         {
-            for (int y = 0; y < blocks.GetLength(0); y++)
+            for (int y = 0; y < data.chunkWidth; y++)
             {
-                if (structure[x, y]?.HasBlock() == true)
+                var StructureBlock = structure[x, y];
+                if (StructureBlock?.HasBlock() == true)
                 {
-                    var StructureBlock = structure[x, y];
-                    var initialBlock = blocks[x, y];
-                    StructureBlock.Water = initialBlock.Water;
-                    blocks[x, y] = StructureBlock;
+                    data.SetBlock(x, y, new()
+                    {
+                        groundBlock = StructureBlock.GroundBlock?.Id ?? 0,
+                        roofBlock = StructureBlock.RoofBlock?.Id ?? 0,
+                        wallBlock = StructureBlock.WallBlock?.Id ?? 0,
+                    });
+                    blocks[x, y].blockState = StructureBlock.State;
                 }
             }
         }

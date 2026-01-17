@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using NativeRealm;
 using UnityEngine;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "NewMultiBlock", menuName = "Block/MultiBlock", order = 1)]
 public class MultiBlock : Wall, IConditionalPlace, IOnPlace
@@ -12,7 +12,7 @@ public class MultiBlock : Wall, IConditionalPlace, IOnPlace
         var bounds = GetBounds(Pos, dir);
         foreach(var pos in bounds.allPositionsWithin)
         {
-            if(!ChunkManager.TryGetBlock(pos.ToVector2Int(), out var slice) || slice.WallBlock is not null)
+            if(!ChunkManager.TryGetBlock(pos.ToVector2Int(), out var slice) || slice.wallBlock != 0)
             {
                 return false;
             }
@@ -20,41 +20,35 @@ public class MultiBlock : Wall, IConditionalPlace, IOnPlace
         return true;
     }
 
-    public void OnPlace(Vector2Int Pos, Vector2Int dir)
+    public void OnPlace(Vector2Int Pos, Vector2Int dir, ref NativeBlockSlice slice)
     {
         var bounds = GetBounds(Pos, dir);
         foreach (var pos in bounds.allPositionsWithin)
         {
-            ChunkManager.TryGetBlock(pos.ToVector2Int(), out var slice);
             if (pos != Pos.ToVector3Int())
             {
-                slice.SetBlock(ProxyBlock.Instance);
-                (slice.State as ProxyState).ActualPos = Pos;
+                var state = (Pos - pos.ToVector2Int()).ToOffsetStateEncoding();
+                ChunkManager.PlaceBlock(pos.ToVector2Int(), dir, ProxyBlock.Instance, false, state);
             }
             else
             {
-                (slice.State as MultiBlockState).Dir = dir;
+                slice.simpleBlockState = (byte)System.Array.IndexOf(Utilities.QuadAdjacent, dir);
             }
         }
     }
 
     public override bool OnBreak(Vector2Int worldPos, BreakInfo info)
     {
-        var bounds = GetBounds(worldPos, (info.state as MultiBlockState).Dir);
+        base.OnBreak(worldPos, info);
+        var bounds = GetBounds(worldPos, Utilities.QuadAdjacent[info.slice.simpleBlockState]);
         foreach (var pos in bounds.allPositionsWithin)
         {
-            ChunkManager.TryGetBlock(pos.ToVector2Int(), out var slice, false);
-            if (slice.State is ProxyState)
+            if (pos != worldPos.ToVector3Int())
             {
-                slice.Break(pos.ToVector2Int(), false, out var _, true);
+                ChunkManager.BreakBlock(pos.ToVector2Int(), false, false, false);
             }
         }
         return true;
-    }
-
-    public override BlockState GetState()
-    {
-        return new MultiBlockState();
     }
 
     BoundsInt GetBounds(Vector2Int Pos, Vector2Int dir)
@@ -73,14 +67,5 @@ public class MultiBlock : Wall, IConditionalPlace, IOnPlace
             offset.z = 0;
             return new BoundsInt(Pos.ToVector3Int() - offset, size);
         }
-    }
-}
-
-public class MultiBlockState : BlockState
-{
-    public Vector2Int Dir;
-
-    public override void CleanUp(Vector2Int pos)
-    {
     }
 }

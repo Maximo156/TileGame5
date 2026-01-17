@@ -1,3 +1,4 @@
+using NativeRealm;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -131,11 +132,11 @@ public class ChunkRenderer : MonoBehaviour
         rendering = false;
     }
 
-    public void PlaceTile(Chunk _, Vector2Int BlockPos, Vector2Int ChunkPos, BlockSlice slice)
+    public void PlaceTile(Chunk _, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice slice, BlockSliceState state)
     {
         if(renderedChunks.ContainsKey(ChunkPos))
         {
-            Display.UpdateBlock(BlockPos, slice);
+            Display.UpdateBlock(BlockPos, slice, state);
         }
     }
 

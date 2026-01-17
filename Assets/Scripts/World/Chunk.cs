@@ -5,10 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Mathematics;
+using NativeRealm;
+using BlockDataRepos;
+using static UnityEditor.Progress;
 
 public partial class Chunk
 {
-    public delegate void BlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, BlockSlice block);
+    public delegate void BlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice block, BlockSliceState state);
     public event BlockChanged OnBlockChanged;
 
     public delegate void BlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos);
@@ -23,7 +26,9 @@ public partial class Chunk
     public Vector2Int ChunkPos;
     public Vector2Int BlockPos => ChunkPos * width;
 
-    public BlockSlice[,] blocks { get; private set; }
+    //public BlockSlice[,] blocks { get; private set; }
+
+    public BlockSliceState[,] BlockStates {  get; set; }
 
     HashSet<Vector2Int> LightPositions = new();
     readonly int width;
@@ -32,21 +37,13 @@ public partial class Chunk
     ChunkGenerator curGenerator;
     bool generated = false;
 
-    public Chunk(Vector2Int chunkPos, int width)
+    ChunkData data;
+
+    public Chunk(Vector2Int chunkPos, int width, ChunkData data)
     {
         this.width = width;
         ChunkPos = chunkPos;
-    }
-
-    public void UpdateBlockData(ref NativeHashMap<int2, BlockSliceData> data)
-    {
-        for(int x = 0; x < blocks.GetLength(0); x++)
-        {
-            for (int y = 0; y < blocks.GetLength(0); y++)
-            {
-                data[new int2(BlockPos.x + x, BlockPos.y + y)] = blocks[x, y].GetData();
-            }
-        }
+        this.data = data;
     }
 
     public async Task Generate(ChunkGenerator generator, Vector2Int? worldPos = null, Block portal = null)
@@ -55,23 +52,25 @@ public partial class Chunk
         generated = true;
         curGenerator = generator;
         rand = new System.Random(ChunkPos.GetHashCode());
-        blocks = await generator.GetBlockSlices(ChunkPos, BlockPos, width, rand);
+        BlockStates = await generator.GetBlockSlices(ChunkPos, BlockPos, width, rand, data);
         if(worldPos != null)
         {
-            GetBlock(worldPos.Value).SetBlock(portal);
+            var wTol = WorldToLocal(worldPos.Value);
+            SetBlock(wTol.x, wTol.y, portal.Id);
         }
         LightPositions.Clear();
-        for (int x = 0; x < blocks.GetLength(0); x++)
+        for (int x = 0; x < data.chunkWidth; x++)
         {
-            for (int y = 0; y < blocks.GetLength(0); y++)
+            for (int y = 0; y < data.chunkWidth; y++)
             {
-                if (blocks[x, y].WallBlock is LightBlock)
+                var block = data.GetWall(x, y);
+                if (BlockDataRepo.GetBlock<LightBlock>(block) is not null)
                 {
                     LightPositions.Add(new Vector2Int(x, y) + BlockPos);
                 }
             }
         }
-        tileDisplayCache = new TileDisplayCache(blocks, BlockPos);
+        tileDisplayCache = new TileDisplayCache(BlockStates, data, BlockPos);
         CallbackManager.AddCallback(() =>
         {
             OnChunkChanged?.Invoke(this);
@@ -81,21 +80,42 @@ public partial class Chunk
     public void ChunkTick(CancellationToken cancellationToken)
     {
         bool updated = false;
-        List<(Vector2Int pos, BlockSlice slice)> updateInfo = new List<(Vector2Int pos, BlockSlice slice)>();
-        for(int x = 0; x < blocks.GetLength(0); x++)
+        List<(Vector2Int pos, NativeBlockSlice slice, BlockSliceState state)> updateInfo = new List<(Vector2Int pos, NativeBlockSlice slice, BlockSliceState state)>();
+        for(int x = 0; x < data.chunkWidth; x++)
         {
-            for (int y = 0; y < blocks.GetLength(0); y++)
+            for (int y = 0; y < data.chunkWidth; y++)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
                     return;
                 }
-                var slice = blocks[x, y];
+                var state = BlockStates[x, y].blockState;
+                var sliceData = data.GetSlice(x, y);
                 var worldPos = new Vector2Int(x, y) + BlockPos;
-                if (slice.Tick(worldPos, rand))
+                var sliceUpdated = false;
+                if (BlockDataRepo.GetBlock<Wall>(sliceData.wallBlock) is ITickableBlock wallBlock)
+                {
+                    var tickRes = wallBlock.Tick(worldPos, state, rand);
+                    if(tickRes != 0)
+                    {
+                        SetBlock(x, y, tickRes);
+                        sliceUpdated |= true;
+                    }
+                }
+                if (BlockDataRepo.GetBlock<Wall>(sliceData.groundBlock) is ITickableBlock floorBlock)
+                {
+                    var tickRes = floorBlock.Tick(worldPos, state, rand);
+                    if (tickRes != 0)
+                    {
+                        SetBlock(x, y, tickRes);
+                        sliceUpdated |= true;
+                    }
+                }
+
+                if (sliceUpdated)
                 {
                     updated |= true;
-                    updateInfo.Add((worldPos, slice));
+                    updateInfo.Add((worldPos, data.GetSlice(x, y), BlockStates[x, y]));
                 }
             }
         }
@@ -104,51 +124,149 @@ public partial class Chunk
             RegenCache();
             CallbackManager.AddCallback(() =>
             {
-                foreach (var (pos, slice) in updateInfo)
+                foreach (var (pos, slice, state) in updateInfo)
                 {
-                    OnBlockChanged?.Invoke(this, pos, ChunkPos, slice);
+                    OnBlockChanged?.Invoke(this, pos, ChunkPos, slice, state);
                 }
             });
         }
     }
 
-    public BlockSlice GetBlock(Vector2Int world)
+    public NativeBlockSlice GetBlock(Vector2Int world)
     {
         var localPos = WorldToLocal(world);
-        return blocks[localPos.x, localPos.y];
+        return data.GetSlice(localPos.x, localPos.y);
     }
 
-    public bool PlaceBlock(Vector2Int position, Vector2Int dir, Block block, bool force = false)
+    public BlockSliceState GetBlockState(Vector2Int world)
+    {
+        var localPos = WorldToLocal(world);
+        return BlockStates[localPos.x, localPos.y];
+    }
+
+    public bool SetBlock(int x, int y, ushort blockId, byte initialState = 0)
+    {
+        var nativeData = BlockDataRepo.GetNativeBlock(blockId);
+        if (nativeData.Level == BlockLevel.Wall)
+        {
+            var blockInfo = BlockDataRepo.GetBlock<Block>(blockId);
+            if (nativeData.lightLevel != 0)
+            {
+                Debug.LogWarning("Need to fix lighting");
+            }
+            data.SetWall(x, y, blockId);
+            data.SetState(x, y, initialState != 0 ? initialState : blockInfo.GetDefaultSimpleState());
+            BlockStates[x,y].blockState = blockInfo.GetState();
+        }
+        if (nativeData.Level == BlockLevel.Roof)
+        {
+            data.SetRoof(x, y, blockId);
+        }
+        else if (nativeData.Level == BlockLevel.Floor)
+        {
+            data.SetFloor(x, y, blockId);
+        }
+        return true;
+        
+    }
+
+    public bool SafeSet(int x, int y, ushort blockId, byte initialState = 0)
+    {
+        var curSlice = data.GetSlice(x, y);
+        var curState = BlockStates[x, y];
+        var nativeData = BlockDataRepo.GetNativeBlock(blockId);
+        var mustBePlacedOn = BlockDataRepo.GetMustBePlacedOn(nativeData);
+
+        if (nativeData.Level == BlockLevel.Wall &&
+            (curSlice.wallBlock != 0 ||
+            (curState.placedItems != null && curState.placedItems.Count > 0) ||
+            (mustBePlacedOn.Length > 0 && !mustBePlacedOn.Contains(curSlice.groundBlock)))
+            )
+        {
+            return false;
+        }
+        if (nativeData.Level == BlockLevel.Roof && curSlice.roofBlock != 0)
+        {
+            return false;
+        }
+        else if (nativeData.Level == BlockLevel.Floor && (curSlice.groundBlock != 0 || curSlice.wallBlock != 0))
+        {
+            return false;
+        }
+        SetBlock(x, y, blockId, initialState);
+        return true;
+    }
+
+    bool Break(Vector2Int worldPos, bool roof, out Block broken, bool dontDrop = false)
+    {
+        ushort brokenId;
+        var local = WorldToLocal(worldPos);
+        var x = local.x;
+        var y = local.y;
+        var slice = data.GetSlice(x, y);
+        var state = BlockStates[x, y];
+        if (roof)
+        {
+            brokenId = slice.roofBlock;
+            slice.roofBlock = 0;
+            data.SetRoof(x, y, 0);
+        }
+        else if (slice.wallBlock != 0)
+        {
+            brokenId = slice.wallBlock;
+            slice.wallBlock = 0;
+            data.SetWall(x, y, 0);
+            state.DropItems(worldPos);
+        }
+        else
+        {
+            brokenId = slice.groundBlock;
+            slice.groundBlock = 0;
+            data.SetFloor(x, y, 0);
+            state.DropItems(worldPos);
+        }
+        if (BlockDataRepo.TryGetBlock(brokenId, out broken))
+        {
+            broken.OnBreak(worldPos, new Block.BreakInfo() { state = state.blockState, slice = slice, dontDrop = dontDrop });
+        }
+        return broken is Roof || (broken is Wall && slice.roofBlock != 0);
+    }
+
+    public bool PlaceBlock(Vector2Int position, Vector2Int dir, Block block, bool force = false, byte initialState = 0)
     {
         if(block is IConditionalPlace cond && !cond.CanPlace(position, dir))
         {
             return false;
         }
-        var slice = GetBlock(position);
-        var res = force ? slice.SetBlock(block) : slice.SafeSet(block);
+        var localPos = WorldToLocal(position);
+        var x = localPos.x;
+        var y = localPos.y;
+        var res = force ? SetBlock(x, y, block.Id, initialState) : SafeSet(x, y, block.Id, initialState);
         if (res)
         {
-            if(block is IOnPlace place)
+            var slice = GetBlock(position);
+            if (block is IOnPlace place)
             {
-                place.OnPlace(position, dir);
+                place.OnPlace(position, dir, ref slice);
+                data.InitializeSlice(x, y, slice);
             }
             if (block is Roof roof) {
                 CalcRoofStrengthBFS(position, roof);
             }
-            ChangedBlock(position, slice, block);
+            ChangedBlock(position, slice, BlockStates[x, y], block);
         }
         return res;
     }
 
     public bool BreakBlock(Vector2Int worldPosition, bool roof, bool drop = true)
     {
-        var slice = GetBlock(worldPosition);
-
-        if(slice.Break(worldPosition, roof, out var broken))
+        if(Break(worldPosition, roof, out var broken, !drop))
         {
             CalcRoofStrengthBFS(worldPosition, broken as Roof);
         }
-        ChangedBlock(worldPosition, slice, broken);
+        var slice = GetBlock(worldPosition);
+        var state = GetBlockState(worldPosition);
+        ChangedBlock(worldPosition, slice, state, broken);
         return true;
     }
 
@@ -156,8 +274,11 @@ public partial class Chunk
     {
         var slice = GetBlock(worldPosition);
 
-        var res = slice.PlaceItem(item);
-        ChangedSlice(worldPosition, slice);
+        var state = GetBlockState(worldPosition);
+
+        var res = state.PlaceItem(item, slice);
+
+        ChangedSlice(worldPosition, slice, state);
         return res;
     }
 
@@ -165,26 +286,30 @@ public partial class Chunk
     {
         var slice = GetBlock(worldPosition);
 
-        var res = slice.PopItem();
-        ChangedSlice(worldPosition, slice);
-        return res;
+        var state = GetBlockState(worldPosition);
+
+        var item = state.PopItem();
+        ChangedSlice(worldPosition, slice, state);
+        return item;
     }
 
     public bool Interact(Vector2Int worldPosition)
     {
-        var slice = GetBlock(worldPosition);
-        if(slice.WallBlock is IInteractableBlock interactable)
+        var local = WorldToLocal(worldPosition);
+        var nativeSlice = GetBlock(worldPosition);
+        var origSlice = nativeSlice;
+        if (BlockDataRepo.TryGetBlock<Wall>(nativeSlice.wallBlock, out var wall) && wall is IInteractableBlock interactable)
         {
-            var oldDisplay = slice.WallBlock.Display;
-            if (interactable.Interact(worldPosition, slice))
+            if (interactable.Interact(worldPosition, ref nativeSlice))
             {
-                if (oldDisplay == slice.WallBlock?.Display)
+                data.InitializeSlice(local.x, local.y, nativeSlice);
+                if (origSlice.wallBlock == nativeSlice.wallBlock)
                 {
                     RefreshBlock(worldPosition);
                 }
                 else
                 {
-                    ChangedSlice(worldPosition, slice);
+                    ChangedSlice(worldPosition, nativeSlice, BlockStates[local.x, local.y]);
                 }
             }
             return true;
@@ -195,7 +320,7 @@ public partial class Chunk
     public void CalcRoofStrengthBFS(Vector2Int worldPosition, Roof curRoof)
     {
         ChunkManager.TryGetBlock(worldPosition, out var initialSlice);
-        var roofStrength = curRoof?.Strength ?? initialSlice.RoofBlock.Strength;
+        var roofStrength = curRoof?.Strength ?? BlockDataRepo.GetBlock<Roof>(initialSlice.roofBlock).Strength;
         var radius = roofStrength * 2;
         var grid = new int[2 * radius + 1, 2 * radius + 1];
         Queue<Vector2Int> toCheck = new();
@@ -204,7 +329,8 @@ public partial class Chunk
             for (int y = 0; y < grid.GetLength(1); y++)
             {
                 var local = new Vector2Int(x, y);
-                if (ChunkManager.TryGetBlock(localToWorld(local), out var s) && s.WallBlock?.structural == true && s.RoofBlock is not null)
+
+                if (ChunkManager.TryGetBlock(localToWorld(local), out var s) && BlockDataRepo.GetBlock<Wall>(s.wallBlock)?.structural == true && BlockDataRepo.GetBlock<Roof>(s.roofBlock) is not null)
                 {
                     toCheck.Enqueue(local);
                     grid[x, y] = 0;
@@ -221,7 +347,7 @@ public partial class Chunk
             var cur = toCheck.Dequeue();
             foreach(var newPos in Utilities.QuadAdjacent.Select(v => v + cur))
             {
-                if(0 <= newPos.x && newPos.x < radius * 2 - 1 && 0 <= newPos.y && newPos.y < radius * 2 - 1 && ChunkManager.TryGetBlock(localToWorld(newPos), out var s) && s.RoofBlock is not null)
+                if(0 <= newPos.x && newPos.x < radius * 2 - 1 && 0 <= newPos.y && newPos.y < radius * 2 - 1 && ChunkManager.TryGetBlock(localToWorld(newPos), out var s) && BlockDataRepo.GetBlock<Roof>(s.roofBlock) is not null)
                 {
                     if(grid[newPos.x, newPos.y] > grid[cur.x, cur.y] + 1)
                     {
@@ -237,10 +363,13 @@ public partial class Chunk
             for (int y = 0; y < grid.GetLength(1); y++)
             {
                 var worldpos = localToWorld(new Vector2Int(x, y));
-                if (ChunkManager.TryGetBlock(worldpos, out var s) && s.RoofBlock is not null && s.RoofBlock.Strength < grid[x, y] && worldpos.ManhattanDistance(worldPosition) <= roofStrength)
-                {
-                    s.Break(worldpos, true, out var _);
-                    OnBlockChanged?.Invoke(this, worldpos, ChunkPos, s);
+                if (ChunkManager.TryGetBlock(worldpos, out var s)) {
+                    var roofBlock = BlockDataRepo.GetBlock<Wall>(s.roofBlock);
+                    if (BlockDataRepo.TryGetNativeBlock(s.roofBlock, out var roof) && roof.Level == BlockLevel.Roof && roof.roofStrength < grid[x, y] && worldpos.ManhattanDistance(worldPosition) <= roofStrength)
+                    {
+                        Break(worldpos, true, out var _);
+                        OnBlockChanged?.Invoke(this, worldpos, ChunkPos, data.GetSlice(x, y), BlockStates[x,y]);
+                    }
                 }
             }
         }
@@ -272,6 +401,9 @@ public partial class Chunk
         while(toCheck.TryDequeue(out var cur) && safety++ < 5000)
         {
             if (!ChunkManager.TryGetBlock(cur, out var curBlock)) continue;
+            Debug.LogWarning("FIX LIGHTING");
+            return;
+            /*
             if (curBlock.WallBlock is LightBlock)
             {
                 updated[cur.ToVector3Int()] = curBlock.LightLevel;
@@ -299,12 +431,13 @@ public partial class Chunk
                     toCheck.Enqueue(v);
                 }
             }
+            */
         }
         CallbackManager.AddCallback(() =>
         {
             OnLightingUpdated?.Invoke(updated);
         });
-        int AvailableLight(BlockSlice slice) => slice == null || slice.WallBlock?.solid == true ? 0 : slice.LightLevel;
+        //int AvailableLight(BlockSlice slice) => slice == null || slice.WallBlock?.solid == true ? 0 : slice.LightLevel;
     }
 
     Vector2Int WorldToLocal(Vector2Int worldPos)
@@ -322,15 +455,15 @@ public partial class Chunk
     {
         Task.Run(() =>
         {
-            tileDisplayCache = new TileDisplayCache(blocks, BlockPos);
+            tileDisplayCache = new TileDisplayCache(BlockStates, data, BlockPos);
         });
     }
 
-    void ChangedBlock(Vector2Int worldPosition, BlockSlice slice, Block updated)
+    void ChangedBlock(Vector2Int worldPosition, NativeBlockSlice slice, BlockSliceState state, Block updated)
     {
         if(updated is LightBlock)
         {
-            if(slice.WallBlock is LightBlock)
+            if(BlockDataRepo.TryGetNativeBlock(slice.wallBlock, out var b) && b.lightLevel != 0)
             {
                 LightPositions.Add(worldPosition);
             }
@@ -340,13 +473,14 @@ public partial class Chunk
             }
         }
         CalcLight(worldPosition);
-        ChangedSlice(worldPosition, slice);
+        ChangedSlice(worldPosition, slice, state);
     }
 
-    void ChangedSlice(Vector2Int worldPosition, BlockSlice slice)
+    void ChangedSlice(Vector2Int worldPosition, NativeBlockSlice slice, BlockSliceState state)
     {
+        var wToL = WorldToLocal(worldPosition);
         curGenerator.SaveChunk(this);
-        OnBlockChanged?.Invoke(this, worldPosition, ChunkPos, slice);
+        OnBlockChanged?.Invoke(this, worldPosition, ChunkPos, slice, state);
         RegenCache();
     }
 

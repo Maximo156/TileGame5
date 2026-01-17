@@ -46,7 +46,7 @@ public class MiningBehavior : RangedUseBehavior, IStatefulItemBehaviour
         {
             if (ChunkManager.TryGetBlock(pos, out var blockSlice))
             {
-                block = roof ? blockSlice.RoofBlock : (blockSlice.WallBlock as Block ?? blockSlice.GroundBlock);
+                block = Utilities.GetActionableBlock(roof, blockSlice);
                 if (block != null)
                 {
                     dirty = false;

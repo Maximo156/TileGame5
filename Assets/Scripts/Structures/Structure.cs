@@ -25,7 +25,7 @@ public class Structure: ScriptableObject
     public List<BuildingInformation> Centers = new List<BuildingInformation>();
     public List<BuildingInformation> components = new List<BuildingInformation>();
 
-    public Dictionary<Vector2Int, BlockSlice[,]> Generate(Vector2Int startPos, BiomeInfo biomes, int chunkWidth, System.Random rand, IEnumerable<Vector2Int> SurroundingPoints)
+    public Dictionary<Vector2Int, BuildingBlockSlice[,]> Generate(Vector2Int startPos, BiomeInfo biomes, int chunkWidth, System.Random rand, IEnumerable<Vector2Int> SurroundingPoints)
     {
         var area = new StructureBuilder(chunkWidth, startPos, SurroundingPoints);
         var SelectedCentre = Centers.SelectRandom(rand);
@@ -127,7 +127,7 @@ public class Structure: ScriptableObject
             var rotatedPosition = ApplyRotation(rotation, pos.ToVector2Int(), structure.Bounds.size.ToVector2Int());
 
             var worldPos = start + rotatedPosition;
-            var block = new BlockSlice(structure.GetSlice(pos.ToVector2Int()));
+            var block = new BuildingBlockSlice(structure.GetSlice(pos.ToVector2Int()));
             area.SetBlock(worldPos, block);
             if (block.State is CrateState crateState)
             {

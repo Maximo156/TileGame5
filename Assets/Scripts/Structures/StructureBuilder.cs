@@ -8,7 +8,7 @@ public class StructureBuilder
 {
     public readonly int chunkWidth;
     public Dictionary<Vector2Int, AnchorInfo> OpenAnchors = new Dictionary<Vector2Int, AnchorInfo>();
-    public Dictionary<Vector2Int, BlockSlice[,]> chunks = new();
+    public Dictionary<Vector2Int, BuildingBlockSlice[,]> chunks = new();
 
     Vector2Int selfPoint;
     IEnumerable<Vector2Int> SurroundingPoints;
@@ -20,7 +20,7 @@ public class StructureBuilder
         this.SurroundingPoints = SurroundingPoints;
     }
 
-    public bool TryGetBlock(Vector2Int worldPos, out BlockSlice block)
+    public bool TryGetBlock(Vector2Int worldPos, out BuildingBlockSlice block)
     {
         block = null;
         var (chunkPos, local) = WorldToLocalChunk(worldPos);
@@ -30,19 +30,19 @@ public class StructureBuilder
         }
         if (!chunks.TryGetValue(chunkPos, out var blocks))
         {
-            blocks = new BlockSlice[chunkWidth, chunkWidth];
+            blocks = new BuildingBlockSlice[chunkWidth, chunkWidth];
             chunks[chunkPos] = blocks;
         }
         block = blocks[local.x, local.y];
         return true;
     }
 
-    public void SetBlock(Vector2Int worldPos, BlockSlice block)
+    public void SetBlock(Vector2Int worldPos, BuildingBlockSlice block)
     {
         var (chunkPos, local) = WorldToLocalChunk(worldPos);
         if(!chunks.TryGetValue(chunkPos, out var blocks))
         {
-            blocks = new BlockSlice[chunkWidth, chunkWidth];
+            blocks = new BuildingBlockSlice[chunkWidth, chunkWidth];
             chunks[chunkPos] = blocks;
         }
         blocks[local.x, local.y] = block;
@@ -54,7 +54,7 @@ public class StructureBuilder
         return (chunkPos, worldPos - (chunkPos * chunkWidth));
     }
 
-    internal Dictionary<Vector2Int, BlockSlice[,]> GetDicts()
+    internal Dictionary<Vector2Int, BuildingBlockSlice[,]> GetDicts()
     {
         return chunks;
     }

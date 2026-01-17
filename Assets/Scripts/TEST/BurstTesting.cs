@@ -33,7 +33,7 @@ public class BurstTesting : MonoBehaviour
     private struct TestJob : IJobParallelFor
     {
         [ReadOnly]
-        public NativeHashMap<int2, BlockSliceData> Input;
+        //public NativeHashMap<int2, BlockSliceData> Input;
 
         public float Range;
 
@@ -47,7 +47,7 @@ public class BurstTesting : MonoBehaviour
             {
                 for (int y = 0; y < Range; y++)
                 {
-                    Output[x + y] = Input[new int2(x, y)].MovementSpeed;
+                    //Output[x + y] = Input[new int2(x, y)].MovementSpeed;
                 }
             }
         }

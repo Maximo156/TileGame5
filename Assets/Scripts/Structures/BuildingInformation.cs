@@ -28,9 +28,9 @@ public class BuildingInformation : MonoBehaviour
 
     public BoundsInt Bounds { get; private set; }
     AnchorInfo[,] AnchorBlocks;
-    BlockSlice[,] Slices;
+    BuildingBlockSlice[,] Slices;
 
-    public BlockSlice GetSlice(Vector2Int pos)
+    public BuildingBlockSlice GetSlice(Vector2Int pos)
     {
         return Slices[pos.x, pos.y];
     }
@@ -113,7 +113,7 @@ public class BuildingInformation : MonoBehaviour
         if (Bounds.min != Vector3Int.zero) throw new InvalidOperationException($"Ensure min Bounds is 0, 0, 0. Current is: {Bounds.min}");
 
         AnchorBlocks = new AnchorInfo[Bounds.size.x, Bounds.size.y];
-        Slices = new BlockSlice[Bounds.size.x, Bounds.size.y];
+        Slices = new BuildingBlockSlice[Bounds.size.x, Bounds.size.y];
 
         var ground = Ground.GetTilesBlock(Bounds).Select(GetBlock).ToArray();
 
@@ -127,10 +127,10 @@ public class BuildingInformation : MonoBehaviour
         {
             for (int y = 0; y < Slices.GetLength(1); y++)
             {
-                var newSlice = new BlockSlice();
-                newSlice.SetBlock(ground[x + y * Bounds.size.x]);
-                newSlice.SetBlock(walls[x + y * Bounds.size.x]);
-                newSlice.SetBlock(roofs[x + y * Bounds.size.x]);
+                var newSlice = new BuildingBlockSlice();
+                newSlice.GroundBlock = ground[x + y * Bounds.size.x] as Ground;
+                newSlice.WallBlock = walls[x + y * Bounds.size.x] as Wall;
+                newSlice.RoofBlock = roofs[x + y * Bounds.size.x] as Roof;
 
                 if (newSlice.HasBlock())
                 {
@@ -173,5 +173,28 @@ public class BuildingInformation : MonoBehaviour
         };
         Anchors[anchorTile.key].Add(anchorInfo);
         return anchorInfo;
+    }
+}
+
+public class BuildingBlockSlice
+{
+    public Wall WallBlock;
+    public Ground GroundBlock;
+    public Roof RoofBlock;
+
+    public BlockState State;
+
+    public bool HasBlock() => WallBlock != null || GroundBlock != null || RoofBlock != null;
+
+    public BuildingBlockSlice()
+    {
+
+    }
+
+    public BuildingBlockSlice(BuildingBlockSlice reference)
+    {
+        WallBlock = reference?.WallBlock;
+        GroundBlock = reference?.GroundBlock;
+        RoofBlock = reference?.RoofBlock;
     }
 }

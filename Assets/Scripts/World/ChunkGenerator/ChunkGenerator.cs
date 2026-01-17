@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using NativeRealm;
 
 [CreateAssetMenu(fileName = "NewChunkGenerator", menuName = "Terrain/ChunkGenerator", order = 1)]
 public class ChunkGenerator: ScriptableObject, ISaveable
@@ -15,19 +16,20 @@ public class ChunkGenerator: ScriptableObject, ISaveable
     public string Identifier { get; private set; }
     ChunkSaver Saver;
 
-    public async Task<BlockSlice[,]> GetBlockSlices(Vector2Int ChunkPosition, Vector2Int WorldPosition, int chunkWidth, System.Random rand)
+    public async Task<BlockSliceState[,]> GetBlockSlices(Vector2Int ChunkPosition, Vector2Int WorldPosition, int chunkWidth, System.Random rand, ChunkData chunkData)
     {
-        if(saveChunks && Saver.TryLoadBlockSlices(ChunkPosition, out var blocks))
+        var blocksStates = new BlockSliceState[chunkWidth, chunkWidth];
+        if (saveChunks && Saver.TryLoadBlockSlices(ChunkPosition, out blocksStates))
         {
-            return blocks;
+            throw new NotImplementedException();
+            //return blocks;
         }
-        blocks = new BlockSlice[chunkWidth, chunkWidth];
         var cache = new GenerationCache();
         foreach (var generator in Generators)
         {
-            await generator.UpdateBlockSlices(blocks, ChunkPosition, WorldPosition, biomes, rand, cache);
+            await generator.UpdateBlockSlices(blocksStates, chunkData, ChunkPosition, WorldPosition, biomes, rand, cache);
         }
-        return blocks;
+        return blocksStates;
     }
 
     public void SaveChunk(Chunk chunk)

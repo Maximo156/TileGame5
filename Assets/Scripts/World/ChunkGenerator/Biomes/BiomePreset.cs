@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
+using NativeRealm;
 
 [CreateAssetMenu(fileName = "NewBiomePreset", menuName = "Terrain/Biome/BiomePreset", order = 1)]
 public class BiomePreset : ScriptableObject
@@ -63,16 +64,16 @@ public class BiomePreset : ScriptableObject
         return (moisture - minMoisture) + (heat - minHeat);
     }
 
-    public void SetSparce(Vector2Int worldPos, System.Random rand, BlockSlice slice)
+    public void SetSparce(Vector2Int worldPos, System.Random rand, ref NativeBlockSlice slice)
     {
         if (SparceSoundSettings is not null && SparceBlockInfos.Any() &&
                  Mathf.Pow(SparceDensity * SparceSoundSettings.GetSound(worldPos.x, worldPos.y), 1.7f) > rand.NextDouble())
         {
             var sparce = SparceBlockInfos.SelectRandomWeighted(b => b.Weight, b => b.block, rand);
-            if (replaceSolid || (sparce is Ground && slice.GroundBlock is null) || (sparce is Wall && slice.WallBlock is null))
-            {
-                slice.SetBlock(sparce);
-            }
+                if (replaceSolid || (sparce is Ground && slice.groundBlock == 0))
+                    slice.groundBlock = sparce.Id;
+                if (replaceSolid || (sparce is Wall && slice.wallBlock == 0))
+                    slice.wallBlock = sparce.Id;
         }
     }
 

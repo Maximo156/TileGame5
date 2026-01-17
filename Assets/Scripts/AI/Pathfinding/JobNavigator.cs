@@ -2,6 +2,8 @@ using UnityEngine;
 using Unity.Collections;
 using Unity.Mathematics;
 using System;
+using NativeRealm;
+using BlockDataRepos;
 
 public class JobNavigator : MonoBehaviour, IPathFinder
 {
@@ -140,8 +142,8 @@ public class JobNavigator : MonoBehaviour, IPathFinder
         return false;
     }
 
-    BlockSlice Target;
-    BlockSlice Current;
+    NativeBlockSlice? Target;
+    NativeBlockSlice Current;
     Vector2Int CurrentPos;
 
     public void Move(float deltaTime)
@@ -160,9 +162,11 @@ public class JobNavigator : MonoBehaviour, IPathFinder
         }
         if(Target is null)
         {
-            ChunkManager.TryGetBlock(Utilities.GetBlockPos(next), out Target);
+            ChunkManager.TryGetBlock(Utilities.GetBlockPos(next), out var t);
+            Target = t;
         }
-        if(Target is null || !Target.Walkable || (Target.WallBlock is Door && !CanUseDoors))
+        var blockData = BlockDataRepo.GetNativeBlock(Target?.wallBlock ?? 0);
+        if(Target is null || Target.Value.GetMovementInfo().walkable || (blockData.door && !CanUseDoors))
         {
             state = State.Stuck;
             Target = null;
@@ -177,7 +181,7 @@ public class JobNavigator : MonoBehaviour, IPathFinder
 
         var difference = (next.ToVector3() - transform.position);
         var dir = difference.normalized;
-        var movement = ((Current?.MovementSpeed ?? 1) * deltaTime * MovementModifier * MovementSpeed * dir);
+        var movement = Current.GetMovementInfo().movementSpeed * deltaTime * MovementModifier * MovementSpeed * dir;
         SetMovementInfo(dir);
         transform.position = transform.position + movement;
 

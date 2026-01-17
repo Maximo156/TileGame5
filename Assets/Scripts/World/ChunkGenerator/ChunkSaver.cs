@@ -28,8 +28,9 @@ public class ChunkSaver
         return Path.Join(DirectoryPath, $"Chunk-{ChunkWorldPosition.x}x{ChunkWorldPosition.y}");
     }
 
-    public bool TryLoadBlockSlices(Vector2Int ChunkWorldPosition, out BlockSlice[,] blocks)
+    public bool TryLoadBlockSlices(Vector2Int ChunkWorldPosition, out BlockSliceState[,] blocks)
     {
+        throw new System.NotImplementedException();
         var path = ChunkPath(ChunkWorldPosition);
         blocks = null;
         if (!File.Exists(path))
@@ -39,7 +40,7 @@ public class ChunkSaver
 
         var json = File.ReadAllText(path);
 
-        blocks = JsonConvert.DeserializeObject<BlockSlice[,]>(json, settings);
+        blocks = JsonConvert.DeserializeObject<BlockSliceState[,]>(json, settings);
         return true;
     }
 
@@ -63,7 +64,7 @@ public class ChunkSaver
             {
                 Directory.CreateDirectory(DirectoryPath);
             }
-            var json = JsonConvert.SerializeObject(c.blocks, settings);
+            var json = "";// JsonConvert.SerializeObject(c.blocks, settings);
             File.WriteAllTextAsync(ChunkPath(c.ChunkPos), json);
         }
         SavingTask = null;

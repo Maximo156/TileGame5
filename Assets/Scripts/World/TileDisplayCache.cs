@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using NativeRealm;
+using Unity.Collections;
+using BlockDataRepos;
 
 public class TileDisplayCache
 {
@@ -17,7 +20,7 @@ public class TileDisplayCache
 
     public (Vector2Int[] positions, ItemStack[][] Items) PlacedItems { get; }
 
-    public TileDisplayCache(BlockSlice[,] blocks, Vector2Int chunkWorldPos)
+    public TileDisplayCache(BlockSliceState[,] blocks, ChunkData data, Vector2Int chunkWorldPos)
     {
         var water = new List<Vector3Int>();
         var stone = new List<Vector3Int>();
@@ -36,7 +39,21 @@ public class TileDisplayCache
             {
                 var slice = blocks[x, y];
                 var pos = new Vector3Int(x, y) + chunkWorldPos.ToVector3Int();
-                if (slice.Water)
+                if (slice?.placedItems is not null && slice.placedItems.Count > 0)
+                {
+                    itemPos.Add(pos.ToVector2Int());
+                    items.Add(slice.placedItems.ToArray());
+                }
+            }
+        }
+
+        for(int x = 0; x < data.chunkWidth; x++)
+        {
+            for(int y = 0; y < data.chunkWidth; y++)
+            {
+                var slice = data.GetSlice(x, y);
+                var pos = new Vector3Int(x, y) + chunkWorldPos.ToVector3Int();
+                if (slice.isWater)
                 {
                     water.Add(pos);
                 }
@@ -44,26 +61,21 @@ public class TileDisplayCache
                 {
                     stone.Add(pos);
                 }
-                if(slice.WallBlock is not null)
+                if (slice.wallBlock != 0)
                 {
                     wallPos.Add(pos);
-                    wallTile.Add(slice.WallBlock.Display);
+                    wallTile.Add(BlockDataRepo.Blocks[slice.wallBlock].Display);
                 }
-                if (slice.GroundBlock is not null)
+                if (slice.groundBlock != 0)
                 {
                     groundPos.Add(pos);
-                    groundTile.Add(slice.GroundBlock.Display);
+                    groundTile.Add(BlockDataRepo.Blocks[slice.groundBlock].Display);
                 }
-                if(slice.RoofBlock is not null)
+                if (slice.roofBlock != 0)
                 {
-                    roof.Add(pos, slice.LightLevel);
+                    roof.Add(pos, slice.lightLevel);
                 }
-                darkness.Add(pos, slice.LightLevel);
-                if (slice.PlacedItems is not null && slice.PlacedItems.Count > 0)
-                {
-                    itemPos.Add(pos.ToVector2Int());
-                    items.Add(slice.PlacedItems.ToArray());
-                }
+                darkness.Add(pos, slice.lightLevel);
             }
         }
 

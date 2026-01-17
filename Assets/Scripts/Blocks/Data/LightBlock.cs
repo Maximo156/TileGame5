@@ -1,3 +1,4 @@
+using BlockDataRepos;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,5 +7,12 @@ using UnityEngine;
 public class LightBlock : Wall
 {
     [Header("Light Settings")]
-    public int LightLevel;
+    public byte LightLevel;
+
+    public override BlockData GetBlockData()
+    {
+        var data = base.GetBlockData();
+        data.lightLevel = LightLevel;
+        return data;
+    }
 }

@@ -4,6 +4,8 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using Unity.Burst;
+using NativeRealm;
+using BlockDataRepos;
 
 [BurstCompile]
 public struct AstarJob : IJob
@@ -59,9 +61,10 @@ public struct AstarJob : IJob
         }
     }
 
-    [NativeDisableParallelForRestriction]
     [ReadOnly]
-    public NativeHashMap<int2, BlockSliceData> BlockData;
+    public RealmData worldData;
+    [ReadOnly]
+    public NativeBlockDataRepo blockInfo;
 
 
     public int2 Start;
@@ -195,15 +198,15 @@ public struct AstarJob : IJob
     [BurstCompile]
     Node GetNode(int2 pos)
     {
-        Node node;
-        if (BlockData.TryGetValue(pos, out var info))
+        Node node = default;
+        /*if (BlockData.TryGetValue(pos, out var info))
         {
             node = new Node(pos, info.Walkable, info.Door, math.max(info.MovementSpeed, 0.01f));
         }
         else
         {
             node = new Node(pos, false, false, 0.01f);
-        }
+        }*/
         return node;
     }
 }

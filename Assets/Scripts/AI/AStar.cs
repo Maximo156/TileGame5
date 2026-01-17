@@ -250,9 +250,9 @@ namespace AStarSharp
         public static Node GetNode(Vector2Int pos)
         {
             var weight = ChunkManager.GetMovementSpeed(pos);
-            bool door = ChunkManager.TryGetBlock(pos, out var block) && weight != 0 && block.WallBlock is Door;
-            Node node = new Node(pos, block?.Walkable ?? false, door, weight);
-            return node;
+            //bool door = ChunkManager.TryGetBlock(pos, out var block) && weight != 0 && block.WallBlock is Door;
+            //Node node = new Node(pos, block?.Walkable ?? false, door, weight);
+            return null; //return node;
         }
     }
 }

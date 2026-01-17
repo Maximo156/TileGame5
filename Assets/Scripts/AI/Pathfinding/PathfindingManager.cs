@@ -6,6 +6,8 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using System;
+using BlockDataRepos;
+using NativeRealm;
 
 public interface IPathFinder
 {
@@ -27,29 +29,17 @@ public interface IPathFinder
 
 public class PathfindingManager : IDisposable
 {
-    NativeHashMap<int2, BlockSliceData> blockDataMirror;
     public Vector2Int curChunk { get; set; }
-
-    public PathfindingManager()
+    RealmData worldData;
+    public PathfindingManager(RealmData worldData)
     {
-        blockDataMirror = new NativeHashMap<int2, BlockSliceData>(1024, Allocator.Persistent);
-    }
-
-    Queue<(int2 pos, BlockSliceData data)> blockChanges = new();
-    public void OnBlockChanged(Vector2Int worldPos, BlockSlice block)
-    {
-        blockChanges.Enqueue((new int2(worldPos.x, worldPos.y), block.GetData()));
-    }
-
-    Queue<Chunk> ChunkChanges = new();
-    public void OnChunkChanged(Chunk chunk)
-    {
-        ChunkChanges.Enqueue(chunk);
+        this.worldData = worldData;
     }
 
     HashSet<(IPathFinder ai, JobHandle handle, NativeStack<float2> path, NativeList<int2> reachable)> activeJobs;
     public IEnumerator RunPathfinders(IEnumerable<IPathFinder> pathfinders)
     {
+        /*
         while (ChunkChanges.TryDequeue(out var c))
         {
             if (c != null) c.UpdateBlockData(ref blockDataMirror);
@@ -57,7 +47,7 @@ public class PathfindingManager : IDisposable
         while (blockChanges.TryDequeue(out var info))
         {
             blockDataMirror[info.pos] = info.data;
-        };
+        };*/
         yield return null;
         activeJobs = new HashSet<(IPathFinder ai, JobHandle handle, NativeStack<float2> path, NativeList<int2> reachable)> (pathfinders.Where(p => !p.isNull).Select(pathFinder =>
         {
@@ -65,7 +55,8 @@ public class PathfindingManager : IDisposable
             NativeList<int2> reachable = new NativeList<int2>(100, Allocator.Persistent);
             var job = new AstarJob()
             {
-                BlockData = blockDataMirror,
+                worldData = worldData,
+                blockInfo = BlockDataRepo.NativeRepo,
                 canUseDoors = pathFinder.CanUseDoor,
                 End = pathFinder.Goal,
                 Start = pathFinder.Position,
@@ -109,6 +100,5 @@ public class PathfindingManager : IDisposable
                 job.reachable.Dispose();
             }
         }
-        blockDataMirror.Dispose();
     }
 }

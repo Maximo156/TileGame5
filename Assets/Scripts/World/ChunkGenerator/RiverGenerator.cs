@@ -1,3 +1,4 @@
+using NativeRealm;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ public class RiverGenerator : ChunkSubGenerator
     public BaseSoundSettings RiverSound;
     public BaseSoundSettings Reducer;
     public float RiverCuttoff;
-    public override Task UpdateBlockSlices(BlockSlice[,] blocks, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
+    public override Task UpdateBlockSlices(BlockSliceState[,] blocks, ChunkData data, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
     {
         var riverArray = RiverSound.GetSoundArray(WorldPosition.x, WorldPosition.y, blocks.GetLength(0));
         var reducerArray = Reducer.GetSoundArray(WorldPosition.x, WorldPosition.y, blocks.GetLength(0));
@@ -20,9 +21,11 @@ public class RiverGenerator : ChunkSubGenerator
             {
                 if (biomeInfo.IsWallBiome(cache.HeightMap[x, y])) continue;
                 var riverSound = (1 - MathF.Abs(riverArray[x, y] - 0.5f)) - (reducerArray[x, y] * RiverCuttoff);
+                var curData = data.GetSlice(x, y);
+                curData.isWater = true;
                 if(riverSound > 1-RiverCuttoff)
                 {
-                    blocks[x, y] = new BlockSlice();
+                    data.InitializeSlice(x, y, curData);
                 }
             }
         }
