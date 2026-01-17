@@ -85,6 +85,36 @@ public class Realm
         var newTask = Task.Run(() => GenerateNewChunks(curChunk, chunkGenDistance, ChunkGenWidth, CancellationTokenSource.CreateLinkedTokenSource(AllTaskShutdown, CurGenToken.Token).Token));
     }
 
+    public async Task GenerateNewChunks(Vector2Int curChunk, int dist, int ChunkWidth, CancellationToken cancellationToken)
+    {
+        try
+        {
+            foreach (var newChunk in Utilities.Spiral(curChunk, (uint)dist))
+            {
+                if (cancellationToken.IsCancellationRequested) break;
+                if (!LoadedChunks.ContainsKey(newChunk))
+                {
+                    var chunkData = realmData.AddChunk(math.int2(newChunk.x, newChunk.y));
+                    var chunk = new Chunk(newChunk, ChunkWidth, chunkData);
+                    await chunk.Generate(Generator);
+                    LoadedChunks[newChunk] = chunk;
+                    ConnectChunk(chunk);
+                    chunk.SetParent(EntityContainerTransform);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+    }
+
+    void DropChunk(Vector2Int chunk)
+    {
+        LoadedChunks.Remove(chunk, out var _);
+        realmData.ClearChunk(math.int2(chunk.x, chunk.y));
+    }
+
     public async Task ChunkTick(Vector2Int curChunk, int chunkTickDistance, int msPerTick, CancellationToken AllTaskShutdown)
     {
         try
@@ -104,30 +134,6 @@ public class Realm
                 }
             }
             await Task.WhenAll(chunkTasks);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError(e);
-        }
-    }
-
-    public async Task GenerateNewChunks(Vector2Int curChunk, int dist, int ChunkWidth, CancellationToken cancellationToken)
-    {
-        try
-        {
-            foreach (var newChunk in Utilities.Spiral(curChunk, (uint)dist))
-            {
-                if (cancellationToken.IsCancellationRequested) break;
-                if (!LoadedChunks.ContainsKey(newChunk))
-                {
-                    var chunkData = realmData.AddChunk(math.int2(newChunk.x, newChunk.y));
-                    var chunk = new Chunk(newChunk, ChunkWidth, chunkData);
-                    await chunk.Generate(Generator);
-                    LoadedChunks[newChunk] = chunk;
-                    ConnectChunk(chunk);
-                    chunk.SetParent(EntityContainerTransform);
-                }
-            }
         }
         catch (Exception e)
         {
