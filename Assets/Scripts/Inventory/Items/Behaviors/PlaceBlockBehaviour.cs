@@ -18,8 +18,7 @@ public class PlaceBlockBehaviour : RangedUseBehavior
         var dir = new Vector2Int(xBig ? (int)Mathf.Sign(rawDir.x) : 0, !xBig ? (int)Mathf.Sign(rawDir.y) : 0);
         if (TryReplace(blockPos, block, blockSlice, recipe))
         {
-            Debug.Log("Fix replacement mechanic?");
-            ChunkManager.BreakBlock(blockPos, block is Roof);
+            ChunkManager.BreakBlock(blockPos, block is Roof, false);
             ChunkManager.PlaceBlock(blockPos, dir, recipe.block);
             return (true, true);
         }
@@ -37,7 +36,7 @@ public class PlaceBlockBehaviour : RangedUseBehavior
 
     bool TryReplace(Vector2Int worldPos, Block block, NativeBlockSlice slice, BlockRecipe recipe)
     {
-        Block blockToWorkWith = block is Wall ? BlockDataRepo.GetBlock<Wall>(slice.wallBlock) : (block is Ground ? BlockDataRepo.GetBlock<Wall>(slice.groundBlock) : (block is Roof ? BlockDataRepo.GetBlock<Wall>(slice.roofBlock) : null));
+        Block blockToWorkWith = block is Wall ? BlockDataRepo.GetBlock<Wall>(slice.wallBlock) : (block is Ground ? BlockDataRepo.GetBlock<Ground>(slice.groundBlock) : (block is Roof ? BlockDataRepo.GetBlock<Roof>(slice.roofBlock) : null));
         if (blockToWorkWith == null || (block is Ground && slice.wallBlock != 0)) return false;
         if (recipe.CanProduce(blockToWorkWith.Drops) && block is not IConditionalPlace)
         {

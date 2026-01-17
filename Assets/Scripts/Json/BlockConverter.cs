@@ -8,7 +8,7 @@ public class BlockConverter : JsonConverter<Block>
     public override Block ReadJson(JsonReader reader, Type objectType, Block existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
         var id = serializer.Deserialize<ushort>(reader);
-        if(BlockDataRepo.Blocks.TryGetValue(id, out var block))
+        if(BlockDataRepo.TryGetBlock(id, out Block block))
         {
             return block;
         }

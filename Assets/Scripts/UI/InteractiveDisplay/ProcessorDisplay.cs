@@ -34,7 +34,6 @@ public class ProcessorDisplay : InteractiveDislay
 
     public void Render()
     {
-        print("attach");
         Inputs.AttachInv(curState.inputs);
         Outputs.AttachInv(curState.outputs);
         Fuels.AttachInv(curState.fuels);

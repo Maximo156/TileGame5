@@ -10,14 +10,14 @@ namespace BlockDataRepos
     public class BlockDataRepo : MonoBehaviour
     {
         public static NativeBlockDataRepo NativeRepo;
-        public static Dictionary<ushort, Block> Blocks;
+        static Block[] Blocks;
 
         private void Awake()
         {
             var tmp = Resources.LoadAll<Block>("ScriptableObjects/Blocks").OrderBy(b => b.name).ToList();
             tmp.Add(ProxyBlock.Instance);
             Debug.Log($"Loading {tmp.Count} blocks");
-            Blocks = new Dictionary<ushort, Block>();
+            Blocks = new Block[tmp.Count];
             NativeRepo = new(tmp.Count, tmp.Where(b => b is Wall).Sum(b => (b as Wall).MustBePlacedOn.Count));
             ushort count = 1;
             int placedOnCount = 0;
@@ -28,7 +28,7 @@ namespace BlockDataRepos
             }
             foreach (var block in tmp)
             {
-                Blocks.Add(block.Id, block);
+                Blocks[block.Id-1] = block;
                 var data = block.GetBlockData();
 
                 if(block is Wall wall)
@@ -45,7 +45,7 @@ namespace BlockDataRepos
                     }
                 }
 
-                NativeRepo.Data.Add(block.Id, data); 
+                NativeRepo.Add(block.Id, data); 
             }
         }
 
@@ -56,7 +56,7 @@ namespace BlockDataRepos
 
         public static T GetBlock<T>(ushort id) where T : Block
         {
-            return id == 0 ? null : Blocks[id] as T;
+            return id == 0 ? null : Blocks[id-1] as T;
         }
 
         public static BlockData GetNativeBlock(ushort id)
@@ -71,7 +71,7 @@ namespace BlockDataRepos
 
         public static bool TryGetBlock<T>(ushort id, out T block) where T : Block
         {
-            if(id != 0 && Blocks[id] is T b)
+            if(id != 0 && Blocks[id - 1] is T b)
             {
                 block = b;
                 return true;
@@ -88,13 +88,18 @@ namespace BlockDataRepos
 
     public struct NativeBlockDataRepo
     {
-        public NativeHashMap<ushort, BlockData> Data;
+        NativeArray<BlockData> Data;
         NativeArray<ushort> mustBePlacedOn;
 
         public NativeBlockDataRepo(int count, int placedOnCount)
         {
-            Data = new NativeHashMap<ushort, BlockData>(count, Allocator.Persistent);
+            Data = new NativeArray<BlockData>(count, Allocator.Persistent);
             mustBePlacedOn = new NativeArray<ushort>(placedOnCount, Allocator.Persistent);
+        }
+
+        public void Add(ushort id, BlockData data)
+        {
+            Data[id-1] = data;
         }
 
         public void AddMustBePlacedOn(int index, ushort id)
@@ -110,15 +115,21 @@ namespace BlockDataRepos
 
         public BlockData GetBlock(ushort id)
         {
-            return id == 0 ? default : Data[id];
+            return id == 0 ? default : Data[id - 1];
         }
 
         public bool TryGetBlock(ushort id, out BlockData blockData)
         {
-            return Data.TryGetValue(id, out blockData);
+            if(id == 0)
+            {
+                blockData = default;
+                return true;
+            }
+            blockData = Data[id - 1];
+            return true;
         }
 
-        public NativeSlice<ushort> GetMustBePlacedOn(BlockData block)
+        public readonly NativeSlice<ushort> GetMustBePlacedOn(BlockData block)
         {
             var slice = block.placedOnSlice;
             return mustBePlacedOn.Slice(slice.start, slice.length);
@@ -136,6 +147,7 @@ namespace BlockDataRepos
         public bool door;
         public bool isProxy;
         public int roofStrength;
+        public int hitsToBreak;
 
         public SliceData placedOnSlice;
     }

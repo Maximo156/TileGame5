@@ -79,7 +79,8 @@ public class Block : ScriptableObject, ISpriteful
     {
         return new BlockData()
         {
-            Level = GetLevel()
+            Level = GetLevel(),
+            hitsToBreak = HitsToBreak,
         };
     }
 

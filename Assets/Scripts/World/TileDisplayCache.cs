@@ -64,12 +64,12 @@ public class TileDisplayCache
                 if (slice.wallBlock != 0)
                 {
                     wallPos.Add(pos);
-                    wallTile.Add(BlockDataRepo.Blocks[slice.wallBlock].Display);
+                    wallTile.Add(BlockDataRepo.GetBlock<Block>(slice.wallBlock).Display);
                 }
                 if (slice.groundBlock != 0)
                 {
                     groundPos.Add(pos);
-                    groundTile.Add(BlockDataRepo.Blocks[slice.groundBlock].Display);
+                    groundTile.Add(BlockDataRepo.GetBlock<Block>(slice.groundBlock).Display);
                 }
                 if (slice.roofBlock != 0)
                 {

@@ -64,7 +64,7 @@ public partial class Chunk
             for (int y = 0; y < data.chunkWidth; y++)
             {
                 var block = data.GetWall(x, y);
-                if (BlockDataRepo.GetBlock<LightBlock>(block) is not null)
+                if (BlockDataRepo.TryGetNativeBlock(block, out var blockData) && blockData.lightLevel != 0)
                 {
                     LightPositions.Add(new Vector2Int(x, y) + BlockPos);
                 }
@@ -172,6 +172,22 @@ public partial class Chunk
 
     public bool SafeSet(int x, int y, ushort blockId, byte initialState = 0)
     {
+        if (CanPlace(x, y, blockId))
+        {
+            SetBlock(x, y, blockId, initialState);
+            return true;
+        }
+        return false;
+    }
+
+    public bool CanPlace(Vector2Int worldPos, ushort blockId)
+    {
+        var local = WorldToLocal(worldPos);
+        return CanPlace(local.x, local.y, blockId);
+    }
+
+    bool CanPlace(int x, int y, ushort blockId)
+    {
         var curSlice = data.GetSlice(x, y);
         var curState = BlockStates[x, y];
         var nativeData = BlockDataRepo.GetNativeBlock(blockId);
@@ -193,7 +209,6 @@ public partial class Chunk
         {
             return false;
         }
-        SetBlock(x, y, blockId, initialState);
         return true;
     }
 
@@ -216,6 +231,7 @@ public partial class Chunk
             brokenId = slice.wallBlock;
             slice.wallBlock = 0;
             data.SetWall(x, y, 0);
+            data.SetState(x, y, 0);
             state.DropItems(worldPos);
         }
         else
