@@ -37,10 +37,9 @@ public class BiomeInfo : ScriptableObject
                 var wallBiome = GetWall(heightMap[x, y]);
                 var biome = GetBiome(heightMap[x, y], moistureMap?[x, y] ?? 0, heatMap?[x, y] ?? 0);
 
-                var slice = data.GetSlice(x, y);
-                if(biome is null)
+                var slice = new NativeBlockSlice() { isWater = true };
+                if (biome is null)
                 {
-                    slice.isWater = true;
                     data.InitializeSlice(x, y, slice);
                     continue;
                 }

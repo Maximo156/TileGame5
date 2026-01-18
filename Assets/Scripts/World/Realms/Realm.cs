@@ -29,6 +29,8 @@ public class Realm
     public string name;
     public ChunkGenerator Generator;
 
+    HashSet<Vector2Int> DesiredLoadedChunks = new HashSet<Vector2Int>();
+    ConcurrentQueue<Vector2Int> RequestedChunks = new ConcurrentQueue<Vector2Int>();
     ConcurrentDictionary<Vector2Int, Chunk> LoadedChunks = new ConcurrentDictionary<Vector2Int, Chunk>();
 
     RealmData realmData;
@@ -53,20 +55,24 @@ public class Realm
 
     }
 
-    public void Initialize(GameObject entityContainerPrefab, Transform parent, int ChunkWidth, int chunkGenRadius)
+    public void Initialize(GameObject entityContainerPrefab, Transform parent)
     {
         EntityContainer = GameObject.Instantiate(entityContainerPrefab, parent).GetComponent<EntityManager>();
-        var distWithBuffer = chunkGenRadius * 2 + 3;
-        realmData = new RealmData(ChunkWidth, distWithBuffer * distWithBuffer);
+        var distWithBuffer = WorldSettings.ChunkGenDistance * 2 + 3;
+        realmData = new RealmData(WorldSettings.ChunkWidth, distWithBuffer * distWithBuffer);
         EntityContainer.name = $"{name} Entity Container";
-        EntityContainer.AIManager.Initialize(LoadedChunks, ChunkWidth, realmData);
+        EntityContainer.AIManager.Initialize(LoadedChunks, WorldSettings.ChunkWidth, realmData);
         EntityContainerTransform = EntityContainer.transform;
+
+        CurGenToken = new CancellationTokenSource();
+        Task.Run(() => RunChunkGen());
     }
 
     public void Cleanup()
     {
         EntityContainer.AIManager.CleanUp();
         realmData.Dispose();
+        CurGenToken.Cancel();
     }
 
     public void SetContainerActive(bool active)
@@ -74,39 +80,78 @@ public class Realm
         EntityContainer.gameObject.SetActive(active);
     }
 
-    public void PlayerChangedChunks(Vector2Int curChunk, int chunkGenDistance, int ChunkGenWidth, CancellationToken AllTaskShutdown)
+    public void PlayerChangedChunks(Vector2Int curChunk, CancellationToken AllTaskShutdown)
     {
-        if (CurGenToken is not null)
-        {
-            CurGenToken.Cancel();
-        }
-        CurGenToken = new CancellationTokenSource();
         EntityContainer.AIManager.OnChunkChanged(curChunk);
-        var newTask = Task.Run(() => GenerateNewChunks(curChunk, chunkGenDistance, ChunkGenWidth, CancellationTokenSource.CreateLinkedTokenSource(AllTaskShutdown, CurGenToken.Token).Token));
+        CalcValidChunks(curChunk);
     }
 
-    public async Task GenerateNewChunks(Vector2Int curChunk, int dist, int ChunkWidth, CancellationToken cancellationToken)
+    public void CalcValidChunks(Vector2Int curChunk)
     {
-        try
+        var curDesiredChunks = new HashSet<Vector2Int>(Utilities.Spiral(curChunk, (uint)WorldSettings.ChunkGenDistance));
+        var toRequest = new Queue<Vector2Int>();
+        var toDrop = new HashSet<Vector2Int>();
+        foreach(var chunk in curDesiredChunks)
         {
-            foreach (var newChunk in Utilities.Spiral(curChunk, (uint)dist))
+            if (!DesiredLoadedChunks.Contains(chunk))
             {
-                if (cancellationToken.IsCancellationRequested) break;
-                if (!LoadedChunks.ContainsKey(newChunk))
-                {
-                    var chunkData = realmData.AddChunk(math.int2(newChunk.x, newChunk.y));
-                    var chunk = new Chunk(newChunk, ChunkWidth, chunkData);
-                    await chunk.Generate(Generator);
-                    LoadedChunks[newChunk] = chunk;
-                    ConnectChunk(chunk);
-                    chunk.SetParent(EntityContainerTransform);
-                }
+                Debug.Log($"requesting {chunk}");
+                toRequest.Enqueue(chunk);
             }
         }
-        catch (Exception e)
+        DesiredLoadedChunks = curDesiredChunks;
+        while(toRequest.TryDequeue(out var r))
         {
-            Debug.LogError(e);
+            Debug.Log($"Enqueue {r}");
+            RequestedChunks.Enqueue(r);
         }
+        foreach (var key in LoadedChunks.Keys)
+        {
+            if (!curDesiredChunks.Contains(key))
+            {
+                toDrop.Add(key);
+            }
+        }
+
+        foreach (var key in toDrop)
+        {
+            DropChunk(key);
+        }
+    }
+
+    public async Task RunChunkGen()
+    {
+        Debug.Log("Starting gen thread");
+        while (!CurGenToken.IsCancellationRequested)
+        {
+            if (RequestedChunks.Count > 0)
+            {
+                try
+                {
+                    while (RequestedChunks.TryDequeue(out var newChunk))
+                    {
+                        if (DesiredLoadedChunks.Contains(newChunk) && !LoadedChunks.ContainsKey(newChunk))
+                        {
+                            var chunkData = realmData.AddChunk(math.int2(newChunk.x, newChunk.y));
+                            var chunk = new Chunk(newChunk, WorldSettings.ChunkWidth, chunkData);
+                            await chunk.Generate(Generator);
+                            LoadedChunks[newChunk] = chunk;
+                            ConnectChunk(chunk);
+                            chunk.SetParent(EntityContainerTransform);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e);
+                }
+            }
+            else
+            {
+                await Task.Delay(100);
+            }
+        }
+        Debug.Log("Stopping gen thread");
     }
 
     void DropChunk(Vector2Int chunk)
@@ -115,17 +160,18 @@ public class Realm
         realmData.ClearChunk(math.int2(chunk.x, chunk.y));
     }
 
-    public async Task ChunkTick(Vector2Int curChunk, int chunkTickDistance, int msPerTick, CancellationToken AllTaskShutdown)
+    public async Task ChunkTick(Vector2Int curChunk, CancellationToken AllTaskShutdown)
     {
         try
         {
             List<Task> chunkTasks = new List<Task>()
             {
-                Task.Delay(msPerTick)
+                Task.Delay(WorldSettings.TickMs)
             };
-            for (int x = -chunkTickDistance; x <= chunkTickDistance; x++)
+            var tickDistance = WorldSettings.ChunkTickDistance;
+            for (int x = -tickDistance; x <= tickDistance; x++)
             {
-                for (int y = -chunkTickDistance; y <= chunkTickDistance; y++)
+                for (int y = -tickDistance; y <= tickDistance; y++)
                 {
                     if (LoadedChunks.TryGetValue(new Vector2Int(x, y) + curChunk, out var chunk))
                     {
@@ -171,9 +217,9 @@ public class Realm
 
     private void Chunk_OnBlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos) => OnBlockRefreshed?.Invoke(chunk, BlockPos, ChunkPos);
 
-    public T PerformChunkAction<T>(Vector2Int position, int ChunkWidth, Func<Chunk, Vector2Int, T> action , bool useProxy = true)
+    public T PerformChunkAction<T>(Vector2Int position, Func<Chunk, Vector2Int, T> action , bool useProxy = true)
     {
-        var chunkPos = Utilities.GetChunk(position, ChunkWidth);
+        var chunkPos = Utilities.GetChunk(position, WorldSettings.ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
             if(useProxy)
@@ -181,7 +227,7 @@ public class Realm
                 var offset = chunk.GetBlock(position).GetProxyOffset();
                 if (offset != Vector2Int.zero)
                 {
-                    return PerformChunkAction(offset + position, ChunkWidth, action);
+                    return PerformChunkAction(offset + position, action);
                 }
             }
             return action(chunk, position);
@@ -189,9 +235,9 @@ public class Realm
         return default;
     }
 
-    public T QueueChunkAction<T>(Vector2Int position, int ChunkWidth, Action<Chunk, Vector2Int> action, Func<Chunk, Vector2Int, T> predictResult, bool useProxy = true)
+    public T QueueChunkAction<T>(Vector2Int position, Action<Chunk, Vector2Int> action, Func<Chunk, Vector2Int, T> predictResult, bool useProxy = true)
     {
-        var chunkPos = Utilities.GetChunk(position, ChunkWidth);
+        var chunkPos = Utilities.GetChunk(position, WorldSettings.ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
             if (useProxy)
@@ -199,7 +245,7 @@ public class Realm
                 var offset = chunk.GetBlock(position).GetProxyOffset();
                 if (offset != Vector2Int.zero)
                 {
-                    return QueueChunkAction(offset + position, ChunkWidth, action, predictResult);
+                    return QueueChunkAction(offset + position, action, predictResult);
                 }
             }
             QueuedActions.Enqueue((chunk, position, action));
@@ -208,9 +254,9 @@ public class Realm
         return default;
     }
 
-    public void QueueChunkAction(Vector2Int position, int ChunkWidth, Action<Chunk, Vector2Int> action, bool useProxy = true)
+    public void QueueChunkAction(Vector2Int position, Action<Chunk, Vector2Int> action, bool useProxy = true)
     {
-        var chunkPos = Utilities.GetChunk(position, ChunkWidth);
+        var chunkPos = Utilities.GetChunk(position, WorldSettings.ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
             if (useProxy)
@@ -218,7 +264,7 @@ public class Realm
                 var offset = chunk.GetBlock(position).GetProxyOffset();
                 if (offset != Vector2Int.zero)
                 {
-                    QueueChunkAction(offset + position, ChunkWidth, action);
+                    QueueChunkAction(offset + position, action);
                     return;
                 }
             }
@@ -232,11 +278,11 @@ public class Realm
         return LoadedChunks.TryGetValue(chunk, out chunkObj);
     }
 
-    public bool TryGetBlock(Vector2Int position, int ChunkWidth, out NativeBlockSlice block, out BlockSliceState state, bool useProxy = true)
+    public bool TryGetBlock(Vector2Int position, out NativeBlockSlice block, out BlockSliceState state, bool useProxy = true)
     {
         block = default;
         state = default;
-        var chunkPos = Utilities.GetChunk(position, ChunkWidth);
+        var chunkPos = Utilities.GetChunk(position, WorldSettings.ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
             block = chunk.GetBlock(position);
@@ -244,10 +290,30 @@ public class Realm
             var offset = block.GetProxyOffset();
             if (useProxy && offset != Vector2Int.zero)
             {
-                return TryGetBlock(block.simpleBlockState.ToOffsetState() + position, ChunkWidth, out block, out state);
+                return TryGetBlock(block.simpleBlockState.ToOffsetState() + position, out block, out state);
             }
             return true;
         }
         return false;
+    }
+
+    public void DrawDebug()
+    {
+        var chunkWidth = WorldSettings.ChunkWidth;
+        Gizmos.color = Color.green;
+        foreach (var key in LoadedChunks.Keys)
+        {
+            Gizmos.DrawWireCube((key * chunkWidth + chunkWidth / 2 * Vector2Int.one).ToVector3Int(), chunkWidth * Vector3.one);
+        }
+        Gizmos.color = Color.yellow;
+        foreach (var key in RequestedChunks)
+        {
+            Gizmos.DrawWireCube((key * chunkWidth + chunkWidth / 2 * Vector2Int.one).ToVector3Int(), chunkWidth * Vector3.one);
+        }
+        Gizmos.color = Color.blue;
+        foreach (var key in DesiredLoadedChunks)
+        {
+            Gizmos.DrawWireCube((key * chunkWidth + chunkWidth / 2 * Vector2Int.one).ToVector3Int(), chunkWidth * Vector3.one);
+        }
     }
 }

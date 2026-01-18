@@ -152,7 +152,7 @@ public class ChunkRenderer : MonoBehaviour
     {
         if (ShowChunks && Application.isPlaying)
         {
-            var chunkWidth = ChunkManager.ChunkWidth;
+            var chunkWidth = WorldSettings.ChunkWidth;
 
             foreach (var kvp in renderedChunks)
             {

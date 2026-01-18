@@ -151,7 +151,7 @@ public class AIManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         while (true)
         {
-            if (WorldSettings.NaturalSpawn)
+            if (GameSettings.NaturalSpawn)
             {
                 foreach (var kvp in SimulatedChunks.ToList())
                 {

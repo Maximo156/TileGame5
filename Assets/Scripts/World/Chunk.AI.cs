@@ -42,7 +42,7 @@ public partial class Chunk
 
     public bool SpawnAI()
     {
-        var diff = WorldSettings.AnimalsPerChunk - ais.Count(ai => ai.Natural);
+        var diff = GameSettings.AnimalsPerChunk - ais.Count(ai => ai.Natural);
         var naturalSpawned = 0;
         var hostileSpawned = 0;
         if (diff > 0)
@@ -57,7 +57,7 @@ public partial class Chunk
 
         if (DayTime.dayTime.IsNight)
         {
-            var hostileDif = WorldSettings.HostilesPerChunk - ais.Count(ai => ai.Hostile);
+            var hostileDif = GameSettings.HostilesPerChunk - ais.Count(ai => ai.Hostile);
             if (hostileDif > 0)
             {
                 int tries = 0;

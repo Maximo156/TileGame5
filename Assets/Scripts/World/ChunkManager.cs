@@ -15,8 +15,7 @@ public class ChunkManager : MonoBehaviour
     public static event RealmChange OnRealmChange;
 
     static ChunkManager Manager;
-    public static int ChunkWidth => Manager.chunkWidth;
-    public static int MsPerTick => Manager.msPerTick;
+
     public static Realm CurRealm => Manager.ActiveRealm;
     public static string DataPath;
 
@@ -26,10 +25,6 @@ public class ChunkManager : MonoBehaviour
     public GameObject EntityContainerPrefab;
 
     [Header("Chunk Settings")]
-    public int chunkWidth;
-    public int chunkGenDistance;
-    public int chunkTickDistance;
-    public int msPerTick = 30;
     public bool debug;
 
     Realm _activeRealm;
@@ -37,13 +32,13 @@ public class ChunkManager : MonoBehaviour
     {
         get => _activeRealm;
         set {
-            _activeRealm.SetContainerActive(false);
+            _activeRealm?.SetContainerActive(false);
             _activeRealm?.LateStep();
             OnRealmChange?.Invoke(_activeRealm, value);
             _activeRealm = value;
-            _activeRealm.PlayerChangedChunks(Vector2Int.zero, chunkGenDistance, chunkWidth, AllTaskShutdown.Token);
+            _activeRealm.PlayerChangedChunks(Vector2Int.zero, AllTaskShutdown.Token);
             _activeRealm.RefreshAllChunks();
-            _activeRealm?.SetContainerActive(true);
+            _activeRealm.SetContainerActive(true);
         }
     }
 
@@ -60,7 +55,7 @@ public class ChunkManager : MonoBehaviour
     {
         foreach(var realm in Realms)
         {
-            realm.Initialize(EntityContainerPrefab, transform, chunkWidth, chunkGenDistance);
+            realm.Initialize(EntityContainerPrefab, transform);
             realm.SetContainerActive(false);
         }
         ActiveRealm = Realms.First(r => r.name == startingRealm);
@@ -89,14 +84,14 @@ public class ChunkManager : MonoBehaviour
     private void PlayerChangedChunks(Vector2Int curChunk)
     {
         currentChunk = curChunk;
-        ActiveRealm.PlayerChangedChunks(currentChunk, chunkGenDistance, chunkWidth, AllTaskShutdown.Token);
+        ActiveRealm.PlayerChangedChunks(currentChunk, AllTaskShutdown.Token);
     }
 
     public async void ChunkTick()
     {
         while (true && !AllTaskShutdown.Token.IsCancellationRequested)
         {
-            await ActiveRealm.ChunkTick(currentChunk, chunkTickDistance, msPerTick, AllTaskShutdown.Token);
+            await ActiveRealm.ChunkTick(currentChunk, AllTaskShutdown.Token);
         }
         Debug.Log("Stopping Tick");
     }
@@ -105,7 +100,7 @@ public class ChunkManager : MonoBehaviour
     {
         block = default;
         if (Manager == null) return false;
-        return Manager.ActiveRealm.TryGetBlock(position, ChunkWidth, out block, out var _, useProxy);
+        return Manager.ActiveRealm.TryGetBlock(position, out block, out var _, useProxy);
     }
 
     public static bool TryGetBlock(Vector2Int position, out NativeBlockSlice block, out BlockSliceState state, bool useProxy = true)
@@ -113,7 +108,7 @@ public class ChunkManager : MonoBehaviour
         block = default;
         state = null;
         if (Manager == null) return false;
-        return Manager.ActiveRealm.TryGetBlock(position, ChunkWidth, out block, out state, useProxy);
+        return Manager.ActiveRealm.TryGetBlock(position, out block, out state, useProxy);
     }
 
     public static NativeBlockSlice GetBlock(Vector2Int position)
@@ -148,12 +143,12 @@ public class ChunkManager : MonoBehaviour
 
     public static bool PlaceItem(Vector2Int position, ItemStack item)
     {
-        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.PlaceItem(pos, item));
+        return Manager.ActiveRealm.PerformChunkAction(position, (chunk, pos) => chunk.PlaceItem(pos, item));
     }
 
     public static ItemStack PopItem(Vector2Int position)
     {
-        return Manager.ActiveRealm.PerformChunkAction(position, ChunkWidth, (chunk, pos) => chunk.PopItem(pos));
+        return Manager.ActiveRealm.PerformChunkAction(position, (chunk, pos) => chunk.PopItem(pos));
     }
 
     #region write actions
@@ -161,7 +156,6 @@ public class ChunkManager : MonoBehaviour
     {
         return Manager.ActiveRealm.QueueChunkAction(
             position, 
-            ChunkWidth, 
             (chunk, pos) => chunk.PlaceBlock(pos, dir, block, force, initialState),
             (chunk, pos) => chunk.CanPlace(pos, block.Id)
         );
@@ -171,7 +165,6 @@ public class ChunkManager : MonoBehaviour
     {
         return Manager.ActiveRealm.QueueChunkAction(
             position, 
-            ChunkWidth, 
             (chunk, pos) => chunk.Interact(pos),
             (chunk, pos) => BlockDataRepo.TryGetBlock<Wall>(chunk.GetBlock(pos).wallBlock, out var b) && b is IInteractableBlock
         );
@@ -179,7 +172,7 @@ public class ChunkManager : MonoBehaviour
 
     public static void BreakBlock(Vector2Int position, bool roof, bool drop = true, bool useProxy = true)
     {
-        Manager.ActiveRealm.QueueChunkAction(position, ChunkWidth, (chunk, pos) => chunk.BreakBlock(pos, roof, drop), useProxy);
+        Manager.ActiveRealm.QueueChunkAction(position, (chunk, pos) => chunk.BreakBlock(pos, roof, drop), useProxy);
     }
     #endregion
 
@@ -194,9 +187,9 @@ public class ChunkManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (debug)
+        if (Application.isPlaying && debug)
         {
-            
+            _activeRealm.DrawDebug();
         }
     }
 }

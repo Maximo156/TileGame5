@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour, IHittable
         curSpeed = Mathf.Clamp(curSpeed, 0, speed * modifier);
         rb2d.velocity = oldMovementDir * curSpeed;
 
-        var CurChunk = Vector2Int.FloorToInt(new Vector2(transform.position.x, transform.position.y) / ChunkManager.ChunkWidth);
+        var CurChunk = Vector2Int.FloorToInt(new Vector2(transform.position.x, transform.position.y) / WorldSettings.ChunkWidth);
         if (CurChunk != LastChunk)
         {
             LastChunk = CurChunk;

@@ -174,7 +174,7 @@ public static class Utilities
 
     public static Vector2Int? FindNearestEmptyBlock(Vector2Int start, int limit = 100)
     {
-        var width = ChunkManager.ChunkWidth;
+        var width = WorldSettings.ChunkWidth;
         var curChunkPos = GetChunk(start, width);
         ChunkManager.TryGetChunk(curChunkPos, out var curChunk);
         return BFS(start, pos =>
@@ -191,7 +191,7 @@ public static class Utilities
 
     public static HashSet<Vector2Int> FindReachableBlocks(Vector2Int start, int reach)
     {
-        var width = ChunkManager.ChunkWidth;
+        var width = WorldSettings.ChunkWidth;
         var curChunkPos = GetChunk(start, width);
         ChunkManager.TryGetChunk(curChunkPos, out var curChunk);
         BFS(start, pos => pos, _ => false, pos => Vector2Int.Distance(pos, start) > reach || GetBlock(pos)?.GetMovementInfo().walkable != true, out var reachable, 10000);
