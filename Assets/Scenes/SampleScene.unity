@@ -12854,10 +12854,6 @@ MonoBehaviour:
     Generator: {fileID: 11400000, guid: c18f0422c9491464ea2ca8b8b2bef22f, type: 2}
     EntityContainer: {fileID: 0}
   EntityContainerPrefab: {fileID: 4125942454157733406, guid: 09ba13a72b3f5d44b85e34b2a97e24c3, type: 3}
-  chunkWidth: 32
-  chunkGenDistance: 5
-  chunkTickDistance: 2
-  msPerTick: 30
   debug: 1
 --- !u!114 &1918543955
 MonoBehaviour:

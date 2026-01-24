@@ -4,6 +4,8 @@ using UnityEngine;
 using Unity.Burst;
 using Unity.Mathematics;
 using Unity.Collections;
+using Unity.Jobs;
+using static UnityEditor.PlayerSettings;
 
 [CreateAssetMenu(fileName = "NewFractalSoundSettings", menuName = "Terrain/FractalSoundSettings", order = 1)]
 [BurstCompile]
@@ -40,12 +42,13 @@ public class FractalSoundSettings : BaseSoundSettings
         {
             var pos = new float2(x1, y1);
             var native = new NativeArray<float>(chunkWidth * chunkWidth, Allocator.Persistent);
-            GetSoundArray(ref pos, chunkWidth, Octaves, Lacunarity, Persistence, Scale, ref native);
+            var s = native.Slice();
+            GetSoundArray(ref pos, chunkWidth, Octaves, Lacunarity, Persistence, Scale, ref s);
             for (int x = 0; x < chunkWidth; x++)
             {
                 for (int y = 0; y < chunkWidth; y++)
                 {
-                    res[x, y] = native[x + y * chunkWidth];
+                    res[x, y] = native.GetElement2d(x, y, chunkWidth);
                 }
             }
             native.Dispose();
@@ -62,6 +65,21 @@ public class FractalSoundSettings : BaseSoundSettings
             return res;
         }
         return res;
+    }
+
+    public override JobHandle ScheduleSoundJob(NativeArray<int2> chunks, NativeArray<float> sound, int chunkWidth, JobHandle dep = default)
+    {
+        return new CalcFractalSoundJob()
+        {
+            chunks = chunks,
+            offset = offset,
+            chunkWidth = chunkWidth,
+            Lacunarity = Lacunarity,
+            Octaves = Octaves,
+            Scale = Scale,
+            Persistence = Persistence,
+            res = sound,
+        }.Schedule(chunks.Length, 1, dep);
     }
 
     [BurstCompile]
@@ -82,14 +100,14 @@ public class FractalSoundSettings : BaseSoundSettings
     }
 
     [BurstCompile]
-    static void GetSoundArray(ref float2 pos, int chunkWidth, int Octaves, float Lacunarity, float Persistence, float Scale, ref NativeArray<float> res)
+    static void GetSoundArray(ref float2 pos, int chunkWidth, int Octaves, float Lacunarity, float Persistence, float Scale, ref NativeSlice<float> res)
     {
         for(int x = 0; x < chunkWidth; x++)
         {
             for (int y = 0; y < chunkWidth; y++)
             {
                 var p = pos + new float2(x, y);
-                res[x + y * chunkWidth] = GetSound(ref p, Octaves, Lacunarity, Persistence, Scale);
+                res.SetElement2d(x, y, chunkWidth, GetSound(ref p, Octaves, Lacunarity, Persistence, Scale));
             }
         }
     }
@@ -98,5 +116,29 @@ public class FractalSoundSettings : BaseSoundSettings
     {
         var rand = new System.Random(Seed);
         offset = Utilities.RandomVector2Int(4000, rand);
+    }
+
+    [BurstCompile]
+    public partial struct CalcFractalSoundJob : IJobParallelFor
+    {
+        [ReadOnly]
+        public NativeArray<int2> chunks;
+        public Vector2Int offset;
+        public int chunkWidth;
+        public int Octaves;
+        public float Lacunarity;
+        public float Persistence;
+        public float Scale;
+
+        [WriteOnly]
+        [NativeDisableParallelForRestriction]
+        public NativeArray<float> res;
+
+        public void Execute(int index)
+        {
+            var chunk = res.GetChunk(index, chunkWidth * chunkWidth);
+            var pos = chunks[index] * math.float2(chunkWidth) + math.int2(offset.x, offset.y);
+            GetSoundArray(ref pos, chunkWidth, Octaves, Lacunarity, Persistence, Scale, ref chunk);
+        }
     }
 }

@@ -9,6 +9,9 @@ using Unity.Mathematics;
 using UnityEngine;
 using NativeRealm;
 using BlockDataRepos;
+using Unity.Jobs;
+using System.Linq;
+using Unity.Profiling;
 
 
 [Serializable]
@@ -29,9 +32,11 @@ public class Realm
     public string name;
     public ChunkGenerator Generator;
 
-    HashSet<Vector2Int> DesiredLoadedChunks = new HashSet<Vector2Int>();
-    ConcurrentQueue<Vector2Int> RequestedChunks = new ConcurrentQueue<Vector2Int>();
-    ConcurrentDictionary<Vector2Int, Chunk> LoadedChunks = new ConcurrentDictionary<Vector2Int, Chunk>();
+    HashSet<Vector2Int> RequestedChunks = new();
+    List<Vector2Int> DropChunks = new();
+    List<ChunkGenRequest> GenRequests = new();
+    List<Vector2Int> NeedsInitialization = new();
+    Dictionary<Vector2Int, Chunk> LoadedChunks = new Dictionary<Vector2Int, Chunk>();
 
     RealmData realmData;
     
@@ -42,12 +47,70 @@ public class Realm
 
     Queue<(Chunk chunk, Vector2Int pos, Action<Chunk, Vector2Int> action)> QueuedActions = new();
 
+    readonly ProfilerMarker a = new ProfilerMarker("Action Queue");
+    readonly ProfilerMarker b = new ProfilerMarker("Drop Chunks");
+    readonly ProfilerMarker c = new ProfilerMarker("Copy Gen");
+    readonly ProfilerMarker d = new ProfilerMarker("Initialize");
+
     public void Step()
     {
-        while(QueuedActions.TryDequeue(out var actionInfo))
+        using (a.Auto())
         {
-            actionInfo.action?.Invoke(actionInfo.chunk, actionInfo.pos);
+            // Perform queued write actions
+            while (QueuedActions.TryDequeue(out var actionInfo))
+            {
+                actionInfo.action?.Invoke(actionInfo.chunk, actionInfo.pos);
+            }
         }
+        using (b.Auto())
+        {
+            // Drop native chunks
+            ProcessDropChunks();
+        }
+        using (c.Auto())
+        {
+            // Copy completed chunkGenRequests
+            ProcessGenRequests().Complete();
+        }
+
+        // Scheduel native reads
+        using (d.Auto())
+        {
+            // Initialize new chunks
+            InitializeManagedChunks();
+        }
+    }
+
+    void ProcessDropChunks()
+    {
+        foreach(var c in DropChunks)
+        {
+            realmData.ClearChunk(c.ToInt());
+        }
+        DropChunks.Clear();
+    }
+
+    JobHandle ProcessGenRequests()
+    {
+        var complete = GenRequests.Where(r => r.isComplete).ToList();
+        GenRequests = GenRequests.Where(r => !r.isComplete).ToList();
+        var dep = new JobHandle();
+        foreach(var request in complete)
+        {
+            dep = request.CopyAndDispose(realmData, RequestedChunks, NeedsInitialization, dep);
+        }
+        return dep;
+    }
+
+    void InitializeManagedChunks()
+    {
+        foreach(var c in NeedsInitialization)
+        {
+            var newChunk = new Chunk(c, WorldSettings.ChunkWidth, realmData.AddChunk(c.ToInt()), Generator);
+            ConnectChunk(newChunk);
+            LoadedChunks.Add(c, newChunk);
+        }
+        NeedsInitialization.Clear();
     }
 
     public void LateStep()
@@ -65,7 +128,6 @@ public class Realm
         EntityContainerTransform = EntityContainer.transform;
 
         CurGenToken = new CancellationTokenSource();
-        Task.Run(() => RunChunkGen());
     }
 
     public void Cleanup()
@@ -89,75 +151,34 @@ public class Realm
     public void CalcValidChunks(Vector2Int curChunk)
     {
         var curDesiredChunks = new HashSet<Vector2Int>(Utilities.Spiral(curChunk, (uint)WorldSettings.ChunkGenDistance));
-        var toRequest = new Queue<Vector2Int>();
-        var toDrop = new HashSet<Vector2Int>();
+        var newRequestedChunks = new NativeList<int2>(10, Allocator.Persistent);
         foreach(var chunk in curDesiredChunks)
         {
-            if (!DesiredLoadedChunks.Contains(chunk))
+            if (!LoadedChunks.ContainsKey(chunk) && !RequestedChunks.Contains(chunk))
             {
-                Debug.Log($"requesting {chunk}");
-                toRequest.Enqueue(chunk);
+                newRequestedChunks.Add(chunk.ToInt());
             }
         }
-        DesiredLoadedChunks = curDesiredChunks;
-        while(toRequest.TryDequeue(out var r))
-        {
-            Debug.Log($"Enqueue {r}");
-            RequestedChunks.Enqueue(r);
-        }
+
+        GenRequests.Add(new ChunkGenRequest(newRequestedChunks, Generator, RequestedChunks));
+        
         foreach (var key in LoadedChunks.Keys)
         {
             if (!curDesiredChunks.Contains(key))
             {
-                toDrop.Add(key);
+                DropChunks.Add(key);
             }
         }
 
-        foreach (var key in toDrop)
+        foreach (var key in DropChunks)
         {
-            DropChunk(key);
+            DropManagedChunk(key);
         }
     }
 
-    public async Task RunChunkGen()
-    {
-        Debug.Log("Starting gen thread");
-        while (!CurGenToken.IsCancellationRequested)
-        {
-            if (RequestedChunks.Count > 0)
-            {
-                try
-                {
-                    while (RequestedChunks.TryDequeue(out var newChunk))
-                    {
-                        if (DesiredLoadedChunks.Contains(newChunk) && !LoadedChunks.ContainsKey(newChunk))
-                        {
-                            var chunkData = realmData.AddChunk(math.int2(newChunk.x, newChunk.y));
-                            var chunk = new Chunk(newChunk, WorldSettings.ChunkWidth, chunkData);
-                            await chunk.Generate(Generator);
-                            LoadedChunks[newChunk] = chunk;
-                            ConnectChunk(chunk);
-                            chunk.SetParent(EntityContainerTransform);
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError(e);
-                }
-            }
-            else
-            {
-                await Task.Delay(100);
-            }
-        }
-        Debug.Log("Stopping gen thread");
-    }
-
-    void DropChunk(Vector2Int chunk)
+    void DropManagedChunk(Vector2Int chunk)
     {
         LoadedChunks.Remove(chunk, out var _);
-        realmData.ClearChunk(math.int2(chunk.x, chunk.y));
     }
 
     public async Task ChunkTick(Vector2Int curChunk, CancellationToken AllTaskShutdown)
@@ -297,6 +318,40 @@ public class Realm
         return false;
     }
 
+    struct ChunkGenRequest
+    {
+        NativeList<int2> chunks;
+        JobHandle handle;
+        RealmData realmData;
+
+        public bool isComplete => handle.IsCompleted;
+
+        public ChunkGenRequest(NativeList<int2> chunks, ChunkGenerator generator, HashSet<Vector2Int> requestedChunks)
+        {
+            this.chunks = chunks;
+            realmData = default;
+            (realmData, handle) = generator.GetGenJob(WorldSettings.ChunkWidth, this.chunks);
+            foreach(var c in chunks)
+            {
+                requestedChunks.Add(c.ToVector());
+            }
+        }
+
+        public JobHandle CopyAndDispose(RealmData targetData, HashSet<Vector2Int> requestedChunks, List<Vector2Int> needInitialization, JobHandle dep)
+        {
+            if (!handle.IsCompleted) throw new InvalidOperationException("Only copy once handle is completed");
+            handle.Complete();
+            var copyJob = targetData.CopyFrom(realmData, chunks, dep);
+            foreach (var c in chunks)
+            {
+                var v = c.ToVector();
+                requestedChunks.Remove(v);
+                needInitialization.Add(v);
+            }
+            return JobHandle.CombineDependencies(realmData.Dispose(copyJob), chunks.Dispose(copyJob));
+        }
+    }
+
     public void DrawDebug()
     {
         var chunkWidth = WorldSettings.ChunkWidth;
@@ -308,10 +363,10 @@ public class Realm
         Gizmos.color = Color.yellow;
         foreach (var key in RequestedChunks)
         {
-            Gizmos.DrawWireCube((key * chunkWidth + chunkWidth / 2 * Vector2Int.one).ToVector3Int(), chunkWidth * Vector3.one);
+            //Gizmos.DrawWireCube((key * chunkWidth + chunkWidth / 2 * Vector2Int.one).ToVector3Int(), chunkWidth * Vector3.one);
         }
         Gizmos.color = Color.blue;
-        foreach (var key in DesiredLoadedChunks)
+        foreach (var key in RequestedChunks)
         {
             Gizmos.DrawWireCube((key * chunkWidth + chunkWidth / 2 * Vector2Int.one).ToVector3Int(), chunkWidth * Vector3.one);
         }

@@ -4,6 +4,9 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Collections;
+using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewDEBUGStructureGenerator", menuName = "Terrain/DEBUGStructureGenerator", order = 1)]
@@ -11,6 +14,13 @@ public class DEBUGStructureGen : ChunkSubGenerator
 {
     public Structure structure;
     ConcurrentDictionary<Vector2Int, BuildingBlockSlice[,]> Loaded = new();
+
+    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> chunks, RealmData realmData, BiomeInfo biomeInfo, ref BiomeData biomeData, JobHandle dep = default)
+    {
+        Debug.LogWarning("Implement debug structure generation");
+        return dep;
+    }
+
     public override Task UpdateBlockSlices(BlockSliceState[,] blocks, ChunkData data, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
     {
         if (ChunkPosition == Vector2Int.zero)

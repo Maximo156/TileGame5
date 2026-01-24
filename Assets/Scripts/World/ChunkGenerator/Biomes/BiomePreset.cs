@@ -91,4 +91,20 @@ public class BiomePreset : ScriptableObject
     {
         ReplacementInfosDict = ReplacementInfos.ToDictionary(info => info.Original, info => info.Replacement);
     }
+
+
+    public NativeBiomePreset GetNativePreset()
+    {
+        return new()
+        {
+            groundBlock = GroundBlock?.Id ?? 0,
+            wallBlock = WallBlock?.Id ?? 0,
+            roofBlock = RoofBlock?.Id ?? 0,
+            minHeat = minHeat,
+            minHeight = minHeight,
+            minMoisture = minMoisture,
+            sparceDesnity = SparceDensity,
+            sparceReplaceSolid = replaceSolid
+        };
+    }
 }

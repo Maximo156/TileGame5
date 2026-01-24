@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 using NativeRealm;
+using Unity.Jobs;
+using Unity.Collections;
+using Unity.Mathematics;
 
 [CreateAssetMenu(fileName = "NewStructureGenerator", menuName = "Terrain/StructureGenerator", order = 1)]
 public class StructureGenerator : ChunkSubGenerator
@@ -163,5 +166,11 @@ public class StructureGenerator : ChunkSubGenerator
             Gizmos.color = Color.green;
             Gizmos.DrawSphere(kvp.Value.point.ToVector3Int(), 1);
         }
+    }
+
+    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> chunks, RealmData realmData, BiomeInfo biomeInfo, ref BiomeData biomeData, JobHandle dep = default)
+    {
+        Debug.LogWarning("Implement structure generation");
+        return dep;
     }
 }

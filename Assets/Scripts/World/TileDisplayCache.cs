@@ -20,7 +20,7 @@ public class TileDisplayCache
 
     public (Vector2Int[] positions, ItemStack[][] Items) PlacedItems { get; }
 
-    public TileDisplayCache(BlockSliceState[,] blocks, ChunkData data, Vector2Int chunkWorldPos)
+    public TileDisplayCache(Dictionary<Vector2Int, BlockSliceState> placedItems, ChunkData data, Vector2Int chunkWorldPos)
     {
         var water = new List<Vector3Int>();
         var stone = new List<Vector3Int>();
@@ -33,17 +33,14 @@ public class TileDisplayCache
         var wallTile = new List<TileBase>();
         var itemPos = new List<Vector2Int>();
         var items = new List<ItemStack[]>();
-        for (int x = 0; x < blocks.GetLength(0); x++)
+        foreach(var kvp in placedItems)
         {
-            for (int y = 0; y < blocks.GetLength(0); y++)
+            var slice = kvp.Value;
+            var pos = kvp.Key.ToVector3Int() + chunkWorldPos.ToVector3Int();
+            if (slice?.placedItems is not null && slice.placedItems.Count > 0)
             {
-                var slice = blocks[x, y];
-                var pos = new Vector3Int(x, y) + chunkWorldPos.ToVector3Int();
-                if (slice?.placedItems is not null && slice.placedItems.Count > 0)
-                {
-                    itemPos.Add(pos.ToVector2Int());
-                    items.Add(slice.placedItems.ToArray());
-                }
+                itemPos.Add(pos.ToVector2Int());
+                items.Add(slice.placedItems.ToArray());
             }
         }
 

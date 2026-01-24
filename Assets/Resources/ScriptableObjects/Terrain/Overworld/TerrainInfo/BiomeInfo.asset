@@ -15,6 +15,7 @@ MonoBehaviour:
   HeightSound: {fileID: 11400000, guid: f8f3b4dcc42dd4b40b9d50dfdf6f9a0b, type: 2}
   MoistureSound: {fileID: 11400000, guid: 9e76d38d92b1e6f4d84783466e3baff4, type: 2}
   HeatSound: {fileID: 11400000, guid: 10a78e1fa1b10b94fa2761a8530933f3, type: 2}
+  SparceBlockSound: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
   Biomes:
   - {fileID: 11400000, guid: 949bea6c910e8c340bea2d68ef247f68, type: 2}
   - {fileID: 11400000, guid: 24ea485f46923884298ad8246a279096, type: 2}

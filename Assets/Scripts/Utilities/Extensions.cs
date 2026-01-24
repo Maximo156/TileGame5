@@ -5,6 +5,8 @@ using System;
 using System.Linq;
 using NativeRealm;
 using BlockDataRepos;
+using Unity.Collections;
+using Unity.Mathematics;
 
 public static class Extensions
 {
@@ -64,6 +66,45 @@ public static class Extensions
             total += weight(val);
             if (rand < total) return value(val);
         }
+        return default;
+    }
+
+    public static TOut SelectRandomWeighted<TOut, TIn>(this IEnumerable<TIn> input, Func<TIn, float> weight, Func<TIn, TOut> value, Unity.Mathematics.Random random)
+    {
+        if (!input.Any()) return default;
+        float rand = (float)random.NextDouble() * input.Sum(i => weight(i));
+        float total = 0;
+        foreach (var val in input)
+        {
+            total += weight(val);
+            if (rand < total) return value(val);
+        }
+        return default;
+    }
+
+    public static T SelectRandomWeighted<T>(
+        this NativeSlice<T> input,
+        ref Unity.Mathematics.Random random)
+        where T : struct, IWeighted
+    {
+        int length = input.Length;
+        if (length == 0)
+            return default;
+
+        float totalWeight = 0f;
+        for (int i = 0; i < length; i++)
+            totalWeight += input[i].Weight;
+
+        float rand = random.NextFloat(0f, totalWeight);
+        float cumulative = 0f;
+
+        for (int i = 0; i < length; i++)
+        {
+            cumulative += input[i].Weight;
+            if (rand < cumulative)
+                return input[i];
+        }
+
         return default;
     }
 
@@ -222,10 +263,50 @@ public static class Extensions
     {
         return slice.GetProxyOffset(BlockDataRepo.NativeRepo);
     }
+
+    public static T GetElement2d<T>(this NativeSlice<T> array, int x, int y, int chunkWidth) where T : struct
+    {
+        return array[x*chunkWidth + y];
+    }
+
+    public static void SetElement2d<T>(this NativeSlice<T> array, int x, int y, int chunkWidth, T item) where T : struct
+    {
+        array[x * chunkWidth + y] = item;
+    }
+
+    public static T GetElement2d<T>(this NativeArray<T> array, int x, int y, int chunkWidth) where T : struct
+    {
+        return array[x * chunkWidth + y];
+    }
+
+    public static void SetElement2d<T>(this NativeArray<T> array, int x, int y, int chunkWidth, T item) where T : struct
+    {
+        array[x * chunkWidth + y] = item;
+    }
+
+    public static NativeSlice<T> GetChunk<T>(this NativeArray<T> array, int index, int chunkLength) where T : struct
+    {
+        return array.Slice(index * chunkLength, chunkLength);
+    }
+
+    public static int2 ToInt(this Vector2Int vector)
+    {
+        return math.int2(vector.x, vector.y);
+    }
+
+    public static Vector2Int ToVector(this int2 i)
+    {
+        return new Vector2Int(i.x, i.y);
+    }
 }
 
 public struct MoveInfo
 {
     public bool walkable;
     public float movementSpeed;
+}
+
+public interface IWeighted
+{
+    int Weight { get; }
 }

@@ -57,7 +57,7 @@ public class WorldDisplay : MonoBehaviour
         Roof.SetTile(pos3, block.lightLevel, block.roofBlock != 0);
         Ground.SetTile(pos3, groundBlock?.Display);
         Wall.SetTile(pos3, wallBlock?.Display);
-        UpdateItems(pos, state.placedItems);
+        UpdateItems(pos, state?.placedItems);
     }
 
     public void RefreshTile(Vector2Int pos)

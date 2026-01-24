@@ -30,7 +30,7 @@ public class AIManager : MonoBehaviour
     public int AiSimDistance = 10;
     public int AiPerEnumeration = 100;
     public int SpawnPassTime = 10;
-    ConcurrentDictionary<Vector2Int, Chunk> LoadedChunks;
+    Dictionary<Vector2Int, Chunk> LoadedChunks;
 
     int ChunkWidth;
     Vector2Int curChunk { get; set; }
@@ -42,7 +42,7 @@ public class AIManager : MonoBehaviour
 
     HashSet<IPathFinder> requestedPathfinders = new();
 
-    public void Initialize(ConcurrentDictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth, RealmData worldData)
+    public void Initialize(Dictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth, RealmData worldData)
     {
         this.LoadedChunks = LoadedChunks;
         this.ChunkWidth = ChunkWidth;
