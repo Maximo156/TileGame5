@@ -48,7 +48,7 @@ public class ChunkRenderer : MonoBehaviour
         bool rendered = false;
         foreach(var chunkPos in toRender.OrderBy(c => Vector2.Distance(c, curChunk)).Where(c => c!= null)) 
         {
-            if (ChunkManager.TryGetChunk(chunkPos, out var chunkToRender))
+            if (ChunkManager.TryGetChunk(chunkPos, out var chunkToRender) && chunkToRender.tileDisplayCache != null)
             {
                 toRender.Remove(chunkPos);
                 if (!renderedChunks.ContainsKey(chunkPos))
@@ -127,7 +127,7 @@ public class ChunkRenderer : MonoBehaviour
     private IEnumerator UpdateChunkDisplay(Chunk chunk, bool load)
     {
         rendering = true;
-        yield return Display.RenderChunk(chunk.GetBlocks(), !load);
+        yield return Display.RenderChunk(chunk.tileDisplayCache, !load);
         chunk.UpdateLighting();
         rendering = false;
     }

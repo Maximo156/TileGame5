@@ -35,12 +35,8 @@ public partial class Chunk
     System.Random rand;
 
     ChunkGenerator curGenerator;
-    bool generated = false;
 
     ChunkData data;
-
-    readonly ProfilerMarker a = new ProfilerMarker("new cach");
-    readonly ProfilerMarker b = new ProfilerMarker("OnChunkChanged");
     public Chunk(Vector2Int chunkPos, int width, ChunkData data, ChunkGenerator generator)
     {
         this.width = width;
@@ -49,7 +45,6 @@ public partial class Chunk
         curGenerator = generator;
         rand = new System.Random(ChunkPos.GetHashCode());
         BlockStates = new();
-        tileDisplayCache = new TileDisplayCache(BlockStates, data, BlockPos);
         Task.Run(() => InitCache());
     }
 
@@ -456,11 +451,7 @@ public partial class Chunk
         return worldPos - BlockPos;
     }
 
-    TileDisplayCache tileDisplayCache;
-    public TileDisplayCache GetBlocks()
-    {
-        return tileDisplayCache;
-    }
+    public TileDisplayCache tileDisplayCache {  get; private set; } 
 
     public void RegenCache()
     {
