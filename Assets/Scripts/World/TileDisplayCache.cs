@@ -11,26 +11,30 @@ public class TileDisplayCache
 {
     public Vector3Int[] WaterPositions { get; }
     public Vector3Int[] StonePositions { get; }
-    public Dictionary<Vector3Int, int> RoofPositions { get; }
 
+    public Dictionary<Vector3Int, int> RoofPositions { get; }
     public Dictionary<Vector3Int, int> DarknessPositions { get; }
 
-    public (Vector3Int[] positions, TileBase[] tiles) GroundTiles { get; }
-    public (Vector3Int[] positions, TileBase[] tiles) WallTiles { get; }
+    public TileBase[] GroundTiles { get; }
+    public TileBase[] WallTiles { get; }
 
     public (Vector2Int[] positions, ItemStack[][] Items) PlacedItems { get; }
 
+    public Vector2Int chunkWorldPos { get; private set; }
+
     public TileDisplayCache(Dictionary<Vector2Int, BlockSliceState> placedItems, ChunkData data, Vector2Int chunkWorldPos)
     {
+        this.chunkWorldPos = chunkWorldPos;
+        var chunkWidth = data.chunkWidth;
+        var chunkLength = chunkWidth * chunkWidth;
         var water = new List<Vector3Int>();
         var stone = new List<Vector3Int>();
         var roof = new Dictionary<Vector3Int, int>();
         var darkness = new Dictionary<Vector3Int, int>();
 
-        var groundPos = new List<Vector3Int>();
-        var groundTile = new List<TileBase>();
-        var wallPos = new List<Vector3Int>();
-        var wallTile = new List<TileBase>();
+        var groundTile = new TileBase[chunkLength];
+        var wallTile = new TileBase[chunkLength];
+
         var itemPos = new List<Vector2Int>();
         var items = new List<ItemStack[]>();
         foreach(var kvp in placedItems)
@@ -58,16 +62,10 @@ public class TileDisplayCache
                 {
                     stone.Add(pos);
                 }
-                if (slice.wallBlock != 0)
-                {
-                    wallPos.Add(pos);
-                    wallTile.Add(BlockDataRepo.GetBlock<Block>(slice.wallBlock).Display);
-                }
-                if (slice.groundBlock != 0)
-                {
-                    groundPos.Add(pos);
-                    groundTile.Add(BlockDataRepo.GetBlock<Block>(slice.groundBlock).Display);
-                }
+
+                wallTile.SetElement2d(y, x, chunkWidth, slice.wallBlock != 0 ? BlockDataRepo.GetBlock<Block>(slice.wallBlock).Display : null);
+                groundTile.SetElement2d(y, x, chunkWidth, slice.groundBlock != 0 ? BlockDataRepo.GetBlock<Block>(slice.groundBlock).Display : null);
+
                 if (slice.roofBlock != 0)
                 {
                     roof.Add(pos, slice.lightLevel);
@@ -81,8 +79,8 @@ public class TileDisplayCache
         RoofPositions = roof;
         DarknessPositions = darkness;
 
-        GroundTiles = (groundPos.ToArray(), groundTile.ToArray());
-        WallTiles = (wallPos.ToArray(), wallTile.ToArray());
+        GroundTiles = groundTile;
+        WallTiles = wallTile;
         PlacedItems = (itemPos.ToArray(), items.ToArray());
     }
 }

@@ -49,6 +49,7 @@ public partial class Chunk
         curGenerator = generator;
         rand = new System.Random(ChunkPos.GetHashCode());
         BlockStates = new();
+        tileDisplayCache = new TileDisplayCache(BlockStates, data, BlockPos);
         Task.Run(() => InitCache());
     }
 

@@ -25,7 +25,6 @@ namespace NativeRealm {
 
         public RealmData(int chunkWidth, int totalExpectedChunks, Allocator allocator)
         {
-            Debug.Log($"Partitioning for {totalExpectedChunks}");
             this.chunkWidth = chunkWidth;
             chunkDataLength = chunkWidth * chunkWidth;
 

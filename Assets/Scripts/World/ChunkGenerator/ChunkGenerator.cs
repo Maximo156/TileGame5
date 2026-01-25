@@ -84,7 +84,6 @@ public class ChunkGenerator: ScriptableObject, ISaveable
         NativeList<int2> chunks,
         BiomeInfo biomeInfo)
         {
-            Debug.Log($"Running {Generator.name}");
             Generator.UpdateRequestedChunks(chunks);
             var (realmData, dep, biomeData) = 
                 Dependency != null ? 

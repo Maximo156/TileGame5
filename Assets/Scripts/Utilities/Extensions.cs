@@ -298,6 +298,16 @@ public static class Extensions
     {
         return new Vector2Int(i.x, i.y);
     }
+
+    public static T GetElement2d<T>(this IList<T> array, int x, int y, int chunkWidth)
+    {
+        return array[x * chunkWidth + y];
+    }
+
+    public static void SetElement2d<T>(this IList<T> array, int x, int y, int chunkWidth, T item)
+    {
+        array[x * chunkWidth + y] = item;
+    }
 }
 
 public struct MoveInfo
