@@ -12,7 +12,7 @@ public class LightBlock : Wall
     public override BlockData GetBlockData()
     {
         var data = base.GetBlockData();
-        data.lightLevel = LightLevel;
+        data.lightLevel = (byte)(LightLevel * 2); // Double level internally as light decreases 2 levels/block
         return data;
     }
 }

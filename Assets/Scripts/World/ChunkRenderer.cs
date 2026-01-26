@@ -128,7 +128,6 @@ public class ChunkRenderer : MonoBehaviour
     {
         rendering = true;
         yield return Display.RenderChunk(chunk.tileDisplayCache, !load);
-        chunk.UpdateLighting();
         rendering = false;
     }
 

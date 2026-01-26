@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
 using UnityEngine;
@@ -15,34 +16,18 @@ namespace BlockDataRepos
             tmp.Add(ProxyBlock.Instance);
             Debug.Log($"Loading {tmp.Count} blocks");
             Blocks = new Block[tmp.Count];
-            NativeRepo = new(tmp.Count, tmp.Where(b => b is Wall).Sum(b => (b as Wall).MustBePlacedOn.Count));
             ushort count = 1;
-            int placedOnCount = 0;
             foreach(var block in tmp)
             {
                 block.Id = count;
                 count++;
             }
+
+            NativeRepo = new(tmp);
             foreach (var block in tmp)
             {
                 Blocks[block.Id-1] = block;
                 var data = block.GetBlockData();
-
-                if(block is Wall wall)
-                {
-                    data.placedOnSlice = new()
-                    {
-                        start = placedOnCount,
-                        length = wall.MustBePlacedOn.Count
-                    };
-                    foreach(var b in wall.MustBePlacedOn)
-                    {
-                        NativeRepo.AddMustBePlacedOn(placedOnCount, b.Id);
-                        placedOnCount++;
-                    }
-                }
-
-                NativeRepo.Add(block.Id, data); 
             }
         }
 
@@ -88,10 +73,15 @@ namespace BlockDataRepos
         NativeArray<BlockData> Data;
         NativeArray<ushort> mustBePlacedOn;
 
-        public NativeBlockDataRepo(int count, int placedOnCount)
+        public NativeBlockDataRepo(List<Block> blocks)
         {
-            Data = new NativeArray<BlockData>(count, Allocator.Persistent);
-            mustBePlacedOn = new NativeArray<ushort>(placedOnCount, Allocator.Persistent);
+            blocks.ToNativeSlices(
+                b => b is Wall wall ? wall.MustBePlacedOn.Select(b => b.Id) : null, 
+                b => b.GetBlockData(),
+                SetSliceData,
+                out mustBePlacedOn,
+                out Data);
+
         }
 
         public void Add(ushort id, BlockData data)
@@ -131,9 +121,14 @@ namespace BlockDataRepos
             var slice = block.placedOnSlice;
             return mustBePlacedOn.Slice(slice.start, slice.length);
         }
+
+        static void SetSliceData(ref BlockData data, SliceData d)
+        {
+            data.sliceData = d;
+        }
     }
 
-    public struct BlockData 
+    public struct BlockData : IHasSliceData
     {
         public BlockLevel Level;
         public byte lightLevel;
@@ -147,6 +142,8 @@ namespace BlockDataRepos
         public int hitsToBreak;
 
         public SliceData placedOnSlice;
+
+        public SliceData sliceData {get => placedOnSlice; set => placedOnSlice = value; }
     }
 
     public enum BlockLevel

@@ -6,6 +6,7 @@ using System.Linq;
 using Random = UnityEngine.Random;
 using NativeRealm;
 using BlockDataRepos;
+using Unity.Mathematics;
 
 public static class Utilities
 {
@@ -242,12 +243,25 @@ public static class Utilities
         return roof ? BlockDataRepo.GetBlock<Block>(slice.roofBlock): (BlockDataRepo.GetBlock<Block>(slice.wallBlock) ?? BlockDataRepo.GetBlock<Block>(slice.groundBlock));
     }
 
+    public static bool CheckChunkBoundry(int x, int y, int ChunkWidth)
+    {
+        return x >= 0 && y >= 0 && x < ChunkWidth && y < ChunkWidth;
+    }
+
     public static Vector2Int[] QuadAdjacent =
     {
         Vector2Int.up,
         Vector2Int.right,
         Vector2Int.down,
         Vector2Int.left
+    };
+
+    public static int2[] QuadAdjacentInt =
+    {
+        Vector2Int.up.ToInt(),
+        Vector2Int.right.ToInt(),
+        Vector2Int.down.ToInt(),
+        Vector2Int.left.ToInt()
     };
 
     public static Vector2Int[] OctAdjacent =
@@ -280,10 +294,4 @@ public static class Utilities
         Vector3Int.down,
         Vector3Int.down + Vector3Int.right,
     };
-}
-
-public struct SliceData
-{
-    public int start;
-    public int length;
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using System;
 using NativeRealm;
+using BlockDataRepos;
 
 [CreateAssetMenu(fileName = "NewBiomePreset", menuName = "Terrain/Biome/BiomePreset", order = 1)]
 public class BiomePreset : ScriptableObject
@@ -43,6 +44,16 @@ public class BiomePreset : ScriptableObject
         public string Name => block.name;
         public int Weight;
         public Block block;
+
+        public NativeSparceInfo ToNativeInfo()
+        {
+            return new()
+            {
+                block = block.Id,
+                blockLevel = BlockDataRepo.GetNativeBlock(block.Id).Level,
+                Weight = Weight,
+            };
+        }
     }
     [Header("Sparce Blocks")]
     public bool replaceSolid = false;
@@ -107,4 +118,11 @@ public class BiomePreset : ScriptableObject
             sparceReplaceSolid = replaceSolid
         };
     }
+}
+
+public struct NativeSparceInfo : IWeighted
+{
+    public BlockLevel blockLevel;
+    public ushort block;
+    public int Weight { get; set; }
 }

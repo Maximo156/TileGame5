@@ -23,7 +23,7 @@ public class Realm
     public delegate void BlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos);
     public event BlockRefreshed OnBlockRefreshed;
 
-    public delegate void LightingUpdated(Dictionary<Vector3Int, int> updated);
+    public delegate void LightingUpdated(NativeQueue<LightUpdateInfo> updated);
     public event LightingUpdated OnLightingUpdated;
 
     public delegate void ChunkChanged(Chunk chunk);
@@ -52,33 +52,30 @@ public class Realm
     readonly ProfilerMarker c = new ProfilerMarker("Copy Gen");
     readonly ProfilerMarker d = new ProfilerMarker("Initialize");
 
+    readonly ProfilerMarker p_Step = new ProfilerMarker("Realm.Step");
+    readonly ProfilerMarker p_LateStep = new ProfilerMarker("Realm.Step");
+
+    NativeList<int2> frameUpdatedChunks;
+    LightJobInfo lightJobInfo;
     public void Step()
     {
-        using (a.Auto())
+        var prof = p_Step.Auto();
+        frameUpdatedChunks = new NativeList<int2>(0, Allocator.TempJob);
+        while (QueuedActions.TryDequeue(out var actionInfo))
         {
-            // Perform queued write actions
-            while (QueuedActions.TryDequeue(out var actionInfo))
-            {
-                actionInfo.action?.Invoke(actionInfo.chunk, actionInfo.pos);
-            }
-        }
-        using (b.Auto())
-        {
-            // Drop native chunks
-            ProcessDropChunks();
-        }
-        using (c.Auto())
-        {
-            // Copy completed chunkGenRequests
-            ProcessGenRequests().Complete();
+            actionInfo.action?.Invoke(actionInfo.chunk, actionInfo.pos);
+            frameUpdatedChunks.Add(actionInfo.chunk.ChunkPos.ToInt());
         }
 
+        ProcessDropChunks();
+
+        ProcessGenRequests(frameUpdatedChunks).Complete();
+
         // Scheduel native reads
-        using (d.Auto())
-        {
-            // Initialize new chunks
-            InitializeManagedChunks();
-        }
+        lightJobInfo = LightCalculation.ScheduelLightUpdate(realmData, frameUpdatedChunks);
+
+        // Initialize new chunks
+        InitializeManagedChunks();
     }
 
     void ProcessDropChunks()
@@ -90,14 +87,14 @@ public class Realm
         DropChunks.Clear();
     }
 
-    JobHandle ProcessGenRequests()
+    JobHandle ProcessGenRequests(NativeList<int2> updatedChunks)
     {
         var complete = GenRequests.Where(r => r.isComplete).ToList();
         GenRequests = GenRequests.Where(r => !r.isComplete).ToList();
         var dep = new JobHandle();
         foreach(var request in complete)
         {
-            dep = request.CopyAndDispose(realmData, RequestedChunks, NeedsInitialization, dep);
+            dep = request.CopyAndDispose(realmData, RequestedChunks, NeedsInitialization, updatedChunks, dep);
         }
         return dep;
     }
@@ -115,7 +112,14 @@ public class Realm
 
     public void LateStep()
     {
+        var prof = p_LateStep.Auto();
+        var updates = new NativeQueue<LightUpdateInfo>(Allocator.TempJob);
 
+        var copyLightJob = LightCalculation.CopyLight(realmData, lightJobInfo, updates);
+
+        JobHandle.CombineDependencies(frameUpdatedChunks.Dispose(copyLightJob), lightJobInfo.Dispose(copyLightJob)).Complete();
+        OnLightingUpdated?.Invoke(updates);
+        updates.Dispose();
     }
 
     public void Initialize(GameObject entityContainerPrefab, Transform parent)
@@ -221,10 +225,7 @@ public class Realm
         chunk.OnBlockChanged += Chunk_OnBlockChanged;
         chunk.OnBlockRefreshed += Chunk_OnBlockRefreshed;
         chunk.OnChunkChanged += Chunk_OnChunkChanged;
-        chunk.OnLightingUpdated += Chunk_OnLightingUpdated;
     }
-
-    private void Chunk_OnLightingUpdated(Dictionary<Vector3Int, int> updated) => OnLightingUpdated?.Invoke(updated);
 
     private void Chunk_OnChunkChanged(Chunk chunk)
     {
@@ -337,13 +338,14 @@ public class Realm
             }
         }
 
-        public JobHandle CopyAndDispose(RealmData targetData, HashSet<Vector2Int> requestedChunks, List<Vector2Int> needInitialization, JobHandle dep)
+        public JobHandle CopyAndDispose(RealmData targetData, HashSet<Vector2Int> requestedChunks, List<Vector2Int> needInitialization, NativeList<int2> updatedChunks, JobHandle dep)
         {
             if (!handle.IsCompleted) throw new InvalidOperationException("Only copy once handle is completed");
             handle.Complete();
             var copyJob = targetData.CopyFrom(realmData, chunks, dep);
             foreach (var c in chunks)
             {
+                updatedChunks.Add(c);
                 var v = c.ToVector();
                 requestedChunks.Remove(v);
                 needInitialization.Add(v);

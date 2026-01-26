@@ -62,6 +62,7 @@ public struct NativeBiomeInfo
             count++;
         }
         count = 0;
+
         foreach (var biome in wallBiomes)
         {
             var info = biome.GetNativePreset();
@@ -168,13 +169,6 @@ public struct NativeBiomeInfo
             } 
         }
         return toReplace;
-    }
-
-    public struct NativeSparceInfo : IWeighted
-    {
-        public BlockLevel blockLevel;
-        public ushort block;
-        public int Weight { get; set; }
     }
 
     struct ReplacementInfo

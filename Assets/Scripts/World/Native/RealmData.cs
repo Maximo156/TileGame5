@@ -439,6 +439,13 @@ namespace NativeRealm {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ushort GetLight(int x, int y)
+        {
+            int i = Index(x, y);
+            return lightLevel[i];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ushort GetWall(int x, int y)
         {
             int i = Index(x, y);
@@ -517,6 +524,14 @@ namespace NativeRealm {
             lightLevel.CopyFrom(otherChunk.lightLevel);
             roofBlocks.CopyFrom(otherChunk.roofBlocks);
             water.CopyFrom(otherChunk.water);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool OverwriteLight(int x, int y, byte newLight)
+        {
+            var oldLight = lightLevel.GetElement2d(x, y, chunkWidth);
+            lightLevel.SetElement2d(x, y, chunkWidth, newLight);
+            return oldLight != newLight;
         }
     }
 

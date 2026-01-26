@@ -204,7 +204,7 @@ public class BiomeInfo : ScriptableObject
             }
         }
 
-        public void SetSparce(int x, int y, ref NativeBlockSlice slice, NativeSlice<NativeBiomeInfo.NativeSparceInfo> spaceBlocks, NativeSlice<float> sparceBlockDensity, float density, bool replaceSolid, ref Random random)
+        public void SetSparce(int x, int y, ref NativeBlockSlice slice, NativeSlice<NativeSparceInfo> spaceBlocks, NativeSlice<float> sparceBlockDensity, float density, bool replaceSolid, ref Random random)
         {
             if (spaceBlocks.Length > 0 &&
                      Mathf.Pow(density * sparceBlockDensity.GetElement2d(x, y, chunkWidth), 1.7f) > random.NextDouble())

@@ -20,7 +20,7 @@ public partial class Chunk
     public event BlockRefreshed OnBlockRefreshed;
 
     public delegate void LightingUpdated(Dictionary<Vector3Int, int> updated);
-    public event LightingUpdated OnLightingUpdated;
+    //public event LightingUpdated OnLightingUpdated;
 
     public delegate void ChunkChanged(Chunk chunk);
     public event ChunkChanged OnChunkChanged;
@@ -386,66 +386,6 @@ public partial class Chunk
         }
     }
 
-    public void UpdateLighting()
-    {
-        foreach(var pos in LightPositions)
-        {
-            CalcLight(pos);
-        }
-    }
-
-    void CalcLight(Vector2Int worldPosition)
-    {
-        Queue<Vector2Int> toCheck = new();
-        Dictionary<Vector3Int, int> updated = new();
-        toCheck.Enqueue(worldPosition);
-        foreach (var v in Utilities.QuadAdjacent.Select(v => v + worldPosition))
-        {
-            toCheck.Enqueue(v);
-        }
-        int safety = 0;
-        while(toCheck.TryDequeue(out var cur) && safety++ < 5000)
-        {
-            if (!ChunkManager.TryGetBlock(cur, out var curBlock)) continue;
-            Debug.LogWarning("FIX LIGHTING");
-            return;
-            /*
-            if (curBlock.WallBlock is LightBlock)
-            {
-                updated[cur.ToVector3Int()] = curBlock.LightLevel;
-                continue;
-            }
-            var foundNull = false;
-            foundNull |= !ChunkManager.TryGetBlock(cur + Vector2Int.up, out var up);
-            foundNull |= !ChunkManager.TryGetBlock(cur + Vector2Int.down, out var down);
-            foundNull |= !ChunkManager.TryGetBlock(cur + Vector2Int.left, out var left);
-            foundNull |= !ChunkManager.TryGetBlock(cur + Vector2Int.right, out var right);
-
-            if (foundNull) continue;
-
-            var lrMax = Mathf.Max(AvailableLight(left), AvailableLight(right));
-            bool lrSame = left.LightLevel == right.LightLevel;
-            var udMax = Mathf.Max(AvailableLight(up), AvailableLight(down));
-            bool udSame = up.LightLevel == down.LightLevel;
-
-            var target = Mathf.Max(0, Mathf.Max(lrMax - (lrSame ? 1 : 2), udMax - (udSame ? 1 : 2)));
-            if (curBlock.LightLevel != target)
-            {
-                curBlock.LightLevel = updated[cur.ToVector3Int()] = target;
-                foreach (var v in Utilities.QuadAdjacent.Select(v => v+cur))
-                {
-                    toCheck.Enqueue(v);
-                }
-            }
-            */
-        }
-        CallbackManager.AddCallback(() =>
-        {
-            OnLightingUpdated?.Invoke(updated);
-        });
-        //int AvailableLight(BlockSlice slice) => slice == null || slice.WallBlock?.solid == true ? 0 : slice.LightLevel;
-    }
-
     Vector2Int WorldToLocal(Vector2Int worldPos)
     {
         return worldPos - BlockPos;
@@ -474,7 +414,6 @@ public partial class Chunk
                 LightPositions.Remove(worldPosition);
             }
         }
-        CalcLight(worldPosition);
         ChangedSlice(worldPosition, slice, state);
     }
 
