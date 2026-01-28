@@ -12810,6 +12810,7 @@ GameObject:
   - component: {fileID: 1918543956}
   - component: {fileID: 1918543958}
   - component: {fileID: 1918543959}
+  - component: {fileID: 1918543960}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -12902,7 +12903,7 @@ MonoBehaviour:
   m_AnimalsPerChunk: 3
   m_HostilesPerChunk: 5
   m_NaturalSpawn: 1
-  m_DontUseRecipeInputs: 0
+  m_DontUseRecipeInputs: 1
   m_UseDefaultInventory: 0
   m_StartingHotbar:
   - Item: {fileID: 11400000, guid: cb6ca2667a18aa340b5e937f7061d17f, type: 2}
@@ -12935,6 +12936,18 @@ MonoBehaviour:
   m_ChunkGenDistance: 5
   m_ChunkTickDistance: 2
   m_TickMs: 30
+--- !u!114 &1918543960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918543952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26c0cfd1f3c7f504badee9ccf47a4b1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1979986990
 GameObject:
   m_ObjectHideFlags: 0

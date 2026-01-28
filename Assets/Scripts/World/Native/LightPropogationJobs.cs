@@ -3,16 +3,23 @@ using NativeRealm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 
 [BurstCompile]
 public static class LightCalculation
 {
+    static bool debug = false;
+    public static NativeArray<byte> PreviousBorder;
+    public static NativeArray<int2> PreviousChunks;
+
     public static LightJobInfo ScheduelLightUpdate(RealmData realmData, NativeList<int2> frameUpdatedChunks)
     {
         var chunkWidth = WorldSettings.ChunkWidth;
@@ -20,32 +27,29 @@ public static class LightCalculation
         foreach (var chunk in frameUpdatedChunks)
         {
             hashChunks.Add(chunk);
-            foreach (var v in Utilities.QuadAdjacentInt)
+            foreach (var v in Utilities.OctAdjacentInt)
             {
                 hashChunks.Add(v + chunk);
-            }
-        }
-
-        if (frameUpdatedChunks.Length > 0)
-        {
-            Debug.Log("Original-");
-            foreach (var chunk in frameUpdatedChunks)
-            {
-                Debug.Log(chunk);
-            }
-
-            Debug.Log("New-");
-            foreach (var chunk in hashChunks)
-            {
-                Debug.Log(chunk);
             }
         }
 
         var lightUpdatedChunks = new NativeArray<int2>(hashChunks.ToArray(), Allocator.TempJob);
         var light = new NativeArray<byte>(lightUpdatedChunks.Length * chunkWidth * chunkWidth, Allocator.TempJob);
 
-        var borderBuffer1 = new NativeArray<byte>(lightUpdatedChunks.Length * chunkWidth * 4, Allocator.TempJob);
-        var borderBuffer2 = new NativeArray<byte>(lightUpdatedChunks.Length * chunkWidth * 4, Allocator.TempJob);
+        if (lightUpdatedChunks.Length == 0)
+        {
+            return new()
+            {
+                light = light,
+                jobHandle = default,
+                updatedChunks = lightUpdatedChunks,
+            };
+        }
+
+        InitDebug(lightUpdatedChunks.Length, debug);
+
+        var borderBufferRead = new NativeArray<byte>(lightUpdatedChunks.Length * chunkWidth * 4, Allocator.TempJob);
+        var borderBufferWrite = new NativeArray<byte>(lightUpdatedChunks.Length * chunkWidth * 4, Allocator.TempJob);
 
         var intraChunkLight = new IntraChunkLightPropogationJob()
         {
@@ -54,32 +58,31 @@ public static class LightCalculation
             blockDataRepo = BlockDataRepo.NativeRepo,
             realmData = realmData,
             Light = light,
-            borderLight = borderBuffer1,
+            borderLightWrite = borderBufferRead,
         }.Schedule(lightUpdatedChunks.Length, 1);
 
-        var interLightjob1 = new InterChunkLightPropogationJob()
-        {
-            chunkWidth = chunkWidth,
-            chunks = lightUpdatedChunks,
-            blockDataRepo = BlockDataRepo.NativeRepo,
-            realmData = realmData,
-            Light = light,
-            borderLightRead = borderBuffer1,
-            borderLightWrite = borderBuffer2,
-        }.Schedule(lightUpdatedChunks.Length, 1, intraChunkLight);
+        var lightingPasses = Mathf.CeilToInt((GameSettings.MaxLightLevel - 1) / 3f);
 
-        var interLightjob2 = new InterChunkLightPropogationJob()
+        JobHandle interChunkHandleDependency = intraChunkLight;
+        for(int i = 0; i < lightingPasses; i++)
         {
-            chunkWidth = chunkWidth,
-            chunks = lightUpdatedChunks,
-            blockDataRepo = BlockDataRepo.NativeRepo,
-            realmData = realmData,
-            Light = light,
-            borderLightRead = borderBuffer2,
-            borderLightWrite = borderBuffer1,
-        }.Schedule(lightUpdatedChunks.Length, 1, interLightjob1);
+            interChunkHandleDependency = new InterChunkLightPropogationJob()
+            {
+                chunkWidth = chunkWidth,
+                chunks = lightUpdatedChunks,
+                blockDataRepo = BlockDataRepo.NativeRepo,
+                realmData = realmData,
+                Light = light,
+                borderLightRead = borderBufferRead,
+                borderLightWrite = borderBufferWrite,
+            }.Schedule(lightUpdatedChunks.Length, 1, interChunkHandleDependency);
 
-        var cleanup = JobHandle.CombineDependencies(borderBuffer1.Dispose(interLightjob2), borderBuffer2.Dispose(interLightjob2));
+            (borderBufferWrite, borderBufferRead) = (borderBufferRead, borderBufferWrite);
+        }
+
+        JobHandle finalJob = CopyForDebug(lightUpdatedChunks, borderBufferRead, interChunkHandleDependency, debug);
+
+        var cleanup = JobHandle.CombineDependencies(borderBufferRead.Dispose(finalJob), borderBufferWrite.Dispose(finalJob));
 
         return new()
         {
@@ -93,12 +96,52 @@ public static class LightCalculation
     {
         return new CopyLightJob()
         {
-            chunkWidth = WorldSettings.ChunkWidth,
+            chunkWidth = WorldSettings.ChunkWidth, 
             chunks = jobInfo.updatedChunks,
             realmData = realmData,
             light = jobInfo.light,
             lightUpdates = updates.AsParallelWriter(),
         }.Schedule(jobInfo.updatedChunks.Length, 1, jobInfo.jobHandle);
+    }
+
+    static void InitDebug(int length, bool debug)
+    {
+        if (!debug) return;
+
+        int chunkWidth = WorldSettings.ChunkWidth;
+        if (PreviousBorder.IsCreated)
+        {
+            PreviousBorder.Dispose();
+        }
+        if (PreviousChunks.IsCreated)
+        {
+            PreviousChunks.Dispose();
+        }
+
+        PreviousChunks = new NativeArray<int2>(length, Allocator.Persistent);
+        PreviousBorder = new NativeArray<byte>(length * chunkWidth * 4, Allocator.Persistent);
+    }
+
+    static JobHandle CopyForDebug(NativeArray<int2> chunks, NativeArray<byte> buffer, JobHandle dep, bool debug)
+    {
+        if (!debug)
+        {
+            return dep;
+        }
+
+        var copy1 = new ArrayCopyJob<byte>()
+        {
+            src = buffer,
+            dest = PreviousBorder,
+        }.Schedule(dep);
+
+        var copy2 = new ArrayCopyJob<int2>()
+        {
+            src = chunks,
+            dest = PreviousChunks,
+        }.Schedule(dep);
+
+        return JobHandle.CombineDependencies(copy1, copy2);
     }
 
     [BurstCompile]
@@ -112,7 +155,8 @@ public static class LightCalculation
         public NativeArray<byte> Light;
 
         [NativeDisableParallelForRestriction]
-        public NativeArray<byte> borderLight;
+        [WriteOnly]
+        public NativeArray<byte> borderLightWrite;
 
         [ReadOnly]
         public RealmData realmData;
@@ -121,6 +165,10 @@ public static class LightCalculation
 
         public void Execute(int index)
         {
+            var chunkWidth = this.chunkWidth;
+            var blockDataRepo = this.blockDataRepo;
+            var borderLightWrite = this.borderLightWrite;
+
             var chunkPosition = chunks[index];
             if (!realmData.TryGetChunk(chunkPosition, out var chunk)) return;
             var lightSlice = Light.GetChunk(index, chunkWidth * chunkWidth);
@@ -143,22 +191,22 @@ public static class LightCalculation
             int safety = 0;
             while (updateQueue.TryDequeue(out var pos) && safety++ < 5000)
             {
+                ProcessPoint(pos);
+            }
+
+            WriteBorders();
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            void ProcessPoint(int2 pos)
+            {
                 int x = pos.x;
                 int y = pos.y;
-                if (x < 0 || x >= chunkWidth || y < 0 || y >= chunkWidth) continue;
-                if (!blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var blockData) || blockData.lightLevel != 0) continue;
+                if (x < 0 || x >= chunkWidth || y < 0 || y >= chunkWidth) return;
+                if (!blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var blockData) || blockData.lightLevel != 0) return;
 
-                var lAvailable = GetAvailableLight(x - 1, y, chunk, lightSlice);
-                var rAvailable = GetAvailableLight(x + 1, y, chunk, lightSlice);
-                var uAvailable = GetAvailableLight(x, y + 1, chunk, lightSlice);
-                var dAvailable = GetAvailableLight(x, y - 1, chunk, lightSlice);
 
-                var lrMax = math.max(lAvailable, rAvailable);
-                bool lrSame = lAvailable == rAvailable;
-                var udMax = math.max(uAvailable, dAvailable);
-                bool udSame = uAvailable == dAvailable;
+                var target = CalcTarget(x, y);
 
-                var target = math.max(0, math.max(lrMax - (lrSame ? 1 : 2), udMax - (udSame ? 1 : 2)));
                 if (lightSlice.GetElement2d(x, y, chunkWidth) != target)
                 {
                     lightSlice.SetElement2d(x, y, chunkWidth, (byte)target);
@@ -169,35 +217,53 @@ public static class LightCalculation
                 }
             }
 
-            WriteBorders(index, lightSlice, chunk);
-        }
-
-        void WriteBorders(int chunkIndex, NativeSlice<byte> lightSlice, ChunkData chunk)
-        {
-            int baseOffset = chunkIndex * (4 * chunkWidth);
-
-            for (int i = 0; i < chunkWidth; i++)
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            uint GetAvailableLight(int x, int y)
             {
-                // Left
-                borderLight[baseOffset + 0 * chunkWidth + i] = (byte)GetAvailableLight(0, i, chunk, lightSlice);
+                if (!Utilities.CheckChunkBoundry(x, y, chunkWidth)) return 0;
 
-                // Right
-                borderLight[baseOffset + 1 * chunkWidth + i] = (byte)GetAvailableLight(chunkWidth - 1, i, chunk, lightSlice);
-
-                // Bottom 
-                borderLight[baseOffset + 2 * chunkWidth + i] = (byte)GetAvailableLight(i, 0, chunk, lightSlice);
-
-                // Top
-                borderLight[baseOffset + 3 * chunkWidth + i] = (byte)GetAvailableLight(i, chunkWidth - 1, chunk, lightSlice);
+                // Inside current chunk
+                if (!blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var blockData)) return 0;
+                if (blockData.solid) return 0;
+                return blockData.lightLevel > 0 ? blockData.lightLevel : lightSlice.GetElement2d(x, y, chunkWidth);
             }
-        }
 
-        uint GetAvailableLight(int x, int y, ChunkData chunk, NativeSlice<byte> light)
-        {
-            if (!Utilities.CheckChunkBoundry(x, y, chunkWidth)) return 0;
-            if (!blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var blockData)) return 0;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            void WriteBorders()
+            {
+                int baseOffset = index * (4 * chunkWidth);
 
-            return blockData.lightLevel > 0 ? blockData.lightLevel : light.GetElement2d(x, y, chunkWidth);
+                for (int i = 0; i < chunkWidth; i++)
+                {
+                    // Left
+                    borderLightWrite[baseOffset + 0 * chunkWidth + i] = (byte)GetAvailableLight(0, i);
+
+                    // Right
+                    borderLightWrite[baseOffset + 1 * chunkWidth + i] = (byte)GetAvailableLight(chunkWidth - 1, i);
+
+                    // Bottom 
+                    borderLightWrite[baseOffset + 2 * chunkWidth + i] = (byte)GetAvailableLight(i, 0);
+
+                    // Top
+                    borderLightWrite[baseOffset + 3 * chunkWidth + i] = (byte)GetAvailableLight(i, chunkWidth - 1);
+                }
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            uint CalcTarget(int x, int y)
+            {
+                var lAvailable = GetAvailableLight(x - 1, y);
+                var rAvailable = GetAvailableLight(x + 1, y);
+                var uAvailable = GetAvailableLight(x, y + 1);
+                var dAvailable = GetAvailableLight(x, y - 1);
+
+                var lrMax = math.max(lAvailable, rAvailable);
+                bool lrSame = lAvailable == rAvailable;
+                var udMax = math.max(uAvailable, dAvailable);
+                bool udSame = uAvailable == dAvailable;
+
+                return (uint)(math.max(0, math.max(lrMax - (lrSame ? 1 : 2), udMax - (udSame ? 1 : 2))));
+            }
         }
     }
 
@@ -212,6 +278,7 @@ public static class LightCalculation
         public NativeArray<byte> borderLightRead;
 
         [NativeDisableParallelForRestriction]
+        [WriteOnly]
         public NativeArray<byte> borderLightWrite;
 
         [NativeDisableParallelForRestriction]
@@ -250,10 +317,18 @@ public static class LightCalculation
             int safety = 0;
             while (updateQueue.TryDequeue(out var pos) && safety++ < 5000)
             {
+                ProcessPoint(pos);
+            }
+
+            WriteBorders();
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            void ProcessPoint(int2 pos)
+            {
                 int x = pos.x;
                 int y = pos.y;
-                if (x < 0 || x >= chunkWidth || y < 0 || y >= chunkWidth) continue;
-                if (!blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var blockData) || blockData.lightLevel != 0) continue;
+                if (x < 0 || x >= chunkWidth || y < 0 || y >= chunkWidth) return;
+                if (!blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var blockData) || blockData.lightLevel != 0) return;
 
 
                 var target = CalcTarget(x, y);
@@ -268,9 +343,7 @@ public static class LightCalculation
                 }
             }
 
-            WriteBorders(lightSlice, chunk);
-
-
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             uint CalcTarget(int x, int y)
             {
                 var lAvailable = GetAvailableLight(x - 1, y);
@@ -292,6 +365,7 @@ public static class LightCalculation
                 return suggestedTarget;
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             uint GetAvailableLight(int x, int y)
             {
                 if (x < 0)
@@ -324,10 +398,12 @@ public static class LightCalculation
 
                 // Inside current chunk
                 if (!blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var blockData)) return 0;
+                if (blockData.solid) return 0;
                 return blockData.lightLevel > 0 ? blockData.lightLevel : lightSlice.GetElement2d(x, y, chunkWidth);
             }
 
-            void WriteBorders(NativeSlice<byte> lightSlice, ChunkData chunk)
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            void WriteBorders()
             {
                 int baseOffset = index * (4 * chunkWidth);
 
@@ -412,5 +488,12 @@ public struct LightJobInfo
     public JobHandle Dispose(JobHandle dep)
     {
         return JobHandle.CombineDependencies(light.Dispose(dep), updatedChunks.Dispose(dep));
+    }
+
+    public void Dispose()
+    {
+        jobHandle.Complete();
+        if(light.IsCreated) light.Dispose();
+        if(updatedChunks.IsCreated) updatedChunks.Dispose();
     }
 }

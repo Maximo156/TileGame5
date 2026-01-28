@@ -39,8 +39,6 @@ public class Realm
     Dictionary<Vector2Int, Chunk> LoadedChunks = new Dictionary<Vector2Int, Chunk>();
 
     RealmData realmData;
-    
-    private CancellationTokenSource CurGenToken;
 
     public EntityManager EntityContainer;
     Transform EntityContainerTransform;
@@ -130,15 +128,19 @@ public class Realm
         EntityContainer.name = $"{name} Entity Container";
         EntityContainer.AIManager.Initialize(LoadedChunks, WorldSettings.ChunkWidth, realmData);
         EntityContainerTransform = EntityContainer.transform;
-
-        CurGenToken = new CancellationTokenSource();
     }
 
     public void Cleanup()
     {
-        EntityContainer.AIManager.CleanUp();
+        EntityContainer.AIManager.CleanUp(); 
         realmData.Dispose();
-        CurGenToken.Cancel();
+
+        foreach (var request in GenRequests)
+        {
+            request.Dispose();
+        }
+
+        lightJobInfo.Dispose();
     }
 
     public void SetContainerActive(bool active)
@@ -351,6 +353,13 @@ public class Realm
                 needInitialization.Add(v);
             }
             return JobHandle.CombineDependencies(realmData.Dispose(copyJob), chunks.Dispose(copyJob));
+        }
+
+        public void Dispose()
+        {
+            handle.Complete();
+            realmData.Dispose();
+            chunks.Dispose();
         }
     }
 

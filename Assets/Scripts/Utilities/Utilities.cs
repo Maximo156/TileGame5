@@ -264,6 +264,18 @@ public static class Utilities
         Vector2Int.left.ToInt()
     };
 
+    public static int2[] OctAdjacentInt =
+    {
+        Vector2Int.up.ToInt(),
+        (Vector2Int.up + Vector2Int.right).ToInt(),
+        (Vector2Int.up + Vector2Int.left).ToInt(),
+        Vector2Int.right.ToInt(),
+        Vector2Int.down.ToInt(),
+        (Vector2Int.down + Vector2Int.right).ToInt(),
+        (Vector2Int.down + Vector2Int.left).ToInt(),
+        Vector2Int.left.ToInt()
+    };
+
     public static Vector2Int[] OctAdjacent =
     {
         Vector2Int.up,

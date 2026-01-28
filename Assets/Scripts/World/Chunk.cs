@@ -30,7 +30,6 @@ public partial class Chunk
 
     public Dictionary<Vector2Int, BlockSliceState> BlockStates {  get; set; }
 
-    HashSet<Vector2Int> LightPositions = new();
     readonly int width;
     System.Random rand;
 
@@ -403,17 +402,6 @@ public partial class Chunk
 
     void ChangedBlock(Vector2Int worldPosition, NativeBlockSlice slice, BlockSliceState state, Block updated)
     {
-        if(updated is LightBlock)
-        {
-            if(BlockDataRepo.TryGetNativeBlock(slice.wallBlock, out var b) && b.lightLevel != 0)
-            {
-                LightPositions.Add(worldPosition);
-            }
-            else
-            {
-                LightPositions.Remove(worldPosition);
-            }
-        }
         ChangedSlice(worldPosition, slice, state);
     }
 

@@ -413,7 +413,7 @@ namespace NativeRealm {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Index(int x, int y)
         {
-            return x + y * chunkWidth;
+            return x * chunkWidth + y;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
