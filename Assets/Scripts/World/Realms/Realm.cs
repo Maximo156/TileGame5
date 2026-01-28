@@ -133,7 +133,7 @@ public class Realm
     public void Cleanup()
     {
         EntityContainer.AIManager.CleanUp(); 
-        realmData.Dispose();
+        realmData.Dispose(); 
 
         foreach (var request in GenRequests)
         {
@@ -141,6 +141,7 @@ public class Realm
         }
 
         lightJobInfo.Dispose();
+        Generator.Dispose();
     }
 
     public void SetContainerActive(bool active)

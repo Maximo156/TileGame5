@@ -98,7 +98,7 @@ public class BiomeInfo : ScriptableObject
         WallBiomes = WallBiomes.OrderBy(w => w.minHeight).ToList();
     }
 
-    private void OnDisable()
+    public void Dispose()
     {
         biomeInfo.Dispose(); 
     }
@@ -110,12 +110,9 @@ public class BiomeInfo : ScriptableObject
             biomeInfo = new NativeBiomeInfo(Biomes, WallBiomes, waterLevel);
         }
 
-        var length = chunkWidth * chunkWidth;
+        var length = chunkWidth * chunkWidth * chunks.Length;
 
-        biomeData.HeightMap = new NativeArray<float>(length * chunks.Length, Allocator.Persistent);
-        biomeData.MoistureMap = new NativeArray<float>(length * chunks.Length, Allocator.Persistent);
-        biomeData.HeatMap = new NativeArray<float>(length * chunks.Length, Allocator.Persistent);
-        var sparce = new NativeArray<float>(length * chunks.Length, Allocator.Persistent);
+        var sparce = new NativeArray<float>(length, Allocator.Persistent);
 
         var heightJob = HeightSound.ScheduleSoundJob(chunks, biomeData.HeightMap, chunkWidth);
         var moistureJob = MoistureSound.ScheduleSoundJob(chunks, biomeData.MoistureMap, chunkWidth);
@@ -136,7 +133,9 @@ public class BiomeInfo : ScriptableObject
             JobHandle.CombineDependencies(heightJob, sparceJob)
             ));
 
-        return mainJob;
+        var cleanup = sparce.Dispose(mainJob);
+
+        return cleanup;
     }
 
     [BurstCompile]

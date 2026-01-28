@@ -69,6 +69,11 @@ public class ChunkGenerator: ScriptableObject, ISaveable
         Saver = new ChunkSaver(name);
     }
 
+    public void Dispose()
+    {
+        biomes.Dispose();
+    }
+
     public class GenerationStep
     {
         readonly ChunkSubGenerator Generator;
@@ -88,7 +93,7 @@ public class ChunkGenerator: ScriptableObject, ISaveable
             var (realmData, dep, biomeData) = 
                 Dependency != null ? 
                     Dependency.Generate(chunkWidth, chunks, biomeInfo) : 
-                    (new RealmData(chunkWidth, chunks.Length), default(JobHandle), default(BiomeData));
+                    (new RealmData(chunkWidth, chunks.Length), default(JobHandle), new BiomeData(chunks.Length, chunkWidth));
             var genDep = Generator.ScheduleGeneration(chunkWidth, chunks.AsArray(), realmData, biomeInfo, ref biomeData, dep);
             return (realmData, genDep, biomeData);
         }
