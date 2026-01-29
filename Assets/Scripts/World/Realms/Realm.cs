@@ -32,6 +32,10 @@ public class Realm
     public string name;
     public ChunkGenerator Generator;
 
+    [Header("Realm Settings")]
+    public RealmBiomeInfo BiomeInfo;
+    public RealmStructureInfo StructureInfo;
+
     HashSet<Vector2Int> RequestedChunks = new();
     List<Vector2Int> DropChunks = new();
     List<ChunkGenRequest> GenRequests = new();
@@ -40,7 +44,7 @@ public class Realm
 
     RealmData realmData;
 
-    public EntityManager EntityContainer;
+    public EntityManager EntityContainer {  get; private set; }
     Transform EntityContainerTransform;
 
     Queue<(Chunk chunk, Vector2Int pos, Action<Chunk, Vector2Int> action)> QueuedActions = new();
@@ -101,7 +105,7 @@ public class Realm
     {
         foreach(var c in NeedsInitialization)
         {
-            var newChunk = new Chunk(c, WorldSettings.ChunkWidth, realmData.AddChunk(c.ToInt()), Generator);
+            var newChunk = new Chunk(c, WorldSettings.ChunkWidth, realmData.AddChunk(c.ToInt()), this);
             ConnectChunk(newChunk);
             LoadedChunks.Add(c, newChunk);
         }
@@ -141,7 +145,7 @@ public class Realm
         }
 
         lightJobInfo.Dispose();
-        Generator.Dispose();
+        BiomeInfo.Dispose();
     }
 
     public void SetContainerActive(bool active)
@@ -167,7 +171,7 @@ public class Realm
             }
         }
 
-        GenRequests.Add(new ChunkGenRequest(newRequestedChunks, Generator, RequestedChunks));
+        GenRequests.Add(new ChunkGenRequest(newRequestedChunks, Generator, RequestedChunks, BiomeInfo));
         
         foreach (var key in LoadedChunks.Keys)
         {
@@ -330,11 +334,11 @@ public class Realm
 
         public bool isComplete => handle.IsCompleted;
 
-        public ChunkGenRequest(NativeList<int2> chunks, ChunkGenerator generator, HashSet<Vector2Int> requestedChunks)
+        public ChunkGenRequest(NativeList<int2> chunks, ChunkGenerator generator, HashSet<Vector2Int> requestedChunks, RealmBiomeInfo biomeInfo)
         {
             this.chunks = chunks;
             realmData = default;
-            (realmData, handle) = generator.GetGenJob(WorldSettings.ChunkWidth, this.chunks);
+            (realmData, handle) = generator.GetGenJob(WorldSettings.ChunkWidth, this.chunks, biomeInfo);
             foreach(var c in chunks)
             {
                 requestedChunks.Add(c.ToVector());

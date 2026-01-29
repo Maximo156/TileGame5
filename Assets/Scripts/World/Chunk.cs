@@ -10,6 +10,7 @@ using BlockDataRepos;
 using static UnityEditor.Progress;
 using UnityEngine.SocialPlatforms;
 using Unity.Profiling;
+using UnityEngine.Rendering;
 
 public partial class Chunk
 {
@@ -33,15 +34,15 @@ public partial class Chunk
     readonly int width;
     System.Random rand;
 
-    ChunkGenerator curGenerator;
+    Realm parentRealm;
 
     ChunkData data;
-    public Chunk(Vector2Int chunkPos, int width, ChunkData data, ChunkGenerator generator)
+    public Chunk(Vector2Int chunkPos, int width, ChunkData data, Realm parentRealm)
     {
         this.width = width;
         ChunkPos = chunkPos;
         this.data = data;
-        curGenerator = generator;
+        this.parentRealm = parentRealm;
         rand = new System.Random(ChunkPos.GetHashCode());
         BlockStates = new();
         Task.Run(() => InitCache());
@@ -408,14 +409,16 @@ public partial class Chunk
     void ChangedSlice(Vector2Int worldPosition, NativeBlockSlice slice, BlockSliceState state)
     {
         var wToL = WorldToLocal(worldPosition);
-        curGenerator.SaveChunk(this);
+        //curGenerator.SaveChunk(this);
+        Debug.LogWarning("Fix chunk saving");
         OnBlockChanged?.Invoke(this, worldPosition, ChunkPos, slice, state);
         RegenCache();
     }
 
     void RefreshBlock(Vector2Int worldPosition)
     {
-        curGenerator.SaveChunk(this);
+        //curGenerator.SaveChunk(this);
+        Debug.LogWarning("Fix chunk saving");
         OnBlockRefreshed?.Invoke(this, worldPosition, ChunkPos);
     }
 }

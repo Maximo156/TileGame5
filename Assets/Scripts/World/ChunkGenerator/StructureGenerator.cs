@@ -18,7 +18,7 @@ public class StructureGenerator : ChunkSubGenerator
     ConcurrentDictionary<Vector2Int, Task<Dictionary<Vector2Int, BuildingBlockSlice[,]>>> genTasks = new();
     ConcurrentDictionary<Vector2Int, (Vector2Int point, System.Random rand)> Chunks = new();
     //ConcurrentDictionary<Vector2Int, BlockSlice[,]> Loaded = new();
-    public override async Task UpdateBlockSlices(BlockSliceState[,] blocks, ChunkData data, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
+    public async Task UpdateBlockSlices(BlockSliceState[,] blocks, ChunkData data, Vector2Int ChunkPosition, Vector2Int WorldPosition, RealmBiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
     {
         var inStructChunk = Vector2Int.FloorToInt(new Vector2(WorldPosition.x, WorldPosition.y) / StructureNoiseChunkSize);
         Vector2Int closestStructChunk = Vector2Int.one;
@@ -104,7 +104,7 @@ public class StructureGenerator : ChunkSubGenerator
         }*/
     }
 
-    Task<Dictionary<Vector2Int, BuildingBlockSlice[,]>> GenerateStructurePoint((Vector2Int point, System.Random rand) closest, Vector2Int closestStructChunk, BiomeInfo biomeInfo, int chunkWidth)
+    Task<Dictionary<Vector2Int, BuildingBlockSlice[,]>> GenerateStructurePoint((Vector2Int point, System.Random rand) closest, Vector2Int closestStructChunk, RealmBiomeInfo biomeInfo, int chunkWidth)
     {
         return Task.Run(() =>
         {
@@ -168,7 +168,7 @@ public class StructureGenerator : ChunkSubGenerator
         }
     }
 
-    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> chunks, RealmData realmData, BiomeInfo biomeInfo, ref BiomeData biomeData, JobHandle dep = default)
+    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> chunks, RealmData realmData, RealmBiomeInfo biomeInfo, ref BiomeData biomeData, JobHandle dep = default)
     {
         Debug.LogWarning("Implement structure generation");
         return dep;

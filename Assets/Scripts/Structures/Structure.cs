@@ -25,7 +25,7 @@ public class Structure: ScriptableObject
     public List<BuildingInformation> Centers = new List<BuildingInformation>();
     public List<BuildingInformation> components = new List<BuildingInformation>();
 
-    public Dictionary<Vector2Int, BuildingBlockSlice[,]> Generate(Vector2Int startPos, BiomeInfo biomes, int chunkWidth, System.Random rand, IEnumerable<Vector2Int> SurroundingPoints)
+    public Dictionary<Vector2Int, BuildingBlockSlice[,]> Generate(Vector2Int startPos, RealmBiomeInfo biomes, int chunkWidth, System.Random rand, IEnumerable<Vector2Int> SurroundingPoints)
     {
         var area = new StructureBuilder(chunkWidth, startPos, SurroundingPoints);
         var SelectedCentre = Centers.SelectRandom(rand);
@@ -38,7 +38,7 @@ public class Structure: ScriptableObject
         return area.GetDicts();
     }
 
-    private void FillAnchors(StructureBuilder area, System.Random rand, BiomeInfo biomes)
+    private void FillAnchors(StructureBuilder area, System.Random rand, RealmBiomeInfo biomes)
     {
         int targetComponentCount = rand.Next(minComponentCount, maxComponentCount);
         int placedComponents = 0;
@@ -92,7 +92,7 @@ public class Structure: ScriptableObject
         }
     }
 
-    private Vector2Int? FindStartingPosition(Vector2Int start, StructureBuilder area, System.Random rand, Rotation rot, BuildingInformation StartingComponent, BiomeInfo biomes)
+    private Vector2Int? FindStartingPosition(Vector2Int start, StructureBuilder area, System.Random rand, Rotation rot, BuildingInformation StartingComponent, RealmBiomeInfo biomes)
     {
         var info = Utilities.BFS(start, v => v, pos => BuildingFits(area, pos, rot, StartingComponent, biomes), info => false, out var _);
         if(info != null)
@@ -102,7 +102,7 @@ public class Structure: ScriptableObject
         return null;
     }
 
-    private bool BuildingFits(StructureBuilder area, Vector2Int start, Rotation rotation, BuildingInformation structure, BiomeInfo biomes)
+    private bool BuildingFits(StructureBuilder area, Vector2Int start, Rotation rotation, BuildingInformation structure, RealmBiomeInfo biomes)
     {
         var bounds = !rotation.mirror ? structure.Bounds : new BoundsInt(Vector3Int.zero, new Vector3Int(structure.Bounds.size.y, structure.Bounds.size.x, structure.Bounds.size.z));
         bounds.position = start.ToVector3Int();

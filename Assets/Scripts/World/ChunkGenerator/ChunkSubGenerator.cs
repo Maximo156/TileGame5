@@ -10,14 +10,7 @@ using UnityEngine;
 public abstract class ChunkSubGenerator: ScriptableObject
 {
     public int Priority;
-    public abstract Task UpdateBlockSlices(
-        BlockSliceState[,] blocks, 
-        ChunkData chunkData, 
-        Vector2Int ChunkPosition, 
-        Vector2Int WorldPosition, 
-        BiomeInfo biomeInfo, 
-        System.Random rand, 
-        GenerationCache cache);
+
     public virtual void UpdateRequestedChunks(
         NativeList<int2> chunks)
     {
@@ -28,7 +21,7 @@ public abstract class ChunkSubGenerator: ScriptableObject
         int chunkWidth,
         NativeArray<int2> chunks,
         RealmData realmData,
-        BiomeInfo biomeInfo,
+        RealmBiomeInfo biomeInfo,
         ref BiomeData biomeData,
         JobHandle dep = default);
 

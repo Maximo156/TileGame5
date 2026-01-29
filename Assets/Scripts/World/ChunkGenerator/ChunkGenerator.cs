@@ -13,34 +13,17 @@ using Unity.Mathematics;
 public class ChunkGenerator: ScriptableObject, ISaveable
 {
     public bool saveChunks;
-    public BiomeInfo biomes;
     public List<ChunkSubGenerator> Generators;
     public Gradient ShadowColor;
     public string Identifier { get; private set; }
     ChunkSaver Saver;
 
-    public async Task<BlockSliceState[,]> GetBlockSlices(Vector2Int ChunkPosition, Vector2Int WorldPosition, int chunkWidth, System.Random rand, ChunkData chunkData)
-    {
-        var blocksStates = new BlockSliceState[chunkWidth, chunkWidth];
-        if (saveChunks && Saver.TryLoadBlockSlices(ChunkPosition, out blocksStates))
-        {
-            throw new NotImplementedException();
-            //return blocks;
-        }
-        var cache = new GenerationCache();
-        foreach (var generator in Generators)
-        {
-            await generator.UpdateBlockSlices(blocksStates, chunkData, ChunkPosition, WorldPosition, biomes, rand, cache);
-        }
-        return blocksStates;
-    }
-
     GenerationStep BaseStep;
 
-    public (RealmData, JobHandle) GetGenJob(int chunkWidth, NativeList<int2> chunks)
+    public (RealmData, JobHandle) GetGenJob(int chunkWidth, NativeList<int2> chunks, RealmBiomeInfo biomeInfo)
     {
         if (BaseStep == null) throw new Exception("Missing base generation step");
-        var (realmData, genDep, biomeData) = BaseStep.Generate(chunkWidth, chunks, biomes);
+        var (realmData, genDep, biomeData) = BaseStep.Generate(chunkWidth, chunks, biomeInfo);
         return (realmData, biomeData.Dispose(genDep));
     }
 
@@ -69,11 +52,6 @@ public class ChunkGenerator: ScriptableObject, ISaveable
         Saver = new ChunkSaver(name);
     }
 
-    public void Dispose()
-    {
-        biomes.Dispose();
-    }
-
     public class GenerationStep
     {
         readonly ChunkSubGenerator Generator;
@@ -87,7 +65,7 @@ public class ChunkGenerator: ScriptableObject, ISaveable
 
         public (RealmData, JobHandle, BiomeData) Generate(int chunkWidth,
         NativeList<int2> chunks,
-        BiomeInfo biomeInfo)
+        RealmBiomeInfo biomeInfo)
         {
             Generator.UpdateRequestedChunks(chunks);
             var (realmData, dep, biomeData) = 

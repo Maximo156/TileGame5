@@ -12,31 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b084162353457b46915c6fcd72b1b66, type: 3}
   m_Name: Terrain
   m_EditorClassIdentifier: 
-  soundSettings: {fileID: 11400000, guid: 2091e629c74d4f345bc00c970b034090, type: 2}
-  Layers:
-  - minHeight: 0.75
-    GroundBlocks:
-    - {fileID: 11400000, guid: 22a8a340cdc98184188d3138c749b133, type: 2}
-    WallBlocks:
-    - {fileID: 11400000, guid: e53702bea1537ea43863f3c884a887d4, type: 2}
-    SparceBlocks: []
-    SparceSoundSettings: {fileID: 0}
-    SparceDensity: 0
-  - minHeight: 0.7
-    GroundBlocks:
-    - {fileID: 11400000, guid: 22a8a340cdc98184188d3138c749b133, type: 2}
-    WallBlocks:
-    - {fileID: 11400000, guid: 2f19c0fb0e66aa241b9b26b5eb310f8f, type: 2}
-    SparceBlocks: []
-    SparceSoundSettings: {fileID: 0}
-    SparceDensity: 0
-  - minHeight: 0.3
-    GroundBlocks:
-    - {fileID: 11400000, guid: de22f042adbd6274d88bb5ec558d120f, type: 2}
-    WallBlocks: []
-    SparceBlocks:
-    - {fileID: 11400000, guid: 55da782d16942d749b1b92f564c9e703, type: 2}
-    - {fileID: 11400000, guid: 0e267d7b6f060e545a266f15b4f0f478, type: 2}
-    SparceSoundSettings: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
-    SparceDensity: 0.5
-  waterLevel: 0.3
+  Priority: 0
+  SparceBlockSound: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}

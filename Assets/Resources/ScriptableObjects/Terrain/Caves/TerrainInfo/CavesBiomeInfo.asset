@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74ac95afd66814388906db68324387, type: 3}
-  m_Name: BiomeInfo
+  m_Name: CavesBiomeInfo
   m_EditorClassIdentifier: 
   HeightSound: {fileID: 11400000, guid: 3395119f592331241bcc6364dab8a0eb, type: 2}
   MoistureSound: {fileID: 0}

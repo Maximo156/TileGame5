@@ -78,7 +78,7 @@ public partial class Chunk
         {
             return 0;
         }
-        var biome = curGenerator.biomes.GetBiome(BlockPos + pos.Value);
+        var biome = parentRealm.BiomeInfo.GetBiome(BlockPos + pos.Value);
         if(biome == null)
         {
             return 0;

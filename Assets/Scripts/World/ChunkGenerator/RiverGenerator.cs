@@ -13,28 +13,7 @@ public class RiverGenerator : ChunkSubGenerator
     public BaseSoundSettings Reducer;
     public float RiverCuttoff;
 
-    public override Task UpdateBlockSlices(BlockSliceState[,] blocks, ChunkData data, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
-    {
-        var riverArray = RiverSound.GetSoundArray(WorldPosition.x, WorldPosition.y, blocks.GetLength(0));
-        var reducerArray = Reducer.GetSoundArray(WorldPosition.x, WorldPosition.y, blocks.GetLength(0));
-        for(int x = 0; x < blocks.GetLength(0); x++)
-        {
-            for (int y = 0; y < blocks.GetLength(0); y++)
-            {
-                if (biomeInfo.IsWallBiome(cache.HeightMap[x, y])) continue;
-                var riverSound = (1 - MathF.Abs(riverArray[x, y] - 0.5f)) - (reducerArray[x, y] * RiverCuttoff);
-                var curData = data.GetSlice(x, y);
-                curData.isWater = true;
-                if(riverSound > 1-RiverCuttoff)
-                {
-                    data.InitializeSlice(x, y, curData);
-                }
-            }
-        }
-        return Task.CompletedTask;
-    }
-
-    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> chunks, RealmData realmData, BiomeInfo biomeInfo, ref BiomeData biomeData, JobHandle dep = default)
+    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> chunks, RealmData realmData, RealmBiomeInfo biomeInfo, ref BiomeData biomeData, JobHandle dep = default)
     {
         var length = chunkWidth * chunkWidth;
         var riverArray = new NativeArray<float>(length * chunks.Length, Allocator.Persistent);
@@ -49,7 +28,7 @@ public class RiverGenerator : ChunkSubGenerator
             chunkWidth = chunkWidth,
             RiverCuttoff = RiverCuttoff,
             BiomeData = biomeData,
-            BiomeInfo = biomeInfo.biomeInfo,
+            BiomeInfo = biomeInfo.BiomeInfo,
             RiverArrays = riverArray,
             ReducerArrays = reducerArray,
         }.Schedule(chunks.Length, 1, JobHandle.CombineDependencies(riverJob, reducerJob, dep));
