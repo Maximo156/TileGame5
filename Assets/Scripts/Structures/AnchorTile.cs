@@ -8,8 +8,10 @@ public enum AnchorDirection
     Up,
     Right,
     Down,
-    Left
+    Left,
+    None
 }
+
 public class AnchorInfo
 {
     public AnchorDirection direction;
@@ -32,6 +34,11 @@ public class AnchorTile : TileBase, ISpriteful
     public int key;
 
     public bool Lock;
+
+    private void OnValidate()
+    {
+        if(direction == AnchorDirection.None) direction = AnchorDirection.Up;
+    }
 
     public Sprite Sprite
     {

@@ -3368,8 +3368,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.000058850273, y: 0}
-  m_SizeDelta: {x: 445, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: -0.0000001322478, y: 1}
 --- !u!114 &370629287
 MonoBehaviour:
@@ -10068,7 +10068,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 251.825, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1461943349
@@ -12851,13 +12851,14 @@ MonoBehaviour:
   - name: Overworld
     Generator: {fileID: 11400000, guid: a924afc1afeadfd4eaa3f1495083cc62, type: 2}
     BiomeInfo: {fileID: 11400000, guid: f97f06548c96e9b43842bbc0e2d69ba0, type: 2}
-    StructureInfo: {fileID: 0}
-    EntityContainer: {fileID: 0}
+    StructureInfo:
+      Structures:
+      - {fileID: 11400000, guid: 971f791bbf36545429c0caf7937c1bbd, type: 2}
   - name: Caves
     Generator: {fileID: 11400000, guid: c18f0422c9491464ea2ca8b8b2bef22f, type: 2}
     BiomeInfo: {fileID: 11400000, guid: 1b1da806a3fd86d40b724745617c10db, type: 2}
-    StructureInfo: {fileID: 0}
-    EntityContainer: {fileID: 0}
+    StructureInfo:
+      Structures: []
   EntityContainerPrefab: {fileID: 4125942454157733406, guid: 09ba13a72b3f5d44b85e34b2a97e24c3, type: 3}
   debug: 1
 --- !u!114 &1918543955

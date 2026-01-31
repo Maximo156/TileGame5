@@ -5,7 +5,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewBiomeInfo", menuName = "Terrain/Biome/BiomeInfo", order = 1)]
+[CreateAssetMenu(fileName = "NewRealmBiomeInfo", menuName = "Terrain/Biome/RealmBiomeInfo", order = 1)]
 public class RealmBiomeInfo : ScriptableObject
 {
     public BaseSoundSettings HeightSound;
