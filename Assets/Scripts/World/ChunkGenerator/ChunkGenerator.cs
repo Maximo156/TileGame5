@@ -20,11 +20,13 @@ public class ChunkGenerator: ScriptableObject, ISaveable
 
     GenerationStep BaseStep;
 
-    public (RealmData, JobHandle) GetGenJob(int chunkWidth, NativeList<int2> chunks, RealmBiomeInfo biomeInfo)
+    public (RealmData, JobHandle) GetGenJob(int chunkWidth, NativeList<int2> chunks, RealmInfo realmInfo)
     {
         if (BaseStep == null) throw new Exception("Missing base generation step");
-        var (realmData, genDep, biomeData) = BaseStep.Generate(chunkWidth, chunks, biomeInfo);
-        return (realmData, biomeData.Dispose(genDep));
+        var requestChunks = new NativeList<int2>(chunks.Length, Allocator.Persistent);
+        requestChunks.CopyFrom(chunks);
+        var (realmData, genDep, biomeData) = BaseStep.Generate(chunkWidth, chunks, requestChunks, realmInfo);
+        return (realmData, JobHandle.CombineDependencies(biomeData.Dispose(genDep), requestChunks.Dispose(genDep)));
     }
 
     public void SaveChunk(Chunk chunk)
@@ -64,15 +66,16 @@ public class ChunkGenerator: ScriptableObject, ISaveable
         }
 
         public (RealmData, JobHandle, BiomeData) Generate(int chunkWidth,
-        NativeList<int2> chunks,
-        RealmBiomeInfo biomeInfo)
+        NativeList<int2> originalChunks,
+        NativeList<int2> requestChunks,
+        RealmInfo realmInfo)
         {
-            Generator.UpdateRequestedChunks(chunks);
+            Generator.UpdateRequestedChunks(requestChunks, realmInfo);
             var (realmData, dep, biomeData) = 
                 Dependency != null ? 
-                    Dependency.Generate(chunkWidth, chunks, biomeInfo) : 
-                    (new RealmData(chunkWidth, chunks.Length), default(JobHandle), new BiomeData(chunks.Length, chunkWidth));
-            var genDep = Generator.ScheduleGeneration(chunkWidth, chunks.AsArray(), realmData, biomeInfo, ref biomeData, dep);
+                    Dependency.Generate(chunkWidth, originalChunks, requestChunks, realmInfo) : 
+                    (new RealmData(chunkWidth, requestChunks.Length), default(JobHandle), new BiomeData(requestChunks.Length, chunkWidth));
+            var genDep = Generator.ScheduleGeneration(chunkWidth, originalChunks.AsArray(), requestChunks.AsArray(), realmData, realmInfo, ref biomeData, dep);
             return (realmData, genDep, biomeData);
         }
     }

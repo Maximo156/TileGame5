@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 using System.Linq;
 using Unity.Collections;
 using NativeRealm;
+using Unity.Mathematics;
 
 public class BuildingInformation : MonoBehaviour
 {
@@ -21,13 +22,13 @@ public class BuildingInformation : MonoBehaviour
     public Tilemap Ground;
     public Tilemap Walls;
     public Tilemap Roof;
-    Tilemap AnchorTiles;
+    public Tilemap AnchorTiles;
     public List<LootTableEntry> lootTable = new List<LootTableEntry>();
     public int Importance;
     public bool AllowMountains;
     public Dictionary<int, List<AnchorInfo>> Anchors = new Dictionary<int, List<AnchorInfo>>();
 
-    public BoundsInt Bounds { get; private set; }
+    public BoundsInt Bounds;
     AnchorInfo[,] AnchorBlocks;
     BuildingBlockSlice[,] Slices;
 
@@ -86,7 +87,7 @@ public class BuildingInformation : MonoBehaviour
         return res;
     }
 
-    public BoundsInt ComputeBounds()
+    public (BoundsInt bounds, int anchorCount) ComputeBounds()
     {
         Ground.CompressBounds();
         Walls.CompressBounds();
@@ -98,41 +99,47 @@ public class BuildingInformation : MonoBehaviour
         var max = Vector3Int.Max(Vector3Int.Max(Ground.cellBounds.max, Walls.cellBounds.max), Vector3Int.Max(Roof.cellBounds.max, AnchorTiles.cellBounds.max));
         bounds.SetMinMax(min, max);
 
-        if (Bounds.min != Vector3Int.zero) throw new InvalidOperationException($"Ensure min Bounds is 0, 0, 0. Current is: {Bounds.min}");
+        if (bounds.min != Vector3Int.zero) throw new InvalidOperationException($"Ensure min Bounds is 0, 0, 0. Current is: {bounds.min}");
 
-        return bounds;
+        return (bounds, CountAnchors(bounds));
+    }
+
+    int CountAnchors(BoundsInt bounds)
+    {
+        return AnchorTiles.GetTilesBlock(bounds).Count(a => a is AnchorTile);
     }
 
     public void InitializeNativeComponent(ref NativeStructureComponent targetComponent, NativeSlice<NativeComponentBlockSlice> blocks, NativeSlice<NativeComponentAnchor> anchors)
     {
         var bounds = targetComponent.Bounds;
-        var ground = Ground.GetTilesBlock(Bounds).Select(GetBlock).ToArray();
-        var walls = Walls.GetTilesBlock(Bounds).Select(GetBlock).ToArray();
-        var roofs = Roof.GetTilesBlock(Bounds).Select(GetBlock).ToArray();
+        var ground = Ground.GetTilesBlock(bounds).Select(GetBlock).ToArray();
+        var walls = Walls.GetTilesBlock(bounds).Select(GetBlock).ToArray();
+        var roofs = Roof.GetTilesBlock(bounds).Select(GetBlock).ToArray();
 
-        var newAnchors = AnchorTiles.GetTilesBlock(Bounds).Select(ProcessAnchor).ToArray();
+        var newAnchors = AnchorTiles.GetTilesBlock(bounds).Select((t, i) => ProcessAnchor(bounds, t, i)).ToArray();
 
         for (int x = 0; x < bounds.size.x; x++)
         {
             for (int y = 0; y < bounds.size.y; y++)
             {
                 var newSlice = new BuildingBlockSlice();
-                newSlice.GroundBlock = ground[x + y * Bounds.size.x] as Ground;
-                newSlice.WallBlock = walls[x + y * Bounds.size.x] as Wall;
-                newSlice.RoofBlock = roofs[x + y * Bounds.size.x] as Roof;
-                blocks.SetElement2d(x, y, bounds.size.x, new NativeComponentBlockSlice() 
+                newSlice.GroundBlock = ground[x + y * bounds.size.x] as Ground;
+                newSlice.WallBlock = walls[x + y * bounds.size.x] as Wall;
+                newSlice.RoofBlock = roofs[x + y * bounds.size.x] as Roof;
+                blocks.SetElement2d(x, y, bounds.size.y, new NativeComponentBlockSlice() 
                 {
-                    groundBlock = ground[x + y * Bounds.size.x]?.Id ?? 0,
-                    wallBlock = walls[x + y * Bounds.size.x]?.Id ?? 0,
-                    roofBlock = roofs[x + y * Bounds.size.x]?.Id ?? 0
+                    groundBlock = ground[x + y * bounds.size.x]?.Id ?? 0,
+                    wallBlock = walls[x + y * bounds.size.x]?.Id ?? 0,
+                    roofBlock = roofs[x + y * bounds.size.x]?.Id ?? 0,
                 });
-
-                if (newSlice.HasBlock())
-                {
-                    Slices[x, y] = newSlice;
-                }
-
-                anchors.SetElement2d(x, y, bounds.size.x, newAnchors[x + y * Bounds.size.x]);
+            }
+        }
+        var c = 0;
+        foreach(var anchor in newAnchors)
+        {
+            if(anchor.direction != AnchorDirection.None)
+            {
+                anchors[c++] = anchor;
             }
         }
 
@@ -150,16 +157,16 @@ public class BuildingInformation : MonoBehaviour
         return null;
     }
 
-    private NativeComponentAnchor ProcessAnchor(TileBase tile, int index)
+    private NativeComponentAnchor ProcessAnchor(BoundsInt bounds, TileBase tile, int index)
     {
         if (tile is null) return new NativeComponentAnchor() { direction = AnchorDirection.None };
         if (tile is not AnchorTile anchorTile) throw new InvalidOperationException("Non-Anchor tile found in anchor layer");
-        var x = index % Bounds.size.x;
-        var y = index / Bounds.size.x;
+        var x = index % bounds.size.x;
+        var y = index / bounds.size.x;
         var anchorInfo = new NativeComponentAnchor()
         {
             direction = anchorTile.direction,
-            offset = new Vector2Int(x, y),
+            offset = new int2(x, y),
             key = anchorTile.key,
             Lock = anchorTile.Lock
         };

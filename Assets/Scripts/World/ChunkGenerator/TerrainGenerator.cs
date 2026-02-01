@@ -17,21 +17,21 @@ public class TerrainGenerator : ChunkSubGenerator
 {
     public BaseSoundSettings SparceBlockSound;
 
-    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> chunks, RealmData realmData, RealmBiomeInfo biomeInfo, ref BiomeData biomeData, JobHandle dep = default)
+    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> originalChunks, NativeArray<int2> chunks, RealmData realmData, RealmInfo realmInfo, ref BiomeData biomeData, JobHandle dep = default)
     {
         var length = chunkWidth * chunkWidth * chunks.Length;
 
         var sparce = new NativeArray<float>(length, Allocator.Persistent);
         var sparceJob = SparceBlockSound.ScheduleSoundJob(chunks, sparce, chunkWidth);
 
-        var biomeDataJob = biomeInfo.ScheduelBiomeInfoGen(chunkWidth, chunks, ref biomeData);
+        var biomeDataJob = realmInfo.BiomeInfo.ScheduelBiomeInfoGen(chunkWidth, chunks, ref biomeData);
 
         var mainJob = new GenerateBiomeBlocks()
         {
             chunks = chunks,
             chunkWidth = chunkWidth,
             SparceBlockDensity = sparce,
-            biomeInfo = biomeInfo.BiomeInfo,
+            biomeInfo = realmInfo.BiomeInfo.BiomeInfo,
             realmData = realmData.AsParallelWriter(),
             biomeData = biomeData,
         }.Schedule(chunks.Length, 1, JobHandle.CombineDependencies(

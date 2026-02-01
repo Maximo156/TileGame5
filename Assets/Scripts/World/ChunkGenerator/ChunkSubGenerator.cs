@@ -12,17 +12,25 @@ public abstract class ChunkSubGenerator: ScriptableObject
     public int Priority;
 
     public virtual void UpdateRequestedChunks(
-        NativeList<int2> chunks)
+        NativeList<int2> chunks,
+        RealmInfo realmInfo)
     {
 
     }
 
     public abstract JobHandle ScheduleGeneration(
         int chunkWidth,
-        NativeArray<int2> chunks,
+        NativeArray<int2> originalChunks,
+        NativeArray<int2> requestChunks,
         RealmData realmData,
-        RealmBiomeInfo biomeInfo,
+        RealmInfo realmInfo,
         ref BiomeData biomeData,
         JobHandle dep = default);
 
+}
+
+public struct RealmInfo
+{
+    public RealmBiomeInfo BiomeInfo;
+    public RealmStructureInfo StructureInfo;
 }

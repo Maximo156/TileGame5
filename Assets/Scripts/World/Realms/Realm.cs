@@ -23,7 +23,7 @@ public class Realm
     public delegate void BlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos);
     public event BlockRefreshed OnBlockRefreshed;
 
-    public delegate void LightingUpdated(NativeQueue<LightUpdateInfo> updated);
+    public delegate void LightingUpdated(NativeArray<LightUpdateInfo> updated);
     public event LightingUpdated OnLightingUpdated;
 
     public delegate void ChunkChanged(Chunk chunk);
@@ -48,11 +48,6 @@ public class Realm
     Transform EntityContainerTransform;
 
     Queue<(Chunk chunk, Vector2Int pos, Action<Chunk, Vector2Int> action)> QueuedActions = new();
-
-    readonly ProfilerMarker a = new ProfilerMarker("Action Queue");
-    readonly ProfilerMarker b = new ProfilerMarker("Drop Chunks");
-    readonly ProfilerMarker c = new ProfilerMarker("Copy Gen");
-    readonly ProfilerMarker d = new ProfilerMarker("Initialize");
 
     readonly ProfilerMarker p_Step = new ProfilerMarker("Realm.Step");
     readonly ProfilerMarker p_LateStep = new ProfilerMarker("Realm.Step");
@@ -120,8 +115,10 @@ public class Realm
         var copyLightJob = LightCalculation.CopyLight(realmData, lightJobInfo, updates);
 
         JobHandle.CombineDependencies(frameUpdatedChunks.Dispose(copyLightJob), lightJobInfo.Dispose(copyLightJob)).Complete();
-        OnLightingUpdated?.Invoke(updates);
+        var updateArray = updates.ToArray(Allocator.TempJob);
+        OnLightingUpdated?.Invoke(updateArray);
         updates.Dispose();
+        updateArray.Dispose();
     }
 
     public void Initialize(GameObject entityContainerPrefab, Transform parent)
@@ -146,6 +143,7 @@ public class Realm
 
         lightJobInfo.Dispose();
         BiomeInfo.Dispose();
+        StructureInfo.Dispose();
     }
 
     public void SetContainerActive(bool active)
@@ -171,7 +169,7 @@ public class Realm
             }
         }
 
-        GenRequests.Add(new ChunkGenRequest(newRequestedChunks, Generator, RequestedChunks, BiomeInfo));
+        GenRequests.Add(new ChunkGenRequest(newRequestedChunks, Generator, RequestedChunks, new() { BiomeInfo = BiomeInfo, StructureInfo = StructureInfo }));
         
         foreach (var key in LoadedChunks.Keys)
         {
@@ -334,11 +332,11 @@ public class Realm
 
         public bool isComplete => handle.IsCompleted;
 
-        public ChunkGenRequest(NativeList<int2> chunks, ChunkGenerator generator, HashSet<Vector2Int> requestedChunks, RealmBiomeInfo biomeInfo)
+        public ChunkGenRequest(NativeList<int2> chunks, ChunkGenerator generator, HashSet<Vector2Int> requestedChunks, RealmInfo realmInfo)
         {
             this.chunks = chunks;
             realmData = default;
-            (realmData, handle) = generator.GetGenJob(WorldSettings.ChunkWidth, this.chunks, biomeInfo);
+            (realmData, handle) = generator.GetGenJob(WorldSettings.ChunkWidth, this.chunks, realmInfo);
             foreach(var c in chunks)
             {
                 requestedChunks.Add(c.ToVector());
@@ -357,7 +355,7 @@ public class Realm
                 requestedChunks.Remove(v);
                 needInitialization.Add(v);
             }
-            return JobHandle.CombineDependencies(realmData.Dispose(copyJob), chunks.Dispose(copyJob));
+            return JobHandle.CombineDependencies(realmData.Dispose(copyJob), chunks.Dispose(copyJob)); 
         }
 
         public void Dispose()

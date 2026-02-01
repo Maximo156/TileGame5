@@ -15,7 +15,7 @@ public class DEBUGStructureGen : ChunkSubGenerator
     public Structure structure;
     ConcurrentDictionary<Vector2Int, BuildingBlockSlice[,]> Loaded = new();
 
-    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> chunks, RealmData realmData, RealmBiomeInfo biomeInfo, ref BiomeData biomeData, JobHandle dep = default)
+    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> originalChunks, NativeArray<int2> chunks, RealmData realmData, RealmInfo realmInfo, ref BiomeData biomeData, JobHandle dep = default)
     {
         Debug.LogWarning("Implement debug structure generation");
         return dep;

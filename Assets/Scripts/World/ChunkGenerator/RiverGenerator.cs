@@ -1,11 +1,13 @@
 using NativeRealm;
 using System;
 using System.Threading.Tasks;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
+[BurstCompile]
 [CreateAssetMenu(fileName = "NewRiverGenerator", menuName = "Terrain/RiverGenerator", order = 1)]
 public class RiverGenerator : ChunkSubGenerator
 {
@@ -13,7 +15,7 @@ public class RiverGenerator : ChunkSubGenerator
     public BaseSoundSettings Reducer;
     public float RiverCuttoff;
 
-    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> chunks, RealmData realmData, RealmBiomeInfo biomeInfo, ref BiomeData biomeData, JobHandle dep = default)
+    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> originalChunks, NativeArray<int2> chunks, RealmData realmData, RealmInfo realmInfo, ref BiomeData biomeData, JobHandle dep = default)
     {
         var length = chunkWidth * chunkWidth;
         var riverArray = new NativeArray<float>(length * chunks.Length, Allocator.Persistent);
@@ -28,7 +30,7 @@ public class RiverGenerator : ChunkSubGenerator
             chunkWidth = chunkWidth,
             RiverCuttoff = RiverCuttoff,
             BiomeData = biomeData,
-            BiomeInfo = biomeInfo.BiomeInfo,
+            BiomeInfo = realmInfo.BiomeInfo.BiomeInfo,
             RiverArrays = riverArray,
             ReducerArrays = reducerArray,
         }.Schedule(chunks.Length, 1, JobHandle.CombineDependencies(riverJob, reducerJob, dep));
@@ -36,6 +38,7 @@ public class RiverGenerator : ChunkSubGenerator
         return JobHandle.CombineDependencies(riverArray.Dispose(mainJob), reducerArray.Dispose(mainJob));
     }
 
+    [BurstCompile]
     partial struct RiverJob : IJobParallelFor
     {
         public int chunkWidth;

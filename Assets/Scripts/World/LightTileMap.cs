@@ -64,9 +64,9 @@ public class LightTileMap : MonoBehaviour
         return new Color(1, 1, 1, alpha);
     }
 
-    void LightingUpdated(NativeQueue<LightUpdateInfo> updated)
+    void LightingUpdated(NativeArray<LightUpdateInfo> updated)
     {
-        while(updated.TryDequeue(out LightUpdateInfo info))
+        foreach (var info in updated)
         {
             Map.SetColor(info.pos.ToVector().ToVector3Int(), GetScaledColor(info.light));
         }

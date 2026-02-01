@@ -79,7 +79,10 @@ public class AIManager : MonoBehaviour
             {
                 SimulatedChunks[chunkPos] = chunk;
                 chunk.EnableContainer(true);
-                chunk.SpawnAI();
+                if (GameSettings.NaturalSpawn)
+                {
+                    chunk.SpawnAI();
+                }
             }
         }
         foreach (var chunk in SimulatedChunks.Where(chunk => !importantChunks.Contains(chunk.Key)).ToList())

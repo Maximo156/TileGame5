@@ -50,7 +50,7 @@ public static class LightCalculation
 
         var borderBufferRead = new NativeArray<byte>(lightUpdatedChunks.Length * chunkWidth * 4, Allocator.TempJob);
         var borderBufferWrite = new NativeArray<byte>(lightUpdatedChunks.Length * chunkWidth * 4, Allocator.TempJob);
-
+        Debug.Log("Schedueling intra");
         var intraChunkLight = new IntraChunkLightPropogationJob()
         {
             chunkWidth = chunkWidth,
@@ -59,13 +59,14 @@ public static class LightCalculation
             realmData = realmData,
             Light = light,
             borderLightWrite = borderBufferRead,
-        }.Schedule(lightUpdatedChunks.Length, 1);
+        }.Schedule(lightUpdatedChunks.Length, 1); 
 
-        var lightingPasses = Mathf.CeilToInt((GameSettings.MaxLightLevel - 1) / 3f);
+        var lightingPasses = 0;// Mathf.CeilToInt((GameSettings.MaxLightLevel - 1) / 3f);
 
         JobHandle interChunkHandleDependency = intraChunkLight;
         for(int i = 0; i < lightingPasses; i++)
         {
+            Debug.Log($"Schedueling inter {i}/{lightingPasses}");
             interChunkHandleDependency = new InterChunkLightPropogationJob()
             {
                 chunkWidth = chunkWidth,
@@ -144,6 +145,7 @@ public static class LightCalculation
         return JobHandle.CombineDependencies(copy1, copy2);
     }
 
+
     [BurstCompile]
     partial struct IntraChunkLightPropogationJob : IJobParallelFor
     {
@@ -195,6 +197,7 @@ public static class LightCalculation
             }
 
             WriteBorders();
+            updateQueue.Dispose();
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             void ProcessPoint(int2 pos)
@@ -321,6 +324,8 @@ public static class LightCalculation
             }
 
             WriteBorders();
+
+            updateQueue.Dispose();
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             void ProcessPoint(int2 pos)

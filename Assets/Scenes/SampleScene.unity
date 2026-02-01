@@ -3368,8 +3368,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.000058850273, y: 0}
+  m_SizeDelta: {x: 445, y: 0}
   m_Pivot: {x: -0.0000001322478, y: 1}
 --- !u!114 &370629287
 MonoBehaviour:
@@ -10068,7 +10068,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 251.825, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1461943349
@@ -12811,6 +12811,7 @@ GameObject:
   - component: {fileID: 1918543958}
   - component: {fileID: 1918543959}
   - component: {fileID: 1918543960}
+  - component: {fileID: 1918543961}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -12852,15 +12853,17 @@ MonoBehaviour:
     Generator: {fileID: 11400000, guid: a924afc1afeadfd4eaa3f1495083cc62, type: 2}
     BiomeInfo: {fileID: 11400000, guid: f97f06548c96e9b43842bbc0e2d69ba0, type: 2}
     StructureInfo:
+      StructureChunkWidth: 64
       Structures:
       - {fileID: 11400000, guid: 971f791bbf36545429c0caf7937c1bbd, type: 2}
   - name: Caves
     Generator: {fileID: 11400000, guid: c18f0422c9491464ea2ca8b8b2bef22f, type: 2}
     BiomeInfo: {fileID: 11400000, guid: 1b1da806a3fd86d40b724745617c10db, type: 2}
     StructureInfo:
+      StructureChunkWidth: 0
       Structures: []
   EntityContainerPrefab: {fileID: 4125942454157733406, guid: 09ba13a72b3f5d44b85e34b2a97e24c3, type: 3}
-  debug: 1
+  debug: 0
 --- !u!114 &1918543955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12889,7 +12892,7 @@ MonoBehaviour:
   GameHoursPerMinute: 1
   GameHoursPerGameDay: 24
   Display: {fileID: 1811277840}
-  CurGameTime: 0
+  CurGameTime: 5
   Night: 19
   Morining: 6
 --- !u!114 &1918543957
@@ -12907,7 +12910,7 @@ MonoBehaviour:
   m_MaxLightLevel: 8
   m_AnimalsPerChunk: 3
   m_HostilesPerChunk: 5
-  m_NaturalSpawn: 1
+  m_NaturalSpawn: 0
   m_DontUseRecipeInputs: 1
   m_UseDefaultInventory: 0
   m_StartingHotbar:
@@ -12951,6 +12954,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26c0cfd1f3c7f504badee9ccf47a4b1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1918543961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918543952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e37005583c29c04cbadebd8dd33b9b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1979986990

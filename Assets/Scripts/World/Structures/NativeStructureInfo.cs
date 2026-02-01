@@ -13,10 +13,10 @@ public struct NativeStructureInfo
     public NativeArray<NativeStructure> structures;
     NativeArray<NativeStructureComponent> components;
 
-    public NativeStructureInfo(int structureCount, int componentsCount, int blockCount)
+    public NativeStructureInfo(int structureCount, int componentsCount, int blockCount, int anchor)
     {
         blockSlices = new(blockCount, Allocator.Persistent);
-        anchors = new(blockCount, Allocator.Persistent);
+        anchors = new(anchor, Allocator.Persistent);
 
         structures = new(structureCount, Allocator.Persistent);
         components = new(componentsCount, Allocator.Persistent);
@@ -46,7 +46,7 @@ public struct NativeStructureInfo
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public NativeSlice<NativeComponentAnchor> GetComponentAnchors(NativeStructureComponent component)
     {
-        var slice = component.BlocksSlice;
+        var slice = component.AnchorSlice;
         return new(anchors, slice.start, slice.length);
     }
 
@@ -56,8 +56,8 @@ public struct NativeStructureInfo
     public void Dispose()
     {
         blockSlices.Dispose();
-        anchors.Dispose();
         components.Dispose();
         structures.Dispose();
+        anchors.Dispose();
     }
 }

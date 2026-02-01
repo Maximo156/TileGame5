@@ -3,13 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
+using Unity.Mathematics;
 using UnityEngine;
+using Random = Unity.Mathematics.Random;
 
 public static class NativeExtensions
 {
     public static T SelectRandomWeighted<T>(
         this NativeSlice<T> input,
-        ref Unity.Mathematics.Random random)
+        ref Random random)
         where T : struct, IWeighted
     {
         int length = input.Length;
@@ -31,6 +33,74 @@ public static class NativeExtensions
         }
 
         return default;
+    }
+
+    public static int SelectRandomIndexWeighted<T>(
+        this NativeSlice<T> input,
+        ref Random random)
+        where T : struct, IWeighted
+    {
+        int length = input.Length;
+        if (length == 0)
+            return default;
+
+        float totalWeight = 0f;
+        for (int i = 0; i < length; i++)
+            totalWeight += input[i].Weight;
+
+        float rand = random.NextFloat(0f, totalWeight);
+        float cumulative = 0f;
+
+        for (int i = 0; i < length; i++)
+        {
+            cumulative += input[i].Weight;
+            if (rand < cumulative)
+                return i;
+        }
+
+        return -1;
+    }
+
+    public static int SelectRandomIndexWeighted<T>(
+        this NativeList<T> input,
+        ref Random random)
+        where T : unmanaged, IWeighted
+    {
+        int length = input.Length;
+        if (length == 0)
+            return default;
+
+        float totalWeight = 0f;
+        for (int i = 0; i < length; i++)
+            totalWeight += input[i].Weight;
+
+        float rand = random.NextFloat(0f, totalWeight);
+        float cumulative = 0f;
+
+        for (int i = 0; i < length; i++)
+        {
+            cumulative += input[i].Weight;
+            if (rand < cumulative)
+                return i;
+        }
+
+        return -1;
+    }
+
+    public static void Shuffle<T>(this NativeList<T> source, Random rand) where T : unmanaged
+    {
+        for (int i = source.Length-1; i >= 0; i--)
+        {
+            var j = rand.NextInt(i);
+            (source[i], source[j]) = (source[j], source[i]);
+        }
+    }
+
+    public static T SelectRandom<T>(this NativeSlice<T> input, ref Random random) where T : unmanaged
+    {
+        if (input.Length == 0) return default;
+        int rand = random.NextInt(0, input.Length);
+        return input[rand];
     }
 
     public static T GetElement2d<T>(this NativeSlice<T> array, int x, int y, int chunkWidth) where T : struct

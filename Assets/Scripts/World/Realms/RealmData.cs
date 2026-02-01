@@ -351,7 +351,7 @@ namespace NativeRealm {
             }
         }
 
-
+        [BurstCompile]
         partial struct CopyJob : IJobParallelFor
         {
             [ReadOnly]
