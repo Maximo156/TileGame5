@@ -83,11 +83,24 @@ public class Realm
         }
         DropChunks.Clear();
     }
-
+     
     JobHandle ProcessGenRequests(NativeList<int2> updatedChunks)
     {
-        var complete = GenRequests.Where(r => r.isComplete).ToList();
-        GenRequests = GenRequests.Where(r => !r.isComplete).ToList();
+        var complete = new List<ChunkGenRequest>();
+        var notCompleted = new List<ChunkGenRequest>();
+        foreach(var request in GenRequests)
+        {
+            if (request.isComplete)
+            {
+                complete.Add(request);
+            }
+            else
+            {
+                notCompleted.Add(request);
+            }
+        }
+        GenRequests = notCompleted;
+
         var dep = new JobHandle();
         foreach(var request in complete)
         {
@@ -342,6 +355,7 @@ public class Realm
                 requestedChunks.Add(c.ToVector());
             }
         }
+        } 
 
         public JobHandle CopyAndDispose(RealmData targetData, HashSet<Vector2Int> requestedChunks, List<Vector2Int> needInitialization, NativeList<int2> updatedChunks, JobHandle dep)
         {
@@ -355,6 +369,7 @@ public class Realm
                 requestedChunks.Remove(v);
                 needInitialization.Add(v);
             }
+
             return JobHandle.CombineDependencies(realmData.Dispose(copyJob), chunks.Dispose(copyJob)); 
         }
 

@@ -24,14 +24,14 @@ public class StructureGenerator2 : ChunkSubGenerator
         public bool invX;
         public bool invY;
         public bool mirror;
-        public int dif;
+        public int dif; 
     }
 
     public override void UpdateRequestedChunks(NativeList<int2> chunks, RealmInfo info)
     {
         var structChunkWidth = info.StructureInfo.StructureChunkWidth;
         var invRatio = structChunkWidth * 1f / WorldSettings.ChunkWidth;
-        var StructureChunks = GetStructureChunks(chunks, structChunkWidth);
+        var StructureChunks = GetStructureChunks(chunks.AsArray(), structChunkWidth);
 
         var newChunks = new HashSet<int2>();
         foreach(var c in StructureChunks)
@@ -311,7 +311,7 @@ public class StructureGenerator2 : ChunkSubGenerator
 
                         var compAnchors = structureInfo.GetComponentAnchors(matchingComponent);
                         availAnchors.ResizeUninitialized(compAnchors.Length);
-                        compAnchors.CopyTo(availAnchors);
+                        compAnchors.CopyTo(availAnchors.AsArray());
                         availAnchors.Shuffle(rand);
 
                         foreach (var matchingAnchor in availAnchors)
