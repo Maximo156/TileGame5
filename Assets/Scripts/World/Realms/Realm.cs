@@ -182,7 +182,14 @@ public class Realm
             }
         }
 
-        GenRequests.Add(new ChunkGenRequest(newRequestedChunks, Generator, RequestedChunks, new() { BiomeInfo = BiomeInfo, StructureInfo = StructureInfo }));
+        if (newRequestedChunks.Length > 0)
+        {
+            GenRequests.Add(new ChunkGenRequest(newRequestedChunks, Generator, RequestedChunks, new() { BiomeInfo = BiomeInfo, StructureInfo = StructureInfo }));
+        }
+        else
+        {
+            newRequestedChunks.Dispose();
+        }
         
         foreach (var key in LoadedChunks.Keys)
         {
