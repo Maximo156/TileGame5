@@ -354,7 +354,6 @@ public class Realm
             {
                 requestedChunks.Add(c.ToVector());
             }
-        }
         } 
 
         public JobHandle CopyAndDispose(RealmData targetData, HashSet<Vector2Int> requestedChunks, List<Vector2Int> needInitialization, NativeList<int2> updatedChunks, JobHandle dep)
