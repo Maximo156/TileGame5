@@ -119,7 +119,7 @@ public class StructureGenerator2 : ChunkSubGenerator
 
         public void Execute(int index)
         {
-            var debug = true;
+            var debug = false;
 
             var chunkWidth = this.chunkWidth;
             var structureChunks = this.structureChunks;
@@ -144,13 +144,15 @@ public class StructureGenerator2 : ChunkSubGenerator
 
             var center = structureInfo.GetStructureCenterComponents(structure).SelectRandomWeighted(ref rand);
             var components = structureInfo.GetStructureBuildingComponents(structure);
-            if(!BuildingFits(point, Rotation.zero, center))
+            if (!BuildingFits(point, Rotation.zero, center))
             {
                 Debug.LogWarning($"Inable to place structure at {point.x} {point.y}");
             }
-
-            PlaceBuilding(point, Rotation.zero, center, AnchorDirection.None);
-            FillAnchors();
+            else
+            {
+                PlaceBuilding(point, Rotation.zero, center, AnchorDirection.None);
+                FillAnchors();
+            }
 
             adjacentPoints.Dispose();
             placedBounds.Dispose();
