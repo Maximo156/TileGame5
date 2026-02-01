@@ -35,7 +35,7 @@ public class ProjectileEntity : MonoBehaviour
         transform.localScale = projectileBase.scale * projectileInfo.WeaponScale * Vector3.one;
         transform.position = position;
         transform.right = dir;
-        rb.velocity = projectileBase.speed * projectileInfo.WeaponSpeed * dir.normalized;
+        rb.linearVelocity = projectileBase.speed * projectileInfo.WeaponSpeed * dir.normalized;
         damage = projectileBase.damage + projectileInfo.WeaponDamage;
         sr.sprite = projectileBase.sprite;
         sr.color = projectileBase.color;
@@ -132,7 +132,7 @@ public class ProjectileEntity : MonoBehaviour
         }
         if (HitAnimation?.ShouldAnimate == true && info.Stages.Count <= 1)
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             StartCoroutine(Animate(HitAnimation, false));
         }
         else
@@ -145,7 +145,7 @@ public class ProjectileEntity : MonoBehaviour
     {
         if (info.Stages.Count > 1)
         {
-            ProjectileManager.FireStages(transform.position, rb.velocity, info, Perpetrator);
+            ProjectileManager.FireStages(transform.position, rb.linearVelocity, info, Perpetrator);
         }
         Destroy(col);
         HitAnimation = null;

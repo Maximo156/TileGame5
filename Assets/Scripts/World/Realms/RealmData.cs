@@ -21,7 +21,7 @@ namespace NativeRealm {
         NativeArray<bool> water;
 
         NativeList<int> emptySectors;
-        NativeHashMap<int2, ChunkMetadata> metadata;
+        NativeParallelHashMap<int2, ChunkMetadata> metadata;
 
         public RealmData(int chunkWidth, int totalExpectedChunks, Allocator allocator)
         {
@@ -37,7 +37,7 @@ namespace NativeRealm {
             roofBlocks = new NativeArray<ushort>(totalLength, allocator);
             water = new NativeArray<bool>(totalLength, allocator);
 
-            metadata = new NativeHashMap<int2, ChunkMetadata>(totalExpectedChunks, allocator);
+            metadata = new NativeParallelHashMap<int2, ChunkMetadata>(totalExpectedChunks, allocator);
             emptySectors = new NativeList<int>(totalExpectedChunks, allocator);
         }
 
@@ -202,7 +202,7 @@ namespace NativeRealm {
             return new ParallelChunkWriter(chunkWidth, groundBlocks, wallBlocks, roofBlocks, simpleBlockState, lightLevel, water);
         }
 
-        public JobHandle CopyFrom(RealmData otherData, NativeArray<int2> chunks, JobHandle dep)
+        public JobHandle CopyFrom(RealmData otherData, NativeList<int2> chunks, JobHandle dep)
         {
             foreach(var c  in chunks)
             {
@@ -212,7 +212,7 @@ namespace NativeRealm {
             {
                 otherData = otherData,
                 target = AsParallelChunkWriter(),
-                chunks = chunks,
+                chunks = chunks.AsArray(),
                 chunkData = metadata
             }.Schedule(chunks.Length, 1, dep);
         }
@@ -228,7 +228,7 @@ namespace NativeRealm {
             NativeArray<byte> lightLevel;
             NativeArray<bool> water;
 
-            NativeHashMap<int2, ChunkMetadata>.ParallelWriter metadata;
+            NativeParallelHashMap<int2, ChunkMetadata>.ParallelWriter metadata;
 
             int chunkLength;
             int chunkWidth;
@@ -242,7 +242,7 @@ namespace NativeRealm {
                 NativeArray<byte> simpleBlockState,
                 NativeArray<byte> lightLevel,
                 NativeArray<bool> water,
-                NativeHashMap<int2, ChunkMetadata>.ParallelWriter metadata
+                NativeParallelHashMap<int2, ChunkMetadata>.ParallelWriter metadata
             )
             {
                 this.chunkWidth = chunkWidth;
@@ -366,7 +366,7 @@ namespace NativeRealm {
             public NativeArray<int2> chunks;
 
             [ReadOnly]
-            public NativeHashMap<int2, ChunkMetadata> chunkData;
+            public NativeParallelHashMap<int2, ChunkMetadata> chunkData;
 
             public void Execute(int index)
             {

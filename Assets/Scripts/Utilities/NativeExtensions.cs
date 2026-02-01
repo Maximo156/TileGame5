@@ -165,7 +165,7 @@ public static class NativeExtensions
 
             index++;
         }
-        data = new NativeArray<TOut>(dataList, Allocator.Persistent);
+        data = new NativeArray<TOut>(dataList.AsArray(), Allocator.Persistent);
         dataList.Dispose();
     }
 }

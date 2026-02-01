@@ -89,7 +89,7 @@ public struct AstarJob : IJob
 
         NativeList<Node> adjacencies = new NativeList<Node>(8, Allocator.Temp);
         OpenList.Add(start);
-        while (OpenList.Count() > 0)
+        while (OpenList.Count > 0)
         {
             Node current = RemoveAndReturnBest(ref OpenList);
             ClosedList.Add(current.Pos, current);

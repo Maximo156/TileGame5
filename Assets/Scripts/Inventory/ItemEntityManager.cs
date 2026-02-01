@@ -35,7 +35,7 @@ public class ItemEntityManager : MonoBehaviour
         itemEntity.sr.size = new Vector2(100, 100);
         if (randomMovement)
         {
-            itemEntity.rb.velocity = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+            itemEntity.rb.linearVelocity = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
         }
         entities.Enqueue((Time.time + DespawnSeconds, itemEntity));
     }
