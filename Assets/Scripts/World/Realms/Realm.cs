@@ -70,9 +70,6 @@ public class Realm
 
         // Scheduel native reads
         lightJobInfo = LightCalculation.ScheduelLightUpdate(realmData, frameUpdatedChunks);
-
-        // Initialize new chunks
-        InitializeManagedChunks();
     }
 
     void ProcessDropChunks()
@@ -115,6 +112,7 @@ public class Realm
         {
             var newChunk = new Chunk(c, WorldSettings.ChunkWidth, realmData.AddChunk(c.ToInt()), this);
             ConnectChunk(newChunk);
+            newChunk.InitCache();
             LoadedChunks.Add(c, newChunk);
         }
         NeedsInitialization.Clear();
@@ -132,6 +130,7 @@ public class Realm
         OnLightingUpdated?.Invoke(updateArray);
         updates.Dispose();
         updateArray.Dispose();
+        InitializeManagedChunks();
     }
 
     public void Initialize(GameObject entityContainerPrefab, Transform parent)

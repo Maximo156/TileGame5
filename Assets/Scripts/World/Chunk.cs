@@ -45,20 +45,12 @@ public partial class Chunk
         this.parentRealm = parentRealm;
         rand = new System.Random(ChunkPos.GetHashCode());
         BlockStates = new();
-        InitCache(); 
     }
 
-    void InitCache() 
+    public void InitCache() 
     {
-        try
-        {
-            tileDisplayCache = new TileDisplayCache(BlockStates, data, BlockPos);
-            CallbackManager.AddCallback(() => OnChunkChanged?.Invoke(this));
-        }
-        catch(System.Exception ex)
-        {
-            Debug.LogException(ex);
-        }
+        tileDisplayCache = new TileDisplayCache(BlockStates, data, BlockPos);
+        OnChunkChanged?.Invoke(this);
     }
 
     public void ChunkTick(CancellationToken cancellationToken)
