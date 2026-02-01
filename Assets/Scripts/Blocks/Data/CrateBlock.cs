@@ -1,19 +1,38 @@
+using BlockDataRepos;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewCrateBlock", menuName = "Block/CrateBlock", order = 1)]
-public class CrateBlock : Wall
+public class CrateBlock : Wall, IStatefulBlock
 {
-    public override BlockState GetState()
+    public BlockState GetState()
     {
         return new CrateState();
     }
+
+    public override BlockData GetBlockData()
+    {
+        var data = base.GetBlockData();
+        data.isLootable = true;
+        return data;
+    }
 }
 
-public class CrateState : BlockState
+public class CrateState : BlockState, IStorageBlockState
 {
     public List<ItemStack> AdditionalDrops;
+
+    public bool AddItemStack(ItemStack stack)
+    {
+        if(AdditionalDrops == null) 
+        {
+            AdditionalDrops = new List<ItemStack>();
+        }
+        AdditionalDrops.Add(stack);
+        return true;
+    }
+
     public override void CleanUp(Vector2Int pos)
     {
         if(AdditionalDrops is not null)

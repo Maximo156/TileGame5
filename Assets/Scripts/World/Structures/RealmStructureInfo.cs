@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Mathematics;
+using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
 [Serializable]
@@ -30,6 +31,35 @@ public class RealmStructureInfo
         if (structureInfo.isCreated)
         {
             structureInfo.Dispose();
+        }
+    }
+
+    public void AttemptFillStorageState(Vector2Int pos, byte index, IStorageBlockState state)
+    {
+        var iPos = pos.ToInt();
+        var structChunk = Utilities.GetChunk(pos, StructureChunkWidth).ToInt();
+        var (closestPoint, _, closestStruct) = GenStructureInfo(structChunk, StructureChunkWidth, StructureInfo);
+        var minDist = math.distancesq(iPos, closestPoint);
+        foreach(var v in Utilities.OctAdjacentInt)
+        {
+            var (newPoint, _, newStruct) = GenStructureInfo(structChunk + v, StructureChunkWidth, StructureInfo);
+            var d = math.distancesq(iPos, newPoint);
+            if (d < minDist)
+            {
+                closestPoint = newPoint;
+                closestStruct = newStruct;
+                minDist = d;
+            }
+        }
+        var structure = Structures[closestStruct];
+        if(index >= structure.components.Count)
+        {
+            throw new Exception("Invalid structure state");
+        }
+        var lootTable = structure.components[index].GenerateLootEntry(new System.Random(structChunk.GetHashCode() << 10 | pos.GetHashCode()));
+        foreach(var i in lootTable)
+        {
+            state.AddItemStack(i);
         }
     }
 
@@ -72,6 +102,7 @@ public class RealmStructureInfo
                 {
                     Name = curCenter.name,
                     Bounds = bounds.bounds,
+                    SelfIndex = j,
                     BlocksSlice = new() { start = blockCounter, length = blockCount },
                     AnchorSlice = new() { start = anchorCounter, length = anchorCount }
                 };
@@ -92,6 +123,7 @@ public class RealmStructureInfo
                 {
                     Name = curBuilding.name,
                     Bounds = bounds.bounds,
+                    SelfIndex = j,
                     BlocksSlice = new() { start = blockCounter, length = blockCount },
                     AnchorSlice = new() { start = anchorCounter, length = anchorCount }
                 };
@@ -128,12 +160,12 @@ public class RealmStructureInfo
 
     [BurstCompile]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static (int2 point, Random rand, NativeStructure structure) GenStructureInfo(int2 StructureChunk, int StructureChunkWidth, NativeStructureInfo structInfo)
+    public static (int2 point, Random rand, int structIndex) GenStructureInfo(int2 StructureChunk, int StructureChunkWidth, NativeStructureInfo structInfo)
     {
         var rand = GetChunkRandom(StructureChunk);
         var pos = GenPoint(StructureChunk, StructureChunkWidth, rand);
         var structIndex = rand.NextInt(0, structInfo.structures.Length);
-        return (pos, rand, structInfo.structures[structIndex]);
+        return (pos, rand, structIndex);
     }
 
     [BurstCompile]

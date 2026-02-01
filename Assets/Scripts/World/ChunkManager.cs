@@ -100,15 +100,15 @@ public class ChunkManager : MonoBehaviour
     {
         block = default;
         if (Manager == null) return false;
-        return Manager.ActiveRealm.TryGetBlock(position, out block, out var _, useProxy);
+        return Manager.ActiveRealm.TryGetBlock(position, out block, useProxy);
     }
 
-    public static bool TryGetBlock(Vector2Int position, out NativeBlockSlice block, out BlockSliceState state, bool useProxy = true)
+    public static bool TryGetBlockAndState(Vector2Int position, out NativeBlockSlice block, out BlockSliceState state, bool useProxy = true)
     {
         block = default;
         state = null;
         if (Manager == null) return false;
-        return Manager.ActiveRealm.TryGetBlock(position, out block, out state, useProxy);
+        return Manager.ActiveRealm.TryGetBlockAndState(position, out block, out state, useProxy);
     }
 
     public static NativeBlockSlice GetBlock(Vector2Int position)

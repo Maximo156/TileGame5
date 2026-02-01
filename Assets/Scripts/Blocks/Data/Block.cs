@@ -43,11 +43,6 @@ public class Block : ScriptableObject, ISpriteful
         Identifier = name;
     }
 
-    public virtual BlockState GetState()
-    {
-        return null;
-    }
-
     public byte GetDefaultSimpleState()
     {
         return 0;

@@ -1,3 +1,4 @@
+using BlockDataRepos;
 using NativeRealm;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,7 @@ public class StructureGenerator : ChunkSubGenerator
             biomeData = biomeData,
             structureInfo = realmInfo.StructureInfo.StructureInfo,
             realmData = realmData,
+            blockData = BlockDataRepo.NativeRepo
         }.Schedule(structureChunks.Length, 1, dep);
 
         var cleanup = structureChunks.Dispose(genStructures);
@@ -114,6 +116,9 @@ public class StructureGenerator : ChunkSubGenerator
         [ReadOnly]
         public NativeStructureInfo structureInfo;
 
+        [ReadOnly]
+        public NativeBlockDataRepo blockData;
+
         [NativeDisableParallelForRestriction]
         public RealmData realmData;
 
@@ -121,6 +126,7 @@ public class StructureGenerator : ChunkSubGenerator
         {
             var debug = false;
 
+            var blockData = this.blockData;
             var chunkWidth = this.chunkWidth;
             var structureChunks = this.structureChunks;
             var realmData = this.realmData;
@@ -132,8 +138,8 @@ public class StructureGenerator : ChunkSubGenerator
             var structChunk = structureChunks[index];
             if (debug && !structChunk.Equals(int2.zero)) return;
 
-            var (point, rand, structure) = RealmStructureInfo.GenStructureInfo(structChunk, structureChunkWidth, structureInfo);
-
+            var (point, rand, structureIndex) = RealmStructureInfo.GenStructureInfo(structChunk, structureChunkWidth, structureInfo);
+            var structure = structureInfo.structures[structureIndex];
             if (debug) point = int2.zero;
 
             var adjacentPoints = new NativeArray<int2>(8, Allocator.Temp);
@@ -146,7 +152,7 @@ public class StructureGenerator : ChunkSubGenerator
             var components = structureInfo.GetStructureBuildingComponents(structure);
             if (!BuildingFits(point, Rotation.zero, center))
             {
-                Debug.LogWarning($"Inable to place structure at {point.x} {point.y}");
+                Debug.LogWarning($"Unable to place structure at {point.x} {point.y}");
             }
             else
             {
@@ -252,6 +258,11 @@ public class StructureGenerator : ChunkSubGenerator
                     {
                         chunk.SetWall(x, y, block.wallBlock);
                     }
+                    if(blockData.TryGetBlock(block.wallBlock, out var data) && data.isLootable)
+                    {
+                        chunk.SetState(x, y, (byte)component.SelfIndex);
+                    }
+
                     chunk.SetRoof(x, y, block.roofBlock);
                 }
                 foreach(var anchor in componentAnchors) 

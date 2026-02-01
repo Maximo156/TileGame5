@@ -138,6 +138,7 @@ namespace BlockDataRepos
         public bool solid;
         public bool door;
         public bool isProxy;
+        public bool isLootable;
         public int roofStrength;
         public int hitsToBreak;
 

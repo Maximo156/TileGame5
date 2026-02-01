@@ -8,6 +8,7 @@ public struct NativeStructureComponent : IWeighted
     public int Importance;
     public bool AllowMountains;
     public FixedString32Bytes Name;
+    public int SelfIndex;
 
     public BoundsInt Bounds;
     public SliceData BlocksSlice;

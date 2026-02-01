@@ -136,7 +136,7 @@ public class PlayerMouseInput : MonoBehaviour
         {
             return true;
         }
-        if(ChunkManager.TryGetBlock(mouseBlockPosition, out var slice, out var state) && BlockDataRepo.TryGetBlock<Wall>(slice.wallBlock, out var wallBlock) && wallBlock is IInterfaceBlock)
+        if(ChunkManager.TryGetBlockAndState(mouseBlockPosition, out var slice, out var state) && BlockDataRepo.TryGetBlock<Wall>(slice.wallBlock, out var wallBlock) && wallBlock is IInterfaceBlock)
         {
             CurInteractPos = CurInteractPos == mouseBlockPosition ? null : mouseBlockPosition;
             OnBlockInterfaced?.Invoke(mouseBlockPosition, wallBlock, state, playerInventory);

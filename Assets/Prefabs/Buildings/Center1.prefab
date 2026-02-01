@@ -327,9 +327,6 @@ MonoBehaviour:
   lootTable: []
   Importance: 1
   AllowMountains: 0
-  Bounds:
-    m_Position: {x: 0, y: 0, z: 0}
-    m_Size: {x: 0, y: 0, z: 0}
 --- !u!1 &4474875856038431228
 GameObject:
   m_ObjectHideFlags: 0

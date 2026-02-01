@@ -5,7 +5,7 @@ using UnityEngine;
 using System;
 
 [CreateAssetMenu(fileName = "NewProcessingBlock", menuName = "Block/ProcessingBlock", order = 1)]
-public class ProcessingBlock : Wall, ITickableBlock, IInterfaceBlock
+public class ProcessingBlock : Wall, ITickableBlock, IInterfaceBlock, IStatefulBlock
 {
     [Header("Processing Info")]
     public int inputs = 1;
@@ -19,7 +19,7 @@ public class ProcessingBlock : Wall, ITickableBlock, IInterfaceBlock
         return 0;
     }
 
-    public override BlockState GetState()
+    public BlockState GetState()
     {
         return new ProcessingBlockState(this);
     }

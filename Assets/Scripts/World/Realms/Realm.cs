@@ -324,7 +324,7 @@ public class Realm
         return LoadedChunks.TryGetValue(chunk, out chunkObj);
     }
 
-    public bool TryGetBlock(Vector2Int position, out NativeBlockSlice block, out BlockSliceState state, bool useProxy = true)
+    public bool TryGetBlockAndState(Vector2Int position, out NativeBlockSlice block, out BlockSliceState state, bool useProxy = true)
     {
         block = default;
         state = default;
@@ -336,7 +336,24 @@ public class Realm
             var offset = block.GetProxyOffset();
             if (useProxy && offset != Vector2Int.zero)
             {
-                return TryGetBlock(block.simpleBlockState.ToOffsetState() + position, out block, out state);
+                return TryGetBlockAndState(block.simpleBlockState.ToOffsetState() + position, out block, out state);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public bool TryGetBlock(Vector2Int position, out NativeBlockSlice block, bool useProxy = true)
+    {
+        block = default;
+        var chunkPos = Utilities.GetChunk(position, WorldSettings.ChunkWidth);
+        if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
+        {
+            block = chunk.GetBlock(position);
+            var offset = block.GetProxyOffset();
+            if (useProxy && offset != Vector2Int.zero)
+            {
+                return TryGetBlock(block.simpleBlockState.ToOffsetState() + position, out block);
             }
             return true;
         }

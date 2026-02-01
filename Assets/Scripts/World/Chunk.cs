@@ -4,13 +4,8 @@ using UnityEngine;
 using System.Linq;
 using System.Threading.Tasks;
 using Unity.Collections;
-using Unity.Mathematics;
 using NativeRealm;
 using BlockDataRepos;
-using static UnityEditor.Progress;
-using UnityEngine.SocialPlatforms;
-using Unity.Profiling;
-using UnityEngine.Rendering;
 
 public partial class Chunk
 {
@@ -29,7 +24,7 @@ public partial class Chunk
     public Vector2Int ChunkPos;
     public Vector2Int BlockPos => ChunkPos * width; 
 
-    public Dictionary<Vector2Int, BlockSliceState> BlockStates {  get; set; }
+    Dictionary<Vector2Int, BlockSliceState> BlockStates {  get; set; }
 
     readonly int width;
     System.Random rand;
@@ -67,7 +62,7 @@ public partial class Chunk
                     return;
                 }
                 var local = new Vector2Int(x, y);
-                var sliceState = BlockStates.GetValueOrDefault(local);
+                var sliceState = new BlockSliceState();// BlockStates.GetValueOrDefault(local);
                 var state = sliceState?.blockState;
                 var sliceData = data.GetSlice(x, y);
                 var worldPos = local + BlockPos;
@@ -120,10 +115,23 @@ public partial class Chunk
     public BlockSliceState GetBlockState(Vector2Int world)
     {
         var localPos = WorldToLocal(world);
-        return BlockStates.GetValueOrDefault(localPos);
+        var res = BlockStates.GetValueOrDefault(localPos);
+        var slice = data.GetSlice(localPos.x, localPos.y);
+        if (res?.blockState == null && BlockDataRepo.TryGetBlock<Wall>(slice.wallBlock, out var wall) && wall is IStatefulBlock stateful)
+        {
+            res ??= new();
+            res.blockState = stateful.GetState();
+            if(res.blockState is IStorageBlockState storage)
+            {
+                parentRealm.StructureInfo.AttemptFillStorageState(world, slice.simpleBlockState, storage);
+                data.SetState(localPos.x, localPos.y, 0);
+            }
+            BlockStates[localPos] = res;
+        }
+        return res;
     }
 
-    public bool SetBlock(int x, int y, ushort blockId, byte initialState = 0)
+    bool SetBlock(int x, int y, ushort blockId, byte initialState = 0)
     {
         var nativeData = BlockDataRepo.GetNativeBlock(blockId);
         if (nativeData.Level == BlockLevel.Wall)
@@ -141,7 +149,10 @@ public partial class Chunk
                 state = new();
                 BlockStates[local] = state;
             }
-            state.blockState = blockInfo.GetState();
+            if (blockInfo is IStatefulBlock stateful)
+            {
+                state.blockState = stateful.GetState();
+            }
         }
         if (nativeData.Level == BlockLevel.Roof)
         {
@@ -205,7 +216,8 @@ public partial class Chunk
         var x = local.x;
         var y = local.y;
         var slice = data.GetSlice(x, y);
-        var state = BlockStates.GetValueOrDefault(local);
+        var state = GetBlockState(worldPos);
+        BlockState brokenBlockState = null;
         if (roof)
         {
             brokenId = slice.roofBlock;
@@ -219,6 +231,11 @@ public partial class Chunk
             data.SetWall(x, y, 0);
             data.SetState(x, y, 0);
             state?.DropItems(worldPos);
+            if (state != null)
+            {
+                brokenBlockState = state.blockState;
+                state.blockState = null;
+            }
         }
         else
         {
@@ -229,7 +246,7 @@ public partial class Chunk
         }
         if (BlockDataRepo.TryGetBlock(brokenId, out broken))
         {
-            broken.OnBreak(worldPos, new Block.BreakInfo() { state = state?.blockState, slice = slice, dontDrop = dontDrop });
+            broken.OnBreak(worldPos, new Block.BreakInfo() { state = brokenBlockState, slice = slice, dontDrop = dontDrop });
         }
         return broken is Roof || (broken is Wall && slice.roofBlock != 0);
     }
@@ -255,7 +272,7 @@ public partial class Chunk
             if (block is Roof roof) {
                 CalcRoofStrengthBFS(position, roof);
             }
-            ChangedBlock(position, slice, BlockStates.GetValueOrDefault(localPos), block);
+            ChangedBlock(position, slice, GetBlockState(position), block);
         }
         return res;
     }
@@ -313,7 +330,7 @@ public partial class Chunk
                 }
                 else
                 {
-                    ChangedSlice(worldPosition, nativeSlice, BlockStates.GetValueOrDefault(local));
+                    ChangedSlice(worldPosition, nativeSlice, GetBlockState(worldPosition));
                 }
             }
             return true;
@@ -373,7 +390,7 @@ public partial class Chunk
                     if (BlockDataRepo.TryGetNativeBlock(s.roofBlock, out var roof) && roof.Level == BlockLevel.Roof && roof.roofStrength < grid[x, y] && worldpos.ManhattanDistance(worldPosition) <= roofStrength)
                     {
                         Break(worldpos, true, out var _);
-                        OnBlockChanged?.Invoke(this, worldpos, ChunkPos, data.GetSlice(x, y), BlockStates.GetValueOrDefault(local));
+                        OnBlockChanged?.Invoke(this, worldpos, ChunkPos, data.GetSlice(x, y), GetBlockState(worldpos));
                     }
                 }
             }
