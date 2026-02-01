@@ -12,17 +12,6 @@ public enum AnchorDirection
     None
 }
 
-public class AnchorInfo
-{
-    public AnchorDirection direction;
-
-    public Vector2Int offset;
-
-    public int key;
-
-    public bool Lock;
-}
-
 [CreateAssetMenu(fileName = "NewAnchorTile", menuName = "Tile/AnchorTile", order = 1)]
 public class AnchorTile : TileBase, ISpriteful
 {

@@ -26,46 +26,6 @@ public class BuildingInformation : MonoBehaviour
     public List<LootTableEntry> lootTable = new List<LootTableEntry>();
     public int Importance;
     public bool AllowMountains;
-    public Dictionary<int, List<AnchorInfo>> Anchors = new Dictionary<int, List<AnchorInfo>>();
-
-    public BoundsInt Bounds;
-    AnchorInfo[,] AnchorBlocks;
-    BuildingBlockSlice[,] Slices;
-
-    public BuildingBlockSlice GetSlice(Vector2Int pos)
-    {
-        return Slices[pos.x, pos.y];
-    }
-
-    public IEnumerable<(Vector2Int pos, AnchorInfo anchor)> GetAnchors(System.Random rand)
-    {
-        List<(Vector2Int pos, AnchorInfo anchor)> res = new();
-        for(int x = 0; x < AnchorBlocks.GetLength(0); x++)
-        {
-            for (int y = 0; y < AnchorBlocks.GetLength(1); y++)
-            {
-                if(AnchorBlocks[x,y] != null)
-                {
-                    res.Add((new Vector2Int(x, y), AnchorBlocks[x, y]));
-                }
-            }
-        }
-        return res.Shuffle(rand);
-    }
-
-    public List<AnchorInfo> GetOpenAnchor(int key)
-    {
-        if (Anchors.TryGetValue(key, out var anchors))
-        {
-            return anchors.Where(a => a.Lock).ToList();
-        }
-        return new List<AnchorInfo>();
-    }
-
-    public bool HasAnchor(int key)
-    {
-        return Anchors.TryGetValue(key, out var anchors) && anchors.Any(a => a.Lock);
-    }
 
     public List<ItemStack> GenerateLootEntry(System.Random rand)
     {
@@ -122,10 +82,6 @@ public class BuildingInformation : MonoBehaviour
         {
             for (int y = 0; y < bounds.size.y; y++)
             {
-                var newSlice = new BuildingBlockSlice();
-                newSlice.GroundBlock = ground[x + y * bounds.size.x] as Ground;
-                newSlice.WallBlock = walls[x + y * bounds.size.x] as Wall;
-                newSlice.RoofBlock = roofs[x + y * bounds.size.x] as Roof;
                 blocks.SetElement2d(x, y, bounds.size.y, new NativeComponentBlockSlice() 
                 {
                     groundBlock = ground[x + y * bounds.size.x]?.Id ?? 0,
@@ -171,28 +127,5 @@ public class BuildingInformation : MonoBehaviour
             Lock = anchorTile.Lock
         };
         return anchorInfo;
-    }
-}
-
-public class BuildingBlockSlice
-{
-    public Wall WallBlock;
-    public Ground GroundBlock;
-    public Roof RoofBlock;
-
-    public BlockState State;
-
-    public bool HasBlock() => WallBlock != null || GroundBlock != null || RoofBlock != null;
-
-    public BuildingBlockSlice()
-    {
-
-    }
-
-    public BuildingBlockSlice(BuildingBlockSlice reference)
-    {
-        WallBlock = reference?.WallBlock;
-        GroundBlock = reference?.GroundBlock;
-        RoofBlock = reference?.RoofBlock;
     }
 }
