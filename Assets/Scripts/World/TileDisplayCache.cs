@@ -22,7 +22,7 @@ public class TileDisplayCache
 
     public Vector2Int chunkWorldPos { get; private set; }
 
-    public TileDisplayCache(Dictionary<Vector2Int, BlockSliceState> placedItems, ChunkData data, Vector2Int chunkWorldPos)
+    public TileDisplayCache(Dictionary<Vector2Int, BlockItemStack> placedItems, ChunkData data, Vector2Int chunkWorldPos)
     {
         this.chunkWorldPos = chunkWorldPos;
         var chunkWidth = data.chunkWidth;

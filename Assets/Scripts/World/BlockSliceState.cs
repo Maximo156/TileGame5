@@ -3,16 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockSliceState
+public class BlockItemStack
 {
     public Stack<ItemStack> placedItems;
-
-    public BlockState blockState;
-
-    public BlockSliceState()
-    {
-
-    }
 
     public bool PlaceItem(ItemStack item, NativeBlockSlice slice)
     {

@@ -17,7 +17,7 @@ using Unity.Profiling;
 [Serializable]
 public class Realm
 {
-    public delegate void BlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice block, BlockSliceState state);
+    public delegate void BlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice block, BlockItemStack state);
     public event BlockChanged OnBlockChanged;
 
     public delegate void BlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos);
@@ -256,7 +256,7 @@ public class Realm
         OnChunkChanged?.Invoke(chunk);
     }
 
-    private void Chunk_OnBlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice block, BlockSliceState state)
+    private void Chunk_OnBlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice block, BlockItemStack state)
     {
         OnBlockChanged?.Invoke(chunk, BlockPos, ChunkPos, block, state);
     }
@@ -324,7 +324,7 @@ public class Realm
         return LoadedChunks.TryGetValue(chunk, out chunkObj);
     }
 
-    public bool TryGetBlockAndState(Vector2Int position, out NativeBlockSlice block, out BlockSliceState state, bool useProxy = true)
+    public bool TryGetBlockAndState(Vector2Int position, out NativeBlockSlice block, out BlockState state, bool useProxy = true)
     {
         block = default;
         state = default;

@@ -131,7 +131,7 @@ public class ChunkRenderer : MonoBehaviour
         rendering = false;
     }
 
-    public void PlaceTile(Chunk _, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice slice, BlockSliceState state)
+    public void PlaceTile(Chunk _, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice slice, BlockItemStack state)
     {
         if(renderedChunks.ContainsKey(ChunkPos))
         {

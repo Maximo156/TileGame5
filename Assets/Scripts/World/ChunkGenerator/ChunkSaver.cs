@@ -28,7 +28,7 @@ public class ChunkSaver
         return Path.Join(DirectoryPath, $"Chunk-{ChunkWorldPosition.x}x{ChunkWorldPosition.y}");
     }
 
-    public bool TryLoadBlockSlices(Vector2Int ChunkWorldPosition, out BlockSliceState[,] blocks)
+    public bool TryLoadBlockSlices(Vector2Int ChunkWorldPosition, out BlockItemStack[,] blocks)
     {
         throw new System.NotImplementedException();
         var path = ChunkPath(ChunkWorldPosition);
@@ -40,7 +40,7 @@ public class ChunkSaver
 
         var json = File.ReadAllText(path);
 
-        blocks = JsonConvert.DeserializeObject<BlockSliceState[,]>(json, settings);
+        blocks = JsonConvert.DeserializeObject<BlockItemStack[,]>(json, settings);
         return true;
     }
 

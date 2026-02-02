@@ -11,7 +11,7 @@ public class PlayerMouseInput : MonoBehaviour
     public delegate void AttackInterupted();
     public static event AttackInterupted OnAttackInterupted;
 
-    public delegate void BlockInterfaced(Vector2Int pos, Wall InterfacedBlock, BlockSliceState state, IInventoryContainer inv);
+    public delegate void BlockInterfaced(Vector2Int pos, Wall InterfacedBlock, BlockState state, IInventoryContainer inv);
     public static event BlockInterfaced OnBlockInterfaced;
 
     public delegate void InterfaceRangeExceeded();

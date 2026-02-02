@@ -55,7 +55,7 @@ public class WorldDisplay : MonoBehaviour
         }
     }
 
-    public void UpdateBlock(Vector2Int pos, NativeBlockSlice block, BlockSliceState state)
+    public void UpdateBlock(Vector2Int pos, NativeBlockSlice block, BlockItemStack state)
     {
         var groundBlock = BlockDataRepo.GetBlock<Ground>(block.groundBlock);
         var wallBlock = BlockDataRepo.GetBlock<Wall>(block.wallBlock);

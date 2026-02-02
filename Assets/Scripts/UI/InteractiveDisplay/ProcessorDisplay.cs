@@ -25,9 +25,9 @@ public class ProcessorDisplay : InteractiveDislay
     }
 
     ProcessingBlockState curState;
-    public override void DisplayInventory(Vector2Int worldPos, Wall _, BlockSliceState state, IInventoryContainer otherInventory)
+    public override void DisplayInventory(Vector2Int worldPos, Wall _, BlockState state, IInventoryContainer otherInventory)
     {
-        curState = state.blockState as ProcessingBlockState;
+        curState = state as ProcessingBlockState;
         curState.OnStateChange += SetSliders;
         Render();
     }

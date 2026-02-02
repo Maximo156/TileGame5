@@ -9,7 +9,7 @@ using UnityEngine;
 public abstract class InteractiveDislay : MonoBehaviour
 {
     public abstract Type TypeMatch();
-    public abstract void DisplayInventory(Vector2Int worldPos, Wall interfacedBlock, BlockSliceState state, IInventoryContainer otherInventory);
+    public abstract void DisplayInventory(Vector2Int worldPos, Wall interfacedBlock, BlockState state, IInventoryContainer otherInventory);
     public abstract void Detach();
 }
 
@@ -62,7 +62,7 @@ public class InteractiveDisplayController : MonoBehaviour
 
     Vector2Int? curPos;
     ushort curBlock;
-    private void OnInteract(Vector2Int pos, Wall interfacedBlock, BlockSliceState state, IInventoryContainer userInventory)
+    private void OnInteract(Vector2Int pos, Wall interfacedBlock, BlockState state, IInventoryContainer userInventory)
     {
         if(curPos == pos)
         {
@@ -94,7 +94,7 @@ public class InteractiveDisplayController : MonoBehaviour
         }
     }
 
-    private void BlockChanged(Chunk _, Vector2Int BlockPos, Vector2Int __, NativeBlockSlice block, BlockSliceState ___)
+    private void BlockChanged(Chunk _, Vector2Int BlockPos, Vector2Int __, NativeBlockSlice block, BlockItemStack ___)
     {
         if(BlockPos == curPos && curBlock != block.wallBlock)
         {

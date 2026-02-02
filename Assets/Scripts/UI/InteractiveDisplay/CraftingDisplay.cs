@@ -31,7 +31,7 @@ public class CraftingDisplay : InteractiveDislay
     IInventoryContainer otherInv;
     Vector2 worldPos;
 
-    public override void DisplayInventory(Vector2Int worldPos, Wall interfacedBlock, BlockSliceState _, IInventoryContainer otherInv)
+    public override void DisplayInventory(Vector2Int worldPos, Wall interfacedBlock, BlockState _, IInventoryContainer otherInv)
     {
         Completion.fillAmount = 0;
         block = interfacedBlock as CraftingBlock;

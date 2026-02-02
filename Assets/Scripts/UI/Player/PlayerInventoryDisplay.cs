@@ -46,7 +46,7 @@ public class PlayerInventoryDisplay : MonoBehaviour
         }
     }
 
-    private void BlockInterfaced(Vector2Int pos, Wall _, BlockSliceState state, IInventoryContainer inv)
+    private void BlockInterfaced(Vector2Int pos, Wall _, BlockState state, IInventoryContainer inv)
     {
         InventorySetActive(true);
     }

@@ -103,7 +103,7 @@ public class ChunkManager : MonoBehaviour
         return Manager.ActiveRealm.TryGetBlock(position, out block, useProxy);
     }
 
-    public static bool TryGetBlockAndState(Vector2Int position, out NativeBlockSlice block, out BlockSliceState state, bool useProxy = true)
+    public static bool TryGetBlockAndState(Vector2Int position, out NativeBlockSlice block, out BlockState state, bool useProxy = true)
     {
         block = default;
         state = null;

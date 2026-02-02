@@ -13,9 +13,9 @@ public class StorageBlockDisplay : InteractiveDislay
         return typeof(StorageBlock);
     }
 
-    public override void DisplayInventory(Vector2Int worldPos, Wall _, BlockSliceState state, IInventoryContainer otherInventory)
+    public override void DisplayInventory(Vector2Int worldPos, Wall _, BlockState state, IInventoryContainer otherInventory)
     {
-        _attachedInv = (state.blockState as StorageState).StoredItems;
+        _attachedInv = (state as StorageState).StoredItems;
         singleInventoryDisplay.AttachInv(_attachedInv);
     }
 
