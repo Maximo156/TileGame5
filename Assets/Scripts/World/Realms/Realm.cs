@@ -54,7 +54,8 @@ public class Realm
 
     NativeList<int2> frameUpdatedChunks;
     LightJobInfo lightJobInfo;
-    public void Step()
+    ChunkTickJobInfo tickJobInfo;
+    public void Step(Vector2Int playerCurrentChunk)
     {
         var prof = p_Step.Auto();
         frameUpdatedChunks = new NativeList<int2>(0, Allocator.TempJob);
@@ -70,6 +71,10 @@ public class Realm
 
         // Scheduel native reads
         lightJobInfo = LightCalculation.ScheduelLightUpdate(realmData, frameUpdatedChunks);
+        if ((Time.time - tickJobInfo.schedueled) * 1000 >= WorldSettings.TickMs) 
+        {
+            tickJobInfo = ChunkTick.ScheduelTick(playerCurrentChunk, realmData);
+        }
     }
 
     void ProcessDropChunks()
@@ -123,11 +128,25 @@ public class Realm
         var prof = p_LateStep.Auto();
         var updates = new NativeQueue<LightUpdateInfo>(Allocator.TempJob);
 
-        var copyLightJob = LightCalculation.CopyLight(realmData, lightJobInfo, updates);
+        var copyLightJob = LightCalculation.CopyLight(realmData, lightJobInfo, updates, tickJobInfo.job);
 
         JobHandle.CombineDependencies(frameUpdatedChunks.Dispose(copyLightJob), lightJobInfo.Dispose(copyLightJob)).Complete();
+        if (tickJobInfo.needsProcessing)
+        {
+            ChunkTick.WriteUpdates(tickJobInfo, realmData).Complete();
+
+            while (tickJobInfo.updates.TryDequeue(out var update))
+            {
+                if (LoadedChunks.TryGetValue(update.chunk.ToVector(), out var c))
+                {
+                    c.TriggerChangedBlock(update.localPos.ToVector());
+                }
+            };
+            tickJobInfo.Dispose();
+        }
         var updateArray = updates.ToArray(Allocator.TempJob);
         OnLightingUpdated?.Invoke(updateArray);
+
         updates.Dispose();
         updateArray.Dispose();
         InitializeManagedChunks();
@@ -209,7 +228,7 @@ public class Realm
         LoadedChunks.Remove(chunk, out var _);
     }
 
-    public async Task ChunkTick(Vector2Int curChunk, CancellationToken AllTaskShutdown)
+    public async Task ChunkManagedTick(Vector2Int curChunk, CancellationToken AllTaskShutdown)
     {
         try
         {
@@ -311,8 +330,7 @@ public class Realm
                     return;
                 }
             }
-            Debug.LogWarning("Queue action");
-            action(chunk, position);
+            QueuedActions.Enqueue((chunk, position, action));
         }
     }
 

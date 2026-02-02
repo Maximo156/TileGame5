@@ -28,7 +28,6 @@ public partial class Chunk
     Dictionary<Vector2Int, BlockState> BlockStates {  get; set; }
 
     readonly int width;
-    System.Random rand;
 
     Realm parentRealm;
 
@@ -39,7 +38,6 @@ public partial class Chunk
         ChunkPos = chunkPos;
         this.data = data;
         this.parentRealm = parentRealm;
-        rand = new System.Random(ChunkPos.GetHashCode());
         BlockStates = new();
         BlockItems = new();
     }
@@ -230,7 +228,7 @@ public partial class Chunk
             if (block is Roof roof) {
                 CalcRoofStrengthBFS(position, roof);
             }
-            ChangedBlock(position, slice, GetBlockItems(position), block);
+            ChangedBlock(position, slice, GetBlockItems(position));
         }
         return res;
     }
@@ -242,7 +240,7 @@ public partial class Chunk
             CalcRoofStrengthBFS(worldPosition, broken as Roof);
         }
         var slice = GetBlock(worldPosition);
-        ChangedBlock(worldPosition, slice, GetBlockItems(worldPosition), broken);
+        ChangedBlock(worldPosition, slice, GetBlockItems(worldPosition));
         return true;
     }
 
@@ -378,7 +376,12 @@ public partial class Chunk
         });
     }
 
-    void ChangedBlock(Vector2Int worldPosition, NativeBlockSlice slice, BlockItemStack state, Block updated)
+    public void TriggerChangedBlock(Vector2Int localPos)
+    {
+        ChangedSlice(localPos + ChunkPos * WorldSettings.ChunkWidth, data.GetSlice(localPos.x, localPos.y), GetBlockItems(localPos));
+    }
+
+    void ChangedBlock(Vector2Int worldPosition, NativeBlockSlice slice, BlockItemStack state)
     {
         ChangedSlice(worldPosition, slice, state);
     }

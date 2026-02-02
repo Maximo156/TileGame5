@@ -1,3 +1,4 @@
+using BlockDataRepos;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,5 +21,19 @@ public class ReplacableBlock : Wall
             return NewBlock().Id;
         }
         return 0;
+    }
+
+    public override BlockData GetBlockData()
+    {
+        var data = base.GetBlockData();
+
+        data.tickBehaviour = TickBehaviour.Replace;
+        data.replaceBehaviour = new()
+        {
+            MeanSecondsToHappen = MeanSecondsToHappen,
+            nextBlock = nextBlock.Id
+        };
+
+        return data;
     }
 }

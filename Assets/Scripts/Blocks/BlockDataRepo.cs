@@ -141,6 +141,9 @@ namespace BlockDataRepos
         public bool isLootable;
         public int roofStrength;
         public int hitsToBreak;
+        public TickBehaviour tickBehaviour;
+        public ReplaceBehaviourInfo replaceBehaviour;
+
 
         public SliceData placedOnSlice;
 

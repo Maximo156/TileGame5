@@ -89,7 +89,7 @@ public static class LightCalculation
         };
     }
 
-    public static JobHandle CopyLight(RealmData realmData, LightJobInfo jobInfo, NativeQueue<LightUpdateInfo> updates)
+    public static JobHandle CopyLight(RealmData realmData, LightJobInfo jobInfo, NativeQueue<LightUpdateInfo> updates, JobHandle dep)
     {
         return new CopyLightJob()
         {
@@ -98,7 +98,7 @@ public static class LightCalculation
             realmData = realmData,
             light = jobInfo.light,
             lightUpdates = updates.AsParallelWriter(),
-        }.Schedule(jobInfo.updatedChunks.Length, 1, jobInfo.jobHandle);
+        }.Schedule(jobInfo.updatedChunks.Length, 1, JobHandle.CombineDependencies(jobInfo.jobHandle, dep));
     }
 
     static void InitDebug(int length, bool debug)

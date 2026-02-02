@@ -66,7 +66,7 @@ public class ChunkManager : MonoBehaviour
     {
         if (ActiveRealm != null)
         {
-            ActiveRealm.Step();
+            ActiveRealm.Step(currentChunk);
         }
     }
 
@@ -91,7 +91,7 @@ public class ChunkManager : MonoBehaviour
     {
         while (true && !AllTaskShutdown.Token.IsCancellationRequested)
         {
-            await ActiveRealm.ChunkTick(currentChunk, AllTaskShutdown.Token);
+            await ActiveRealm.ChunkManagedTick(currentChunk, AllTaskShutdown.Token);
         }
         Debug.Log("Stopping Tick");
     }
