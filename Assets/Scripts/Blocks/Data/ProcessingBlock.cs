@@ -5,19 +5,13 @@ using UnityEngine;
 using System;
 
 [CreateAssetMenu(fileName = "NewProcessingBlock", menuName = "Block/ProcessingBlock", order = 1)]
-public class ProcessingBlock : Wall, ITickableBlock, IInterfaceBlock, IStatefulBlock
+public class ProcessingBlock : Wall, IInterfaceBlock, IStatefulBlock
 {
     [Header("Processing Info")]
     public int inputs = 1;
     public float fuelEfficiency = 1;
     public List<ItemRecipe> Recipes;
     public List<Item> Fuels;
-
-    public ushort Tick(Vector2Int worlPosition, BlockState state, System.Random rand)
-    {
-        (state as ProcessingBlockState).Process();
-        return 0;
-    }
 
     public BlockState GetState()
     {
@@ -34,7 +28,7 @@ public class ProcessingBlock : Wall, ITickableBlock, IInterfaceBlock, IStatefulB
     }
 }
 
-public class ProcessingBlockState : BlockState
+public class ProcessingBlockState : BlockState, ITickableState
 {
     public delegate void StateChange(ProcessingBlockState state);
     public event StateChange OnStateChange;
@@ -70,7 +64,7 @@ public class ProcessingBlockState : BlockState
     public float? curFuel { get; private set; } = null;
     public float? lastUsedFuel { get; private set; } = null;
     public ItemRecipe curRecipe { get; private set; }
-    public void Process()
+    public void Tick()
     {
         var deltaTime = Utilities.CurMilli() - lastTick;
         if(timeLeft == null || timeLeft < 0)

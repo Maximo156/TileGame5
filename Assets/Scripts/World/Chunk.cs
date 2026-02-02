@@ -50,61 +50,15 @@ public partial class Chunk
         OnChunkChanged?.Invoke(this);
     }
 
-    public void ChunkTick(CancellationToken cancellationToken)
+    public void ChunkTick()
     {
-        bool updated = false;
-        List<(Vector2Int pos, NativeBlockSlice slice, BlockItemStack state)> updateInfo = new List<(Vector2Int pos, NativeBlockSlice slice, BlockItemStack state)>();
-        for(int x = 0; x < data.chunkWidth; x++)
+        foreach(var kvp in BlockStates)
         {
-            for (int y = 0; y < data.chunkWidth; y++)
+            var state = kvp.Value;
+            if(state is ITickableState tickable)
             {
-                continue;
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    return;
-                }
-                var local = new Vector2Int(x, y);
-                var sliceState = new BlockItemStack();// BlockStates.GetValueOrDefault(local);
-                BlockState state = null;// sliceState?.blockState;
-                var sliceData = data.GetSlice(x, y);
-                var worldPos = local + BlockPos;
-                var sliceUpdated = false;
-                if (BlockDataRepo.GetBlock<Wall>(sliceData.wallBlock) is ITickableBlock wallBlock)
-                {
-                    var tickRes = wallBlock.Tick(worldPos, state, rand);
-                    if(tickRes != 0)
-                    {
-                        SetBlock(x, y, tickRes);
-                        sliceUpdated |= true;
-                    }
-                }
-                if (BlockDataRepo.GetBlock<Wall>(sliceData.groundBlock) is ITickableBlock floorBlock)
-                {
-                    var tickRes = floorBlock.Tick(worldPos, state, rand);
-                    if (tickRes != 0)
-                    {
-                        SetBlock(x, y, tickRes);
-                        sliceUpdated |= true;
-                    }
-                }
-
-                if (sliceUpdated)
-                {
-                    updated |= true;
-                    updateInfo.Add((worldPos, data.GetSlice(x, y), sliceState));
-                }
+                tickable.Tick();
             }
-        }
-        if (updated)
-        {
-            RegenCache();
-            CallbackManager.AddCallback(() =>
-            {
-                foreach (var (pos, slice, state) in updateInfo)
-                {
-                    OnBlockChanged?.Invoke(this, pos, ChunkPos, slice, state);
-                }
-            });
         }
     }
 

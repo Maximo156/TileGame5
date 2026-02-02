@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewReplacableWallBlock", menuName = "Block/ReplacableWall", order = 1)]
-public class ReplacableBlock : Wall, ITickableBlock
+public class ReplacableBlock : Wall
 {
     public Wall nextBlock;
     public int MeanSecondsToHappen;

@@ -213,10 +213,7 @@ public class Realm
     {
         try
         {
-            List<Task> chunkTasks = new List<Task>()
-            {
-                Task.Delay(WorldSettings.TickMs)
-            };
+            var timer = Task.Delay(WorldSettings.TickMs);
             var tickDistance = WorldSettings.ChunkTickDistance;
             for (int x = -tickDistance; x <= tickDistance; x++)
             {
@@ -224,11 +221,11 @@ public class Realm
                 {
                     if (LoadedChunks.TryGetValue(new Vector2Int(x, y) + curChunk, out var chunk))
                     {
-                        chunkTasks.Add(Task.Run(() => chunk.ChunkTick(AllTaskShutdown)));
+                        chunk.ChunkTick();
                     }
                 }
             }
-            await Task.WhenAll(chunkTasks);
+            await timer;
         }
         catch (Exception e)
         {
