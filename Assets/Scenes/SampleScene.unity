@@ -12915,7 +12915,7 @@ MonoBehaviour:
   GameHoursPerMinute: 1
   GameHoursPerGameDay: 24
   Display: {fileID: 1811277840}
-  CurGameTime: 5
+  CurGameTime: 0
   Night: 19
   Morining: 6
 --- !u!114 &1918543957
@@ -12933,7 +12933,7 @@ MonoBehaviour:
   m_MaxLightLevel: 8
   m_AnimalsPerChunk: 3
   m_HostilesPerChunk: 5
-  m_NaturalSpawn: 0
+  m_NaturalSpawn: 1
   m_DontUseRecipeInputs: 1
   m_UseDefaultInventory: 0
   m_StartingHotbar:

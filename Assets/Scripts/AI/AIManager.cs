@@ -51,11 +51,6 @@ public class AIManager : MonoBehaviour
         BehaviorManager = new AIBehaviorManager();
     }
 
-    public void CleanUp()
-    {
-        PathFinder.Dispose();
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -112,18 +107,16 @@ public class AIManager : MonoBehaviour
         }
     }
 
-    public IEnumerator RunPathfinding()
+    public JobHandle RunPathfinding()
     {
-        while (true)
-        {
-            if (PathFinder != null)
-            {
-                var tmp = requestedPathfinders;
-                requestedPathfinders = new();
-                yield return PathFinder.RunPathfinders(tmp);
-            }
-            yield return null;
-        }
+        var tmp = requestedPathfinders;
+        requestedPathfinders = new();
+        return PathFinder.RunPathfinders(tmp);
+    }
+
+    public void ProcessPathfinding()
+    {
+        PathFinder.ProcessPathfinders();
     }
 
     public IEnumerator RunChunks()
@@ -190,7 +183,6 @@ public class AIManager : MonoBehaviour
     {
         StartCoroutine(RunSpawnPass());
         StartCoroutine(RunChunks());
-        StartCoroutine(RunPathfinding());
         StartCoroutine(RunBehaviors());
     }
 

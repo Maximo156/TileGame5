@@ -55,6 +55,8 @@ public class Realm
     NativeList<int2> frameUpdatedChunks;
     LightJobInfo lightJobInfo;
     ChunkTickJobInfo tickJobInfo;
+
+    JobHandle ReadDependencies;
     public void Step(Vector2Int playerCurrentChunk)
     {
         var prof = p_Step.Auto();
@@ -75,6 +77,39 @@ public class Realm
         {
             tickJobInfo = ChunkTick.ScheduelTick(playerCurrentChunk, realmData);
         }
+         
+        ReadDependencies = JobHandle.CombineDependencies(lightJobInfo.jobHandle, tickJobInfo.job, EntityContainer.AIManager.RunPathfinding());
+    }
+
+    public void LateStep()
+    {
+        var prof = p_LateStep.Auto();
+        var updates = new NativeQueue<LightUpdateInfo>(Allocator.TempJob);
+
+        var copyLightJob = LightCalculation.CopyLight(realmData, lightJobInfo, updates, ReadDependencies);
+
+        JobHandle.CombineDependencies(frameUpdatedChunks.Dispose(ReadDependencies), copyLightJob).Complete();
+
+        if (tickJobInfo.needsProcessing)
+        {
+            ChunkTick.WriteUpdates(tickJobInfo, realmData).Complete();
+
+            while (tickJobInfo.updates.TryDequeue(out var update))
+            {
+                if (LoadedChunks.TryGetValue(update.chunk.ToVector(), out var c))
+                {
+                    c.TriggerChangedBlock(update.localPos.ToVector());
+                }
+            };
+            tickJobInfo.Dispose();
+        }
+
+        var updateArray = updates.ToArray(Allocator.TempJob);
+        OnLightingUpdated?.Invoke(updateArray);
+        updates.Dispose();
+        updateArray.Dispose();
+        InitializeManagedChunks();
+        EntityContainer.AIManager.ProcessPathfinding();
     }
 
     void ProcessDropChunks()
@@ -123,35 +158,6 @@ public class Realm
         NeedsInitialization.Clear();
     }
 
-    public void LateStep()
-    {
-        var prof = p_LateStep.Auto();
-        var updates = new NativeQueue<LightUpdateInfo>(Allocator.TempJob);
-
-        var copyLightJob = LightCalculation.CopyLight(realmData, lightJobInfo, updates, tickJobInfo.job);
-
-        JobHandle.CombineDependencies(frameUpdatedChunks.Dispose(copyLightJob), lightJobInfo.Dispose(copyLightJob)).Complete();
-        if (tickJobInfo.needsProcessing)
-        {
-            ChunkTick.WriteUpdates(tickJobInfo, realmData).Complete();
-
-            while (tickJobInfo.updates.TryDequeue(out var update))
-            {
-                if (LoadedChunks.TryGetValue(update.chunk.ToVector(), out var c))
-                {
-                    c.TriggerChangedBlock(update.localPos.ToVector());
-                }
-            };
-            tickJobInfo.Dispose();
-        }
-        var updateArray = updates.ToArray(Allocator.TempJob);
-        OnLightingUpdated?.Invoke(updateArray);
-
-        updates.Dispose();
-        updateArray.Dispose();
-        InitializeManagedChunks();
-    }
-
     public void Initialize(GameObject entityContainerPrefab, Transform parent)
     {
         EntityContainer = GameObject.Instantiate(entityContainerPrefab, parent).GetComponent<EntityManager>();
@@ -164,7 +170,6 @@ public class Realm
 
     public void Cleanup()
     {
-        EntityContainer.AIManager.CleanUp(); 
         realmData.Dispose(); 
 
         foreach (var request in GenRequests)
@@ -172,7 +177,6 @@ public class Realm
             request.Dispose();
         }
 
-        lightJobInfo.Dispose();
         BiomeInfo.Dispose();
         StructureInfo.Dispose();
     }

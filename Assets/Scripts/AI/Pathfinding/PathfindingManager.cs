@@ -27,7 +27,7 @@ public interface IPathFinder
     public bool isNull { get; }
 }
 
-public class PathfindingManager : IDisposable
+public class PathfindingManager
 {
     public Vector2Int curChunk { get; set; }
     RealmData worldData;
@@ -36,69 +36,42 @@ public class PathfindingManager : IDisposable
         this.worldData = worldData;
     }
 
-    HashSet<(IPathFinder ai, JobHandle handle, NativeStack<float2> path, NativeList<int2> reachable)> activeJobs;
-    public IEnumerator RunPathfinders(IEnumerable<IPathFinder> pathfinders)
+    List<(IPathFinder ai,  NativeStack<float2> path, NativeList<int2> reachable)> activeJobs = new();
+    public JobHandle RunPathfinders(IEnumerable<IPathFinder> pathfinders)
     {
-        /*
-        while (ChunkChanges.TryDequeue(out var c))
-        {
-            if (c != null) c.UpdateBlockData(ref blockDataMirror);
-        }
-        while (blockChanges.TryDequeue(out var info))
-        {
-            blockDataMirror[info.pos] = info.data;
-        };*/
-        yield return null;
-        activeJobs = new HashSet<(IPathFinder ai, JobHandle handle, NativeStack<float2> path, NativeList<int2> reachable)> (pathfinders.Where(p => !p.isNull).Select(pathFinder =>
+        JobHandle dep = default;
+        foreach (var ai in pathfinders) 
         {
             NativeStack<float2> path = new NativeStack<float2>(100, Allocator.Persistent);
             NativeList<int2> reachable = new NativeList<int2>(100, Allocator.Persistent);
             var job = new AstarJob()
             {
-                worldData = worldData,
+                realmData = worldData,
+                chunkWidth = WorldSettings.ChunkWidth,
                 blockInfo = BlockDataRepo.NativeRepo,
-                canUseDoors = pathFinder.CanUseDoor,
-                End = pathFinder.Goal,
-                Start = pathFinder.Position,
-                MaxDistance = pathFinder.ReachableRange,
-                ReachableRange = pathFinder.ReachableRange,
+                canUseDoors = ai.CanUseDoor,
+                End = ai.Goal,
+                Start = ai.Position,
+                MaxDistance = ai.ReachableRange,
+                ReachableRange = ai.ReachableRange,
                 Path = path,
                 Reachable = reachable
-            };
-            return ( pathFinder, handle: job.Schedule(), path: path, reachable: reachable);
-        }));
-        int count = 0;
-        yield return null;
-        while (activeJobs.Count > 0)
-        {
-            foreach (var info in activeJobs.ToList().Where(j => j.handle.IsCompleted))
-            {
-                info.handle.Complete();
-                if (!info.ai.SetPath(info.path, info.reachable))
-                {
-                    info.path.Dispose();
-                }
-                activeJobs.Remove(info);
-            }
-            count++;
-            yield return null;
+            }.Schedule();
+            activeJobs.Add((ai, path, reachable));
+            dep = JobHandle.CombineDependencies(job, dep);
         }
-        if (count > 30)
-        {
-            Debug.Log($"Handling paths took {count} frames");
-        }
+        return dep;
     }
 
-    public void Dispose()
+    public void ProcessPathfinders()
     {
-        if (activeJobs != null)
+        foreach (var (ai, path, reachable) in activeJobs)
         {
-            foreach (var job in activeJobs)
+            if (!ai.SetPath(path, reachable))
             {
-                job.handle.Complete();
-                job.path.Dispose();
-                job.reachable.Dispose();
+                path.Dispose();
             }
         }
+        activeJobs.Clear();
     }
 }

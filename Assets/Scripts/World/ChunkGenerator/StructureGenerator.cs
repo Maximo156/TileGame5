@@ -150,11 +150,7 @@ public class StructureGenerator : ChunkSubGenerator
 
             var center = structureInfo.GetStructureCenterComponents(structure).SelectRandomWeighted(ref rand);
             var components = structureInfo.GetStructureBuildingComponents(structure);
-            if (!BuildingFits(point, Rotation.zero, center))
-            {
-                Debug.LogWarning($"Unable to place structure at {point.x} {point.y}");
-            }
-            else
+            if (BuildingFits(point, Rotation.zero, center))
             {
                 PlaceBuilding(point, Rotation.zero, center, AnchorDirection.None);
                 FillAnchors();

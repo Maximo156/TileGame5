@@ -91,14 +91,15 @@ public static class LightCalculation
 
     public static JobHandle CopyLight(RealmData realmData, LightJobInfo jobInfo, NativeQueue<LightUpdateInfo> updates, JobHandle dep)
     {
-        return new CopyLightJob()
+        var job = new CopyLightJob()
         {
             chunkWidth = WorldSettings.ChunkWidth, 
             chunks = jobInfo.updatedChunks,
             realmData = realmData,
             light = jobInfo.light,
             lightUpdates = updates.AsParallelWriter(),
-        }.Schedule(jobInfo.updatedChunks.Length, 1, JobHandle.CombineDependencies(jobInfo.jobHandle, dep));
+        }.Schedule(jobInfo.updatedChunks.Length, 1, dep);
+        return jobInfo.Dispose(job);
     }
 
     static void InitDebug(int length, bool debug)
