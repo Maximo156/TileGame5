@@ -229,7 +229,8 @@ public class Realm
 
     void DropManagedChunk(Vector2Int chunk)
     {
-        LoadedChunks.Remove(chunk, out var _);
+        LoadedChunks.Remove(chunk, out var c);
+        c.Drop();
     }
 
     public async Task ChunkManagedTick(Vector2Int curChunk, CancellationToken AllTaskShutdown)

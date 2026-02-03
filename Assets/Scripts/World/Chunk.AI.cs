@@ -94,6 +94,11 @@ public partial class Chunk
         return amount;
     }
 
+    public void Drop()
+    {
+        Object.Destroy(EntityContainer);
+    }
+
     Vector2Int? FindOpenBlock()
     {
         Vector2Int? pos;

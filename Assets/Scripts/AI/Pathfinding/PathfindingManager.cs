@@ -17,7 +17,7 @@ public interface IPathFinder
     public bool CanUseDoor { get; }
     public int ReachableRange { get; }
 
-    /// <summary>
+    /// <summary> 
     /// Sets a new path for the pathfinder
     /// </summary>
     /// <param name="stack">New path</param>
@@ -42,6 +42,7 @@ public class PathfindingManager
         JobHandle dep = default;
         foreach (var ai in pathfinders) 
         {
+            if (ai.isNull) continue;
             NativeStack<float2> path = new NativeStack<float2>(100, Allocator.Persistent);
             NativeList<int2> reachable = new NativeList<int2>(100, Allocator.Persistent);
             var job = new AstarJob()
