@@ -33,7 +33,7 @@ public class AIManager : MonoBehaviour
     Dictionary<Vector2Int, Chunk> LoadedChunks;
 
     int ChunkWidth;
-    Vector2Int curChunk { get; set; }
+
     HashSet<IAI> UnParentedAi = new();
     Dictionary<Vector2Int, Chunk> SimulatedChunks = new();
 
@@ -66,7 +66,6 @@ public class AIManager : MonoBehaviour
 
     public void OnChunkChanged(Vector2Int curChunk)
     {
-        this.curChunk = curChunk;
         var importantChunks = new HashSet<Vector2Int>(Utilities.Spiral(curChunk, (uint)AiSimDistance));
         foreach (var chunkPos in importantChunks)
         {
