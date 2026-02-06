@@ -44,7 +44,7 @@ public class ChunkRenderer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (rendering) return;
+        if (rendering.Count > 0) return;
         bool rendered = false;
         foreach(var chunkPos in toRender.OrderBy(c => Vector2.Distance(c, curChunk)).Where(c => c!= null)) 
         {
@@ -123,17 +123,21 @@ public class ChunkRenderer : MonoBehaviour
         }
     }
 
-    bool rendering = false;
+    HashSet<Vector2Int> rendering = new();
     private IEnumerator UpdateChunkDisplay(Chunk chunk, bool load)
     {
-        rendering = true;
+        rendering.Add(chunk.ChunkPos);
         yield return Display.RenderChunk(chunk.tileDisplayCache, !load);
-        rendering = false;
+        rendering.Remove(chunk.ChunkPos);
     }
 
     public void PlaceTile(Chunk _, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice slice, BlockItemStack state)
     {
-        if(renderedChunks.ContainsKey(ChunkPos))
+        if (rendering.Contains(ChunkPos))
+        {
+            CallbackManager.AddCallback(() => PlaceTile(_, BlockPos, ChunkPos, slice, state));
+        }
+        else if(renderedChunks.ContainsKey(ChunkPos))
         {
             Display.UpdateBlock(BlockPos, slice, state);
         }

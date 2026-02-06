@@ -32,13 +32,12 @@ public class ChunkManager : MonoBehaviour
     {
         get => _activeRealm;
         set {
-            _activeRealm?.SetContainerActive(false);
-            _activeRealm?.LateStep();
+            _activeRealm?.Disable();
             OnRealmChange?.Invoke(_activeRealm, value);
             _activeRealm = value;
-            _activeRealm.PlayerChangedChunks(Vector2Int.zero, AllTaskShutdown.Token);
+            _activeRealm.PlayerChangedChunks(currentChunk, AllTaskShutdown.Token);
             _activeRealm.RefreshAllChunks();
-            _activeRealm.SetContainerActive(true);
+            _activeRealm.Enable();
         }
     }
 
@@ -56,25 +55,27 @@ public class ChunkManager : MonoBehaviour
         foreach(var realm in Realms)
         {
             realm.Initialize(EntityContainerPrefab, transform);
-            realm.SetContainerActive(false);
+            realm.Disable();
         }
         ActiveRealm = Realms.First(r => r.name == startingRealm);
         Task.Run(() => ChunkTick());
     }
 
+    Realm frameRealm;
     private void Update()
     {
-        if (ActiveRealm != null)
+        frameRealm = ActiveRealm;
+        if (frameRealm != null)
         {
-            ActiveRealm.Step(currentChunk);
+            frameRealm.Step(currentChunk);
         }
     }
 
     private void LateUpdate()
     {
-        if (ActiveRealm != null)
+        if (frameRealm != null)
         {
-            ActiveRealm.LateStep();
+            frameRealm.LateStep();
         }
     }
 
@@ -123,10 +124,17 @@ public class ChunkManager : MonoBehaviour
     private void PortalUsed(string newDim, PortalBlock exitBlock, Vector2Int worldPos)
     {
         ActiveRealm = Realms.First(r => r.name == newDim);
-        int count = 0;
-        while(!PlaceBlock(worldPos, Vector2Int.zero, exitBlock, true) && count++ < 1000)
+        var chunk = Utilities.GetChunk(worldPos, WorldSettings.ChunkWidth);
+        CallbackManager.AddCallback(PlacePortal);
+
+        void PlacePortal()
         {
-            Thread.Sleep(1);
+            if(!ActiveRealm.TryGetChunk(chunk, out var c))
+            {
+                CallbackManager.AddCallback(PlacePortal);
+                return;
+            }
+            CallbackManager.AddCallback(() => PlaceBlock(worldPos, Vector2Int.zero, exitBlock, true));
         }
     }
 

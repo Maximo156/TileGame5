@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CallbackManager : MonoBehaviour
 {
     public static CallbackManager manager;
     public int CallbacksPerFrame;
-    readonly ConcurrentQueue<Action> callbacks = new ConcurrentQueue<Action>();
+    readonly ConcurrentQueue<DelayedCallback> callbacks = new ConcurrentQueue<DelayedCallback>();
     // Start is called before the first frame update
     void Awake()
     {
@@ -22,13 +23,33 @@ public class CallbackManager : MonoBehaviour
             count++;
             if (callbacks.TryDequeue(out var action))
             {
-                action?.Invoke();
+                if(action.delay == 0)
+                {
+                    action.action?.Invoke();
+                }
+                else
+                {
+                    action.delay--;
+                    callbacks.Enqueue(action);
+                }
             }
         }
     }
 
-    public static void AddCallback(Action action)
+    public static void AddCallback(Action action, uint delay = 0)
     {
-        manager.callbacks.Enqueue(action);
+        manager.callbacks.Enqueue(new()
+        {
+            action = action,
+            delay = delay
+        });
+    }
+
+    struct DelayedCallback
+    {
+        public uint delay;
+        public Action action;
     }
 }
+
+

@@ -12,21 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b084162353457b46915c6fcd72b1b66, type: 3}
   m_Name: CaveGenerator
   m_EditorClassIdentifier: 
-  soundSettings: {fileID: 11400000, guid: 3395119f592331241bcc6364dab8a0eb, type: 2}
-  Layers:
-  - minHeight: 0.5
-    GroundBlocks:
-    - {fileID: 11400000, guid: 22a8a340cdc98184188d3138c749b133, type: 2}
-    WallBlocks: []
-    SparceBlocks: []
-    SparceSoundSettings: {fileID: 0}
-    SparceDensity: 0
-  - minHeight: 0
-    GroundBlocks:
-    - {fileID: 11400000, guid: 22a8a340cdc98184188d3138c749b133, type: 2}
-    WallBlocks:
-    - {fileID: 11400000, guid: e53702bea1537ea43863f3c884a887d4, type: 2}
-    SparceBlocks: []
-    SparceSoundSettings: {fileID: 0}
-    SparceDensity: 0
-  waterLevel: -1
+  Priority: 0
+  SparceBlockSound: {fileID: 11400000, guid: e3f1f094c48ed894c949d57049711d52, type: 2}

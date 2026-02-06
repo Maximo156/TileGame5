@@ -45,40 +45,38 @@ public class Realm
     RealmData realmData;
 
     public EntityManager EntityContainer {  get; private set; }
-    Transform EntityContainerTransform;
 
     Queue<(Chunk chunk, Vector2Int pos, Action<Chunk, Vector2Int> action)> QueuedActions = new();
 
     readonly ProfilerMarker p_Step = new ProfilerMarker("Realm.Step");
     readonly ProfilerMarker p_LateStep = new ProfilerMarker("Realm.Step");
 
+    bool isEnabled = false;
+
     NativeList<int2> frameUpdatedChunks;
     LightJobInfo lightJobInfo;
     ChunkTickJobInfo tickJobInfo;
 
     JobHandle ReadDependencies;
+
     public void Step(Vector2Int playerCurrentChunk)
     {
-        var prof = p_Step.Auto();
         frameUpdatedChunks = new NativeList<int2>(0, Allocator.TempJob);
         while (QueuedActions.TryDequeue(out var actionInfo))
         {
             actionInfo.action?.Invoke(actionInfo.chunk, actionInfo.pos);
             frameUpdatedChunks.Add(actionInfo.chunk.ChunkPos.ToInt());
         }
-
         ProcessDropChunks();
+        p_Step.Auto();
 
         ProcessGenRequests(frameUpdatedChunks).Complete();
 
         // Scheduel native reads
         lightJobInfo = LightCalculation.ScheduelLightUpdate(realmData, frameUpdatedChunks);
-        if ((Time.time - tickJobInfo.schedueled) * 1000 >= WorldSettings.TickMs) 
-        {
-            tickJobInfo = ChunkTick.ScheduelTick(playerCurrentChunk, realmData);
-        }
+        tickJobInfo = ChunkTick.ScheduelTick(tickJobInfo, playerCurrentChunk, realmData);
          
-        ReadDependencies = JobHandle.CombineDependencies(lightJobInfo.jobHandle, tickJobInfo.job, EntityContainer.AIManager.RunPathfinding());
+        ReadDependencies = frameUpdatedChunks.Dispose(JobHandle.CombineDependencies(lightJobInfo.jobHandle, tickJobInfo.job, EntityContainer.AIManager.RunPathfinding()));
     }
 
     public void LateStep()
@@ -86,9 +84,7 @@ public class Realm
         var prof = p_LateStep.Auto();
         var updates = new NativeQueue<LightUpdateInfo>(Allocator.TempJob);
 
-        var copyLightJob = LightCalculation.CopyLight(realmData, lightJobInfo, updates, ReadDependencies);
-
-        JobHandle.CombineDependencies(frameUpdatedChunks.Dispose(ReadDependencies), copyLightJob).Complete();
+        LightCalculation.CopyLight(realmData, lightJobInfo, updates, ReadDependencies).Complete();
 
         if (tickJobInfo.needsProcessing)
         {
@@ -123,6 +119,11 @@ public class Realm
      
     JobHandle ProcessGenRequests(NativeList<int2> updatedChunks)
     {
+        if(GenRequests.Count == 0)
+        {
+            return default;
+        }
+
         var complete = new List<ChunkGenRequest>();
         var notCompleted = new List<ChunkGenRequest>();
         foreach(var request in GenRequests)
@@ -150,7 +151,7 @@ public class Realm
     {
         foreach(var c in NeedsInitialization)
         {
-            var newChunk = new Chunk(c, WorldSettings.ChunkWidth, realmData.AddChunk(c.ToInt()), this);
+            var newChunk = new Chunk(c, WorldSettings.ChunkWidth, realmData.GetChunk(c.ToInt()), this);
             ConnectChunk(newChunk);
             newChunk.InitCache();
             LoadedChunks.Add(c, newChunk);
@@ -165,7 +166,6 @@ public class Realm
         realmData = new RealmData(WorldSettings.ChunkWidth, distWithBuffer * distWithBuffer);
         EntityContainer.name = $"{name} Entity Container";
         EntityContainer.AIManager.Initialize(LoadedChunks, WorldSettings.ChunkWidth, realmData);
-        EntityContainerTransform = EntityContainer.transform;
     }
 
     public void Cleanup()
@@ -181,9 +181,16 @@ public class Realm
         StructureInfo.Dispose();
     }
 
-    public void SetContainerActive(bool active)
+    public void Disable()
     {
-        EntityContainer.gameObject.SetActive(active);
+        EntityContainer.gameObject.SetActive(false);
+        isEnabled = false;
+    }
+
+    public void Enable()
+    {
+        EntityContainer.gameObject.SetActive(true);
+        isEnabled = true;
     }
 
     public void PlayerChangedChunks(Vector2Int curChunk, CancellationToken AllTaskShutdown)

@@ -11,8 +11,12 @@ using Random = Unity.Mathematics.Random;
 [BurstCompile]
 public static class ChunkTick
 {
-    public static ChunkTickJobInfo ScheduelTick(Vector2Int pos, RealmData data)
+    public static ChunkTickJobInfo ScheduelTick(ChunkTickJobInfo curInfo, Vector2Int pos, RealmData data)
     {
+        if ((Time.time - curInfo.schedueled) * 1000 < WorldSettings.TickMs)
+        {
+            return curInfo;
+        }
         var tickDistance = WorldSettings.ChunkTickDistance;
         var chunks = new NativeArray<int2>((tickDistance*2+1) * (tickDistance * 2 + 1), Allocator.TempJob);
         int c = 0;

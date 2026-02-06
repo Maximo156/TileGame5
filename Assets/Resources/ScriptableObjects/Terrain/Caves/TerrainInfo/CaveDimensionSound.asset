@@ -9,18 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c5ecc10b83139c44bdb717a045071df, type: 3}
+  m_Script: {fileID: 11500000, guid: d6fd7b5be74fec5499f705dce71192a1, type: 3}
   m_Name: CaveDimensionSound
   m_EditorClassIdentifier: 
   Seed: 876543
-  World:
-    scale: 3
-    amplitude: 1
-  useWorld: 0
-  octaves:
-  - scale: 2
-    amplitude: 0.75
-  - scale: 1
-    amplitude: 0.5
-  - scale: 0.5
-    amplitude: 0.25
+  Octaves: 4
+  Lacunarity: 3
+  Persistence: 0.35
+  Scale: 10
+  useBurst: 1

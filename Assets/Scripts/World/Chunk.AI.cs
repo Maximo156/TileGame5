@@ -10,18 +10,13 @@ public partial class Chunk
 {
     public HashSet<IAI> ais = new();
     GameObject EntityContainer;
-    Transform parent;
-    public void SetParent(Transform parent)
-    {
-        this.parent = parent;
-    }
 
     public void AddChild(IAI ai)
     {
         if(EntityContainer == null)
         {
             EntityContainer = new GameObject($"{ChunkPos} Container");
-            EntityContainer.transform.parent = parent;
+            EntityContainer.transform.parent = parentRealm.EntityContainer.transform;
             EnableContainer(false);
         }
         ais.Add(ai);

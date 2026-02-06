@@ -55,8 +55,8 @@ public class RealmBiomeInfo : ScriptableObject
     public JobHandle ScheduelBiomeInfoGen(int chunkWidth, NativeArray<int2> chunks, ref BiomeData biomeData)
     {
         var heightJob = HeightSound.ScheduleSoundJob(chunks, biomeData.HeightMap, chunkWidth);
-        var moistureJob = MoistureSound.ScheduleSoundJob(chunks, biomeData.MoistureMap, chunkWidth);
-        var heatJob = HeatSound.ScheduleSoundJob(chunks, biomeData.HeatMap, chunkWidth);
+        var moistureJob = MoistureSound?.ScheduleSoundJob(chunks, biomeData.MoistureMap, chunkWidth) ?? default;
+        var heatJob = HeatSound?.ScheduleSoundJob(chunks, biomeData.HeatMap, chunkWidth) ?? default;
 
         return JobHandle.CombineDependencies(heatJob, moistureJob, heightJob);
     }

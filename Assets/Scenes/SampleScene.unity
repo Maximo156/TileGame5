@@ -12883,7 +12883,7 @@ MonoBehaviour:
     Generator: {fileID: 11400000, guid: c18f0422c9491464ea2ca8b8b2bef22f, type: 2}
     BiomeInfo: {fileID: 11400000, guid: 1b1da806a3fd86d40b724745617c10db, type: 2}
     StructureInfo:
-      StructureChunkWidth: 0
+      StructureChunkWidth: 64
       Structures: []
   EntityContainerPrefab: {fileID: 4125942454157733406, guid: 09ba13a72b3f5d44b85e34b2a97e24c3, type: 3}
   debug: 0
