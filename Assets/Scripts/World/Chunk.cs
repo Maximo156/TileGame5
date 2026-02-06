@@ -209,7 +209,6 @@ public partial class Chunk
 
     public bool PlaceBlock(Vector2Int position, Vector2Int dir, Block block, bool force = false, byte initialState = 0)
     {
-        Debug.Log("placing block in" + ChunkPos);
         if(block is IConditionalPlace cond && !cond.CanPlace(position, dir))
         {
             return false;

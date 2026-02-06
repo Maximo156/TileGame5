@@ -51,8 +51,6 @@ public class Realm
     readonly ProfilerMarker p_Step = new ProfilerMarker("Realm.Step");
     readonly ProfilerMarker p_LateStep = new ProfilerMarker("Realm.Step");
 
-    bool isEnabled = false;
-
     NativeList<int2> frameUpdatedChunks;
     LightJobInfo lightJobInfo;
     ChunkTickJobInfo tickJobInfo;
@@ -184,13 +182,11 @@ public class Realm
     public void Disable()
     {
         EntityContainer.gameObject.SetActive(false);
-        isEnabled = false;
     }
 
     public void Enable()
     {
         EntityContainer.gameObject.SetActive(true);
-        isEnabled = true;
     }
 
     public void PlayerChangedChunks(Vector2Int curChunk, CancellationToken AllTaskShutdown)
