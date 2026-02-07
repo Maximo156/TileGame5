@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewReplacableWallBlock", menuName = "Block/ReplacableWall", order = 1)]
-public class ReplacableBlock : Wall
+public class ReplacableBlock : Wall, ISimpleTickBlock
 {
     public Wall nextBlock;
     public int MeanSecondsToHappen;
@@ -23,17 +23,16 @@ public class ReplacableBlock : Wall
         return 0;
     }
 
-    public override BlockData GetBlockData()
+    public TickInfo GetTickInfo()
     {
-        var data = base.GetBlockData();
-
-        data.tickBehaviour = TickBehaviour.Replace;
-        data.replaceBehaviour = new()
+        return new TickInfo
         {
-            MeanSecondsToHappen = MeanSecondsToHappen,
-            nextBlock = nextBlock.Id
+            behaviour = TickBehaviour.Replace,
+            replaceConfig = new ReplaceBehaviourConfig()
+            {
+                MeanSecondsToHappen = MeanSecondsToHappen,
+                nextBlock = nextBlock.Id
+            }
         };
-
-        return data;
     }
 }

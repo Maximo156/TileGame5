@@ -90,9 +90,10 @@ public static class ChunkTick
             {
                 for (int y = 0; y < chunkWidth; y++)
                 {
-                    if(blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var wall))
+                    var b = chunk.GetWall(x, y);
+                    if (b != 0) 
                     {
-                        ProcessBlock(chunkPos, math.int2(x, y), wall, ref rand);
+                        ProcessBlock(chunkPos, math.int2(x, y), blockDataRepo.GetTickInfo(b), ref rand);
                     }
                 }
             }
@@ -100,18 +101,18 @@ public static class ChunkTick
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        void ProcessBlock(int2 chunk, int2 local, BlockData block, ref Random rand)
+        void ProcessBlock(int2 chunk, int2 local, TickInfo block, ref Random rand)
         {
-            switch (block.tickBehaviour)
+            switch (block.behaviour)
             {
                 case TickBehaviour.Replace: 
-                    Replace(chunk, local, block.replaceBehaviour, ref rand);
+                    Replace(chunk, local, block.replaceConfig, ref rand);
                     break;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        void Replace(int2 chunk, int2 local, ReplaceBehaviourInfo info, ref Random rand)
+        void Replace(int2 chunk, int2 local, ReplaceBehaviourConfig info, ref Random rand)
         {
             if (rand.NextDouble() < 1 - math.pow(math.E, -1f * worldTickMs / (1000 * info.MeanSecondsToHappen)))
             {

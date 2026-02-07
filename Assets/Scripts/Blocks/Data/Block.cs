@@ -69,31 +69,6 @@ public class Block : ScriptableObject, ISpriteful
         public NativeBlockSlice slice;
         public bool dontDrop;
     }
-
-    public virtual BlockData GetBlockData()
-    {
-        return new BlockData()
-        {
-            Level = GetLevel(),
-            hitsToBreak = HitsToBreak,
-        };
-    }
-
-    BlockLevel GetLevel()
-    {
-        if(this is Wall)
-        {
-            return BlockLevel.Wall;
-        }
-        else if(this is Ground)
-        {
-            return BlockLevel.Floor;
-        }
-        else
-        {
-            return BlockLevel.Roof;
-        }
-    }
 }
 
 public abstract class BlockState

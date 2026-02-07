@@ -17,11 +17,4 @@ public class ProxyBlock : Wall
             return instance;
         }
     }
-
-    public override BlockData GetBlockData()
-    {
-        var data = base.GetBlockData();
-        data.isProxy = true;
-        return data;
-    }
 }

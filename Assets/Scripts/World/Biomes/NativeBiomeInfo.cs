@@ -40,7 +40,7 @@ public struct NativeBiomeInfo
                 sparceBlocks[sparceCount++] = new()
                 {
                     block = block.block.Id,
-                    blockLevel = BlockDataRepo.GetNativeBlock(block.block.Id).Level,
+                    blockLevel = BlockDataRepo.TryGetBlock<Wall>(block.block.Id, out var _) ? BlockLevel.Wall : BlockLevel.Floor,
                     Weight = block.Weight,
                 };
             }
@@ -76,7 +76,7 @@ public struct NativeBiomeInfo
                 sparceBlocks[sparceCount++] = new()
                 {
                     block = block.block.Id,
-                    blockLevel = BlockDataRepo.GetNativeBlock(block.block.Id).Level,
+                    blockLevel = BlockDataRepo.TryGetBlock<Wall>(block.block.Id, out var _) ? BlockLevel.Wall : BlockLevel.Floor,
                     Weight = block.Weight,
                 };
             }

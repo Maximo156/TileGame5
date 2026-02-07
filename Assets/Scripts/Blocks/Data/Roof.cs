@@ -7,11 +7,4 @@ using UnityEngine;
 public class Roof : Block
 {
     public int Strength  = 4;
-
-    public override BlockData GetBlockData()
-    {
-        var data = base.GetBlockData();
-        data.roofStrength = Strength;
-        return data;
-    }
 }

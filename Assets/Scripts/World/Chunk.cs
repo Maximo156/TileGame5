@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Unity.Collections;
 using NativeRealm;
 using BlockDataRepos;
+using UnityEngine.Assertions.Must;
 
 public partial class Chunk
 {
@@ -92,11 +93,11 @@ public partial class Chunk
 
     bool SetBlock(int x, int y, ushort blockId, byte initialState = 0)
     {
-        var nativeData = BlockDataRepo.GetNativeBlock(blockId);
-        if (nativeData.Level == BlockLevel.Wall)
+        var block = BlockDataRepo.GetBlock<Block>(blockId);
+        if (block is Wall)
         {
             var blockInfo = BlockDataRepo.GetBlock<Block>(blockId);
-            if (nativeData.lightLevel != 0)
+            if (block is LightBlock light && light.LightLevel != 0)
             {
                 Debug.LogWarning("Need to fix lighting");
             }
@@ -108,11 +109,11 @@ public partial class Chunk
                 BlockStates[local] = stateful.GetState();
             }
         }
-        if (nativeData.Level == BlockLevel.Roof)
+        if (block is Roof)
         {
             data.SetRoof(x, y, blockId);
         }
-        else if (nativeData.Level == BlockLevel.Floor)
+        else if (block is Ground)
         {
             data.SetFloor(x, y, blockId);
         }
@@ -141,22 +142,22 @@ public partial class Chunk
         var local = new Vector2Int(x, y);
         var curSlice = data.GetSlice(x, y);
         var curItems = BlockItems.GetValueOrDefault(local);
-        var nativeData = BlockDataRepo.GetNativeBlock(blockId);
-        var mustBePlacedOn = BlockDataRepo.GetMustBePlacedOn(nativeData);
+        var blockData = BlockDataRepo.GetBlock<Block>(blockId);
+        var mustBePlacedOn = (blockData as Wall)?.MustBePlacedOn;
 
-        if (nativeData.Level == BlockLevel.Wall &&
+        if (blockData is Wall &&
             (curSlice.wallBlock != 0 ||
             (curItems != null && curItems.placedItems != null && curItems.placedItems.Count > 0) ||
-            (mustBePlacedOn.Length > 0 && !mustBePlacedOn.Contains(curSlice.groundBlock)))
+            (mustBePlacedOn.Count > 0 && !mustBePlacedOn.Any((b) => b.Id == curSlice.groundBlock)))
             )
         {
             return false;
         }
-        if (nativeData.Level == BlockLevel.Roof && curSlice.roofBlock != 0)
+        if (blockData is Roof && curSlice.roofBlock != 0)
         {
             return false;
         }
-        else if (nativeData.Level == BlockLevel.Floor && (curSlice.groundBlock != 0 || curSlice.wallBlock != 0))
+        else if (blockData is Ground && (curSlice.groundBlock != 0 || curSlice.wallBlock != 0))
         {
             return false;
         }
@@ -346,7 +347,7 @@ public partial class Chunk
                 var worldpos = localToWorld(local);
                 if (ChunkManager.TryGetBlock(worldpos, out var s)) {
                     var roofBlock = BlockDataRepo.GetBlock<Wall>(s.roofBlock);
-                    if (BlockDataRepo.TryGetNativeBlock(s.roofBlock, out var roof) && roof.Level == BlockLevel.Roof && roof.roofStrength < grid[x, y] && worldpos.ManhattanDistance(worldPosition) <= roofStrength)
+                    if (BlockDataRepo.TryGetBlock<Roof>(s.roofBlock, out var roof) && roof.Strength < grid[x, y] && worldpos.ManhattanDistance(worldPosition) <= roofStrength)
                     {
                         Break(worldpos, true, out var _);
                         OnBlockChanged?.Invoke(this, worldpos, ChunkPos, data.GetSlice(x, y), GetBlockItems(worldpos));

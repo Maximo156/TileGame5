@@ -51,7 +51,7 @@ public class MiningBehavior : RangedUseBehavior, IStatefulItemBehaviour
                 {
                     dirty = false;
                     hits = 0;
-                    hitsToBreak = BlockDataRepo.GetNativeBlock(block).hitsToBreak;
+                    hitsToBreak = BlockDataRepo.GetBlock<Block>(block).HitsToBreak;
                 }
             }
         }

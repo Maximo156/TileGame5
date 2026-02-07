@@ -186,22 +186,23 @@ public static class Extensions
         }
     }
 
-    public static MoveInfo GetMovementInfo(this NativeBlockSlice slice, BlockData groundData, BlockData wallData)
+    public static SliceMoveInfo GetMovementInfo(this NativeBlockSlice slice, BlockMovementInfo groundData, BlockMovementInfo wallData)
     {
         var speed = slice.isWater && slice.groundBlock == 0 ? 0.5f : (1 + groundData.movementSpeed + wallData.movementSpeed);
         return new()
         {
             movementSpeed = speed,
             walkable = slice.wallBlock == 0 || wallData.walkable,
+            door = wallData.door
         };
     }
 
-    public static MoveInfo GetMovementInfo(this NativeBlockSlice slice, NativeBlockDataRepo dataRepo)
+    public static SliceMoveInfo GetMovementInfo(this NativeBlockSlice slice, NativeBlockDataRepo dataRepo)
     {
-        return slice.GetMovementInfo(dataRepo.GetBlock(slice.groundBlock), dataRepo.GetBlock(slice.wallBlock));
+        return slice.GetMovementInfo(dataRepo.GetMovementInfo(slice.groundBlock), dataRepo.GetMovementInfo(slice.wallBlock));
     }
 
-    public static MoveInfo GetMovementInfo(this NativeBlockSlice slice)
+    public static SliceMoveInfo GetMovementInfo(this NativeBlockSlice slice)
     {
         return slice.GetMovementInfo(BlockDataRepo.NativeRepo);
     }
@@ -222,15 +223,10 @@ public static class Extensions
         return res;
     }
 
-    public static Vector2Int GetProxyOffset(this NativeBlockSlice slice, BlockData wallData)
-    {
-        if (!wallData.isProxy) return Vector2Int.zero;
-        return slice.simpleBlockState.ToOffsetState();
-    }
-
     public static Vector2Int GetProxyOffset(this NativeBlockSlice slice, NativeBlockDataRepo dataRepo)
     {
-        return slice.GetProxyOffset(dataRepo.GetBlock(slice.wallBlock));
+        if (slice.wallBlock != dataRepo.ProxyId) return Vector2Int.zero;
+        return slice.simpleBlockState.ToOffsetState();
     }
 
     public static Vector2Int GetProxyOffset(this NativeBlockSlice slice)

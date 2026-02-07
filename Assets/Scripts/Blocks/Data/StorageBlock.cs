@@ -12,13 +12,6 @@ public class StorageBlock : Wall, IInterfaceBlock, IStatefulBlock
     {
         return new StorageState(size);
     }
-
-    public override BlockData GetBlockData()
-    {
-        var data = base.GetBlockData();
-        data.isLootable = true;
-        return data;
-    }
 }
 
 public class StorageState : BlockState, IStorageBlockState

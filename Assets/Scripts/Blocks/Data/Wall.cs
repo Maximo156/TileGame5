@@ -19,13 +19,4 @@ public class Wall : Block
     public bool Walkable = false;
 
     public List<Ground> MustBePlacedOn = new();
-
-    public override BlockData GetBlockData()
-    {
-        var data = base.GetBlockData();
-        data.walkable = Walkable;
-        data.solid = solid;
-        data.structural = structural;
-        return data;
-    }
 }

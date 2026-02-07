@@ -27,7 +27,6 @@ namespace BlockDataRepos
             foreach (var block in tmp)
             {
                 Blocks[block.Id-1] = block;
-                var data = block.GetBlockData();
             }
         }
 
@@ -41,16 +40,6 @@ namespace BlockDataRepos
             return id == 0 ? null : Blocks[id-1] as T;
         }
 
-        public static BlockData GetNativeBlock(ushort id)
-        {
-            return NativeRepo.GetBlock(id);
-        }
-
-        public static bool TryGetNativeBlock(ushort id, out BlockData data)
-        {
-            return NativeRepo.TryGetBlock(id, out data);
-        }
-
         public static bool TryGetBlock<T>(ushort id, out T block) where T : Block
         {
             if(id != 0 && Blocks[id - 1] is T b)
@@ -61,93 +50,98 @@ namespace BlockDataRepos
             block = null;
             return false;
         }
-
-        public static NativeSlice<ushort> GetMustBePlacedOn(BlockData block)
-        {
-            return NativeRepo.GetMustBePlacedOn(block);
-        }
     }
 
     public struct NativeBlockDataRepo
     {
-        NativeArray<BlockData> Data;
-        NativeArray<ushort> mustBePlacedOn;
+        public ushort ProxyId { get; private set; }
+        NativeArray<TickInfo> tickInfo;
+        NativeArray<byte> lightLevels;
+        NativeArray<BlockMovementInfo> moveInfo;
+        NativeArray<bool> solid;
+        NativeArray<bool> lootable;
 
         public NativeBlockDataRepo(List<Block> blocks)
         {
-            blocks.ToNativeSlices(
-                b => b is Wall wall ? wall.MustBePlacedOn.Select(b => b.Id) : null, 
-                b => b.GetBlockData(),
-                SetSliceData,
-                out mustBePlacedOn,
-                out Data);
+            ProxyId = blocks.First(b => b is ProxyBlock).Id;
+            tickInfo = new(blocks.Count, Allocator.Persistent);
+            lightLevels = new (blocks.Count, Allocator.Persistent);
+            moveInfo = new (blocks.Count, Allocator.Persistent);
+            solid = new (blocks.Count, Allocator.Persistent);
+            lootable = new (blocks.Count, Allocator.Persistent);
 
+            for (int i = 0; i < blocks.Count; i++)
+            {
+                ProcessBlock(blocks[i], i);
+            }
         }
 
-        public void Add(ushort id, BlockData data)
+        public void ProcessBlock(Block block, int index)
         {
-            Data[id-1] = data;
-        }
-
-        public void AddMustBePlacedOn(int index, ushort id)
-        {
-            mustBePlacedOn[index] = id;
+            var wall = block as Wall;
+            lightLevels[index] = block is LightBlock light ? (byte)(light.LightLevel * 2) : (byte)0;
+            moveInfo[index] = new BlockMovementInfo 
+            { 
+                door = block is Door,
+                movementSpeed = block.MovementModifier,
+                walkable = wall?.Walkable ?? true,
+            };
+            solid[index] = wall?.solid ?? false;
+            lootable[index] = block is CrateBlock || block is StorageBlock;
+            tickInfo[index] = block is ISimpleTickBlock tick ? tick.GetTickInfo() : default;
         }
 
         public void Dispose()
         {
-            Data.Dispose();
-            mustBePlacedOn.Dispose();
+            tickInfo.Dispose();
+            lightLevels.Dispose();
+            moveInfo.Dispose();
+            solid.Dispose();
+            lootable.Dispose();
         }
 
-        public BlockData GetBlock(ushort id)
+        public BlockMovementInfo GetMovementInfo(ushort id)
         {
-            return id == 0 ? default : Data[id - 1];
+            return id == 0 ? default : moveInfo[id - 1];
         }
 
-        public bool TryGetBlock(ushort id, out BlockData blockData)
+        public bool IsLootable(ushort id)
         {
-            if(id == 0)
-            {
-                blockData = default;
-                return true;
-            }
-            blockData = Data[id - 1];
-            return true;
+            if(id == 0) return false;
+            return lootable[id - 1];
         }
 
-        public readonly NativeSlice<ushort> GetMustBePlacedOn(BlockData block)
+        public bool IsSolid(ushort id)
         {
-            var slice = block.placedOnSlice;
-            return mustBePlacedOn.Slice(slice.start, slice.length);
+            if (id == 0) return false;
+            return solid[id - 1];
         }
 
-        static void SetSliceData(ref BlockData data, SliceData d)
+        public byte GetLightLevel(ushort id)
         {
-            data.sliceData = d;
+            if (id == 0) return 0;
+            return lightLevels[id - 1];
+        }
+
+        public TickInfo GetTickInfo(ushort id)
+        {
+            if (id == 0) return default;
+            return tickInfo[id - 1];
         }
     }
 
-    public struct BlockData : IHasSliceData
+    public struct BlockMovementInfo
     {
-        public BlockLevel Level;
-        public byte lightLevel;
         public float movementSpeed;
         public bool walkable;
+        public bool door;
+    }
+
+    public struct BlockStructureInfo
+    {
         public bool structural;
         public bool solid;
-        public bool door;
-        public bool isProxy;
-        public bool isLootable;
         public int roofStrength;
-        public int hitsToBreak;
-        public TickBehaviour tickBehaviour;
-        public ReplaceBehaviourInfo replaceBehaviour;
-
-
-        public SliceData placedOnSlice;
-
-        public SliceData sliceData {get => placedOnSlice; set => placedOnSlice = value; }
     }
 
     public enum BlockLevel

@@ -208,7 +208,7 @@ public struct AstarJob : IJob
         {
             var slice = chunk.GetSlice(x, y);
             var moveInfo = slice.GetMovementInfo(blockInfo);
-            var door = blockInfo.TryGetBlock(slice.wallBlock, out var blockData) && blockData.door; 
+            var door = slice.wallBlock != 0 && blockInfo.GetMovementInfo(slice.wallBlock).door; 
             node = new Node(pos, moveInfo.walkable, door, math.max(moveInfo.movementSpeed, 0.01f));
         }
         else

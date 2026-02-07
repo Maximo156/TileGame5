@@ -176,10 +176,11 @@ public struct SliceData
     public int length;
 }
 
-public struct MoveInfo
+public struct SliceMoveInfo
 {
     public bool walkable;
     public float movementSpeed;
+    public bool door;
 }
 
 public interface IWeighted

@@ -165,8 +165,8 @@ public class JobNavigator : MonoBehaviour, IPathFinder
             ChunkManager.TryGetBlock(Utilities.GetBlockPos(next), out var t);
             Target = t;
         }
-        var blockData = BlockDataRepo.GetNativeBlock(Target?.wallBlock ?? 0);
-        if(Target is null || !Target.Value.GetMovementInfo().walkable || (blockData.door && !CanUseDoors))
+        var moveInfo = Target?.GetMovementInfo();
+        if (moveInfo is null || !moveInfo.Value.walkable || (moveInfo.Value.door && !CanUseDoors))
         {
             state = State.Stuck;
             Target = null;

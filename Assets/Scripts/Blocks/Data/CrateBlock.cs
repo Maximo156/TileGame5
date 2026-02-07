@@ -10,13 +10,6 @@ public class CrateBlock : Wall, IStatefulBlock
     {
         return new CrateState();
     }
-
-    public override BlockData GetBlockData()
-    {
-        var data = base.GetBlockData();
-        data.isLootable = true;
-        return data;
-    }
 }
 
 public class CrateState : BlockState, IStorageBlockState

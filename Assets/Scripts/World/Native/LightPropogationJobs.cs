@@ -177,9 +177,10 @@ public static class LightCalculation
             {
                 for (int y = 0; y < chunkWidth; y++)
                 {
-                    if (blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var blockData) && blockData.lightLevel != 0)
+                    var lightLevel = blockDataRepo.GetLightLevel(chunk.GetWall(x, y));
+                    if (lightLevel != 0)
                     {
-                        lightSlice.SetElement2d(x, y, chunkWidth, blockData.lightLevel);
+                        lightSlice.SetElement2d(x, y, chunkWidth, lightLevel);
                         updateQueue.Enqueue(math.int2(x + 1, y));
                         updateQueue.Enqueue(math.int2(x - 1, y));
                         updateQueue.Enqueue(math.int2(x, y + 1));
@@ -202,7 +203,7 @@ public static class LightCalculation
                 int x = pos.x;
                 int y = pos.y;
                 if (x < 0 || x >= chunkWidth || y < 0 || y >= chunkWidth) return;
-                if (!blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var blockData) || blockData.lightLevel != 0) return;
+                if (blockDataRepo.GetLightLevel(chunk.GetWall(x, y)) != 0) return;
 
 
                 var target = CalcTarget(x, y);
@@ -223,9 +224,9 @@ public static class LightCalculation
                 if (!Utilities.CheckChunkBoundry(x, y, chunkWidth)) return 0;
 
                 // Inside current chunk
-                if (!blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var blockData)) return 0;
-                if (blockData.solid) return 0;
-                return blockData.lightLevel > 0 ? blockData.lightLevel : lightSlice.GetElement2d(x, y, chunkWidth);
+                if (blockDataRepo.IsSolid(chunk.GetWall(x, y))) return 0;
+                var lightLevel = blockDataRepo.GetLightLevel(chunk.GetWall(x, y));
+                return lightLevel > 0 ? lightLevel : lightSlice.GetElement2d(x, y, chunkWidth);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -330,7 +331,7 @@ public static class LightCalculation
                 int x = pos.x;
                 int y = pos.y;
                 if (x < 0 || x >= chunkWidth || y < 0 || y >= chunkWidth) return;
-                if (!blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var blockData) || blockData.lightLevel != 0) return;
+                if (blockDataRepo.GetLightLevel(chunk.GetWall(x, y)) != 0) return;
 
 
                 var target = CalcTarget(x, y);
@@ -399,9 +400,9 @@ public static class LightCalculation
                 }
 
                 // Inside current chunk
-                if (!blockDataRepo.TryGetBlock(chunk.GetWall(x, y), out var blockData)) return 0;
-                if (blockData.solid) return 0;
-                return blockData.lightLevel > 0 ? blockData.lightLevel : lightSlice.GetElement2d(x, y, chunkWidth);
+                if (blockDataRepo.IsSolid(chunk.GetWall(x, y))) return 0;
+                var lightLevel = blockDataRepo.GetLightLevel(chunk.GetWall(x, y));
+                return lightLevel > 0 ? lightLevel : lightSlice.GetElement2d(x, y, chunkWidth);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

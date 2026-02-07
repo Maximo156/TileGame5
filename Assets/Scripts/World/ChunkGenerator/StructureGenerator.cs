@@ -254,7 +254,7 @@ public class StructureGenerator : ChunkSubGenerator
                     {
                         chunk.SetWall(x, y, block.wallBlock);
                     }
-                    if(blockData.TryGetBlock(block.wallBlock, out var data) && data.isLootable)
+                    if(blockData.IsLootable(block.wallBlock))
                     {
                         chunk.SetState(x, y, (byte)component.SelfIndex);
                     }
