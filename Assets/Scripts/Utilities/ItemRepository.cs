@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class SORepository
+public class ItemRepository : MonoBehaviour 
 {
-    public static Dictionary<string, Item> items;
+    static Dictionary<string, Item> items;
 
-    static SORepository()
+
+    private void Awake()
     {
         items = Resources.FindObjectsOfTypeAll<Item>().ToDictionary(i => i.name, i => i);
+    }
+
+    public static Item GetItem(string name)
+    {
+        return items[name];
     }
 }

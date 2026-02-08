@@ -3,6 +3,7 @@ using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 using BlockDataRepos;
 using NativeRealm;
+using Newtonsoft.Json;
 
 public interface IConditionalPlace
 {
@@ -14,6 +15,7 @@ public interface IOnPlace
     public void OnPlace(Vector2Int Pos, Vector2Int dir, ref NativeBlockSlice slice);
 }
 
+[JsonConverter(typeof(BlockConverter))]
 public class Block : ScriptableObject, ISpriteful
 {
     ushort _id;

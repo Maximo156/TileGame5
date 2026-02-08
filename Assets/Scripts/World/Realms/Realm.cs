@@ -151,20 +151,27 @@ public class Realm
         var dep = new JobHandle();
         foreach(var request in complete)
         {
-            dep = request.CopyAndDispose(realmData, RequestedChunks, NeedsInitialization, updatedChunks, dep);
+            dep = request.CopyAndDispose(realmData, RequestedChunks, NeedsInitialization, updatedChunks, LoadedChunkData, dep);
         }
         return dep;
     }
 
+    Dictionary<Vector2Int, Chunk> LoadedChunkData = new();
     void InitializeManagedChunks()
     {
         foreach(var c in NeedsInitialization)
         {
             var newChunk = new Chunk(c, WorldSettings.ChunkWidth, realmData.GetChunk(c.ToInt()), this);
+            if(LoadedChunkData.Remove(c, out var loadedChunk))
+            {
+                newChunk.BlockItems = loadedChunk.BlockItems;
+                newChunk.BlockStates = loadedChunk.BlockStates;
+            }
             ConnectChunk(newChunk);
             newChunk.InitCache();
             LoadedChunks.Add(c, newChunk);
         }
+        LoadedChunkData.Clear();
         NeedsInitialization.Clear();
     }
 
@@ -482,7 +489,7 @@ public interface IChunkLoadRequest
     public RealmData realmData { get; }
     public NativeList<int2> chunks { get; }
 
-    public JobHandle CopyAndDispose(RealmData targetData, HashSet<Vector2Int> requestedChunks, List<Vector2Int> needInitialization, NativeList<int2> updatedChunks, JobHandle dep)
+    public JobHandle CopyAndDispose(RealmData targetData, HashSet<Vector2Int> requestedChunks, List<Vector2Int> needInitialization, NativeList<int2> updatedChunks, Dictionary<Vector2Int, Chunk> managedChunkInfo, JobHandle dep)
     {
         if (!isComplete) throw new InvalidOperationException("Only copy once handle is completed");
         Complete();
@@ -494,11 +501,16 @@ public interface IChunkLoadRequest
             requestedChunks.Remove(v);
             needInitialization.Add(v);
         }
-
+        CopyManagedChunks(managedChunkInfo);
         return JobHandle.CombineDependencies(realmData.Dispose(copyJob), chunks.Dispose(copyJob));
     }
 
     public void Complete();
 
     public void Dispose();
+
+    public void CopyManagedChunks(Dictionary<Vector2Int, Chunk> output)
+    {
+
+    }
 }

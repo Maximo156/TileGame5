@@ -399,6 +399,7 @@ namespace NativeRealm {
     }
 
     [JsonObject(MemberSerialization.Fields)]
+    [JsonConverter(typeof(ChunkDataConverter))]
     [BurstCompile]
     public struct ChunkData
     {

@@ -1,5 +1,8 @@
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Numerics;
+using UnityEngine;
 
 public class ChunkConverter : JsonConverter<Chunk>
 {
@@ -23,8 +26,10 @@ public class ChunkConverter : JsonConverter<Chunk>
                         serializer.Populate(reader, existingValue.data);
                         break;
                     case nameof(existingValue.BlockStates):
+                        existingValue.BlockStates = serializer.Deserialize<Dictionary<Vector2Int, BlockState>>(reader);
                         break;
                     case nameof(existingValue.BlockItems):
+                        existingValue.BlockItems = serializer.Deserialize<Dictionary<Vector2Int, BlockItemStack>>(reader);
                         break;
                 }
             }

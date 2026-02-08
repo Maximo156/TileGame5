@@ -8,9 +8,7 @@ using NativeRealm;
 using System;
 using Unity.Collections;
 using Unity.Mathematics;
-using System.Xml.Xsl;
-using Unity.Jobs;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
+using Newtonsoft.Json.UnityConverters.Math;
 
 public class ChunkSaver
 {
@@ -18,8 +16,11 @@ public class ChunkSaver
     static ChunkSaver()
     {
         settings = new JsonSerializerSettings();
-        settings.Converters.Add(new ChunkDataConverter());
         settings.Converters.Add(new ChunkConverter());
+        settings.Converters.Add(new Vector2IntConverter());
+        settings.Converters.Add(new DictionaryConverter<Vector2Int, BlockState>());
+        settings.Converters.Add(new DictionaryConverter<Vector2Int, BlockItemStack>());
+        settings.TypeNameHandling = TypeNameHandling.Auto;
     }
 
     static string DirectoryPath(string realmId) => Path.Join(ChunkManager.DataPath, realmId);
@@ -50,6 +51,7 @@ public class ChunkSaver
                 var json = File.ReadAllText(path);
 
                 JsonConvert.PopulateObject(json, chunk, settings);
+                request.managedChunks.Add(chunk);
             }
         }
         catch(Exception ex) 
@@ -106,6 +108,7 @@ public class ChunkSaver
             realmId = realmId,
             realmData = realmData,
             chunks = chunks,
+            managedChunks = new()
         };
         request.LoadTask = Task.Run(() => { LoadChunks(request); });
         return request;
@@ -124,6 +127,7 @@ public class ChunkSaver
         public NativeList<int2> chunks { get; set; }
         public RealmData realmData { get; set; }
         public Task LoadTask;
+        public List<Chunk> managedChunks { get; set; }
 
         public bool isComplete => LoadTask.IsCompleted;
 
@@ -135,6 +139,14 @@ public class ChunkSaver
         public void Dispose()
         {
             chunks.Dispose();
+        }
+
+        public void CopyManagedChunks(Dictionary<Vector2Int, Chunk> output)
+        {
+            foreach (var chunk in managedChunks)
+            {
+                output.Add(chunk.ChunkPos, chunk);
+            }
         }
     }
 }

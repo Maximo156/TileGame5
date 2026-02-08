@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,21 @@ public class InfusableBehaviour : ItemBehaviour, IStatefulItemBehaviour
 
 public class InfusableBehaviourState : ItemInventoryBehaviourState, IStateStringProvider
 {
+    [JsonIgnore]
     public List<Stage> stages = new List<Stage>();
 
+    public int charmSlots;
     public InfusableBehaviourState(int charmSlots) : base(CharmAllowedInSlot, charmSlots)
     { 
+        this.charmSlots = charmSlots;
+    }
 
+    [JsonConstructor]
+    public InfusableBehaviourState(int charmSlots, Inventory inv) : base(CharmAllowedInSlot, charmSlots)
+    {
+        this.charmSlots = charmSlots;
+        inv.TransferToInventory(this.inv);
+        UpdateStages();
     }
 
     public override IEnumerable<IGridItem> GetGridItems() => inv.GetAllItems(false);
@@ -77,8 +88,10 @@ public class InfusableBehaviourState : ItemInventoryBehaviourState, IStateString
         stages.Add(currentStage);
     }
 
+    [JsonIgnore]
     public List<ItemCharm> Charms => inv.GetAllItems(false).Select(i => i.Item as ItemCharm).ToList();
 
+    [JsonIgnore]
     public float Cost => Charms.Sum(c => c.manaCost) * (1 + Charms.Sum(c => c.CostModifier));
 
     static bool CharmAllowedInSlot(Item item, ItemStack[] items, int index)

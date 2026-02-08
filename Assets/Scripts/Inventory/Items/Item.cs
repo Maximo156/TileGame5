@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ public class ItemStack : IGridItem, IGridSource
 
     private Dictionary<Type, ItemBehaviourState> _behaviorStates;
 
+    [JsonProperty]
+    [JsonConverter(typeof(DictionaryConverter<Type, ItemBehaviourState>))]
     private Dictionary<Type, ItemBehaviourState> BehaviorStates
     {
         get => _behaviorStates;
@@ -70,7 +73,11 @@ public class ItemStack : IGridItem, IGridSource
         OnStateChange?.Invoke();
     }
 
+    [JsonIgnore]
     public int Space => Item.MaxStackSize - Count;
+
+    public ItemStack() 
+    {}
 
     public ItemStack(Item item, int count)
     {
@@ -162,6 +169,7 @@ public class ItemStack : IGridItem, IGridSource
     }
 }
 
+[JsonConverter(typeof(ItemConverter))]
 [CreateAssetMenu(fileName = "NewItem", menuName = "Inventory/Item", order = 1)]
 public class Item : ScriptableObject, ISpriteful, ISaveable
 {
