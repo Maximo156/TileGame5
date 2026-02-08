@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using BlockDataRepos;
 using NativeRealm;
 using Newtonsoft.Json;
+using System;
 
 public interface IConditionalPlace
 {
@@ -75,5 +76,11 @@ public class Block : ScriptableObject, ISpriteful
 
 public abstract class BlockState
 {
+    public event Action OnStateUpdated;
     public abstract void CleanUp(Vector2Int pos);
+
+    protected void TriggerStateChange()
+    {
+        OnStateUpdated?.Invoke();
+    }
 }

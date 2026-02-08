@@ -1,4 +1,5 @@
 using BlockDataRepos;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,9 +19,17 @@ public class StorageState : BlockState, IStorageBlockState
 {
     public Inventory StoredItems;
 
+    [JsonConstructor]
+    public StorageState(Inventory StoredItems)
+    {
+        this.StoredItems = StoredItems;
+        StoredItems.OnItemChanged += (_) => TriggerStateChange();
+    }
+
     public StorageState(int count)
     {
         StoredItems = new Inventory(count);
+        StoredItems.OnItemChanged += (_) => TriggerStateChange();
     }
 
     public override void CleanUp(Vector2Int pos)

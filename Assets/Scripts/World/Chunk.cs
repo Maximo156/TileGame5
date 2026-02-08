@@ -7,6 +7,9 @@ using BlockDataRepos;
 
 public partial class Chunk
 {
+    public delegate void SaveableEvent(Vector2Int ChunkPos);
+    public event SaveableEvent OnSaveableEvent;
+
     public delegate void BlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice block, BlockItemStack state);
     public event BlockChanged OnBlockChanged;
 
@@ -19,8 +22,31 @@ public partial class Chunk
     public Vector2Int ChunkPos;
     public Vector2Int BlockPos => ChunkPos * width;
 
-    public Dictionary<Vector2Int, BlockItemStack> BlockItems {  get; set; }
-    public Dictionary<Vector2Int, BlockState> BlockStates {  get; set; }
+    private Dictionary<Vector2Int, BlockState> _blockStates;
+
+    public Dictionary<Vector2Int, BlockItemStack> BlockItems { get; set; }
+    public Dictionary<Vector2Int, BlockState> BlockStates 
+    {  
+        get => _blockStates; 
+        set
+        {
+            if(_blockStates != null)
+            {
+                foreach(var kvp in _blockStates)
+                {
+                    kvp.Value.OnStateUpdated -= SaveChunk;
+                }
+            }
+            _blockStates = value;
+            if (_blockStates != null)
+            {
+                foreach (var kvp in _blockStates)
+                {
+                    kvp.Value.OnStateUpdated += SaveChunk;
+                }
+            }
+        } 
+    }
 
     readonly int width;
 
@@ -74,7 +100,7 @@ public partial class Chunk
                 parentRealm.StructureInfo.AttemptFillStorageState(world, slice.simpleBlockState, storage);
                 data.SetState(localPos.x, localPos.y, 0);
             }
-            BlockStates[localPos] = res;
+            SetState(localPos, res);
         }
         return res;
     }
@@ -83,6 +109,32 @@ public partial class Chunk
     {
         var localPos = WorldToLocal(world);
         return BlockItems.GetValueOrDefault(localPos);
+    }
+
+    void SetState(Vector2Int local, BlockState state)
+    {
+        RemoveState(local);
+        state.OnStateUpdated += SaveChunk;
+        BlockStates[local] = state;
+    }
+    bool RemoveState(Vector2Int local, out BlockState state)
+    {
+        if (BlockStates.Remove(local, out state))
+        {
+            state.OnStateUpdated -= SaveChunk;
+            return true;
+        }
+        return false;
+    }
+
+    bool RemoveState(Vector2Int local)
+    {
+        if (BlockStates.Remove(local, out var state))
+        {
+            state.OnStateUpdated -= SaveChunk;
+            return true;
+        }
+        return false;
     }
 
     bool SetBlock(int x, int y, ushort blockId, byte initialState = 0)
@@ -100,7 +152,7 @@ public partial class Chunk
             var local = new Vector2Int(x, y);
             if (blockInfo is IStatefulBlock stateful)
             {
-                BlockStates[local] = stateful.GetState();
+                SetState(local, stateful.GetState());
             }
         }
         if (block is Roof)
@@ -183,7 +235,7 @@ public partial class Chunk
             {
                 items.DropItems(worldPos);
             }
-            BlockStates.Remove(local, out brokenBlockState);
+            RemoveState(local, out brokenBlockState);
         }
         else
         {
@@ -384,14 +436,19 @@ public partial class Chunk
     void ChangedSlice(Vector2Int worldPosition, NativeBlockSlice slice, BlockItemStack state)
     {
         var wToL = WorldToLocal(worldPosition);
-        Debug.LogWarning("Fix chunk saving");
+        SaveChunk();
         OnBlockChanged?.Invoke(this, worldPosition, ChunkPos, slice, state);
         RegenCache();
     }
 
     void RefreshBlock(Vector2Int worldPosition)
     {
-        Debug.LogWarning("Fix chunk saving");
+        SaveChunk();
         OnBlockRefreshed?.Invoke(this, worldPosition, ChunkPos);
+    }
+
+    void SaveChunk()
+    {
+        OnSaveableEvent?.Invoke(ChunkPos);
     }
 }

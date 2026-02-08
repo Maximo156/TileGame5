@@ -309,6 +309,7 @@ public class Realm
         chunk.OnBlockChanged += Chunk_OnBlockChanged;
         chunk.OnBlockRefreshed += Chunk_OnBlockRefreshed;
         chunk.OnChunkChanged += Chunk_OnChunkChanged;
+        chunk.OnSaveableEvent += SaveChunk;
     }
 
     private void Chunk_OnChunkChanged(Chunk chunk)
@@ -316,24 +317,24 @@ public class Realm
         OnChunkChanged?.Invoke(chunk);
     }
 
-    private List<Vector2Int> ToSave = new();
+    private HashSet<Vector2Int> ToSave = new();
 
     private void Chunk_OnBlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice block, BlockItemStack state)
     {
-        if (Save)
-        {
-            ToSave.Add(ChunkPos);
-        }
         OnBlockChanged?.Invoke(chunk, BlockPos, ChunkPos, block, state);
     }
 
     private void Chunk_OnBlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos)
     {
+        OnBlockRefreshed?.Invoke(chunk, BlockPos, ChunkPos);
+    }
+
+    void SaveChunk(Vector2Int ChunkPos)
+    {
         if (Save)
         {
             ToSave.Add(ChunkPos);
         }
-        OnBlockRefreshed?.Invoke(chunk, BlockPos, ChunkPos);
     }
 
     public T PerformChunkAction<T>(Vector2Int position, Func<Chunk, Vector2Int, T> action , bool useProxy = true)
