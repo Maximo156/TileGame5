@@ -1,22 +1,18 @@
 using System;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Threading.Tasks;
 using NativeRealm;
 using Unity.Jobs;
 using Unity.Collections;
 using Unity.Mathematics;
 
 [CreateAssetMenu(fileName = "NewChunkGenerator", menuName = "Terrain/ChunkGenerator", order = 1)]
-public class ChunkGenerator: ScriptableObject, ISaveable
+public class ChunkGenerator: ScriptableObject
 {
     public bool saveChunks;
     public List<ChunkSubGenerator> Generators;
     public Gradient ShadowColor;
-    public string Identifier { get; private set; }
-    ChunkSaver Saver;
 
     GenerationStep BaseStep;
 
@@ -27,11 +23,6 @@ public class ChunkGenerator: ScriptableObject, ISaveable
         requestChunks.CopyFrom(chunks);
         var (realmData, genDep, biomeData) = BaseStep.Generate(chunkWidth, chunks, requestChunks, realmInfo);
         return (realmData, JobHandle.CombineDependencies(biomeData.Dispose(genDep), requestChunks.Dispose(genDep)));
-    }
-
-    public void SaveChunk(Chunk chunk)
-    {
-        Saver.SaveChunk(chunk);
     }
 
     public Color GetColor(int hoursPerDay, float curTime)
@@ -49,9 +40,6 @@ public class ChunkGenerator: ScriptableObject, ISaveable
         {
             BaseStep = new GenerationStep(generator, BaseStep);
         }
-
-        Identifier = name;
-        Saver = new ChunkSaver(name);
     }
 
     public class GenerationStep

@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
 using Unity.Burst;
 using Unity.Collections;
@@ -204,17 +205,19 @@ namespace NativeRealm {
 
         public JobHandle CopyFrom(RealmData otherData, NativeList<int2> chunks, JobHandle dep)
         {
-            foreach(var c  in chunks)
+            var addChunks = new AddChunksJob()
             {
-                AddChunk(c);
-            }
+                chunks = chunks,
+                data = this
+            }.Schedule(dep);
+
             return new CopyJob()
             {
                 otherData = otherData,
                 target = AsParallelChunkWriter(),
                 chunks = chunks.AsArray(),
                 chunkData = metadata
-            }.Schedule(chunks.Length, 1, dep);
+            }.Schedule(chunks.Length, 1, addChunks);
         }
 
         [BurstCompile]
@@ -351,6 +354,22 @@ namespace NativeRealm {
             }
         }
 
+        partial struct AddChunksJob : IJob
+        {
+            [ReadOnly]
+            public NativeList<int2> chunks;
+
+            public RealmData data;
+
+            public void Execute()
+            {
+                foreach(var chunk in chunks)
+                {
+                    data.AddChunk(chunk);
+                }
+            }
+        }
+
         [BurstCompile]
         partial struct CopyJob : IJobParallelFor
         {
@@ -379,16 +398,28 @@ namespace NativeRealm {
         }
     }
 
+    [JsonObject(MemberSerialization.Fields)]
     [BurstCompile]
     public struct ChunkData
     {
         public int chunkWidth;
 
+        [JsonConverter(typeof(NativeSliceRunLengthEncodingConverter<ushort>))]
         NativeSlice<ushort> groundBlocks;
+
+        [JsonConverter(typeof(NativeSliceRunLengthEncodingConverter<ushort>))]
         NativeSlice<ushort> wallBlocks;
-        NativeSlice<byte> simpleBlockState;
-        NativeSlice<byte> lightLevel;
+
+        [JsonConverter(typeof(NativeSliceRunLengthEncodingConverter<ushort>))]
         NativeSlice<ushort> roofBlocks;
+
+        [JsonConverter(typeof(NativeSliceRunLengthEncodingConverter<byte>))]
+        NativeSlice<byte> simpleBlockState;
+
+        [JsonIgnore]
+        NativeSlice<byte> lightLevel;
+
+        [JsonConverter(typeof(NativeSliceRunLengthEncodingConverter<bool>))]
         NativeSlice<bool> water;
 
         public ChunkData(
@@ -524,6 +555,46 @@ namespace NativeRealm {
             lightLevel.CopyFrom(otherChunk.lightLevel);
             roofBlocks.CopyFrom(otherChunk.roofBlocks);
             water.CopyFrom(otherChunk.water);
+        }
+
+        public JobHandle CopyFromJob(ChunkData otherChunk, JobHandle dep)
+        {
+            var j1 = new SliceCopyJob<ushort>()
+            {
+                src = otherChunk.groundBlocks,
+                dest = groundBlocks
+            }.Schedule(dep);
+            var j2 = new SliceCopyJob<ushort>()
+            {
+                src = otherChunk.wallBlocks,
+                dest = wallBlocks
+            }.Schedule(dep);
+            var j3 = new SliceCopyJob<ushort>()
+            {
+                src = otherChunk.roofBlocks,
+                dest = roofBlocks
+            }.Schedule(dep);
+
+            var j4 = new SliceCopyJob<byte>()
+            {
+                src = otherChunk.simpleBlockState,
+                dest = simpleBlockState
+            }.Schedule(dep);
+            var j5 = new SliceCopyJob<byte>()
+            {
+                src = otherChunk.lightLevel,
+                dest = lightLevel
+            }.Schedule(dep);
+            var j6 = new SliceCopyJob<bool>()
+            {
+                src = otherChunk.water,
+                dest = water
+            }.Schedule(dep);
+
+            return JobHandle.CombineDependencies(
+                JobHandle.CombineDependencies(j1, j2, j3),
+                JobHandle.CombineDependencies(j4, j5, j6)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

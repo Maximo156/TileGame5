@@ -4,69 +4,137 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using NativeRealm;
+using System;
+using Unity.Collections;
+using Unity.Mathematics;
+using System.Xml.Xsl;
+using Unity.Jobs;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class ChunkSaver
 {
     static JsonSerializerSettings settings;
     static ChunkSaver()
     {
-        typeof(SORepository).TypeInitializer.Invoke(null, null);
         settings = new JsonSerializerSettings();
-        settings.Converters.Add(new BlockConverter());
-    }
-    string DirectoryPath => Path.Join(ChunkManager.DataPath, Identifier);
-
-    public string Identifier { get; }
-
-    public ChunkSaver(string name)
-    {
-        Identifier = name;
+        settings.Converters.Add(new ChunkDataConverter());
+        settings.Converters.Add(new ChunkConverter());
     }
 
-    string ChunkPath(Vector2Int ChunkWorldPosition)
+    static string DirectoryPath(string realmId) => Path.Join(ChunkManager.DataPath, realmId);
+
+    static string ChunkPath(string realmId, Vector2Int ChunkWorldPosition)
     {
-        return Path.Join(DirectoryPath, $"Chunk-{ChunkWorldPosition.x}x{ChunkWorldPosition.y}");
+        return Path.Join(DirectoryPath(realmId), $"Chunk-{ChunkWorldPosition.x}x{ChunkWorldPosition.y}");
     }
 
-    public bool TryLoadBlockSlices(Vector2Int ChunkWorldPosition, out BlockItemStack[,] blocks)
+    public static bool HasSavedVersion(string realmId, Vector2Int ChunkWorldPosition)
     {
-        throw new System.NotImplementedException();
-        var path = ChunkPath(ChunkWorldPosition);
-        blocks = null;
-        if (!File.Exists(path))
+        return File.Exists(ChunkPath(realmId, ChunkWorldPosition));
+    }
+
+    static void LoadChunks(ChunkLoadRequest request)
+    {
+        try
         {
-            return false;
+            var realmId = request.realmId;
+            foreach (var c in request.chunks)
+            {
+                var v = c.ToVector();
+                var chunkData = request.realmData.AddChunk(c);
+                var chunk = new Chunk(v, WorldSettings.ChunkWidth, chunkData, null);
+
+                var path = ChunkPath(realmId, v);
+
+                var json = File.ReadAllText(path);
+
+                JsonConvert.PopulateObject(json, chunk, settings);
+            }
         }
-
-        var json = File.ReadAllText(path);
-
-        blocks = JsonConvert.DeserializeObject<BlockItemStack[,]>(json, settings);
-        return true;
+        catch(Exception ex) 
+        { 
+            Debug.LogException(ex); 
+        }
     }
 
-    Task SavingTask;
-    ConcurrentQueue<Chunk> toSave = new();
+    static Task SavingTask;
+    static Queue<ChunkSaveRequest> toSave = new();
 
-    public void SaveChunk(Chunk chunk)
+    static public void SaveChunk(string realmId, Chunk chunk)
     {
-        toSave.Enqueue(chunk);
+        toSave.Enqueue(new() { chunk = chunk, realmId = realmId});
         if (SavingTask == null)
         {
             SavingTask = Task.Run(SaveChunks);
         }
     }
 
-    void SaveChunks()
+    public static void Flush()
+    {
+        SavingTask?.Wait();
+    }
+
+    static void SaveChunks()
     {
         while(toSave.TryDequeue(out var c))
         {
-            if (!Directory.Exists(DirectoryPath))
+            if (!Directory.Exists(DirectoryPath(c.realmId)))
             {
-                Directory.CreateDirectory(DirectoryPath);
+                Directory.CreateDirectory(DirectoryPath(c.realmId));
             }
-            var json = "";// JsonConvert.SerializeObject(c.blocks, settings);
-            File.WriteAllTextAsync(ChunkPath(c.ChunkPos), json);
+            var chunkPath = ChunkPath(c.realmId, c.chunk.ChunkPos);
+            Debug.Log("Saving to " + chunkPath);
+            try
+            {
+                var json = JsonConvert.SerializeObject(c.chunk, settings);
+                File.WriteAllTextAsync(chunkPath, json);
+            } 
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
         }
         SavingTask = null;
+    }
+
+    public static ChunkLoadRequest LoadChunks(string realmId, NativeList<int2> chunks)
+    {
+        var realmData = new RealmData(WorldSettings.ChunkWidth, chunks.Length);
+        var request = new ChunkLoadRequest()
+        {
+            realmId = realmId,
+            realmData = realmData,
+            chunks = chunks,
+        };
+        request.LoadTask = Task.Run(() => { LoadChunks(request); });
+        return request;
+    }
+
+    struct ChunkSaveRequest
+    {
+        public Chunk chunk;
+        public string realmId;
+    }
+
+    public struct ChunkLoadRequest : IChunkLoadRequest
+    {
+        public string realmId;
+
+        public NativeList<int2> chunks { get; set; }
+        public RealmData realmData { get; set; }
+        public Task LoadTask;
+
+        public bool isComplete => LoadTask.IsCompleted;
+
+        public void Complete()
+        {
+            LoadTask.Wait();
+        }
+
+        public void Dispose()
+        {
+            chunks.Dispose();
+        }
     }
 }

@@ -31,6 +31,7 @@ public class Realm
 
     public string name;
     public ChunkGenerator Generator;
+    public bool Save;
 
     [Header("Realm Settings")]
     public RealmBiomeInfo BiomeInfo;
@@ -38,7 +39,7 @@ public class Realm
 
     HashSet<Vector2Int> RequestedChunks = new();
     List<Vector2Int> DropChunks = new();
-    List<ChunkGenRequest> GenRequests = new();
+    List<IChunkLoadRequest> GenRequests = new();
     List<Vector2Int> NeedsInitialization = new();
     Dictionary<Vector2Int, Chunk> LoadedChunks = new Dictionary<Vector2Int, Chunk>();
 
@@ -75,10 +76,20 @@ public class Realm
         tickJobInfo = ChunkTick.ScheduelTick(tickJobInfo, playerCurrentChunk, realmData);
          
         ReadDependencies = frameUpdatedChunks.Dispose(JobHandle.CombineDependencies(lightJobInfo.jobHandle, tickJobInfo.job, EntityContainer.AIManager.RunPathfinding()));
+
+        foreach (var c in ToSave)
+        {
+            if (LoadedChunks.TryGetValue(c, out var chunk))
+            {
+                ChunkSaver.SaveChunk(name, chunk);
+            }
+        }
+        ToSave.Clear();
     }
 
     public void LateStep()
     {
+        ChunkSaver.Flush();
         var prof = p_LateStep.Auto();
         var updates = new NativeQueue<LightUpdateInfo>(Allocator.TempJob);
 
@@ -122,8 +133,8 @@ public class Realm
             return default;
         }
 
-        var complete = new List<ChunkGenRequest>();
-        var notCompleted = new List<ChunkGenRequest>();
+        var complete = new List<IChunkLoadRequest>();
+        var notCompleted = new List<IChunkLoadRequest>();
         foreach(var request in GenRequests)
         {
             if (request.isComplete)
@@ -199,23 +210,41 @@ public class Realm
     {
         var curDesiredChunks = new HashSet<Vector2Int>(Utilities.Spiral(curChunk, (uint)WorldSettings.ChunkGenDistance));
         var newRequestedChunks = new NativeList<int2>(10, Allocator.Persistent);
-        foreach(var chunk in curDesiredChunks)
+        var toLoadFromFileChunks = new NativeList<int2>(10, Allocator.Persistent);
+        foreach (var chunk in curDesiredChunks)
         {
             if (!LoadedChunks.ContainsKey(chunk) && !RequestedChunks.Contains(chunk))
             {
-                newRequestedChunks.Add(chunk.ToInt());
+                RequestedChunks.Add(chunk);
+                if (Save && ChunkSaver.HasSavedVersion(name, chunk))
+                {
+                    toLoadFromFileChunks.Add(chunk.ToInt());
+                }
+                else
+                {
+                    newRequestedChunks.Add(chunk.ToInt());
+                }
             }
         }
 
         if (newRequestedChunks.Length > 0)
         {
-            GenRequests.Add(new ChunkGenRequest(newRequestedChunks, Generator, RequestedChunks, new() { BiomeInfo = BiomeInfo, StructureInfo = StructureInfo }));
+            GenRequests.Add(new ChunkGenRequest(newRequestedChunks, Generator, new() { BiomeInfo = BiomeInfo, StructureInfo = StructureInfo }));
         }
         else
         {
             newRequestedChunks.Dispose();
         }
-        
+
+        if (toLoadFromFileChunks.Length > 0)
+        {
+            GenRequests.Add(ChunkSaver.LoadChunks(name, toLoadFromFileChunks));
+        }
+        else
+        {
+            toLoadFromFileChunks.Dispose();
+        }
+
         foreach (var key in LoadedChunks.Keys)
         {
             if (!curDesiredChunks.Contains(key))
@@ -280,12 +309,25 @@ public class Realm
         OnChunkChanged?.Invoke(chunk);
     }
 
+    private List<Vector2Int> ToSave = new();
+
     private void Chunk_OnBlockChanged(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice block, BlockItemStack state)
     {
+        if (Save)
+        {
+            ToSave.Add(ChunkPos);
+        }
         OnBlockChanged?.Invoke(chunk, BlockPos, ChunkPos, block, state);
     }
 
-    private void Chunk_OnBlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos) => OnBlockRefreshed?.Invoke(chunk, BlockPos, ChunkPos);
+    private void Chunk_OnBlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos)
+    {
+        if (Save)
+        {
+            ToSave.Add(ChunkPos);
+        }
+        OnBlockRefreshed?.Invoke(chunk, BlockPos, ChunkPos);
+    }
 
     public T PerformChunkAction<T>(Vector2Int position, Func<Chunk, Vector2Int, T> action , bool useProxy = true)
     {
@@ -383,39 +425,25 @@ public class Realm
         return false;
     }
 
-    struct ChunkGenRequest
+    struct ChunkGenRequest : IChunkLoadRequest
     {
-        NativeList<int2> chunks;
+        public NativeList<int2> chunks { get; private set; }
+
         JobHandle handle;
-        RealmData realmData;
+        public RealmData realmData { get; private set; }
 
         public bool isComplete => handle.IsCompleted;
 
-        public ChunkGenRequest(NativeList<int2> chunks, ChunkGenerator generator, HashSet<Vector2Int> requestedChunks, RealmInfo realmInfo)
+        public ChunkGenRequest(NativeList<int2> chunks, ChunkGenerator generator, RealmInfo realmInfo)
         {
             this.chunks = chunks;
             realmData = default;
             (realmData, handle) = generator.GetGenJob(WorldSettings.ChunkWidth, this.chunks, realmInfo);
-            foreach(var c in chunks)
-            {
-                requestedChunks.Add(c.ToVector());
-            }
-        } 
+        }
 
-        public JobHandle CopyAndDispose(RealmData targetData, HashSet<Vector2Int> requestedChunks, List<Vector2Int> needInitialization, NativeList<int2> updatedChunks, JobHandle dep)
+        public void Complete()
         {
-            if (!handle.IsCompleted) throw new InvalidOperationException("Only copy once handle is completed");
             handle.Complete();
-            var copyJob = targetData.CopyFrom(realmData, chunks, dep);
-            foreach (var c in chunks)
-            {
-                updatedChunks.Add(c);
-                var v = c.ToVector();
-                requestedChunks.Remove(v);
-                needInitialization.Add(v);
-            }
-
-            return JobHandle.CombineDependencies(realmData.Dispose(copyJob), chunks.Dispose(copyJob)); 
         }
 
         public void Dispose()
@@ -445,4 +473,32 @@ public class Realm
             Gizmos.DrawWireCube((key * chunkWidth + chunkWidth / 2 * Vector2Int.one).ToVector3Int(), chunkWidth * Vector3.one);
         }
     }
+}
+
+public interface IChunkLoadRequest
+{
+    public bool isComplete { get; }
+
+    public RealmData realmData { get; }
+    public NativeList<int2> chunks { get; }
+
+    public JobHandle CopyAndDispose(RealmData targetData, HashSet<Vector2Int> requestedChunks, List<Vector2Int> needInitialization, NativeList<int2> updatedChunks, JobHandle dep)
+    {
+        if (!isComplete) throw new InvalidOperationException("Only copy once handle is completed");
+        Complete();
+        var copyJob = targetData.CopyFrom(realmData, chunks, dep);
+        foreach (var c in chunks)
+        {
+            updatedChunks.Add(c);
+            var v = c.ToVector();
+            requestedChunks.Remove(v);
+            needInitialization.Add(v);
+        }
+
+        return JobHandle.CombineDependencies(realmData.Dispose(copyJob), chunks.Dispose(copyJob));
+    }
+
+    public void Complete();
+
+    public void Dispose();
 }

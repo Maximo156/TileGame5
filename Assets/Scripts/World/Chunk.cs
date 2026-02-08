@@ -1,12 +1,9 @@
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using System.Linq;
 using System.Threading.Tasks;
-using Unity.Collections;
 using NativeRealm;
 using BlockDataRepos;
-using UnityEngine.Assertions.Must;
 
 public partial class Chunk
 {
@@ -16,23 +13,20 @@ public partial class Chunk
     public delegate void BlockRefreshed(Chunk chunk, Vector2Int BlockPos, Vector2Int ChunkPos);
     public event BlockRefreshed OnBlockRefreshed;
 
-    public delegate void LightingUpdated(Dictionary<Vector3Int, int> updated);
-    //public event LightingUpdated OnLightingUpdated;
-
     public delegate void ChunkChanged(Chunk chunk);
     public event ChunkChanged OnChunkChanged;
 
     public Vector2Int ChunkPos;
-    public Vector2Int BlockPos => ChunkPos * width; 
+    public Vector2Int BlockPos => ChunkPos * width;
 
-    Dictionary<Vector2Int, BlockItemStack> BlockItems {  get; set; }
-    Dictionary<Vector2Int, BlockState> BlockStates {  get; set; }
+    public Dictionary<Vector2Int, BlockItemStack> BlockItems {  get; set; }
+    public Dictionary<Vector2Int, BlockState> BlockStates {  get; set; }
 
     readonly int width;
 
     Realm parentRealm;
 
-    ChunkData data;
+    public ChunkData data;
     public Chunk(Vector2Int chunkPos, int width, ChunkData data, Realm parentRealm)
     {
         this.width = width;
@@ -390,7 +384,6 @@ public partial class Chunk
     void ChangedSlice(Vector2Int worldPosition, NativeBlockSlice slice, BlockItemStack state)
     {
         var wToL = WorldToLocal(worldPosition);
-        //curGenerator.SaveChunk(this);
         Debug.LogWarning("Fix chunk saving");
         OnBlockChanged?.Invoke(this, worldPosition, ChunkPos, slice, state);
         RegenCache();
@@ -398,7 +391,6 @@ public partial class Chunk
 
     void RefreshBlock(Vector2Int worldPosition)
     {
-        //curGenerator.SaveChunk(this);
         Debug.LogWarning("Fix chunk saving");
         OnBlockRefreshed?.Invoke(this, worldPosition, ChunkPos);
     }

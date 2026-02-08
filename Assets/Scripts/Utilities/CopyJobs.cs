@@ -18,3 +18,17 @@ public partial struct ArrayCopyJob<T> : IJob where T : unmanaged
         dest.CopyFrom(src);
     }
 }
+
+[BurstCompile]
+public partial struct SliceCopyJob<T> : IJob where T : unmanaged
+{
+    [ReadOnly]
+    public NativeSlice<T> src;
+
+    [WriteOnly]
+    public NativeSlice<T> dest;
+    public void Execute()
+    {
+        dest.CopyFrom(src);
+    }
+}
