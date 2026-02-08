@@ -4,6 +4,9 @@ using UnityEngine;
 using System;
 using System.Linq;
 using Random = UnityEngine.Random;
+using NativeRealm;
+using BlockDataRepos;
+using Unity.Mathematics;
 
 public static class Utilities
 {
@@ -172,7 +175,7 @@ public static class Utilities
 
     public static Vector2Int? FindNearestEmptyBlock(Vector2Int start, int limit = 100)
     {
-        var width = ChunkManager.ChunkWidth;
+        var width = WorldSettings.ChunkWidth;
         var curChunkPos = GetChunk(start, width);
         ChunkManager.TryGetChunk(curChunkPos, out var curChunk);
         return BFS(start, pos =>
@@ -184,20 +187,20 @@ public static class Utilities
                 ChunkManager.TryGetChunk(curChunkPos, out curChunk);
             }
             return curChunk?.GetBlock(pos);
-        }, slice => slice.WallBlock == null, _ => false, out var _, limit)?.position;
+        }, slice => slice?.wallBlock == 0, _ => false, out var _, limit)?.position;
     }
 
     public static HashSet<Vector2Int> FindReachableBlocks(Vector2Int start, int reach)
     {
-        var width = ChunkManager.ChunkWidth;
+        var width = WorldSettings.ChunkWidth;
         var curChunkPos = GetChunk(start, width);
         ChunkManager.TryGetChunk(curChunkPos, out var curChunk);
-        BFS(start, pos => pos, _ => false, pos => Vector2Int.Distance(pos, start) > reach || GetBlock(pos)?.Walkable != true, out var reachable, 10000);
+        BFS(start, pos => pos, _ => false, pos => Vector2Int.Distance(pos, start) > reach || GetBlock(pos)?.GetMovementInfo().walkable != true, out var reachable, 10000);
         
         Debug.Log($"Count: {reachable.Count} Max dist: {Vector2Int.Distance(start, reachable.MaxBy(v => Vector2Int.Distance(v, start)))}");
         return reachable;
 
-        BlockSlice GetBlock(Vector2Int pos)
+        NativeBlockSlice? GetBlock(Vector2Int pos)
         {
             var tmp = GetChunk(pos, width);
             if (curChunkPos != tmp)
@@ -235,12 +238,42 @@ public static class Utilities
             .ToList();
     }
 
+    public static Block GetActionableBlock(bool roof, NativeBlockSlice slice)
+    {
+        return roof ? BlockDataRepo.GetBlock<Block>(slice.roofBlock): (BlockDataRepo.GetBlock<Block>(slice.wallBlock) ?? BlockDataRepo.GetBlock<Block>(slice.groundBlock));
+    }
+
+    public static bool CheckChunkBoundry(int x, int y, int ChunkWidth)
+    {
+        return x >= 0 && y >= 0 && x < ChunkWidth && y < ChunkWidth;
+    }
+
     public static Vector2Int[] QuadAdjacent =
     {
         Vector2Int.up,
         Vector2Int.right,
         Vector2Int.down,
         Vector2Int.left
+    };
+
+    public static int2[] QuadAdjacentInt =
+    {
+        Vector2Int.up.ToInt(),
+        Vector2Int.right.ToInt(),
+        Vector2Int.down.ToInt(),
+        Vector2Int.left.ToInt()
+    };
+
+    public static int2[] OctAdjacentInt =
+    {
+        Vector2Int.up.ToInt(),
+        (Vector2Int.up + Vector2Int.right).ToInt(),
+        (Vector2Int.up + Vector2Int.left).ToInt(),
+        Vector2Int.right.ToInt(),
+        Vector2Int.down.ToInt(),
+        (Vector2Int.down + Vector2Int.right).ToInt(),
+        (Vector2Int.down + Vector2Int.left).ToInt(),
+        Vector2Int.left.ToInt()
     };
 
     public static Vector2Int[] OctAdjacent =

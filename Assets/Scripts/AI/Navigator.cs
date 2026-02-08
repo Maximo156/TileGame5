@@ -79,7 +79,7 @@ public class Navigator : MonoBehaviour
         });
     }
 
-    BlockSlice Target;
+    //BlockSlice Target;
     public void Move(float deltaTime)
     {
         if (CancellationToken is not null) return;
@@ -89,20 +89,20 @@ public class Navigator : MonoBehaviour
             return;
         }
         var next = LatestResult.path.Peek();
-        if(Target is null)
+        /*if(Target is null)
         {
-            ChunkManager.TryGetBlock(next, out Target);
+            //ChunkManager.TryGetBlock(next, out Target);
         }
-        if(Target is null || !Target.Walkable || (Target.WallBlock is Door && !CanUseDoors))
+        /*if(Target is null || !Target.Walkable || (Target.WallBlock is Door && !CanUseDoors))
         {
             StartPathFinding();
             return;
-        }
+        }*/
 
         var difference = (Utilities.GetBlockCenter(next).ToVector3() - transform.position);
         var dir = difference.normalized;
 
-        transform.position = transform.position + (Target.MovementSpeed * MovementSpeed * dir * deltaTime);
+        transform.position = transform.position; // + (Target.MovementSpeed * MovementSpeed * dir * deltaTime);
 
         if (difference.magnitude < 0.2)
         {

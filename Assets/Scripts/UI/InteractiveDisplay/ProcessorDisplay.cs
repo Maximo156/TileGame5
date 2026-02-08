@@ -1,3 +1,4 @@
+using NativeRealm;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,16 +25,15 @@ public class ProcessorDisplay : InteractiveDislay
     }
 
     ProcessingBlockState curState;
-    public override void DisplayInventory(Vector2Int worldPos, BlockSlice slice, IInventoryContainer otherInventory)
+    public override void DisplayInventory(Vector2Int worldPos, Wall _, BlockState state, IInventoryContainer otherInventory)
     {
-        curState = slice.State as ProcessingBlockState;
+        curState = state as ProcessingBlockState;
         curState.OnStateChange += SetSliders;
         Render();
     }
 
     public void Render()
     {
-        print("attach");
         Inputs.AttachInv(curState.inputs);
         Outputs.AttachInv(curState.outputs);
         Fuels.AttachInv(curState.fuels);

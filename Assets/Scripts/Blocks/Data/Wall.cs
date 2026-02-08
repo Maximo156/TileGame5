@@ -1,3 +1,4 @@
+using BlockDataRepos;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,5 +18,5 @@ public class Wall : Block
 
     public bool Walkable = false;
 
-    public List<Ground> MustBePlacedOn;  
+    public List<Ground> MustBePlacedOn = new();
 }

@@ -33,10 +33,10 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
 
     public void Start()
     {
-        var useDefault = WorldSettings.UseDefaultInventory;
+        var useDefault = GameSettings.UseDefaultInventory;
         if (useDefault)
         {
-            HotbarInv.AddItems(WorldSettings.StartingHotbar);
+            HotbarInv.AddItems(GameSettings.StartingHotbar);
         }
         else
         {

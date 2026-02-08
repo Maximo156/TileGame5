@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using NativeRealm;
+using BlockDataRepos;
+//using Unity.Collections;
+using Unity.Mathematics;
 
 public static class Extensions
 {
@@ -54,6 +58,19 @@ public static class Extensions
     public static TOut SelectRandomWeighted<TOut, TIn>(this IEnumerable<TIn> input, Func<TIn, float> weight, Func<TIn, TOut> value, System.Random random)
     {
         if (random == null) return SelectRandomWeighted(input, weight, value);
+        if (!input.Any()) return default;
+        float rand = (float)random.NextDouble() * input.Sum(i => weight(i));
+        float total = 0;
+        foreach (var val in input)
+        {
+            total += weight(val);
+            if (rand < total) return value(val);
+        }
+        return default;
+    }
+
+    public static TOut SelectRandomWeighted<TOut, TIn>(this IEnumerable<TIn> input, Func<TIn, float> weight, Func<TIn, TOut> value, Unity.Mathematics.Random random)
+    {
         if (!input.Any()) return default;
         float rand = (float)random.NextDouble() * input.Sum(i => weight(i));
         float total = 0;
@@ -167,5 +184,80 @@ public static class Extensions
         {
             return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
         }
+    }
+
+    public static SliceMoveInfo GetMovementInfo(this NativeBlockSlice slice, BlockMovementInfo groundData, BlockMovementInfo wallData)
+    {
+        var speed = slice.isWater && slice.groundBlock == 0 ? 0.5f : (1 + groundData.movementSpeed + wallData.movementSpeed);
+        return new()
+        {
+            movementSpeed = speed,
+            walkable = slice.wallBlock == 0 || wallData.walkable,
+            door = wallData.door
+        };
+    }
+
+    public static SliceMoveInfo GetMovementInfo(this NativeBlockSlice slice, NativeBlockDataRepo dataRepo)
+    {
+        return slice.GetMovementInfo(dataRepo.GetMovementInfo(slice.groundBlock), dataRepo.GetMovementInfo(slice.wallBlock));
+    }
+
+    public static SliceMoveInfo GetMovementInfo(this NativeBlockSlice slice)
+    {
+        return slice.GetMovementInfo(BlockDataRepo.NativeRepo);
+    }
+
+    public static byte ToOffsetStateEncoding(this Vector2Int offset)
+    {
+        var offsetX = offset.x + 8;
+        var offsetY = offset.y + 8;
+        var res = (byte)(((0b1111 & offsetX) << 4) | (0b1111 & offsetY));
+        return res;
+    }
+
+    public static Vector2Int ToOffsetState(this byte state)
+    {
+        var x = ((0b11110000 & state) >> 4) - 8;
+        var y = (0b1111 & state) - 8;
+        var res = new Vector2Int(x, y);
+        return res;
+    }
+
+    public static Vector2Int GetProxyOffset(this NativeBlockSlice slice, NativeBlockDataRepo dataRepo)
+    {
+        if (slice.wallBlock != dataRepo.ProxyId) return Vector2Int.zero;
+        return slice.simpleBlockState.ToOffsetState();
+    }
+
+    public static Vector2Int GetProxyOffset(this NativeBlockSlice slice)
+    {
+        return slice.GetProxyOffset(BlockDataRepo.NativeRepo);
+    }
+
+    public static int2 ToInt(this Vector2Int vector)
+    {
+        return math.int2(vector.x, vector.y);
+    }
+
+    public static Vector2Int ToVector(this int2 i)
+    {
+        return new Vector2Int(i.x, i.y);
+    }
+
+    public static T GetElement2d<T>(this IList<T> array, int x, int y, int chunkWidth)
+    {
+        return array[x * chunkWidth + y];
+    }
+
+    public static void SetElement2d<T>(this IList<T> array, int x, int y, int chunkWidth, T item)
+    {
+        array[x * chunkWidth + y] = item;
+    }
+
+    public static bool Intersects(this BoundsInt a, BoundsInt b)
+    {
+        return (a.xMin < b.xMax) && (a.xMax > b.xMin) &&
+            (a.yMin < b.yMax) && (a.yMax > b.yMin) &&
+            (a.zMin < b.zMax) && (a.zMax > b.zMin);
     }
 }

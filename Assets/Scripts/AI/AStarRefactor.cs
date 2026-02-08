@@ -37,9 +37,9 @@ namespace AStarSharp2
             Node node;
             if(!cache.TryGetValue(pos, out node))
             {
-                bool door = ChunkManager.TryGetBlock(pos, out var block) && block.WallBlock is Door;
-                var weight = block?.MovementSpeed ?? 0;
-                node = new Node(pos, block?.Walkable ?? false, door, weight);
+                //bool door = ChunkManager.TryGetBlock(pos, out var block) && block.WallBlock is Door;
+                //var weight = block?.MovementSpeed ?? 0;
+                //node = new Node(pos, block?.Walkable ?? false, door, weight);
                 cache[pos] = node;
             }
             return node;

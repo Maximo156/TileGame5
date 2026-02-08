@@ -1,3 +1,4 @@
+using BlockDataRepos;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,19 +16,5 @@ public class ProxyBlock : Wall
             }
             return instance;
         }
-    }
-
-    public override BlockState GetState()
-    {
-        return new ProxyState();
-    }
-}
-
-public class ProxyState : BlockState
-{
-    public Vector2Int ActualPos { get; set; }
-    public override void CleanUp(Vector2Int pos)
-    {
-        
     }
 }

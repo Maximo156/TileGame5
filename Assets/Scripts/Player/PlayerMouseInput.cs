@@ -1,3 +1,5 @@
+using BlockDataRepos;
+using NativeRealm;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +11,7 @@ public class PlayerMouseInput : MonoBehaviour
     public delegate void AttackInterupted();
     public static event AttackInterupted OnAttackInterupted;
 
-    public delegate void BlockInterfaced(Vector2Int pos, BlockSlice slice, IInventoryContainer inv);
+    public delegate void BlockInterfaced(Vector2Int pos, Wall InterfacedBlock, BlockState state, IInventoryContainer inv);
     public static event BlockInterfaced OnBlockInterfaced;
 
     public delegate void InterfaceRangeExceeded();
@@ -42,13 +44,6 @@ public class PlayerMouseInput : MonoBehaviour
     public void Update()
     {
         overGUI = events.IsPointerOverGameObject();
-        if (Keyboard.current.tKey.IsPressed())
-        {
-            var biomeInfo = ChunkManager.CurRealm.Generator.biomes.GetBiome(Vector2Int.FloorToInt(transform.position.ToVector2()));
-            var worldInfo = ChunkManager.CurRealm.Generator.biomes.GetWorldInfo(Vector2Int.FloorToInt(transform.position.ToVector2()));
-
-            print((biomeInfo != null ? biomeInfo.name : "Water") +" " + worldInfo);
-        }
         if (attackNextFrame)
         {
             attackNextFrame = false;
@@ -141,10 +136,10 @@ public class PlayerMouseInput : MonoBehaviour
         {
             return true;
         }
-        if(ChunkManager.TryGetBlock(mouseBlockPosition, out var slice) && slice.WallBlock is IInterfaceBlock)
+        if(ChunkManager.TryGetBlockAndState(mouseBlockPosition, out var slice, out var state) && BlockDataRepo.TryGetBlock<Wall>(slice.wallBlock, out var wallBlock) && wallBlock is IInterfaceBlock)
         {
             CurInteractPos = CurInteractPos == mouseBlockPosition ? null : mouseBlockPosition;
-            OnBlockInterfaced?.Invoke(mouseBlockPosition, slice, playerInventory);
+            OnBlockInterfaced?.Invoke(mouseBlockPosition, wallBlock, state, playerInventory);
             return true;
         }
         return false;

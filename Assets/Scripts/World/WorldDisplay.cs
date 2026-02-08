@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using NativeRealm;
+using BlockDataRepos;
 
 public class WorldDisplay : MonoBehaviour
 {
@@ -20,14 +22,21 @@ public class WorldDisplay : MonoBehaviour
 
     Stack<PlacedItem> available = new Stack<PlacedItem>();
     Dictionary<Vector2Int, PlacedItem[]> placed = new Dictionary<Vector2Int, PlacedItem[]>();
+    TileBase[] nullBuffer;
+
 
     private void Start()
     {
         ChunkManager.OnRealmChange += Clear;
+        var chunkWidth = WorldSettings.ChunkWidth;
+        nullBuffer = Enumerable.Repeat<TileBase>(null, chunkWidth* chunkWidth).ToArray();
     }
 
     public IEnumerator RenderChunk(TileDisplayCache tileDisplayInfo, bool clear)
     {
+        var chunkWidth = WorldSettings.ChunkWidth;
+        var chunkPos = tileDisplayInfo.chunkWorldPos;
+        var bounds = new BoundsInt(chunkPos.x, chunkPos.y, 0, chunkWidth, chunkWidth, 1);
         Water.SetTiles(tileDisplayInfo.WaterPositions, !clear);
         yield return new WaitForSeconds(layerLoadTime);
         Stone.SetTiles(tileDisplayInfo.StonePositions, !clear);
@@ -36,9 +45,9 @@ public class WorldDisplay : MonoBehaviour
         yield return new WaitForSeconds(layerLoadTime);
         Darkness.SetTiles(tileDisplayInfo.DarknessPositions, !clear);
         yield return new WaitForSeconds(layerLoadTime);
-        Ground.SetTiles(tileDisplayInfo.GroundTiles.positions, !clear ? tileDisplayInfo.GroundTiles.tiles : Enumerable.Repeat<TileBase>(null, tileDisplayInfo.GroundTiles.tiles.Length).ToArray());
+        Ground.SetTilesBlock(bounds, !clear ? tileDisplayInfo.GroundTiles : nullBuffer);
         yield return new WaitForSeconds(layerLoadTime);
-        Wall.SetTiles(tileDisplayInfo.WallTiles.positions, !clear? tileDisplayInfo.WallTiles.tiles : Enumerable.Repeat<TileBase>(null, tileDisplayInfo.GroundTiles.tiles.Length).ToArray());
+        Wall.SetTilesBlock(bounds, !clear ? tileDisplayInfo.WallTiles : nullBuffer);
         yield return new WaitForSeconds(layerLoadTime);
         for(int i = 0; i < tileDisplayInfo.PlacedItems.positions.Length; i++)
         {
@@ -46,13 +55,15 @@ public class WorldDisplay : MonoBehaviour
         }
     }
 
-    public void UpdateBlock(Vector2Int pos, BlockSlice block)
+    public void UpdateBlock(Vector2Int pos, NativeBlockSlice block, BlockItemStack state)
     {
+        var groundBlock = BlockDataRepo.GetBlock<Ground>(block.groundBlock);
+        var wallBlock = BlockDataRepo.GetBlock<Wall>(block.wallBlock);
         var pos3 = pos.ToVector3Int();
-        Roof.SetTile(pos3, block.LightLevel, block.RoofBlock is not null);
-        Ground.SetTile(pos3, block.GroundBlock?.Display);
-        Wall.SetTile(pos3, block.WallBlock?.Display);
-        UpdateItems(pos, block.PlacedItems);
+        Roof.SetTile(pos3, block.lightLevel, block.roofBlock != 0);
+        Ground.SetTile(pos3, groundBlock?.Display);
+        Wall.SetTile(pos3, wallBlock?.Display);
+        UpdateItems(pos, state?.placedItems);
     }
 
     public void RefreshTile(Vector2Int pos)

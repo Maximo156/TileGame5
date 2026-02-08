@@ -10,18 +10,13 @@ public partial class Chunk
 {
     public HashSet<IAI> ais = new();
     GameObject EntityContainer;
-    Transform parent;
-    public void SetParent(Transform parent)
-    {
-        this.parent = parent;
-    }
 
     public void AddChild(IAI ai)
     {
         if(EntityContainer == null)
         {
             EntityContainer = new GameObject($"{ChunkPos} Container");
-            EntityContainer.transform.parent = parent;
+            EntityContainer.transform.parent = parentRealm.EntityContainer.transform;
             EnableContainer(false);
         }
         ais.Add(ai);
@@ -42,7 +37,7 @@ public partial class Chunk
 
     public bool SpawnAI()
     {
-        var diff = WorldSettings.AnimalsPerChunk - ais.Count(ai => ai.Natural);
+        var diff = GameSettings.AnimalsPerChunk - ais.Count(ai => ai.Natural);
         var naturalSpawned = 0;
         var hostileSpawned = 0;
         if (diff > 0)
@@ -57,7 +52,7 @@ public partial class Chunk
 
         if (DayTime.dayTime.IsNight)
         {
-            var hostileDif = WorldSettings.HostilesPerChunk - ais.Count(ai => ai.Hostile);
+            var hostileDif = GameSettings.HostilesPerChunk - ais.Count(ai => ai.Hostile);
             if (hostileDif > 0)
             {
                 int tries = 0;
@@ -78,7 +73,7 @@ public partial class Chunk
         {
             return 0;
         }
-        var biome = curGenerator.biomes.GetBiome(BlockPos + pos.Value);
+        var biome = parentRealm.BiomeInfo.GetBiome(BlockPos + pos.Value);
         if(biome == null)
         {
             return 0;
@@ -94,6 +89,11 @@ public partial class Chunk
         return amount;
     }
 
+    public void Drop()
+    {
+        Object.Destroy(EntityContainer);
+    }
+
     Vector2Int? FindOpenBlock()
     {
         Vector2Int? pos;
@@ -106,12 +106,12 @@ public partial class Chunk
                 {
                     if (loc.x < 0 || loc.x >= width || loc.y < 0 || loc.y >= width)
                     {
-                        return null;
+                        return 0;
                     }
-                    return blocks[loc.x, loc.y];
+                    return data.GetWall(loc.x, loc.y);
                 },
-                slice => slice != null && slice.WallBlock == null,
-                slice => slice == null,
+                wall => wall != 0,
+                wall => wall != 0,
                 out _,
                 100)?.position;
         } while (pos != null && count <= 3);

@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,6 +37,7 @@ public class BuildingBehaviour : RangedUseBehavior, IGridSource, IStatefulItemBe
 
 public class BuildingBehaviourState : ItemBehaviourState, IGridClickListener, IStateStringProvider
 {
+    [JsonIgnore]
     public BlockRecipe selectedRecipe;
 
     public void OnClick(IGridItem item)

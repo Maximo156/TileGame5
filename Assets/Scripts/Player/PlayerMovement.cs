@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour, IHittable
     // Update is called once per frame
     void FixedUpdate()
     {
-        var curSpeed = rb2d.velocity.magnitude;
+        var curSpeed = rb2d.linearVelocity.magnitude;
         if (movementDir.magnitude > 0 && curSpeed >= 0 && hitTimer?.Expired != false)
         {
             oldMovementDir = movementDir;
@@ -50,9 +50,9 @@ public class PlayerMovement : MonoBehaviour, IHittable
         }
         var modifier = useModifier ? ChunkManager.GetMovementSpeed(Vector3Int.FloorToInt(transform.position).ToVector2Int()) : 1;
         curSpeed = Mathf.Clamp(curSpeed, 0, speed * modifier);
-        rb2d.velocity = oldMovementDir * curSpeed;
+        rb2d.linearVelocity = oldMovementDir * curSpeed;
 
-        var CurChunk = Vector2Int.FloorToInt(new Vector2(transform.position.x, transform.position.y) / ChunkManager.ChunkWidth);
+        var CurChunk = Vector2Int.FloorToInt(new Vector2(transform.position.x, transform.position.y) / WorldSettings.ChunkWidth);
         if (CurChunk != LastChunk)
         {
             LastChunk = CurChunk;

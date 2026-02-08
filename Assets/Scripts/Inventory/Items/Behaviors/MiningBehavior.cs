@@ -1,3 +1,4 @@
+using BlockDataRepos;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,10 +18,8 @@ public class MiningBehavior : RangedUseBehavior, IStatefulItemBehaviour
         }
         if (info.Hit(targetBlock, roof, BlockDamage))
         {
-            if (ChunkManager.BreakBlock(targetBlock, roof) && useInfo.stack.GetState<DurabilityState>(out var durability))
-            {
-                return (true, true);
-            }
+            ChunkManager.BreakBlock(targetBlock, roof);
+            return (true, true);
         }
         return (true, false);
     }
@@ -34,7 +33,8 @@ public class MiningBehavior : RangedUseBehavior, IStatefulItemBehaviour
     {
         static BreakInfo singleton;
         public bool dirty = true;
-        Block block;
+        ushort block;
+        int hitsToBreak;
         int hits;
 
         BreakInfo()
@@ -46,11 +46,12 @@ public class MiningBehavior : RangedUseBehavior, IStatefulItemBehaviour
         {
             if (ChunkManager.TryGetBlock(pos, out var blockSlice))
             {
-                block = roof ? blockSlice.RoofBlock : (blockSlice.WallBlock as Block ?? blockSlice.GroundBlock);
-                if (block != null)
+                block = roof ? blockSlice.roofBlock : (blockSlice.wallBlock != 0 ? blockSlice.wallBlock : blockSlice.groundBlock);
+                if (block != 0)
                 {
                     dirty = false;
                     hits = 0;
+                    hitsToBreak = BlockDataRepo.GetBlock<Block>(block).HitsToBreak;
                 }
             }
         }
@@ -59,13 +60,13 @@ public class MiningBehavior : RangedUseBehavior, IStatefulItemBehaviour
         {
             if (!ChunkManager.TryGetBlock(pos, out var _) ||
                 dirty ||
-                block == null)
+                block == 0)
             {
                 SetDirty();
                 return false;
             }
             hits += Damage;
-            if (hits >= block.HitsToBreak)
+            if (hits >= hitsToBreak)
             {
                 dirty = true;
                 return true;

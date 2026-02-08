@@ -4,6 +4,9 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using Unity.Burst;
+using NativeRealm;
+using BlockDataRepos;
+using System.Runtime.CompilerServices;
 
 [BurstCompile]
 public struct AstarJob : IJob
@@ -59,9 +62,10 @@ public struct AstarJob : IJob
         }
     }
 
-    [NativeDisableParallelForRestriction]
     [ReadOnly]
-    public NativeHashMap<int2, BlockSliceData> BlockData;
+    public RealmData realmData;
+    [ReadOnly]
+    public NativeBlockDataRepo blockInfo;
 
 
     public int2 Start;
@@ -69,6 +73,7 @@ public struct AstarJob : IJob
     public bool canUseDoors;
     public int MaxDistance;
     public int ReachableRange;
+    public int chunkWidth;
 
     [WriteOnly]
     public NativeStack<float2> Path;
@@ -86,7 +91,7 @@ public struct AstarJob : IJob
 
         NativeList<Node> adjacencies = new NativeList<Node>(8, Allocator.Temp);
         OpenList.Add(start);
-        while (OpenList.Count() > 0)
+        while (OpenList.Count > 0)
         {
             Node current = RemoveAndReturnBest(ref OpenList);
             ClosedList.Add(current.Pos, current);
@@ -195,15 +200,28 @@ public struct AstarJob : IJob
     [BurstCompile]
     Node GetNode(int2 pos)
     {
-        Node node;
-        if (BlockData.TryGetValue(pos, out var info))
+        Node node = default;
+        var (chunkPos, localPos) = GetChunkAndPos(pos);
+        var x = localPos.x;
+        var y = localPos.y;
+        if (realmData.TryGetChunk(chunkPos, out var chunk))
         {
-            node = new Node(pos, info.Walkable, info.Door, math.max(info.MovementSpeed, 0.01f));
+            var slice = chunk.GetSlice(x, y);
+            var moveInfo = slice.GetMovementInfo(blockInfo);
+            var door = slice.wallBlock != 0 && blockInfo.GetMovementInfo(slice.wallBlock).door; 
+            node = new Node(pos, moveInfo.walkable, door, math.max(moveInfo.movementSpeed, 0.01f));
         }
         else
         {
             node = new Node(pos, false, false, 0.01f);
         }
         return node;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    (int2 chunk, int2 localPos) GetChunkAndPos(int2 pos)
+    {
+        var c = math.int2(math.floor(math.float2(pos) / chunkWidth));
+        return (c, pos - (c * chunkWidth));
     }
 }

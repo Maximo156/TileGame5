@@ -1,3 +1,4 @@
+using NativeRealm;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,11 +44,11 @@ public class ChunkRenderer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (rendering) return;
+        if (rendering.Count > 0) return;
         bool rendered = false;
         foreach(var chunkPos in toRender.OrderBy(c => Vector2.Distance(c, curChunk)).Where(c => c!= null)) 
         {
-            if (ChunkManager.TryGetChunk(chunkPos, out var chunkToRender))
+            if (ChunkManager.TryGetChunk(chunkPos, out var chunkToRender) && chunkToRender.tileDisplayCache != null)
             {
                 toRender.Remove(chunkPos);
                 if (!renderedChunks.ContainsKey(chunkPos))
@@ -122,20 +123,23 @@ public class ChunkRenderer : MonoBehaviour
         }
     }
 
-    bool rendering = false;
+    HashSet<Vector2Int> rendering = new();
     private IEnumerator UpdateChunkDisplay(Chunk chunk, bool load)
     {
-        rendering = true;
-        yield return Display.RenderChunk(chunk.GetBlocks(), !load);
-        chunk.UpdateLighting();
-        rendering = false;
+        rendering.Add(chunk.ChunkPos);
+        yield return Display.RenderChunk(chunk.tileDisplayCache, !load);
+        rendering.Remove(chunk.ChunkPos);
     }
 
-    public void PlaceTile(Chunk _, Vector2Int BlockPos, Vector2Int ChunkPos, BlockSlice slice)
+    public void PlaceTile(Chunk _, Vector2Int BlockPos, Vector2Int ChunkPos, NativeBlockSlice slice, BlockItemStack state)
     {
-        if(renderedChunks.ContainsKey(ChunkPos))
+        if (rendering.Contains(ChunkPos))
         {
-            Display.UpdateBlock(BlockPos, slice);
+            CallbackManager.AddCallback(() => PlaceTile(_, BlockPos, ChunkPos, slice, state));
+        }
+        else if(renderedChunks.ContainsKey(ChunkPos))
+        {
+            Display.UpdateBlock(BlockPos, slice, state);
         }
     }
 
@@ -151,7 +155,7 @@ public class ChunkRenderer : MonoBehaviour
     {
         if (ShowChunks && Application.isPlaying)
         {
-            var chunkWidth = ChunkManager.ChunkWidth;
+            var chunkWidth = WorldSettings.ChunkWidth;
 
             foreach (var kvp in renderedChunks)
             {

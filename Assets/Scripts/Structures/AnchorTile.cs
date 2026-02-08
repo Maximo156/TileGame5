@@ -8,17 +8,8 @@ public enum AnchorDirection
     Up,
     Right,
     Down,
-    Left
-}
-public class AnchorInfo
-{
-    public AnchorDirection direction;
-
-    public Vector2Int offset;
-
-    public int key;
-
-    public bool Lock;
+    Left,
+    None
 }
 
 [CreateAssetMenu(fileName = "NewAnchorTile", menuName = "Tile/AnchorTile", order = 1)]
@@ -32,6 +23,11 @@ public class AnchorTile : TileBase, ISpriteful
     public int key;
 
     public bool Lock;
+
+    private void OnValidate()
+    {
+        if(direction == AnchorDirection.None) direction = AnchorDirection.Up;
+    }
 
     public Sprite Sprite
     {

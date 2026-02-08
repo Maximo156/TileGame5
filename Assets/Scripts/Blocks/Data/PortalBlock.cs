@@ -1,3 +1,5 @@
+using NativeRealm;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +14,7 @@ public class PortalBlock : Wall, IInteractableBlock
     public string NewDim;
     public PortalBlock Exit;
 
-    public bool Interact(Vector2Int worldPos, BlockSlice slice)
+    public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice)
     {
         OnPortalBlockUsed?.Invoke(NewDim, Exit, worldPos);
         return false;

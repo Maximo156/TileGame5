@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using Unity.Collections;
 
 [RequireComponent(typeof(Tilemap))]
 public class LightTileMap : MonoBehaviour
@@ -59,15 +60,15 @@ public class LightTileMap : MonoBehaviour
 
     public Color GetScaledColor(int lightLevel)
     {
-        var alpha = 1 - Mathf.Clamp01((lightLevel / 2) * 1f / WorldSettings.MaxLightLevel);
+        var alpha = 1 - Mathf.Clamp01((lightLevel / 2) * 1f / GameSettings.MaxLightLevel);
         return new Color(1, 1, 1, alpha);
     }
 
-    void LightingUpdated(Dictionary<Vector3Int, int> updated)
+    void LightingUpdated(NativeArray<LightUpdateInfo> updated)
     {
-        foreach(var kvp in updated)
+        foreach (var info in updated)
         {
-            Map.SetColor(kvp.Key, GetScaledColor(kvp.Value));
+            Map.SetColor(info.pos.ToVector().ToVector3Int(), GetScaledColor(info.light));
         }
     }
 

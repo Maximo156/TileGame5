@@ -3,6 +3,7 @@ using System.Linq;
 using System;
 using UnityEngine;
 using EntityStatistics;
+using Newtonsoft.Json;
 
 public interface IInventory
 {
@@ -30,6 +31,8 @@ public class Inventory : IInventory, IInventoryContainer, IGridSource
     public event IInventory.ItemChanged OnItemChanged;
 
     protected int count;
+
+    [JsonProperty]
     protected ItemStack[] inv;
 
     protected void SetItem(ItemStack stack, int index)
@@ -59,6 +62,7 @@ public class Inventory : IInventory, IInventoryContainer, IGridSource
         return true;
     }
 
+    [JsonIgnore]
     public int Count => count;
 
     public Inventory()

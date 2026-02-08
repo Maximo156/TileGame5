@@ -1,31 +1,84 @@
+using NativeRealm;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Burst;
+using Unity.Collections;
+using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
 
+[BurstCompile]
 [CreateAssetMenu(fileName = "NewRiverGenerator", menuName = "Terrain/RiverGenerator", order = 1)]
 public class RiverGenerator : ChunkSubGenerator
 {
     public BaseSoundSettings RiverSound;
     public BaseSoundSettings Reducer;
     public float RiverCuttoff;
-    public override Task UpdateBlockSlices(BlockSlice[,] blocks, Vector2Int ChunkPosition, Vector2Int WorldPosition, BiomeInfo biomeInfo, System.Random rand, GenerationCache cache)
+
+    public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> originalChunks, NativeArray<int2> chunks, RealmData realmData, RealmInfo realmInfo, ref BiomeData biomeData, JobHandle dep = default)
     {
-        var riverArray = RiverSound.GetSoundArray(WorldPosition.x, WorldPosition.y, blocks.GetLength(0));
-        var reducerArray = Reducer.GetSoundArray(WorldPosition.x, WorldPosition.y, blocks.GetLength(0));
-        for(int x = 0; x < blocks.GetLength(0); x++)
+        var length = chunkWidth * chunkWidth;
+        var riverArray = new NativeArray<float>(length * chunks.Length, Allocator.Persistent);
+        var reducerArray = new NativeArray<float>(length * chunks.Length, Allocator.Persistent);
+
+        var riverJob = RiverSound.ScheduleSoundJob(chunks, riverArray, chunkWidth);
+        var reducerJob = Reducer.ScheduleSoundJob(chunks, reducerArray, chunkWidth);
+
+        var mainJob = new RiverJob()
         {
-            for (int y = 0; y < blocks.GetLength(0); y++)
+            realmData = realmData.AsParallelWriter(),
+            chunkWidth = chunkWidth,
+            RiverCuttoff = RiverCuttoff,
+            BiomeData = biomeData,
+            BiomeInfo = realmInfo.BiomeInfo.BiomeInfo,
+            RiverArrays = riverArray,
+            ReducerArrays = reducerArray,
+        }.Schedule(chunks.Length, 1, JobHandle.CombineDependencies(riverJob, reducerJob, dep));
+
+        return JobHandle.CombineDependencies(riverArray.Dispose(mainJob), reducerArray.Dispose(mainJob));
+    }
+
+    [BurstCompile]
+    partial struct RiverJob : IJobParallelFor
+    {
+        public int chunkWidth;
+        public float RiverCuttoff;
+        [ReadOnly]
+        public BiomeData BiomeData;
+        [ReadOnly]
+        public NativeBiomeInfo BiomeInfo;
+        [ReadOnly]
+        public NativeArray<float> RiverArrays;
+        [ReadOnly]
+        public NativeArray<float> ReducerArrays;
+
+        [WriteOnly]
+        [NativeDisableParallelForRestriction]
+        public RealmData.ParallelWriter realmData;
+
+        public void Execute(int index)
+        {
+            var chunkLength = chunkWidth * chunkWidth;
+            var data = realmData.GetChunk(index);
+            var riverArray = RiverArrays.GetChunk(index, chunkLength);
+            var reducerArray = ReducerArrays.GetChunk(index, chunkLength);
+            var heightMap = BiomeData.HeightMap.GetChunk(index, chunkLength);
+
+            for (int x = 0; x < chunkWidth; x++)
             {
-                if (biomeInfo.IsWallBiome(cache.HeightMap[x, y])) continue;
-                var riverSound = (1 - MathF.Abs(riverArray[x, y] - 0.5f)) - (reducerArray[x, y] * RiverCuttoff);
-                if(riverSound > 1-RiverCuttoff)
+                for (int y = 0; y < chunkWidth; y++)
                 {
-                    blocks[x, y] = new BlockSlice();
+                    if (BiomeInfo.TryGetWall(heightMap.GetElement2d(x, y, chunkWidth), out var _)) continue;
+                    var riverSound = (1 - MathF.Abs(riverArray.GetElement2d(x, y, chunkWidth) - 0.5f)) - (reducerArray.GetElement2d(x, y, chunkWidth) * RiverCuttoff);
+                    if (riverSound > 1 - RiverCuttoff)
+                    {
+                        data.InitializeSlice(x, y, new()
+                        {
+                            isWater = true,
+                        });
+                    }
                 }
             }
         }
-        return Task.CompletedTask;
     }
 }

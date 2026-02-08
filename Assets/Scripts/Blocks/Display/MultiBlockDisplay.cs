@@ -29,9 +29,9 @@ public class MultiBlockDisplay : TileBase, ISpriteful
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
         Vector2Int dir = Vector2Int.up;
-        if (ChunkManager.TryGetBlock(position.ToVector2Int(), out var slice) && slice.State is MultiBlockState multi)
+        if (ChunkManager.TryGetBlock(position.ToVector2Int(), out var slice))
         {
-            dir = multi.Dir;
+            dir = Utilities.QuadAdjacent[slice.simpleBlockState];
         }
         tileData.colliderType = Tile.ColliderType.Sprite;
         tileData.color = m_ColorOverride;

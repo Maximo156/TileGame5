@@ -1,3 +1,5 @@
+using BlockDataRepos;
+using NativeRealm;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +9,7 @@ using UnityEngine;
 public abstract class InteractiveDislay : MonoBehaviour
 {
     public abstract Type TypeMatch();
-    public abstract void DisplayInventory(Vector2Int worldPos, BlockSlice slice, IInventoryContainer otherInventory);
+    public abstract void DisplayInventory(Vector2Int worldPos, Wall interfacedBlock, BlockState state, IInventoryContainer otherInventory);
     public abstract void Detach();
 }
 
@@ -59,8 +61,8 @@ public class InteractiveDisplayController : MonoBehaviour
     }
 
     Vector2Int? curPos;
-    Block curBlock;
-    private void OnInteract(Vector2Int pos, BlockSlice slice, IInventoryContainer userInventory)
+    ushort curBlock;
+    private void OnInteract(Vector2Int pos, Wall interfacedBlock, BlockState state, IInventoryContainer userInventory)
     {
         if(curPos == pos)
         {
@@ -69,16 +71,16 @@ public class InteractiveDisplayController : MonoBehaviour
         }
         Detach();
         curPos = pos;
-        curBlock = slice.WallBlock;
+        curBlock = interfacedBlock.Id;
         gameObject.SetActive(true);
         bool found = false;
         foreach (var display in displays.Select(d => d.display))
         {
             display.gameObject.SetActive(false);
-            if (!found && display.TypeMatch().IsAssignableFrom(slice.WallBlock.GetType()))
+            if (!found && display.TypeMatch().IsAssignableFrom(interfacedBlock.GetType()))
             {
                 display.gameObject.SetActive(true);
-                display.DisplayInventory(pos, slice, userInventory);
+                display.DisplayInventory(pos, interfacedBlock, state, userInventory);
                 found = true;
             }
         }
@@ -92,9 +94,9 @@ public class InteractiveDisplayController : MonoBehaviour
         }
     }
 
-    private void BlockChanged(Chunk _, Vector2Int BlockPos, Vector2Int __, BlockSlice block)
+    private void BlockChanged(Chunk _, Vector2Int BlockPos, Vector2Int __, NativeBlockSlice block, BlockItemStack ___)
     {
-        if(BlockPos == curPos && curBlock != block.WallBlock)
+        if(BlockPos == curPos && curBlock != block.wallBlock)
         {
             Detach();
             Close();
@@ -113,7 +115,7 @@ public class InteractiveDisplayController : MonoBehaviour
     {
         gameObject.SetActive(false);
         curPos = null;
-        curBlock = null;
+        curBlock = 0;
         Detach();
     }
 }

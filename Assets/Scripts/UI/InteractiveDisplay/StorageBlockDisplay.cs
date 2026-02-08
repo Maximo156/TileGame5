@@ -1,3 +1,4 @@
+using NativeRealm;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ public class StorageBlockDisplay : InteractiveDislay
         return typeof(StorageBlock);
     }
 
-    public override void DisplayInventory(Vector2Int worldPos, BlockSlice slice, IInventoryContainer otherInventory)
+    public override void DisplayInventory(Vector2Int worldPos, Wall _, BlockState state, IInventoryContainer otherInventory)
     {
-        _attachedInv = (slice.State as StorageState).StoredItems;
+        _attachedInv = (state as StorageState).StoredItems;
         singleInventoryDisplay.AttachInv(_attachedInv);
     }
 

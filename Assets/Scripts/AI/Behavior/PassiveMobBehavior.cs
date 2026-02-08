@@ -56,7 +56,7 @@ public class PassiveMobBehaviour : BaseBehavior, IBehavior, IHittable
     {
         base.Awake();
         State = PassiveMobState.Wander;
-        inv = GameObject.FindObjectOfType<PlayerInventories>();
+        inv = FindAnyObjectByType<PlayerInventories>();
     }
 
     public override Vector2Int Step(float deltaTime)

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ITickableBlock
+public interface ITickableState
 {
-    public bool Tick(Vector2Int worlPosition, BlockSlice slice, System.Random rand);
+    public void Tick();
 }

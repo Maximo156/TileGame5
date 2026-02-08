@@ -1,3 +1,5 @@
+using BlockDataRepos;
+using NativeRealm;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,10 +39,10 @@ public class InfusionBlockDisplay : InteractiveDislay
 
     Vector2Int? WorldPos;
     InfusionBlock connectedBlock;
-    public override void DisplayInventory(Vector2Int worldPos, BlockSlice slice, IInventoryContainer otherInventory)
+    public override void DisplayInventory(Vector2Int worldPos, Wall interfacedBlock, BlockState _, IInventoryContainer otherInventory)
     {
         WorldPos = worldPos;
-        connectedBlock = slice.WallBlock as InfusionBlock;
+        connectedBlock = interfacedBlock as InfusionBlock;
     }
 
     public override Type TypeMatch()

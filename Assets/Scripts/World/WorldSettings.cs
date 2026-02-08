@@ -4,27 +4,19 @@ using UnityEngine;
 
 public class WorldSettings : MonoBehaviour
 {
-    public static int MaxLightLevel => instance.m_MaxLightLevel;
-    public static int AnimalsPerChunk => instance.m_AnimalsPerChunk;
-    public static int HostilesPerChunk => instance.m_HostilesPerChunk;
-    public static bool NaturalSpawn => instance.m_NaturalSpawn;
-    public static bool DontUseRecipeInputs => instance.m_DontUseRecipeInputs;
-    public static bool UseDefaultInventory => instance.m_UseDefaultInventory;
-    public static List<ItemStack> StartingHotbar => instance.m_StartingHotbar;
-
-
-
-    public int m_MaxLightLevel = 16;
-    public int m_AnimalsPerChunk = 5;
-    public int m_HostilesPerChunk = 5;
-    public bool m_NaturalSpawn = true;
-    public bool m_DontUseRecipeInputs = true;
-    public bool m_UseDefaultInventory = false;
-    public List<ItemStack> m_StartingHotbar = new();
-
     static WorldSettings instance;
-    // Start is called before the first frame update
-    void Awake()
+    public static int ChunkWidth => instance.m_ChunkWidth;
+    public static int ChunkGenDistance => instance.m_ChunkGenDistance;
+    public static int ChunkTickDistance => instance.m_ChunkTickDistance;
+    public static int TickMs => instance.m_ChunkTickDistance;
+
+
+    public int m_ChunkWidth;
+    public int m_ChunkGenDistance;
+    public int m_ChunkTickDistance;
+    public int m_TickMs;
+
+    private void Awake()
     {
         instance = this;
     }

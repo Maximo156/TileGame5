@@ -7,6 +7,8 @@ using Unity.Jobs;
 using Unity.Collections;
 using System;
 using System.Collections.Concurrent;
+using BlockDataRepos;
+using NativeRealm;
 
 public interface IAI
 {
@@ -28,10 +30,10 @@ public class AIManager : MonoBehaviour
     public int AiSimDistance = 10;
     public int AiPerEnumeration = 100;
     public int SpawnPassTime = 10;
-    ConcurrentDictionary<Vector2Int, Chunk> LoadedChunks;
+    Dictionary<Vector2Int, Chunk> LoadedChunks;
 
     int ChunkWidth;
-    Vector2Int curChunk { get; set; }
+
     HashSet<IAI> UnParentedAi = new();
     Dictionary<Vector2Int, Chunk> SimulatedChunks = new();
 
@@ -40,23 +42,14 @@ public class AIManager : MonoBehaviour
 
     HashSet<IPathFinder> requestedPathfinders = new();
 
-    public void Initialize(ConcurrentDictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth)
+    public void Initialize(Dictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth, RealmData worldData)
     {
         this.LoadedChunks = LoadedChunks;
         this.ChunkWidth = ChunkWidth;
 
-        PathFinder = new PathfindingManager();
+        PathFinder = new PathfindingManager(worldData);
         BehaviorManager = new AIBehaviorManager();
     }
-
-    public void CleanUp()
-    {
-        PathFinder.Dispose();
-    }
-
-    public void OnBlockChanged(Vector2Int worldPos, BlockSlice block) => PathFinder.OnBlockChanged(worldPos, block);
-
-    public void OnChunkChanged(Chunk chunk) => PathFinder.OnChunkChanged(chunk);
 
     // Update is called once per frame
     void Update()
@@ -73,7 +66,6 @@ public class AIManager : MonoBehaviour
 
     public void OnChunkChanged(Vector2Int curChunk)
     {
-        this.curChunk = curChunk;
         var importantChunks = new HashSet<Vector2Int>(Utilities.Spiral(curChunk, (uint)AiSimDistance));
         foreach (var chunkPos in importantChunks)
         {
@@ -81,7 +73,10 @@ public class AIManager : MonoBehaviour
             {
                 SimulatedChunks[chunkPos] = chunk;
                 chunk.EnableContainer(true);
-                chunk.SpawnAI();
+                if (GameSettings.NaturalSpawn)
+                {
+                    chunk.SpawnAI();
+                }
             }
         }
         foreach (var chunk in SimulatedChunks.Where(chunk => !importantChunks.Contains(chunk.Key)).ToList())
@@ -111,18 +106,16 @@ public class AIManager : MonoBehaviour
         }
     }
 
-    public IEnumerator RunPathfinding()
+    public JobHandle RunPathfinding()
     {
-        while (true)
-        {
-            if (PathFinder != null)
-            {
-                var tmp = requestedPathfinders;
-                requestedPathfinders = new();
-                yield return PathFinder.RunPathfinders(tmp);
-            }
-            yield return null;
-        }
+        var tmp = requestedPathfinders;
+        requestedPathfinders = new();
+        return PathFinder.RunPathfinders(tmp);
+    }
+
+    public void ProcessPathfinding()
+    {
+        PathFinder.ProcessPathfinders();
     }
 
     public IEnumerator RunChunks()
@@ -153,7 +146,7 @@ public class AIManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         while (true)
         {
-            if (WorldSettings.NaturalSpawn)
+            if (GameSettings.NaturalSpawn)
             {
                 foreach (var kvp in SimulatedChunks.ToList())
                 {
@@ -189,7 +182,6 @@ public class AIManager : MonoBehaviour
     {
         StartCoroutine(RunSpawnPass());
         StartCoroutine(RunChunks());
-        StartCoroutine(RunPathfinding());
         StartCoroutine(RunBehaviors());
     }
 

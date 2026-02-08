@@ -1,6 +1,7 @@
 using UnityEngine;
 using EntityStatistics;
 using TMPro;
+using NativeRealm;
 
 public class PlayerInventoryDisplay : MonoBehaviour
 {
@@ -45,7 +46,7 @@ public class PlayerInventoryDisplay : MonoBehaviour
         }
     }
 
-    private void BlockInterfaced(Vector2Int pos, BlockSlice slice, IInventoryContainer inv)
+    private void BlockInterfaced(Vector2Int pos, Wall _, BlockState state, IInventoryContainer inv)
     {
         InventorySetActive(true);
     }
