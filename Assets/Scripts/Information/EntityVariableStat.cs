@@ -18,9 +18,13 @@ public abstract class EntityVariableStat : MonoBehaviour
 
     protected EntityStats stats;
 
-    protected virtual void Start()
+    private void Awake()
     {
         stats = GetComponent<EntityStats>();
+    }
+
+    protected virtual void Start()
+    {
         current = MaxValue;
         StartCoroutine(Tick());
         OnChange?.Invoke();

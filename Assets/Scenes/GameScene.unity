@@ -12991,7 +12991,7 @@ MonoBehaviour:
   m_MaxLightLevel: 8
   m_AnimalsPerChunk: 3
   m_HostilesPerChunk: 5
-  m_NaturalSpawn: 0
+  m_NaturalSpawn: 1
   m_DontUseRecipeInputs: 1
   m_UseDefaultInventory: 0
   m_StartingHotbar:

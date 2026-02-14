@@ -17,7 +17,6 @@ public class ChunkManager : MonoBehaviour
     static ChunkManager Manager;
 
     public static Realm CurRealm => Manager.ActiveRealm;
-    public static string DataPath;
 
     [Header("Realm Settings")]
     public string startingRealm;
@@ -46,7 +45,6 @@ public class ChunkManager : MonoBehaviour
         Manager = this;
         PlayerMovement.OnPlayerChangedChunks += PlayerChangedChunks;
         PortalBlock.OnPortalBlockUsed += PortalUsed;
-        DataPath = Application.persistentDataPath;
     }
 
     // Start is called before the first frame update

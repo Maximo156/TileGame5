@@ -23,7 +23,7 @@ public class ChunkSaver
         settings.TypeNameHandling = TypeNameHandling.Auto;
     }
 
-    static string DirectoryPath(string realmId) => Path.Join(ChunkManager.DataPath, realmId);
+    static string DirectoryPath(string realmId) => Path.Join(WorldSave.ActiveSaveDirectoryPath, realmId);
 
     static string ChunkPath(string realmId, Vector2Int ChunkWorldPosition)
     {
