@@ -13,11 +13,11 @@ public static class ChunkTick
 {
     public static ChunkTickJobInfo ScheduelTick(ChunkTickJobInfo curInfo, Vector2Int pos, RealmData data)
     {
-        if ((Time.time - curInfo.schedueled) * 1000 < WorldSettings.TickMs)
+        if ((Time.time - curInfo.schedueled) * 1000 < WorldConfig.TickMs)
         {
             return curInfo;
         }
-        var tickDistance = WorldSettings.ChunkTickDistance;
+        var tickDistance = WorldConfig.ChunkTickDistance;
         var chunks = new NativeArray<int2>((tickDistance*2+1) * (tickDistance * 2 + 1), Allocator.TempJob);
         int c = 0;
         for (int x = -tickDistance + pos.x; x <= tickDistance + pos.x; x++)
@@ -31,8 +31,8 @@ public static class ChunkTick
 
         var jobHandle = new ChunkTickJob()
         {
-            chunkWidth = WorldSettings.ChunkWidth,
-            worldTickMs = WorldSettings.TickMs,
+            chunkWidth = WorldConfig.ChunkWidth,
+            worldTickMs = WorldConfig.TickMs,
             chunks = chunks,
             realmData = data,
             blockDataRepo = BlockDataRepo.NativeRepo,

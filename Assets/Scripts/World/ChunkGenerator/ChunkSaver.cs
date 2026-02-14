@@ -12,17 +12,6 @@ using Newtonsoft.Json.UnityConverters.Math;
 
 public class ChunkSaver
 {
-    static JsonSerializerSettings settings;
-    static ChunkSaver()
-    {
-        settings = new JsonSerializerSettings();
-        settings.Converters.Add(new ChunkConverter());
-        settings.Converters.Add(new Vector2IntConverter());
-        settings.Converters.Add(new DictionaryConverter<Vector2Int, BlockState>());
-        settings.Converters.Add(new DictionaryConverter<Vector2Int, BlockItemStack>());
-        settings.TypeNameHandling = TypeNameHandling.Auto;
-    }
-
     static string DirectoryPath(string realmId) => Path.Join(WorldSave.ActiveSaveDirectoryPath, realmId);
 
     static string ChunkPath(string realmId, Vector2Int ChunkWorldPosition)
@@ -44,13 +33,13 @@ public class ChunkSaver
             {
                 var v = c.ToVector();
                 var chunkData = request.realmData.AddChunk(c);
-                var chunk = new Chunk(v, WorldSettings.ChunkWidth, chunkData, null);
+                var chunk = new Chunk(v, WorldConfig.ChunkWidth, chunkData, null);
 
                 var path = ChunkPath(realmId, v);
 
                 var json = File.ReadAllText(path);
 
-                JsonConvert.PopulateObject(json, chunk, settings);
+                JsonConvert.PopulateObject(json, chunk, DefaultJsonSettings.settings);
                 request.managedChunks.Add(chunk);
             }
         }
@@ -89,7 +78,7 @@ public class ChunkSaver
             Debug.Log("Saving to " + chunkPath);
             try
             {
-                var json = JsonConvert.SerializeObject(c.chunk, settings);
+                var json = JsonConvert.SerializeObject(c.chunk, DefaultJsonSettings.settings);
                 File.WriteAllTextAsync(chunkPath, json);
             } 
             catch (Exception e)
@@ -102,7 +91,7 @@ public class ChunkSaver
 
     public static ChunkLoadRequest LoadChunks(string realmId, NativeList<int2> chunks)
     {
-        var realmData = new RealmData(WorldSettings.ChunkWidth, chunks.Length);
+        var realmData = new RealmData(WorldConfig.ChunkWidth, chunks.Length);
         var request = new ChunkLoadRequest()
         {
             realmId = realmId,

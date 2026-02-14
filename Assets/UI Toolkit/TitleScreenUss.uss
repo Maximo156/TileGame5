@@ -1,11 +1,11 @@
-.text-field-small-label > .unity-base-field__input {
+.field-small-label > .unity-base-field__input {
     min-width: auto;
     flex-grow: 2;
     flex-shrink: 0;
     -unity-text-align: upper-left;
 }
 
-.text-field-small-label > .unity-base-field__label {
+.field-small-label > .unity-base-field__label {
     flex-shrink: 0;
     max-width: none;
     min-width: auto;

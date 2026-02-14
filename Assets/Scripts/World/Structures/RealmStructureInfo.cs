@@ -38,11 +38,11 @@ public class RealmStructureInfo
     {
         var iPos = pos.ToInt();
         var structChunk = Utilities.GetChunk(pos, StructureChunkWidth).ToInt();
-        var (closestPoint, _, closestStruct) = GenStructureInfo(structChunk, StructureChunkWidth, StructureInfo);
+        var (closestPoint, _, closestStruct) = GenStructureInfo(structChunk, StructureChunkWidth, StructureInfo, WorldSave.ActiveSeed);
         var minDist = math.distancesq(iPos, closestPoint);
         foreach(var v in Utilities.OctAdjacentInt)
         {
-            var (newPoint, _, newStruct) = GenStructureInfo(structChunk + v, StructureChunkWidth, StructureInfo);
+            var (newPoint, _, newStruct) = GenStructureInfo(structChunk + v, StructureChunkWidth, StructureInfo, WorldSave.ActiveSeed);
             var d = math.distancesq(iPos, newPoint);
             if (d < minDist)
             {
@@ -56,7 +56,7 @@ public class RealmStructureInfo
         {
             throw new Exception("Invalid structure state");
         }
-        var lootTable = structure.components[index].GenerateLootEntry(new System.Random(structChunk.GetHashCode() << 10 | pos.GetHashCode()));
+        var lootTable = structure.components[index].GenerateLootEntry(new System.Random(structChunk.GetHashCode() << 10 ^ pos.GetHashCode() ^ (int)WorldSave.ActiveSeed));
         foreach(var i in lootTable)
         {
             state.AddItemStack(i);
@@ -146,9 +146,9 @@ public class RealmStructureInfo
 
     [BurstCompile]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static Random GetChunkRandom(int2 StructureChunk)
+    static Random GetChunkRandom(int2 StructureChunk, uint worldSeed)
     {
-        return new Random(GetChunkSeed(StructureChunk));
+        return new Random(GetChunkSeed(StructureChunk) ^ worldSeed);
     }
 
     [BurstCompile]
@@ -160,9 +160,9 @@ public class RealmStructureInfo
 
     [BurstCompile]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static (int2 point, Random rand, int structIndex) GenStructureInfo(int2 StructureChunk, int StructureChunkWidth, NativeStructureInfo structInfo)
+    public static (int2 point, Random rand, int structIndex) GenStructureInfo(int2 StructureChunk, int StructureChunkWidth, NativeStructureInfo structInfo, uint worldSeed)
     {
-        var rand = GetChunkRandom(StructureChunk);
+        var rand = GetChunkRandom(StructureChunk, worldSeed);
         var pos = GenPoint(StructureChunk, StructureChunkWidth, rand);
         var structIndex = rand.NextInt(0, structInfo.structures.Length);
         return (pos, rand, structIndex);
@@ -170,7 +170,7 @@ public class RealmStructureInfo
 
     [BurstCompile]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void PopulateAdjacentPoints(int2 StructureChunk, int StructureChunkWidth, NativeArray<int2> points)
+    public static void PopulateAdjacentPoints(int2 StructureChunk, int StructureChunkWidth, NativeArray<int2> points, uint worldSeed)
     {
         PopulatePoint(StructureChunk + math.int2(-1, 1), 0);
         PopulatePoint(StructureChunk + math.int2(0, 1), 0);
@@ -186,7 +186,7 @@ public class RealmStructureInfo
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void PopulatePoint(int2 chunk, int index)
         {
-            var rand = GetChunkRandom(chunk);
+            var rand = GetChunkRandom(chunk, worldSeed);
             var pos = GenPoint(StructureChunk, StructureChunkWidth, rand);
             points[index] = pos;
         }

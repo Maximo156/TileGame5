@@ -12,7 +12,7 @@ public class LightDebug : MonoBehaviour
         if (!Application.isPlaying || (!LightCalculation.PreviousChunks.IsCreated)) return;
 
         //DrawLightBordersGizmos(LightCalculation.PreviousChunks, LightCalculation.PreviousBorder, WorldSettings.ChunkWidth);
-        DrawReceivedBorderLightGizmos(LightCalculation.PreviousChunks, LightCalculation.PreviousBorder, WorldSettings.ChunkWidth);
+        DrawReceivedBorderLightGizmos(LightCalculation.PreviousChunks, LightCalculation.PreviousBorder, WorldConfig.ChunkWidth);
     }
 
     private void OnDisable()

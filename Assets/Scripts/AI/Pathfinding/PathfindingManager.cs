@@ -48,7 +48,7 @@ public class PathfindingManager
             var job = new AstarJob()
             {
                 realmData = worldData,
-                chunkWidth = WorldSettings.ChunkWidth,
+                chunkWidth = WorldConfig.ChunkWidth,
                 blockInfo = BlockDataRepo.NativeRepo,
                 canUseDoors = ai.CanUseDoor,
                 End = ai.Goal,

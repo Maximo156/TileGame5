@@ -425,7 +425,7 @@ public partial class Chunk
 
     public void TriggerChangedBlock(Vector2Int localPos)
     {
-        ChangedSlice(localPos + ChunkPos * WorldSettings.ChunkWidth, data.GetSlice(localPos.x, localPos.y), GetBlockItems(localPos));
+        ChangedSlice(localPos + ChunkPos * WorldConfig.ChunkWidth, data.GetSlice(localPos.x, localPos.y), GetBlockItems(localPos));
     }
 
     void ChangedBlock(Vector2Int worldPosition, NativeBlockSlice slice, BlockItemStack state)

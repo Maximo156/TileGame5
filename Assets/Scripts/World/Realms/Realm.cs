@@ -161,7 +161,7 @@ public class Realm
     {
         foreach(var c in NeedsInitialization)
         {
-            var newChunk = new Chunk(c, WorldSettings.ChunkWidth, realmData.GetChunk(c.ToInt()), this);
+            var newChunk = new Chunk(c, WorldConfig.ChunkWidth, realmData.GetChunk(c.ToInt()), this);
             if(LoadedChunkData.Remove(c, out var loadedChunk))
             {
                 newChunk.BlockItems = loadedChunk.BlockItems;
@@ -178,10 +178,10 @@ public class Realm
     public void Initialize(GameObject entityContainerPrefab, Transform parent)
     {
         EntityContainer = GameObject.Instantiate(entityContainerPrefab, parent).GetComponent<EntityManager>();
-        var distWithBuffer = WorldSettings.ChunkGenDistance * 2 + 3;
-        realmData = new RealmData(WorldSettings.ChunkWidth, distWithBuffer * distWithBuffer);
+        var distWithBuffer = WorldConfig.ChunkGenDistance * 2 + 3;
+        realmData = new RealmData(WorldConfig.ChunkWidth, distWithBuffer * distWithBuffer);
         EntityContainer.name = $"{name} Entity Container";
-        EntityContainer.AIManager.Initialize(LoadedChunks, WorldSettings.ChunkWidth, realmData);
+        EntityContainer.AIManager.Initialize(LoadedChunks, WorldConfig.ChunkWidth, realmData);
     }
 
     public void Cleanup()
@@ -215,7 +215,7 @@ public class Realm
 
     public void CalcValidChunks(Vector2Int curChunk)
     {
-        var curDesiredChunks = new HashSet<Vector2Int>(Utilities.Spiral(curChunk, (uint)WorldSettings.ChunkGenDistance));
+        var curDesiredChunks = new HashSet<Vector2Int>(Utilities.Spiral(curChunk, (uint)WorldConfig.ChunkGenDistance));
         var newRequestedChunks = new NativeList<int2>(10, Allocator.Persistent);
         var toLoadFromFileChunks = new NativeList<int2>(10, Allocator.Persistent);
         foreach (var chunk in curDesiredChunks)
@@ -276,8 +276,8 @@ public class Realm
     {
         try
         {
-            var timer = Task.Delay(WorldSettings.TickMs);
-            var tickDistance = WorldSettings.ChunkTickDistance;
+            var timer = Task.Delay(WorldConfig.TickMs);
+            var tickDistance = WorldConfig.ChunkTickDistance;
             for (int x = -tickDistance; x <= tickDistance; x++)
             {
                 for (int y = -tickDistance; y <= tickDistance; y++)
@@ -339,7 +339,7 @@ public class Realm
 
     public T PerformChunkAction<T>(Vector2Int position, Func<Chunk, Vector2Int, T> action , bool useProxy = true)
     {
-        var chunkPos = Utilities.GetChunk(position, WorldSettings.ChunkWidth);
+        var chunkPos = Utilities.GetChunk(position, WorldConfig.ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
             if(useProxy)
@@ -357,7 +357,7 @@ public class Realm
 
     public T QueueChunkAction<T>(Vector2Int position, Action<Chunk, Vector2Int> action, Func<Chunk, Vector2Int, T> predictResult, bool useProxy = true)
     {
-        var chunkPos = Utilities.GetChunk(position, WorldSettings.ChunkWidth);
+        var chunkPos = Utilities.GetChunk(position, WorldConfig.ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
             if (useProxy)
@@ -376,7 +376,7 @@ public class Realm
 
     public void QueueChunkAction(Vector2Int position, Action<Chunk, Vector2Int> action, bool useProxy = true)
     {
-        var chunkPos = Utilities.GetChunk(position, WorldSettings.ChunkWidth);
+        var chunkPos = Utilities.GetChunk(position, WorldConfig.ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
             if (useProxy)
@@ -401,7 +401,7 @@ public class Realm
     {
         block = default;
         state = default;
-        var chunkPos = Utilities.GetChunk(position, WorldSettings.ChunkWidth);
+        var chunkPos = Utilities.GetChunk(position, WorldConfig.ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
             block = chunk.GetBlock(position);
@@ -419,7 +419,7 @@ public class Realm
     public bool TryGetBlock(Vector2Int position, out NativeBlockSlice block, bool useProxy = true)
     {
         block = default;
-        var chunkPos = Utilities.GetChunk(position, WorldSettings.ChunkWidth);
+        var chunkPos = Utilities.GetChunk(position, WorldConfig.ChunkWidth);
         if (LoadedChunks.TryGetValue(chunkPos, out var chunk))
         {
             block = chunk.GetBlock(position);
@@ -446,7 +446,7 @@ public class Realm
         {
             this.chunks = chunks;
             realmData = default;
-            (realmData, handle) = generator.GetGenJob(WorldSettings.ChunkWidth, this.chunks, realmInfo);
+            (realmData, handle) = generator.GetGenJob(WorldConfig.ChunkWidth, this.chunks, realmInfo);
         }
 
         public void Complete()
@@ -464,7 +464,7 @@ public class Realm
 
     public void DrawDebug()
     {
-        var chunkWidth = WorldSettings.ChunkWidth;
+        var chunkWidth = WorldConfig.ChunkWidth;
         Gizmos.color = Color.green;
         foreach (var key in LoadedChunks.Keys)
         {

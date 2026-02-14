@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using NUnit;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -33,17 +35,6 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
 
     public void Start()
     {
-        var useDefault = GameSettings.UseDefaultInventory;
-        if (useDefault)
-        {
-            HotbarInv.AddItems(GameSettings.StartingHotbar);
-        }
-        else
-        {
-            MainInv.AddItems(MainStartingItems);
-            HotbarInv.AddItems(HotbarStartingItems);
-        }
-        HotBarItemsChanged(HotbarInv);
         GetComponent<EntityStatistics.EntityStats>()?.AttachInv(AccessoryInv);
     }
 
@@ -74,6 +65,7 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
             HotBarItemsChanged(HotbarInv);
         }
     }
+
     public Item curInHandItem => curInHand?.Item;
     ItemStack curInHand;
     private void HotBarItemsChanged(IInventory inv)

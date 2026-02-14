@@ -34,7 +34,6 @@ public class ChunkManager : MonoBehaviour
             _activeRealm?.Disable();
             OnRealmChange?.Invoke(_activeRealm, value);
             _activeRealm = value;
-            _activeRealm.PlayerChangedChunks(currentChunk, AllTaskShutdown.Token);
             _activeRealm.RefreshAllChunks();
             _activeRealm.Enable();
         }
@@ -122,7 +121,8 @@ public class ChunkManager : MonoBehaviour
     private void PortalUsed(string newDim, PortalBlock exitBlock, Vector2Int worldPos)
     {
         ActiveRealm = Realms.First(r => r.name == newDim);
-        var chunk = Utilities.GetChunk(worldPos, WorldSettings.ChunkWidth);
+        ActiveRealm.PlayerChangedChunks(currentChunk, AllTaskShutdown.Token);
+        var chunk = Utilities.GetChunk(worldPos, WorldConfig.ChunkWidth);
         CallbackManager.AddCallback(PlacePortal);
 
         void PlacePortal()
@@ -181,6 +181,13 @@ public class ChunkManager : MonoBehaviour
         Manager.ActiveRealm.QueueChunkAction(position, (chunk, pos) => chunk.BreakBlock(pos, roof, drop), useProxy);
     }
     #endregion
+
+    private void OnDisable()
+    {
+        Manager = null;
+        PlayerMovement.OnPlayerChangedChunks -= PlayerChangedChunks;
+        PortalBlock.OnPortalBlockUsed -= PortalUsed;
+    }
 
     private void OnDestroy()
     {

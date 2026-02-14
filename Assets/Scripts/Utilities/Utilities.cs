@@ -62,6 +62,12 @@ public static class Utilities
         return new Vector2Int(Random.Range(min, max), Random.Range(min, max));
     }
 
+    public static Vector2Int SeededVector2Int(int range, uint seed)
+    {
+        var rand = new Unity.Mathematics.Random(seed);
+        return rand.NextInt2(-range, range).ToVector();
+    }
+
     public static Vector2Int RandomVector2Int(int min, int max, System.Random rand)
     {
         return new Vector2Int(rand.Next(min, max), rand.Next(min, max));
@@ -175,7 +181,7 @@ public static class Utilities
 
     public static Vector2Int? FindNearestEmptyBlock(Vector2Int start, int limit = 100)
     {
-        var width = WorldSettings.ChunkWidth;
+        var width = WorldConfig.ChunkWidth;
         var curChunkPos = GetChunk(start, width);
         ChunkManager.TryGetChunk(curChunkPos, out var curChunk);
         return BFS(start, pos =>
@@ -192,7 +198,7 @@ public static class Utilities
 
     public static HashSet<Vector2Int> FindReachableBlocks(Vector2Int start, int reach)
     {
-        var width = WorldSettings.ChunkWidth;
+        var width = WorldConfig.ChunkWidth;
         var curChunkPos = GetChunk(start, width);
         ChunkManager.TryGetChunk(curChunkPos, out var curChunk);
         BFS(start, pos => pos, _ => false, pos => Vector2Int.Distance(pos, start) > reach || GetBlock(pos)?.GetMovementInfo().walkable != true, out var reachable, 10000);

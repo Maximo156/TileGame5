@@ -60,7 +60,7 @@ public class LightTileMap : MonoBehaviour
 
     public Color GetScaledColor(int lightLevel)
     {
-        var alpha = 1 - Mathf.Clamp01((lightLevel / 2) * 1f / GameSettings.MaxLightLevel);
+        var alpha = 1 - Mathf.Clamp01((lightLevel / 2) * 1f / WorldConfig.MaxLightLevel);
         return new Color(1, 1, 1, alpha);
     }
 
@@ -75,5 +75,10 @@ public class LightTileMap : MonoBehaviour
     public void SetColor(Color color)
     {
         Map.color = color;
+    }
+
+    private void OnDisable()
+    {
+        ChunkManager.OnRealmChange -= OnRealmChange;
     }
 }

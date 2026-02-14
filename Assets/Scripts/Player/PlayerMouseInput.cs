@@ -153,4 +153,11 @@ public class PlayerMouseInput : MonoBehaviour
             OnInterfaceRangeExceeded?.Invoke();
         }
     }
+
+    private void OnDisable()
+    {
+        OnAttackInterupted = null;
+        OnBlockInterfaced = null;
+        OnInterfaceRangeExceeded = null;
+    }
 }

@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="MainSettingsPage" src="project://database/Assets/UI%20Toolkit/MainSettingsPage.uxml?fileID=9197481963319205126&amp;guid=4e2521165f62aa14d87dd13499375910&amp;type=3#MainSettingsPage" />
+    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center;">
+        <ui:Instance template="MainSettingsPage" name="Main" />
+    </ui:VisualElement>
+</ui:UXML>

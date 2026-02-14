@@ -1,7 +1,9 @@
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,12 +11,13 @@ public class WorldSave
 {
     static string persistentDataPath;
     static WorldSave _activeSave;
-    static WorldSave ActiveSave { 
+    public static WorldSave ActiveSave { 
         get
         {
             if(_activeSave == null)
             {
                 _activeSave = GetFirstSave();
+                Debug.Log("Returning default");
             }
             return _activeSave;
         }
@@ -35,6 +38,30 @@ public class WorldSave
         persistentDataPath = Application.persistentDataPath;
     }
 
+    static public void SaveSimple<T>(string path, T save)
+    {
+        var completePath = Path.Combine(ActiveSaveDirectoryPath, path);
+        var dir = Path.GetDirectoryName(completePath);
+        if(!Directory.Exists(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
+        var json = JsonConvert.SerializeObject(save, DefaultJsonSettings.settings);
+        File.WriteAllText(completePath, json);
+    }
+
+    static public T LoadSimple<T>(string path)
+    {
+        try
+        {
+            var text = File.ReadAllText(Path.Combine(ActiveSaveDirectoryPath, path));
+            return JsonConvert.DeserializeObject<T>(text, DefaultJsonSettings.settings);
+        } catch
+        {
+            return default(T);
+        }
+    }
+
     static string GetWorldDirectoryName(string worldName)
     {
         return Path.Join(BaseSavesPath, worldName);
@@ -45,7 +72,7 @@ public class WorldSave
         return Path.Join(GetWorldDirectoryName(worldName), META_DATA_FILE_NAME);
     }
 
-    public static WorldSave CreateNewSave(string name, string seed)
+    public static WorldSave CreateNewSave(string name, string seed, bool persistPlayer)
     {
         if(string.IsNullOrWhiteSpace(seed))
         {
@@ -62,7 +89,7 @@ public class WorldSave
         using(var metaFile = File.Create(metadataFileName))
         using (StreamWriter writer = new StreamWriter(metaFile))
         {
-            writer.Write(JsonUtility.ToJson(new Metadata() { seed = seed }));
+            writer.Write(JsonUtility.ToJson(new Metadata() { seed = seed, persistPlayer = persistPlayer }));
         }
 
         return new WorldSave(name);
@@ -87,25 +114,37 @@ public class WorldSave
 
     public static void PlaySave(WorldSave save)
     {
+        if(save == null)
+        {
+            throw new ArgumentNullException("save");
+        }
+
         ActiveSave = save;
         SceneManager.LoadScene(1);
     }
 
+    public static async void ExitSave()
+    {
+        await SceneManager.LoadSceneAsync(0);
+        ActiveSave = null;
+    } 
+
     public static WorldSave GetFirstSave()
     {
-        var saves = LoadSaves();
-        if(saves.Count == 0)
+        var selectedSave = LoadSaves().FirstOrDefault(s => s.worldName == WorldSaveSelect.SelectedSaveName);
+        if(selectedSave == null)
         {
-            return CreateNewSave("DEFAULT_SAVE", null);
+            return CreateNewSave("DEFAULT_SAVE", null, false);
         }
         else
         {
-            return saves[0];
+            return selectedSave;
         }
     }
 
     public readonly uint seed;
     public readonly string worldName;
+    public bool persistPlayer;
 
     public string DirectoryPath => GetWorldDirectoryName(worldName);
 
@@ -113,6 +152,7 @@ public class WorldSave
     {
         var metadata = JsonUtility.FromJson<Metadata>(File.ReadAllText(GetWorldMetadataFileName(worldName)));
         seed = (uint)metadata.seed.GetHashCode();
+        persistPlayer = metadata.persistPlayer;
         this.worldName = worldName;
     }
 
@@ -124,6 +164,7 @@ public class WorldSave
     struct Metadata
     {
         public string seed;
+        public bool persistPlayer;
     }
 }
 

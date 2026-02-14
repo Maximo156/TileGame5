@@ -11,7 +11,6 @@ using static UnityEditor.PlayerSettings;
 [BurstCompile]
 public class FractalSoundSettings : BaseSoundSettings
 {
-    public int Seed;
     [Min(1)]
     public int Octaves;
     [Min(1)]
@@ -23,20 +22,18 @@ public class FractalSoundSettings : BaseSoundSettings
 
     public bool useBurst = true;
 
-    Vector2Int offset;
-
     public override float GetSound(int x, int y)
     {
-        x += offset.x;
-        y += offset.y;
+        x += Offset.x;
+        y += Offset.y;
         var pos = new float2(x, y);
         return GetSound(ref pos, Octaves, Lacunarity, Persistence, Scale);
     }
 
     public override float[,] GetSoundArray(int x1, int y1, int chunkWidth)
     {
-        x1 += offset.x;
-        y1 += offset.y;
+        x1 += Offset.x;
+        y1 += Offset.y;
         var res = new float[chunkWidth, chunkWidth];
         if (useBurst)
         {
@@ -72,7 +69,7 @@ public class FractalSoundSettings : BaseSoundSettings
         return new CalcFractalSoundJob()
         {
             chunks = chunks,
-            offset = offset,
+            offset = Offset,
             chunkWidth = chunkWidth,
             Lacunarity = Lacunarity,
             Octaves = Octaves,
@@ -110,12 +107,6 @@ public class FractalSoundSettings : BaseSoundSettings
                 res.SetElement2d(x, y, chunkWidth, GetSound(ref p, Octaves, Lacunarity, Persistence, Scale));
             }
         }
-    }
-
-    public void OnValidate()
-    {
-        var rand = new System.Random(Seed);
-        offset = Utilities.RandomVector2Int(4000, rand);
     }
 
     [BurstCompile]

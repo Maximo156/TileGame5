@@ -19,7 +19,7 @@ public static class LightCalculation
 
     public static LightJobInfo ScheduelLightUpdate(RealmData realmData, NativeList<int2> frameUpdatedChunks)
     {
-        var chunkWidth = WorldSettings.ChunkWidth;
+        var chunkWidth = WorldConfig.ChunkWidth;
         var hashChunks = new HashSet<int2>();
         foreach (var chunk in frameUpdatedChunks)
         {
@@ -58,7 +58,7 @@ public static class LightCalculation
             borderLightWrite = borderBufferRead,
         }.Schedule(lightUpdatedChunks.Length, 1); 
 
-        var lightingPasses = Mathf.CeilToInt((GameSettings.MaxLightLevel - 1) / 3f);
+        var lightingPasses = Mathf.CeilToInt((WorldConfig.MaxLightLevel - 1) / 3f);
 
         JobHandle interChunkHandleDependency = intraChunkLight;
         for(int i = 0; i < lightingPasses; i++)
@@ -93,7 +93,7 @@ public static class LightCalculation
     {
         var job = new CopyLightJob()
         {
-            chunkWidth = WorldSettings.ChunkWidth, 
+            chunkWidth = WorldConfig.ChunkWidth, 
             chunks = jobInfo.updatedChunks,
             realmData = realmData,
             light = jobInfo.light,
@@ -106,7 +106,7 @@ public static class LightCalculation
     {
         if (!debug) return;
 
-        int chunkWidth = WorldSettings.ChunkWidth;
+        int chunkWidth = WorldConfig.ChunkWidth;
         if (PreviousBorder.IsCreated)
         {
             PreviousBorder.Dispose();

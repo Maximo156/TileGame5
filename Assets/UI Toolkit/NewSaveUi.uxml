@@ -3,16 +3,21 @@
     <ui:VisualElement enabled="true" name="Create" class="menu-container">
         <ui:VisualElement name="VisualElement" class="menu-pane">
             <ui:Label text="Create new world" class="menu-header" />
-            <ui:TextField label="Name" name="NameField" class="text-field-small-label padding_1 text_input_1" style="justify-content: flex-start; width: 100%; flex-shrink: 0;">
+            <ui:TextField label="Name" name="NameField" class="text-field-small-label padding_1 text_input_1 field-small-label" style="justify-content: flex-start; width: 100%; flex-shrink: 0;">
                 <Bindings>
                     <ui:DataBinding property="value" data-source-path="Name" data-source-type="NewSaveController+NewSaveSettings, Assembly-CSharp" binding-mode="TwoWay" />
                 </Bindings>
             </ui:TextField>
-            <ui:TextField label="Seed" name="Seed" placeholder-text="Optional" class="text-field-small-label padding_1 text_input_1" style="justify-content: flex-start; width: 100%; -unity-text-align: upper-left;">
+            <ui:TextField label="Seed" name="Seed" placeholder-text="Optional" class="text-field-small-label padding_1 text_input_1 field-small-label" style="justify-content: flex-start; width: 100%; -unity-text-align: upper-left;">
                 <Bindings>
                     <ui:DataBinding property="value" data-source-path="seed" data-source-type="NewSaveController+NewSaveSettings, Assembly-CSharp" binding-mode="TwoWay" />
                 </Bindings>
             </ui:TextField>
+            <ui:Toggle label="Persist Player" name="Persist" tooltip="Whether to save player state" value="true" class="padding_1 field-small-label" style="align-items: center; flex-grow: 1; width: 100%;">
+                <Bindings>
+                    <ui:DataBinding property="value" data-source-path="persistPlayer" data-source-type="NewSaveController+NewSaveSettings, Assembly-CSharp" binding-mode="TwoWay" />
+                </Bindings>
+            </ui:Toggle>
             <ui:VisualElement class="padding_1" style="flex-grow: 0; flex-direction: row; align-items: flex-start; justify-content: space-between; width: 100%;">
                 <ui:Button text="Back" name="Back" class="no_margin button_1" />
                 <ui:Button text="Create" name="Create" enabled="true" class="no_margin button_1">

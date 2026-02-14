@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "PlayerInput",
     "maps": [
         {
@@ -67,6 +68,15 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "OpenSettings",
+                    "type": "Button",
+                    "id": "52524970-9c0e-44d4-805c-614224b0a772",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -353,6 +363,17 @@
                     "processors": "Scale(factor=4)",
                     "groups": "",
                     "action": "GetNumber",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ae122f02-b890-4cac-863c-928a46674163",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenSettings",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
