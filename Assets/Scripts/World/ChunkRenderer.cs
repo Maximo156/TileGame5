@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -28,18 +29,26 @@ public class ChunkRenderer : MonoBehaviour
         ChunkManager.OnRealmChange += OnRealmChange;
     }
 
+    Realm curRealm;
+
     void OnRealmChange(Realm old, Realm newRealm)
     {
-        if (old != null)
-        {
-            old.OnChunkChanged -= RefreshChunk;
-            old.OnBlockChanged -= PlaceTile;
-            old.OnBlockRefreshed -= RefreshTile;
-        }
+        DetachRealm();
 
-        newRealm.OnChunkChanged += RefreshChunk;
-        newRealm.OnBlockChanged += PlaceTile;
-        newRealm.OnBlockRefreshed += RefreshTile;
+        curRealm = newRealm;
+        curRealm.OnChunkChanged += RefreshChunk;
+        curRealm.OnBlockChanged += PlaceTile;
+        curRealm.OnBlockRefreshed += RefreshTile;
+    }
+
+    void DetachRealm()
+    {
+        if (curRealm != null)
+        {
+            curRealm.OnChunkChanged -= RefreshChunk;
+            curRealm.OnBlockChanged -= PlaceTile;
+            curRealm.OnBlockRefreshed -= RefreshTile;
+        }
     }
 
     private void FixedUpdate()
@@ -151,11 +160,24 @@ public class ChunkRenderer : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        PlayerMovement.OnPlayerChangedChunks -= PlayerChangedChunks;
+        ChunkManager.OnRealmChange -= OnRealmChange;
+
+        if (curRealm != null)
+        {
+            curRealm.OnChunkChanged -= RefreshChunk;
+            curRealm.OnBlockChanged -= PlaceTile;
+            curRealm.OnBlockRefreshed -= RefreshTile;
+        }
+    }
+
     public void OnDrawGizmos()
     {
         if (ShowChunks && Application.isPlaying)
         {
-            var chunkWidth = WorldSettings.ChunkWidth;
+            var chunkWidth = WorldConfig.ChunkWidth;
 
             foreach (var kvp in renderedChunks)
             {

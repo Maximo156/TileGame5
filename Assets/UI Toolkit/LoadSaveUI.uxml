@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/TitleScreenUss.uss?fileID=7433441132597879392&amp;guid=8695dbf73c329ee43a0ad90fe6357e23&amp;type=3#TitleScreenUss" />
+    <ui:VisualElement class="menu-container" style="flex-grow: 1;">
+        <ui:VisualElement class="menu-pane" style="align-items: stretch;">
+            <ui:Label text="Load Save" name="Title" class="menu-header" style="-unity-text-align: upper-center;" />
+            <ui:ListView name="ListView" item-template="project://database/Assets/UI%20Toolkit/SaveRow.uxml?fileID=9197481963319205126&amp;guid=8c7cd0e2299ddd14291427a6959a88fa&amp;type=3#SaveRow" binding-source-selection-mode="AutoAssign" focusable="false" enabled="true" virtualization-method="DynamicHeight" selection-type="None" style="width: auto; flex-grow: 1;" />
+            <ui:VisualElement name="ControlBar" style="flex-grow: 1; flex-direction: row; width: auto; align-items: flex-start; justify-content: space-between;">
+                <ui:Button text="Back" name="Back" class="button_1" />
+                <ui:Button text="New Save" name="NewSave" class="button_1" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

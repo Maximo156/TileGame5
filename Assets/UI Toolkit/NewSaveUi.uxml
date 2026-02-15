@@ -1,0 +1,31 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/TitleScreenUss.uss?fileID=7433441132597879392&amp;guid=8695dbf73c329ee43a0ad90fe6357e23&amp;type=3#TitleScreenUss" />
+    <ui:VisualElement enabled="true" name="Create" class="menu-container">
+        <ui:VisualElement name="VisualElement" class="menu-pane">
+            <ui:Label text="Create new world" class="menu-header" />
+            <ui:TextField label="Name" name="NameField" class="text-field-small-label padding_1 text_input_1 field-small-label" style="justify-content: flex-start; width: 100%; flex-shrink: 0;">
+                <Bindings>
+                    <ui:DataBinding property="value" data-source-path="Name" data-source-type="NewSaveController+NewSaveSettings, Assembly-CSharp" binding-mode="TwoWay" />
+                </Bindings>
+            </ui:TextField>
+            <ui:TextField label="Seed" name="Seed" placeholder-text="Optional" class="text-field-small-label padding_1 text_input_1 field-small-label" style="justify-content: flex-start; width: 100%; -unity-text-align: upper-left;">
+                <Bindings>
+                    <ui:DataBinding property="value" data-source-path="seed" data-source-type="NewSaveController+NewSaveSettings, Assembly-CSharp" binding-mode="TwoWay" />
+                </Bindings>
+            </ui:TextField>
+            <ui:Toggle label="Persist Player" name="Persist" tooltip="Whether to save player state" value="true" class="padding_1 field-small-label" style="align-items: center; flex-grow: 1; width: 100%;">
+                <Bindings>
+                    <ui:DataBinding property="value" data-source-path="persistPlayer" data-source-type="NewSaveController+NewSaveSettings, Assembly-CSharp" binding-mode="TwoWay" />
+                </Bindings>
+            </ui:Toggle>
+            <ui:VisualElement class="padding_1" style="flex-grow: 0; flex-direction: row; align-items: flex-start; justify-content: space-between; width: 100%;">
+                <ui:Button text="Back" name="Back" class="no_margin button_1" />
+                <ui:Button text="Create" name="Create" enabled="true" class="no_margin button_1">
+                    <Bindings>
+                        <ui:DataBinding property="enabledSelf" data-source-path="isValid" data-source-type="NewSaveController+NewSaveSettings, Assembly-CSharp" binding-mode="ToTarget" />
+                    </Bindings>
+                </ui:Button>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

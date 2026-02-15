@@ -31,7 +31,7 @@ public class StructureGenerator : ChunkSubGenerator
     public override void UpdateRequestedChunks(NativeList<int2> chunks, RealmInfo info)
     {
         var structChunkWidth = info.StructureInfo.StructureChunkWidth;
-        var invRatio = structChunkWidth * 1f / WorldSettings.ChunkWidth;
+        var invRatio = structChunkWidth * 1f / WorldConfig.ChunkWidth;
         var StructureChunks = GetStructureChunks(chunks.AsArray(), structChunkWidth);
 
         var newChunks = new HashSet<int2>();
@@ -58,7 +58,7 @@ public class StructureGenerator : ChunkSubGenerator
     private HashSet<int2> GetStructureChunks(NativeArray<int2> originalChunks, int structChunkWidth)
     {
         var StructureChunks = new HashSet<int2>();
-        var ratio = WorldSettings.ChunkWidth * 1f / structChunkWidth;
+        var ratio = WorldConfig.ChunkWidth * 1f / structChunkWidth;
         foreach (var c in originalChunks)
         {
             StructureChunks.Add(math.int2(math.floor(math.float2(c) * ratio)));
@@ -87,7 +87,8 @@ public class StructureGenerator : ChunkSubGenerator
             biomeData = biomeData,
             structureInfo = realmInfo.StructureInfo.StructureInfo,
             realmData = realmData,
-            blockData = BlockDataRepo.NativeRepo
+            blockData = BlockDataRepo.NativeRepo,
+            WorldSeed = WorldSave.ActiveSeed
         }.Schedule(structureChunks.Length, 1, dep);
 
         var cleanup = structureChunks.Dispose(genStructures);
@@ -98,6 +99,7 @@ public class StructureGenerator : ChunkSubGenerator
     [BurstCompile]
     partial struct StructureGenerationJob : IJobParallelFor
     {
+        public uint WorldSeed;
         public int structureChunkWidth;
         public int chunkWidth;
 
@@ -138,7 +140,7 @@ public class StructureGenerator : ChunkSubGenerator
             var structChunk = structureChunks[index];
             if (debug && !structChunk.Equals(int2.zero)) return;
 
-            var (point, rand, structureIndex) = RealmStructureInfo.GenStructureInfo(structChunk, structureChunkWidth, structureInfo);
+            var (point, rand, structureIndex) = RealmStructureInfo.GenStructureInfo(structChunk, structureChunkWidth, structureInfo, WorldSeed);
             var structure = structureInfo.structures[structureIndex];
             if (debug) point = int2.zero;
 
@@ -146,8 +148,8 @@ public class StructureGenerator : ChunkSubGenerator
             var placedBounds = new NativeList<BoundsInt>(structure.maxComponentCount, Allocator.Temp);
             var openAnchors = new NativeList<NativeComponentAnchor>(structure.maxComponentCount, Allocator.Temp);
 
-            RealmStructureInfo.PopulateAdjacentPoints(structChunk, structureChunkWidth, adjacentPoints);
-
+            RealmStructureInfo.PopulateAdjacentPoints(structChunk, structureChunkWidth, adjacentPoints, WorldSeed);
+             
             var center = structureInfo.GetStructureCenterComponents(structure).SelectRandomWeighted(ref rand);
             var components = structureInfo.GetStructureBuildingComponents(structure);
             if (BuildingFits(point, Rotation.zero, center))

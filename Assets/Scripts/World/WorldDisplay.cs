@@ -28,13 +28,13 @@ public class WorldDisplay : MonoBehaviour
     private void Start()
     {
         ChunkManager.OnRealmChange += Clear;
-        var chunkWidth = WorldSettings.ChunkWidth;
+        var chunkWidth = WorldConfig.ChunkWidth;
         nullBuffer = Enumerable.Repeat<TileBase>(null, chunkWidth* chunkWidth).ToArray();
     }
 
     public IEnumerator RenderChunk(TileDisplayCache tileDisplayInfo, bool clear)
     {
-        var chunkWidth = WorldSettings.ChunkWidth;
+        var chunkWidth = WorldConfig.ChunkWidth;
         var chunkPos = tileDisplayInfo.chunkWorldPos;
         var bounds = new BoundsInt(chunkPos.x, chunkPos.y, 0, chunkWidth, chunkWidth, 1);
         Water.SetTiles(tileDisplayInfo.WaterPositions, !clear);
@@ -127,5 +127,10 @@ public class WorldDisplay : MonoBehaviour
                 available.Push(item);
             }
         }
+    }
+
+    private void OnDisable()
+    {
+        ChunkManager.OnRealmChange -= Clear;
     }
 }

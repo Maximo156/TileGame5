@@ -1,0 +1,10 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/TitleScreenUss.uss?fileID=7433441132597879392&amp;guid=8695dbf73c329ee43a0ad90fe6357e23&amp;type=3#TitleScreenUss" />
+    <ui:VisualElement name="Main" style="flex-grow: 1; justify-content: center; align-items: center;">
+        <ui:VisualElement class="menu-pane">
+            <ui:Label text="Tile Game 5" name="Title" style="font-size: 48px;" />
+            <ui:Button text="New Save" name="NewSave" class="button_1" style="font-size: 32px;" />
+            <ui:Button text="Load Save" name="LoadSave" class="button_1" style="font-size: 32px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

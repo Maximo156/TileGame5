@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Newtonsoft.Json;
 
 [CreateAssetMenu(fileName = "NewProcessingBlock", menuName = "Block/ProcessingBlock", order = 1)]
 public class ProcessingBlock : Wall, IInterfaceBlock, IStatefulBlock
@@ -30,13 +31,29 @@ public class ProcessingBlock : Wall, IInterfaceBlock, IStatefulBlock
 
 public class ProcessingBlockState : BlockState, ITickableState
 {
-    public delegate void StateChange(ProcessingBlockState state);
-    public event StateChange OnStateChange;
-
+    [JsonProperty]
     readonly ProcessingBlock block;
     public Inventory inputs;
     public Inventory outputs = new Inventory(1);
     public LimitedInventory fuels;
+
+    [JsonConstructor]
+    ProcessingBlockState(ProcessingBlock block, Inventory inputs, Inventory outputs, LimitedInventory fuels, float? timeLeft, float? curFuel, float? lastUsedFuel, int _curRecipeIndex) : this(block)
+    {
+        this.inputs = inputs;
+        this.outputs = outputs;
+        this.fuels = new LimitedInventory((i, _, _) => block.Fuels.Contains(i), 1);
+        fuels.TransferToInventory(this.fuels);
+        this.timeLeft = timeLeft;
+        this.curFuel = curFuel;
+        this.lastUsedFuel = lastUsedFuel;
+        this._curRecipeIndex = _curRecipeIndex;
+        lastTick = Utilities.CurMilli();
+
+        inputs.OnItemChanged += InventoriesUpdate;
+        fuels.OnItemChanged += InventoriesUpdate;
+        outputs.OnItemChanged += InventoriesUpdate;
+    }
 
     public ProcessingBlockState(ProcessingBlock block)
     {
@@ -63,7 +80,18 @@ public class ProcessingBlockState : BlockState, ITickableState
     public float? timeLeft { get; private set; } = null;
     public float? curFuel { get; private set; } = null;
     public float? lastUsedFuel { get; private set; } = null;
-    public ItemRecipe curRecipe { get; private set; }
+
+    [JsonProperty]
+    int _curRecipeIndex = -1;
+
+    [JsonIgnore]
+    public ItemRecipe curRecipe 
+    { 
+        get
+        {
+            return _curRecipeIndex == -1 ? null : block.Recipes[_curRecipeIndex];
+        }
+    }
     public void Tick()
     {
         var deltaTime = Utilities.CurMilli() - lastTick;
@@ -73,16 +101,20 @@ public class ProcessingBlockState : BlockState, ITickableState
             {
                 outputs.AddItem(new ItemStack(curRecipe.Result));
                 curRecipe.UseRecipe(inputs);
-                curRecipe = null;
+                _curRecipeIndex = -1;
                 timeLeft = null;
                 TrigerSafeStateChange();
             }
-            var potentialRecipe = block.Recipes.FirstOrDefault(r => r.CanProduce(inputs.GetAllItems()));
-            if (CanProduce(potentialRecipe))
+            var potentialIndex = block.Recipes.FindIndex(r => r.CanProduce(inputs.GetAllItems()));
+            if (potentialIndex != -1)
             {
-                curRecipe = potentialRecipe;
-                timeLeft = potentialRecipe.craftingTime * 1000;
-                TrigerSafeStateChange();
+                var potentialRecipe = block.Recipes[potentialIndex];
+                if (CanProduce(potentialRecipe))
+                {
+                    _curRecipeIndex = potentialIndex;
+                    timeLeft = potentialRecipe.craftingTime * 1000;
+                    TrigerSafeStateChange();
+                }
             }
         }
         if((curFuel ?? 0) <= 0 && curRecipe is not null)
@@ -99,7 +131,7 @@ public class ProcessingBlockState : BlockState, ITickableState
             else
             {
                 timeLeft = null;
-                curRecipe = null;
+                _curRecipeIndex = -1;
                 TrigerSafeStateChange();
             }
         }
@@ -129,14 +161,14 @@ public class ProcessingBlockState : BlockState, ITickableState
             if (!CanProduce(curRecipe))
             {
                 timeLeft = null;
-                curRecipe = null;
-                TrigerSafeStateChange();
+                _curRecipeIndex = -1;
             }
         }
+        TrigerSafeStateChange();
     }
 
     void TrigerSafeStateChange()
     {
-        CallbackManager.AddCallback(() => OnStateChange?.Invoke(this));
+        CallbackManager.AddCallback(() => TriggerStateChange());
     }
 }

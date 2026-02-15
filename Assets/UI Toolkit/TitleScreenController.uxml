@@ -1,0 +1,11 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="MainTitleUi" src="project://database/Assets/UI%20Toolkit/MainTitleUi.uxml?fileID=9197481963319205126&amp;guid=8898268fb3ee005428122582a0ab2156&amp;type=3#MainTitleUi" />
+    <ui:Template name="LoadSaveUI" src="project://database/Assets/UI%20Toolkit/LoadSaveUI.uxml?fileID=9197481963319205126&amp;guid=ccdab7f522b3ed742a9161802e50a1f1&amp;type=3#LoadSaveUI" />
+    <ui:Template name="NewSaveUi" src="project://database/Assets/UI%20Toolkit/NewSaveUi.uxml?fileID=9197481963319205126&amp;guid=fc16483ab78b5ba46ac7456afa92141a&amp;type=3#NewSaveUi" />
+    <Style src="project://database/Assets/UI%20Toolkit/TitleScreenUss.uss?fileID=7433441132597879392&amp;guid=8695dbf73c329ee43a0ad90fe6357e23&amp;type=3#TitleScreenUss" />
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; align-items: center;">
+        <ui:Instance template="MainTitleUi" name="Main" class="menu-container" style="flex-grow: 1; width: 500px; max-width: none;" />
+        <ui:Instance template="LoadSaveUI" name="Load" class="hidden" style="flex-grow: 1; width: 500px;" />
+        <ui:Instance template="NewSaveUi" name="New" class="hidden" style="flex-grow: 1; width: 500px;" />
+    </ui:VisualElement>
+</ui:UXML>
