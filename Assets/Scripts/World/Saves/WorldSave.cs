@@ -131,10 +131,11 @@ public class WorldSave
 
     public static WorldSave GetFirstSave()
     {
-        var selectedSave = LoadSaves().FirstOrDefault(s => s.worldName == WorldSaveSelect.SelectedSaveName);
+        var name = WorldSaveSelect.SelectedSaveName;
+        var selectedSave = LoadSaves().FirstOrDefault(s => s.worldName == name);
         if(selectedSave == null)
         {
-            return CreateNewSave("DEFAULT_SAVE", null, false);
+            return CreateNewSave(string.IsNullOrWhiteSpace(name) ? "DEFAULT_SAVE" : name, null, false);
         }
         else
         {
