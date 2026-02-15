@@ -77,14 +77,7 @@ public class Realm
          
         ReadDependencies = frameUpdatedChunks.Dispose(JobHandle.CombineDependencies(lightJobInfo.jobHandle, tickJobInfo.job, EntityContainer.AIManager.RunPathfinding()));
 
-        foreach (var c in ToSave)
-        {
-            if (LoadedChunks.TryGetValue(c, out var chunk))
-            {
-                ChunkSaver.SaveChunk(name, chunk);
-            }
-        }
-        ToSave.Clear();
+        SaveChunks();
     }
 
     public void LateStep()
@@ -115,6 +108,21 @@ public class Realm
         updateArray.Dispose();
         InitializeManagedChunks();
         EntityContainer.AIManager.ProcessPathfinding();
+    }
+
+    float lastSave;
+    void SaveChunks()
+    {
+        if (Time.time - lastSave < 1) return;
+        lastSave = Time.time;
+        foreach (var c in ToSave)
+        {
+            if (LoadedChunks.TryGetValue(c, out var chunk))
+            {
+                ChunkSaver.SaveChunk(name, chunk);
+            }
+        }
+        ToSave.Clear();
     }
 
     void ProcessDropChunks()

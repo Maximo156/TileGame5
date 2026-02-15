@@ -17,7 +17,7 @@ public class ProcessorDisplay : InteractiveDislay
     {
         if (curState != null)
         {
-            curState.OnStateChange -= SetSliders;
+            curState.OnStateUpdated -= SetSliders;
             Inputs.DetachInv(curState.inputs);
             Outputs.DetachInv(curState.outputs);
             Fuels.DetachInv(curState.fuels);
@@ -28,7 +28,7 @@ public class ProcessorDisplay : InteractiveDislay
     public override void DisplayInventory(Vector2Int worldPos, Wall _, BlockState state, IInventoryContainer otherInventory)
     {
         curState = state as ProcessingBlockState;
-        curState.OnStateChange += SetSliders;
+        curState.OnStateUpdated += SetSliders;
         Render();
     }
 
@@ -38,16 +38,11 @@ public class ProcessorDisplay : InteractiveDislay
         Outputs.AttachInv(curState.outputs);
         Fuels.AttachInv(curState.fuels);
 
-        SetSliders(curState);
+        SetSliders();
     }
 
-    void SetSliders(ProcessingBlockState changedState)
+    void SetSliders()
     {
-        if (changedState != curState)
-        {
-            throw new InvalidOperationException("Rendering incorrect state");
-        }
-
         CompletionSlider.fillAmount =  1 - (curState.timeLeft / (curState.curRecipe?.craftingTime * 1000)) ?? 0;
         FuelConsumptionSlider.fillAmount = (curState.curFuel / curState.lastUsedFuel) ?? 0;
     }

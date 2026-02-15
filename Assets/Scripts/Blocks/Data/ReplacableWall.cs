@@ -14,15 +14,6 @@ public class ReplacableBlock : Wall, ISimpleTickBlock
         return nextBlock;
     }
 
-    public ushort Tick(Vector2Int worlPosition, BlockState state, System.Random rand)
-    {
-        if (rand.NextDouble() < 1 - Mathf.Pow((float)System.Math.E, -1f * WorldConfig.TickMs / (1000 * MeanSecondsToHappen)))
-        {
-            return NewBlock().Id;
-        }
-        return 0;
-    }
-
     public TickInfo GetTickInfo()
     {
         return new TickInfo
