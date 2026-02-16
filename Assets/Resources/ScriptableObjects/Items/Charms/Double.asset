@@ -12,13 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b564d1120360aee45a72d820d8b68d78, type: 3}
   m_Name: Double
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 1725865052, guid: 1eaa421d7357df44ebe15fc5ef1c19c3, type: 3}
+  <Sprite>k__BackingField: {fileID: 1725865052, guid: 1eaa421d7357df44ebe15fc5ef1c19c3, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 99
   BurnTime: 0
+  Behaviors: []
   manaCost: 0
   CostModifier: 1
   splitCount: 2
   splitDamageModifier: 0.5
   SpreadAngle: 20
   secondsBeforeSplit: 2
+  references:
+    version: 2
+    RefIds: []

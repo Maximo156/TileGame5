@@ -13,7 +13,7 @@ public class ItemRecipe : Recipe
 
     public float craftingTimeTicks => (craftingTime * 1000);// / WorldSettings.StructureTickMilliseconds;
 
-    public override Sprite GetSprite() => Result.GetSprite();
+    public override Sprite Sprite => Result.Sprite;
 
     public override string GetString() =>  Result.GetString();
 

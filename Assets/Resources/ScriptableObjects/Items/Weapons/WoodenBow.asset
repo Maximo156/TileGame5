@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: WoodenBow
   m_EditorClassIdentifier: 
-  Sprite: {fileID: -883054588, guid: 847fb7761b2672f45bddb1184db5863b, type: 3}
+  <Sprite>k__BackingField: {fileID: -883054588, guid: 847fb7761b2672f45bddb1184db5863b, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 1
   BurnTime: 0

@@ -40,7 +40,7 @@ public abstract class Recipe: IGridItem, IGridSource
         return dict.Where(kvp => kvp.Value > 0).Select(kvp => new ItemStack(kvp.Key, kvp.Value));
     }
 
-    public abstract Sprite GetSprite();
+    public abstract Sprite Sprite { get; }
     public abstract string GetString();
     public abstract Color GetColor();
     public abstract (string, string) GetTooltipString();

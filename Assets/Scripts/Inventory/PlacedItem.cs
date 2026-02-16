@@ -10,7 +10,7 @@ public class PlacedItem : MonoBehaviour
 
     public void Render(ItemStack item)
     {
-        sprite.sprite = item.GetSprite();
+        sprite.sprite = item.Sprite;
         count.text = item.GetString();
     }
 }

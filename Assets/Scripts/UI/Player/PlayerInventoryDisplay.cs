@@ -21,6 +21,8 @@ public class PlayerInventoryDisplay : MonoBehaviour
 
     public InteractiveDisplayController OtherDisplay;
 
+    public GameObject CreativeInventoryContainer;
+
     public void Start()
     {
         HotBarSelector.NewSelection(null, 0);
@@ -35,6 +37,7 @@ public class PlayerInventoryDisplay : MonoBehaviour
         AccessoryInventoryDisplay.AttachInv(inventory.AccessoryInv);
 
         InventorySetActive(false);
+        CreativeInventoryContainer.SetActive(false);
     }
 
     public void OnInvToggle()
@@ -44,6 +47,7 @@ public class PlayerInventoryDisplay : MonoBehaviour
         {
             OtherDisplay.Close();
         }
+        CreativeInventoryContainer.SetActive(false);
     }
 
     private void BlockInterfaced(Vector2Int pos, Wall _, BlockState state, IInventoryContainer inv)
@@ -63,5 +67,13 @@ public class PlayerInventoryDisplay : MonoBehaviour
     {
         TogglableInv.SetActive(active);
         ModifierDisplay.SetActive(!active);
+    }
+
+    public void ToggleCreativeInv()
+    {
+        if (!GameSettings.CreativeMenu) return;
+
+        CreativeInventoryContainer.SetActive(!CreativeInventoryContainer.activeSelf);
+        InventorySetActive(true);
     }
 }

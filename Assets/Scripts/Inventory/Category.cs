@@ -15,7 +15,7 @@ public class Category : IGridItem, IGridSource
 
     public IEnumerable<IGridItem> GetGridItems() => recipes;
 
-    public Sprite GetSprite() => sprite;
+    public Sprite Sprite => sprite;
 
     public string GetString() => "";
 

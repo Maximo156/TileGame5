@@ -118,10 +118,8 @@ public class ItemStack : IGridItem, IGridSource
         return Item.name.Replace("Block", "").Replace("Item", "").SplitCamelCase() + (Count > 1 ? "s" : "");
     }
 
-    public Sprite GetSprite()
-    {
-        return Item.Sprite;
-    }
+    [JsonIgnore]
+    public Sprite Sprite => Item.Sprite;
 
     public string GetString()
     {
@@ -171,11 +169,13 @@ public class ItemStack : IGridItem, IGridSource
 
 [JsonConverter(typeof(ItemConverter))]
 [CreateAssetMenu(fileName = "NewItem", menuName = "Inventory/Item", order = 1)]
-public class Item : ScriptableObject, ISpriteful, ISaveable
+public class Item : ScriptableObject, ISpriteful, IGridItem
 {
-
-    public Sprite Sprite;
+    [JsonIgnore]
+    [field: SerializeField]
+    public Sprite Sprite { get; set; }
     public Color Color = Color.white;
+    [Min(1)]
     public int MaxStackSize;
     public int BurnTime = 0;
 
@@ -183,8 +183,7 @@ public class Item : ScriptableObject, ISpriteful, ISaveable
     public List<ItemBehaviour> Behaviors = new List<ItemBehaviour>();
 
     public string formatedName => name.Replace("Block", "").Replace("Item", "").SplitCamelCase();
-    public string Identifier { get; set; } 
-    Sprite ISpriteful.Sprite => Sprite;
+    public string Identifier { get; set; }
 
     public bool GetBehavior<T>(out T behaviour) where T : class
     {
@@ -218,6 +217,14 @@ public class Item : ScriptableObject, ISpriteful, ISaveable
     {
         return Behaviors.Where(b => b is IStatefulItemBehaviour).ToDictionary(b => b.GetType(), b => (b as IStatefulItemBehaviour).GetNewState());
     }
+
+    public Sprite GetSprite() => Sprite;
+
+    public string GetString() => "";
+
+    public Color GetColor() => Color;
+
+    public (string, string) GetTooltipString() => (formatedName, GetStatsString());
 }
 
 public interface ICyclable {

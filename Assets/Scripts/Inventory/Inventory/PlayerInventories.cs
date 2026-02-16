@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using NUnit;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerInventories : MonoBehaviour, IInventoryContainer
@@ -10,12 +11,10 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
     public event HotBarChanged OnHotBarChanged;
 
     [Header("Main Inventory")]
-    public List<ItemStack> MainStartingItems;
     public int MainSize;
     public Inventory MainInv { get; private set; }
 
     [Header("Hotbar Inventory")]
-    public List<ItemStack> HotbarStartingItems;
     public int HotbarSize;
     private int CurrentlySelectedHand;
 
@@ -24,6 +23,8 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
     public Inventory HotbarInv { get; private set; }
 
     public AccessoryInv AccessoryInv { get; private set; }
+
+    private EventSystem events;
 
     void Awake()
     {
@@ -36,11 +37,12 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
     public void Start()
     {
         GetComponent<EntityStatistics.EntityStats>()?.AttachInv(AccessoryInv);
+        events = EventSystem.current;
     }
 
     public void Scroll(InputAction.CallbackContext value)
     {
-        if (!Keyboard.current.ctrlKey.isPressed && !tool.animating)
+        if (!Keyboard.current.ctrlKey.isPressed && !tool.animating && !events.IsPointerOverGameObject())
         {
             var dir = value.ReadValue<Vector2>();
 

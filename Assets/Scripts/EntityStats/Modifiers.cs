@@ -53,7 +53,7 @@ namespace EntityStatistics
             OnDispose?.Invoke();
         }
 
-        public Sprite GetSprite() => display;
+        public Sprite Sprite => display;
 
         public string GetString() => null;
 

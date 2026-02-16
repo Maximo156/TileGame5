@@ -10,7 +10,7 @@ public class BlockRecipe : Recipe
 
     public override Color GetColor() => block.Color;
 
-    public override Sprite GetSprite() => block.Sprite;
+    public override Sprite Sprite => block.Sprite;
 
     public override string GetString() => "";
 
