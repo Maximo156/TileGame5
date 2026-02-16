@@ -40,17 +40,25 @@ public interface IGridClickListener
 public class SingleChildLayoutController : MonoBehaviour
 {
     public GameObject GridItemDisplayPrefab;
+    public bool FitContentWidth;
+    public bool FitContentHeight;
     private List<GridItemDisplay> currentChildren = new List<GridItemDisplay>();
 
     public GridLayoutGroup GridLayout;
     int layoutGroupConstraint = 5;
+    RectTransform rect;
 
-    private void Start()
+    private void Awake()
     {
         if(GridLayout is not null)
         {
             layoutGroupConstraint = GridLayout.constraintCount;
         }
+        if ((FitContentWidth || FitContentHeight) && GridLayout is null)
+        {
+            Debug.LogWarning("Using fit content without reference to gird layout will not work");
+        }
+        rect = GetComponent<RectTransform>();
     }
 
     public void Clear()
@@ -75,6 +83,8 @@ public class SingleChildLayoutController : MonoBehaviour
         {
             currentChildren[i].SetDisplay(items[i], i, onClick, onMouseUp, overrideDisplay);
         }
+
+        FitContent(items.Count);
     }
 
     private void SetupChildren(int count)
@@ -94,6 +104,22 @@ public class SingleChildLayoutController : MonoBehaviour
         while(currentChildren.Count < count)
         {
             currentChildren.Add(Instantiate(GridItemDisplayPrefab, transform).GetComponent<GridItemDisplay>());
+        }
+    }
+
+    void FitContent(int count)
+    {
+        if (!FitContentWidth && !FitContentHeight) return;
+        if (GridLayout is not null)
+        {
+            var nonConstraintDim = (int)MathF.Ceiling(count * 1f / GridLayout.constraintCount);
+            var constraintDim = GridLayout.constraintCount;
+
+            var (rows, cols) = GridLayout.constraint == GridLayoutGroup.Constraint.FixedRowCount ? (constraintDim, nonConstraintDim) : (nonConstraintDim, constraintDim);
+            Debug.Log($"{rows} {cols}");
+            var height = rows * (GridLayout.cellSize.y + GridLayout.spacing.y) + GridLayout.padding.top + GridLayout.padding.bottom;
+            var width = cols * (GridLayout.cellSize.x + GridLayout.spacing.x) + GridLayout.padding.left + GridLayout.padding.right;
+            rect.sizeDelta = new Vector2(FitContentWidth ? width : rect.sizeDelta.x, FitContentHeight ? height : rect.sizeDelta.y);
         }
     }
 }
