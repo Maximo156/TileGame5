@@ -28,7 +28,7 @@ public class NewSaveController
     {
         try
         {
-            var newSave = WorldSave.CreateNewSave(settings.Name, settings.seed, settings.persistPlayer);
+            var newSave = WorldSave.CreateNewSave(settings.Name, settings.seed);
             WorldSave.PlaySave(newSave);
         }
         catch (WorldAlreadyExistsException)
@@ -43,7 +43,6 @@ public class NewSaveController
         [DontCreateProperty]
         string m_name;
         public string seed;
-        public bool persistPlayer;
         public bool error = false;
 
         [CreateProperty]

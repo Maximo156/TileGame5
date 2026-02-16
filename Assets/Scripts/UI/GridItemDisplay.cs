@@ -101,7 +101,7 @@ public class GridItemDisplay : MonoBehaviour, IPointerDownHandler, IPointerUpHan
             if (displayed != null)
             {
                 img.enabled = true;
-                img.sprite = displayed.GetSprite();
+                img.sprite = displayed.Sprite;
                 img.color = displayed.GetColor();
             }
             else

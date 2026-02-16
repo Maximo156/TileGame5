@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: Wool
   m_EditorClassIdentifier: 
-  Sprite: {fileID: -760922262, guid: cb8c198214245924c9753f6e49bdb32a, type: 3}
+  <Sprite>k__BackingField: {fileID: -760922262, guid: cb8c198214245924c9753f6e49bdb32a, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 90
   BurnTime: 0
+  Behaviors: []
+  references:
+    version: 2
+    RefIds: []

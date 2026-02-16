@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: WoodenRod
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 496697314, guid: 57083b8bbaa162d469074b66d7056608, type: 3}
+  <Sprite>k__BackingField: {fileID: -234170847, guid: 57083b8bbaa162d469074b66d7056608, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 99
   BurnTime: 1
+  Behaviors: []
+  references:
+    version: 2
+    RefIds: []

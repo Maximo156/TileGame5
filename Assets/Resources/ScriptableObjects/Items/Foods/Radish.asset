@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: Radish
   m_EditorClassIdentifier: 
-  Sprite: {fileID: -1760689374, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
+  <Sprite>k__BackingField: {fileID: -1760689374, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 99
   BurnTime: 0

@@ -13,8 +13,3 @@ public interface ISpriteful
         get => Color.white;
     }
 }
-
-public interface ISaveable
-{
-    public string Identifier { get; }
-}

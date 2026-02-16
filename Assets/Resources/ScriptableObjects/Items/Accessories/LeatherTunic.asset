@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: LeatherTunic
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300000, guid: 431abc572f22e514e9c305eeb4e009c2, type: 3}
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 431abc572f22e514e9c305eeb4e009c2, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 0
   BurnTime: 0

@@ -14,7 +14,7 @@ public interface IClickable
 
 public interface IGridItem
 {
-    public Sprite GetSprite();
+    public Sprite Sprite { get; }
     public string GetString();
 
     public Color GetColor();
@@ -40,7 +40,6 @@ public interface IGridClickListener
 public class SingleChildLayoutController : MonoBehaviour
 {
     public GameObject GridItemDisplayPrefab;
-
     private List<GridItemDisplay> currentChildren = new List<GridItemDisplay>();
 
     public GridLayoutGroup GridLayout;

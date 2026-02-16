@@ -46,7 +46,7 @@
                     "name": "ToggleInv",
                     "type": "Button",
                     "id": "e90308e8-0432-42f5-91a2-32d83b00fcf8",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -73,6 +73,15 @@
                     "name": "OpenSettings",
                     "type": "Button",
                     "id": "52524970-9c0e-44d4-805c-614224b0a772",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleCreativeInv",
+                    "type": "Button",
+                    "id": "27ad2e4d-4013-4d10-9b44-5a72101950ef",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -374,6 +383,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "OpenSettings",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e60d82b2-da86-4bb3-ab40-cb7994004749",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleCreativeInv",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

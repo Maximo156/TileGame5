@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4fcb54f62c3c747914fa502a9a0294, type: 3}
   m_Name: Zenith Staff
   m_EditorClassIdentifier: 
-  Sprite: {fileID: -7069668517599331636, guid: a5983c79d9b5d824894da496e0acc63e, type: 3}
+  <Sprite>k__BackingField: {fileID: -7069668517599331636, guid: a5983c79d9b5d824894da496e0acc63e, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 1
   BurnTime: 0

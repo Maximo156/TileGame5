@@ -9,13 +9,9 @@ public class PlayerSaver : MonoBehaviour
     private void Start()
     {
         playerInventories = GetComponent<PlayerInventories>();
-        bool persist = WorldSave.ActiveSave.persistPlayer;
-        if (persist)
-        {
-            var info = WorldSave.LoadSimple<PlayerInfo>(infoLocation);
-            transform.position = info.Position.ToVector3Int();
-        }
-        InitInventory(persist);
+        var info = WorldSave.LoadSimple<PlayerInfo>(infoLocation);
+        transform.position = info.Position.ToVector3Int();
+        InitInventory();
     }
 
     private void OnDisable()
@@ -29,17 +25,9 @@ public class PlayerSaver : MonoBehaviour
         SaveInventory(null);
     }
 
-    void InitInventory(bool persist)
+    void InitInventory()
     {
-        if (persist)
-        {
-            LoadInventory();
-        }
-        else
-        {
-            playerInventories.MainInv.AddItems(playerInventories.MainStartingItems);
-            playerInventories.HotbarInv.AddItems(playerInventories.HotbarStartingItems);
-        }
+        LoadInventory();
     }
 
     void SaveInventory(Inventory _)
@@ -56,7 +44,7 @@ public class PlayerSaver : MonoBehaviour
     {
         var loaded = WorldSave.LoadSimple<InventorySave>(invLocation);
 
-        if (loaded != null)
+        if (loaded != null) 
         {
             loaded.Main.TransferToInventory(playerInventories.MainInv);
             loaded.Hotbar.TransferToInventory(playerInventories.HotbarInv);

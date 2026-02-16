@@ -72,7 +72,7 @@ public class WorldSave
         return Path.Join(GetWorldDirectoryName(worldName), META_DATA_FILE_NAME);
     }
 
-    public static WorldSave CreateNewSave(string name, string seed, bool persistPlayer)
+    public static WorldSave CreateNewSave(string name, string seed)
     {
         if(string.IsNullOrWhiteSpace(seed))
         {
@@ -89,7 +89,7 @@ public class WorldSave
         using(var metaFile = File.Create(metadataFileName))
         using (StreamWriter writer = new StreamWriter(metaFile))
         {
-            writer.Write(JsonUtility.ToJson(new Metadata() { seed = seed, persistPlayer = persistPlayer }));
+            writer.Write(JsonUtility.ToJson(new Metadata() { seed = seed }));
         }
 
         return new WorldSave(name);
@@ -135,7 +135,7 @@ public class WorldSave
         var selectedSave = LoadSaves().FirstOrDefault(s => s.worldName == name);
         if(selectedSave == null)
         {
-            return CreateNewSave(string.IsNullOrWhiteSpace(name) ? "DEFAULT_SAVE" : name, null, false);
+            return CreateNewSave(string.IsNullOrWhiteSpace(name) ? "DEFAULT_SAVE" : name, null);
         }
         else
         {
@@ -145,7 +145,6 @@ public class WorldSave
 
     public readonly uint seed;
     public readonly string worldName;
-    public bool persistPlayer;
 
     public string DirectoryPath => GetWorldDirectoryName(worldName);
 
@@ -153,7 +152,6 @@ public class WorldSave
     {
         var metadata = JsonUtility.FromJson<Metadata>(File.ReadAllText(GetWorldMetadataFileName(worldName)));
         seed = (uint)metadata.seed.GetHashCode();
-        persistPlayer = metadata.persistPlayer;
         this.worldName = worldName;
     }
 
@@ -165,7 +163,6 @@ public class WorldSave
     struct Metadata
     {
         public string seed;
-        public bool persistPlayer;
     }
 }
 

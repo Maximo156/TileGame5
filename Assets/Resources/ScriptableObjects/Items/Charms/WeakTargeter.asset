@@ -12,11 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b097dfd601e0c4408932cd79697efd2, type: 3}
   m_Name: WeakTargeter
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 524257990, guid: 1eaa421d7357df44ebe15fc5ef1c19c3, type: 3}
+  <Sprite>k__BackingField: {fileID: 524257990, guid: 1eaa421d7357df44ebe15fc5ef1c19c3, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
   MaxStackSize: 0
   BurnTime: 0
+  Behaviors: []
   manaCost: 10
   CostModifier: 0
   targetingForce: 1
   TargetingRange: 10
+  references:
+    version: 2
+    RefIds: []

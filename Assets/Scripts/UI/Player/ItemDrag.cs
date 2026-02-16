@@ -65,6 +65,19 @@ public class ItemDrag : MonoBehaviour
         gridItem.SetDisplay(currentlyHolding, -1);
     }
 
+    public void SetItem(Item item, int count)
+    {
+        if (currentlyHolding != null) return;
+        currentlyHolding = new ItemStack(item, count);
+        gridItem.SetDisplay(currentlyHolding, -1);
+    }
+
+    public void ClearItem()
+    {
+        currentlyHolding = null;
+        gridItem.SetDisplay(currentlyHolding, -1);
+    }
+
     public void ExternalUpdate()
     {
         gridItem.SetDisplay(currentlyHolding, -1);

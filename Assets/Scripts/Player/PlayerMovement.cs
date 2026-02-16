@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -21,6 +22,7 @@ public class PlayerMovement : MonoBehaviour, IHittable
     private Rigidbody2D rb2d;
 
     private Timer hitTimer;
+    private EventSystem eventSystem;
 
     // Start is called before the first frame update
     void Awake()
@@ -32,12 +34,18 @@ public class PlayerMovement : MonoBehaviour, IHittable
     private void Start()
     {
         PortalBlock.OnPortalBlockUsed += PortalUsed;
+        eventSystem = EventSystem.current;
     }
 
     private Vector2Int LastChunk = new Vector2Int(1000, 10000);
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (eventSystem.currentSelectedGameObject != null)
+        {
+            rb2d.linearVelocity = Vector2.zero;
+            return;
+        }
         var curSpeed = rb2d.linearVelocity.magnitude;
         if (movementDir.magnitude > 0 && curSpeed >= 0 && hitTimer?.Expired != false)
         {

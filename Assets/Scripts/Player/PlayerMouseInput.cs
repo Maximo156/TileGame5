@@ -33,7 +33,7 @@ public class PlayerMouseInput : MonoBehaviour
     public void Awake()
     {
         mainCamera = Camera.main;
-        events = FindFirstObjectByType<EventSystem>();
+        events = EventSystem.current;
         playerInventory = GetComponent<PlayerInventories>();
         playerInventory.OnHotBarChanged += ChangeHand;
         HotBarInv = playerInventory.HotbarInv;
