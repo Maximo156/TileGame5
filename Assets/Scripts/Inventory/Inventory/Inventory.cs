@@ -197,6 +197,14 @@ public class Inventory : IInventory, IInventoryContainer, IGridSource
         return inSlot == null || (inSlot?.Item == toAdd?.Item && inSlot.Space > 0);
     }
 
+    public virtual void CopyToInventory(Inventory Other)
+    {
+        for (int i = 0; i < inv.Length; i++)
+        {
+            Other.SetItem(inv[i], i);
+        }
+    }
+
     public virtual void TransferToInventory(Inventory Other)
     {
         for (int i = 0; i < inv.Length; i++)

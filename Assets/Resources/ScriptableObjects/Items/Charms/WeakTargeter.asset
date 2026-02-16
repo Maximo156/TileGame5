@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Sprite>k__BackingField: {fileID: 524257990, guid: 1eaa421d7357df44ebe15fc5ef1c19c3, type: 3}
   Color: {r: 1, g: 1, b: 1, a: 1}
-  MaxStackSize: 0
+  MaxStackSize: 1
   BurnTime: 0
   Behaviors: []
   manaCost: 10

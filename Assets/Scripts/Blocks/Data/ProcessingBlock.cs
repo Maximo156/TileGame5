@@ -43,7 +43,7 @@ public class ProcessingBlockState : BlockState, ITickableState
         this.inputs = inputs;
         this.outputs = outputs;
         this.fuels = new LimitedInventory((i, _, _) => block.Fuels.Contains(i), 1);
-        fuels.TransferToInventory(this.fuels);
+        fuels.CopyToInventory(this.fuels);
         this.timeLeft = timeLeft;
         this.curFuel = curFuel;
         this.lastUsedFuel = lastUsedFuel;

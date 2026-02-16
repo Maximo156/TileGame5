@@ -46,9 +46,9 @@ public class PlayerSaver : MonoBehaviour
 
         if (loaded != null) 
         {
-            loaded.Main.TransferToInventory(playerInventories.MainInv);
-            loaded.Hotbar.TransferToInventory(playerInventories.HotbarInv);
-            loaded.Accessory.TransferToInventory(playerInventories.AccessoryInv);
+            loaded.Main.CopyToInventory(playerInventories.MainInv);
+            loaded.Hotbar.CopyToInventory(playerInventories.HotbarInv);
+            loaded.Accessory.CopyToInventory(playerInventories.AccessoryInv);
         }
         else
         {

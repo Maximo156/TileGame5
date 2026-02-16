@@ -175,6 +175,7 @@ public class Item : ScriptableObject, ISpriteful, IGridItem
     [field: SerializeField]
     public Sprite Sprite { get; set; }
     public Color Color = Color.white;
+    [Min(1)]
     public int MaxStackSize;
     public int BurnTime = 0;
 

@@ -29,7 +29,7 @@ public class InfusableBehaviourState : ItemInventoryBehaviourState, IStateString
     public InfusableBehaviourState(int charmSlots, Inventory inv) : base(CharmAllowedInSlot, charmSlots)
     {
         this.charmSlots = charmSlots;
-        inv.TransferToInventory(this.inv);
+        inv.CopyToInventory(this.inv);
         UpdateStages();
     }
 
