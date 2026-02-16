@@ -37,6 +37,7 @@ public class PlayerInventoryDisplay : MonoBehaviour
         AccessoryInventoryDisplay.AttachInv(inventory.AccessoryInv);
 
         InventorySetActive(false);
+        CreativeInventoryContainer.SetActive(false);
     }
 
     public void OnInvToggle()
