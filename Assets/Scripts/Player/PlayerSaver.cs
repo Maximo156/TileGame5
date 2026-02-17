@@ -9,7 +9,7 @@ public class PlayerSaver : MonoBehaviour
     private void Start()
     {
         playerInventories = GetComponent<PlayerInventories>();
-        var info = WorldSave.LoadSimple<PlayerInfo>(infoLocation);
+        var info = LoadPlayerInfo();
         transform.position = info.Position.ToVector3Int();
         InitInventory();
     }
@@ -19,9 +19,10 @@ public class PlayerSaver : MonoBehaviour
         WorldSave.SaveSimple(infoLocation, 
             new PlayerInfo() 
             { 
-                Position = Utilities.GetBlockPos(transform.position.ToVector2())
+                Position = Utilities.GetBlockPos(transform.position.ToVector2()),
+                currentRealm = ChunkManager.CurRealm.name
             }
-        );
+        );;
         SaveInventory(null);
     }
 
@@ -56,9 +57,15 @@ public class PlayerSaver : MonoBehaviour
         }
     }
 
-    struct PlayerInfo
+    public static PlayerInfo LoadPlayerInfo()
+    {
+        return WorldSave.LoadSimple<PlayerInfo>(infoLocation);
+    }
+
+    public struct PlayerInfo
     {
         public Vector2Int Position;
+        public string currentRealm;
     }
 
     class InventorySave

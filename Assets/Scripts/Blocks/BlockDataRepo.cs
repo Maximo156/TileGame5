@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using TMPro;
 using Unity.Collections;
 using UnityEngine;
 
@@ -8,25 +10,47 @@ namespace BlockDataRepos
     public class BlockDataRepo : MonoBehaviour
     {
         public static NativeBlockDataRepo NativeRepo;
+        public static ProxyBlock proxyBlock;
         static Block[] Blocks;
 
         private void Awake()
         {
             var tmp = Resources.LoadAll<Block>("ScriptableObjects/Blocks").OrderBy(b => b.name).ToList();
-            tmp.Add(ProxyBlock.Instance);
+            proxyBlock = tmp.First(b => b is ProxyBlock) as ProxyBlock;
+
             Debug.Log($"Loading {tmp.Count} blocks");
             Blocks = new Block[tmp.Count];
-            ushort count = 1;
-            foreach(var block in tmp)
-            {
-                block.Id = count;
-                count++;
-            }
+
+            FixupIds(tmp);
+            ValidateIds(tmp);
 
             NativeRepo = new(tmp);
             foreach (var block in tmp)
             {
                 Blocks[block.Id-1] = block;
+            }
+        }
+
+        private void FixupIds(List<Block> blocks)
+        {
+            var ordered = blocks.OrderByDescending(b => b.Id).ToList();
+            var firstNoId = ordered.FindIndex(b => b.Id == 0);
+            if (firstNoId == -1) return;
+            for(int i = firstNoId; i<blocks.Count; i++)
+            {
+                ordered[i].Id = (ushort)(i + 1);
+            }
+        }
+
+        private void ValidateIds(List<Block> blocks)
+        {
+            var distinctIds = blocks.Select(b => b.Id).Distinct().ToList();
+            if (distinctIds.Count == blocks.Count) return;
+            Debug.LogWarning("Duplicate block id detected");
+            ushort count = 1;
+            foreach (var block in blocks)
+            {
+                block.Id = count++;
             }
         }
 
@@ -72,12 +96,13 @@ namespace BlockDataRepos
 
             for (int i = 0; i < blocks.Count; i++)
             {
-                ProcessBlock(blocks[i], i);
+                ProcessBlock(blocks[i]);
             }
         }
 
-        public void ProcessBlock(Block block, int index)
+        public void ProcessBlock(Block block)
         {
+            var index = block.Id - 1;
             var wall = block as Wall;
             lightLevels[index] = block is LightBlock light ? (byte)(light.LightLevel * 2) : (byte)0;
             moveInfo[index] = new BlockMovementInfo 

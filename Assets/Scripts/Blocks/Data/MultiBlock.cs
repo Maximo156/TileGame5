@@ -1,6 +1,7 @@
 using NativeRealm;
 using UnityEngine;
 using System.Linq;
+using BlockDataRepos;
 
 [CreateAssetMenu(fileName = "NewMultiBlock", menuName = "Block/MultiBlock", order = 1)]
 public class MultiBlock : Wall, IConditionalPlace, IOnPlace
@@ -28,7 +29,7 @@ public class MultiBlock : Wall, IConditionalPlace, IOnPlace
             if (pos != Pos.ToVector3Int())
             {
                 var state = (Pos - pos.ToVector2Int()).ToOffsetStateEncoding();
-                ChunkManager.PlaceBlock(pos.ToVector2Int(), dir, ProxyBlock.Instance, false, state);
+                ChunkManager.PlaceBlock(pos.ToVector2Int(), dir, BlockDataRepo.proxyBlock, false, state);
             }
             else
             {

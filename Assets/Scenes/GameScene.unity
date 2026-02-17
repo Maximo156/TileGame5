@@ -15261,7 +15261,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 971f791bbf36545429c0caf7937c1bbd, type: 2}
   - name: Caves
     Generator: {fileID: 11400000, guid: c18f0422c9491464ea2ca8b8b2bef22f, type: 2}
-    Save: 0
+    Save: 1
     BiomeInfo: {fileID: 11400000, guid: 1b1da806a3fd86d40b724745617c10db, type: 2}
     StructureInfo:
       StructureChunkWidth: 64

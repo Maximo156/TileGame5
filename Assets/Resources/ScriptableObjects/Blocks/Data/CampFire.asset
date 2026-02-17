@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 580021be82c6ff349978a80f15551233, type: 3}
-  m_Name: Fire
+  m_Name: CampFire
   m_EditorClassIdentifier: 
   Display: {fileID: 11400000, guid: 203659ed5f07eaf43a0a1ed0f270015c, type: 2}
   HitsToBreak: 2

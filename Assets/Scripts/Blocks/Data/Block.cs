@@ -19,14 +19,9 @@ public interface IOnPlace
 [JsonConverter(typeof(BlockConverter))]
 public class Block : ScriptableObject, ISpriteful
 {
-    ushort _id;
-    public ushort Id { get
-        {
-            if (_id == 0) throw new System.Exception($"{Identifier} has no id");
-            return _id;
-        }
-        set => _id = value;
-    }
+    [ReadOnlyProperty]
+    public ushort Id = 0;
+
     public TileBase Display;
     public int HitsToBreak;
     public float MovementModifier = 0;

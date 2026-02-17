@@ -17,8 +17,12 @@ MonoBehaviour:
   minHeight: 0.7
   GroundBlock: {fileID: 11400000, guid: 22a8a340cdc98184188d3138c749b133, type: 2}
   WallBlock: {fileID: 11400000, guid: e53702bea1537ea43863f3c884a887d4, type: 2}
-  RoofBlock: {fileID: 0}
-  replaceSolid: 0
-  SparceBlocks: []
-  SparceSoundSettings: {fileID: 0}
-  SparceDensity: 0
+  RoofBlock: {fileID: 11400000, guid: e938b70879737824ea13d4cec0cec71a, type: 2}
+  ReplacementInfos: []
+  replaceSolid: 1
+  SparceBlockInfos:
+  - Weight: 1
+    block: {fileID: 11400000, guid: b1678367436a8f54b92bb8f649e302a1, type: 2}
+  SparceDensity: 0.05
+  NaturalMobs: []
+  HostileMobs: []
