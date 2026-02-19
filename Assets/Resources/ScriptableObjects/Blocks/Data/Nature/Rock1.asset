@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c391e9543f7e944796946cb5ce48a18, type: 3}
   m_Name: Rock1
   m_EditorClassIdentifier: 
+  Id: 35
   Display: {fileID: 11400000, guid: dee3b5594ed96cd4a936e865e1274224, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

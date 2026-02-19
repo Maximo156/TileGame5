@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c391e9543f7e944796946cb5ce48a18, type: 3}
   m_Name: FallenStick
   m_EditorClassIdentifier: 
+  Id: 17
   Display: {fileID: 11400000, guid: 4b63d04546bdb4641adc0e66754629be, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

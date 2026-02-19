@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
   m_Name: RoseSeedling
   m_EditorClassIdentifier: 
+  Id: 39
   Display: {fileID: 11400000, guid: b16ed783f9a494448a0bc616cc2f499e, type: 2}
   HitsToBreak: 1
+  MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: 5be3a9bce6cbf4320b2702b16810af66, type: 2}
     Count: 1
@@ -21,6 +23,7 @@ MonoBehaviour:
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0
+  Walkable: 0
   MustBePlacedOn:
   - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
   nextBlock: {fileID: 11400000, guid: 4cf6d7d47d2084006bd87a1a5ff28dde, type: 2}

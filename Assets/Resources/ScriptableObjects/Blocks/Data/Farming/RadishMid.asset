@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
   m_Name: RadishMid
   m_EditorClassIdentifier: 
+  Id: 29
   Display: {fileID: 11400000, guid: dbf5b9583c934bf4fa9b20668e28fa7f, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

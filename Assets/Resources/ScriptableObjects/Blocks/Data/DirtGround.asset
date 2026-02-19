@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 072a6322a0a87ea46ab21de1b75b02c2, type: 3}
   m_Name: DirtGround
   m_EditorClassIdentifier: 
+  Id: 13
   Display: {fileID: 11400000, guid: 6b6fb1d24f9e2ef449f63ba370fc3a62, type: 2}
   HitsToBreak: 2
   MovementModifier: 0

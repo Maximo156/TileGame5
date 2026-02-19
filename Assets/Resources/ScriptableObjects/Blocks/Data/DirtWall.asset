@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
   m_Name: DirtWall
   m_EditorClassIdentifier: 
+  Id: 15
   Display: {fileID: 11400000, guid: 58e45a9b08997004db17ba0111c4af9c, type: 2}
   HitsToBreak: 2
+  MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: 391352f8f1052a644869b6f2cca92a3f, type: 2}
     Count: 3
@@ -21,4 +23,5 @@ MonoBehaviour:
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 1
   solid: 1
+  Walkable: 0
   MustBePlacedOn: []

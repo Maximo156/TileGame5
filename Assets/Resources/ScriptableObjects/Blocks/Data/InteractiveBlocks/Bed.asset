@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88e12392c8e05804db7cf8fea2bedb9f, type: 3}
   m_Name: Bed
   m_EditorClassIdentifier: 
+  Id: 5
   Display: {fileID: 11400000, guid: 799f6729df58f1f49b710ea7e4fafe8e, type: 2}
   HitsToBreak: 3
   MovementModifier: 0

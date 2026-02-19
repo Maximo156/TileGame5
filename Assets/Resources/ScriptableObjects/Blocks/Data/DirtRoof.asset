@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11b3fef60f0dd0e4f99034d104eceb6d, type: 3}
   m_Name: DirtRoof
   m_EditorClassIdentifier: 
+  Id: 14
   Display: {fileID: 0}
   HitsToBreak: 4
   MovementModifier: 0

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
   m_Name: TomatoMid
   m_EditorClassIdentifier: 
+  Id: 52
   Display: {fileID: 11400000, guid: 1ba34e0ddcd583d45abd1948a541fd05, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

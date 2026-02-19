@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b73217277cb7744fb9c8b141b91f209, type: 3}
   m_Name: FurnaceBlock
   m_EditorClassIdentifier: 
+  Id: 18
   Display: {fileID: 11400000, guid: 4181f91070cd34f478995202f874c19d, type: 2}
   HitsToBreak: 3
   MovementModifier: 0

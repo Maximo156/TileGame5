@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
   m_Name: PotatoSeedling
   m_EditorClassIdentifier: 
+  Id: 27
   Display: {fileID: 11400000, guid: b1a2f21048dfb6f4fb8e7da4bfdc0dfc, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

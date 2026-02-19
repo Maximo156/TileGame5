@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
   m_Name: IronOre
   m_EditorClassIdentifier: 
+  Id: 22
   Display: {fileID: 11400000, guid: 91bfddc2285a3564c90c4da1dd8ec571, type: 2}
   HitsToBreak: 4
+  MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: d60a673afec2b424abc7e5b6e690fabd, type: 2}
     Count: 2
@@ -21,4 +23,5 @@ MonoBehaviour:
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 1
   solid: 1
+  Walkable: 0
   MustBePlacedOn: []

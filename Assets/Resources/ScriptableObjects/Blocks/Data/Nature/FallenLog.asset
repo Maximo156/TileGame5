@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c391e9543f7e944796946cb5ce48a18, type: 3}
   m_Name: FallenLog
   m_EditorClassIdentifier: 
+  Id: 16
   Display: {fileID: 11400000, guid: e08f9aee3f8cd1945b6276cd2c89337d, type: 2}
   HitsToBreak: 2
   MovementModifier: 0

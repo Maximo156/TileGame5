@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 072a6322a0a87ea46ab21de1b75b02c2, type: 3}
   m_Name: SnowBlock
   m_EditorClassIdentifier: 
+  Id: 46
   Display: {fileID: 11400000, guid: 7014b0b5bd1000f458c611f7ee2ee5c3, type: 2}
   HitsToBreak: 3
   MovementModifier: 0

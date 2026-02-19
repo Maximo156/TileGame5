@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
   m_Name: Shrub3
   m_EditorClassIdentifier: 
+  Id: 43
   Display: {fileID: 11400000, guid: bd91559f11c7a39468a0e997717efb7c, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

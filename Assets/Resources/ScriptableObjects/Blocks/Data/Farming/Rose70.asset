@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
   m_Name: Rose70
   m_EditorClassIdentifier: 
+  Id: 36
   Display: {fileID: 11400000, guid: d38701ffb4c3b4ce69c8d7974a717a63, type: 2}
   HitsToBreak: 1
+  MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: 5be3a9bce6cbf4320b2702b16810af66, type: 2}
     Count: 1
@@ -21,6 +23,7 @@ MonoBehaviour:
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0
+  Walkable: 0
   MustBePlacedOn: []
   nextBlock: {fileID: 11400000, guid: dd563b91d40984aea99c4ea885eb10ca, type: 2}
   MeanSecondsToHappen: 5

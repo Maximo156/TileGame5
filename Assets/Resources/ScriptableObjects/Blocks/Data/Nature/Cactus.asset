@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
   m_Name: Cactus
   m_EditorClassIdentifier: 
+  Id: 7
   Display: {fileID: 11400000, guid: 47e8f09506104f441ba409625ecdce86, type: 2}
   HitsToBreak: 4
   MovementModifier: 0

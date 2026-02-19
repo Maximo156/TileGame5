@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.Collections;
+using UnityEditor;
 using UnityEngine;
 
 namespace BlockDataRepos
@@ -21,7 +22,6 @@ namespace BlockDataRepos
             Debug.Log($"Loading {tmp.Count} blocks");
             Blocks = new Block[tmp.Count];
 
-            FixupIds(tmp);
             ValidateIds(tmp);
 
             NativeRepo = new(tmp);
@@ -31,27 +31,39 @@ namespace BlockDataRepos
             }
         }
 
-        private void FixupIds(List<Block> blocks)
-        {
-            var ordered = blocks.OrderByDescending(b => b.Id).ToList();
-            var firstNoId = ordered.FindIndex(b => b.Id == 0);
-            if (firstNoId == -1) return;
-            for(int i = firstNoId; i<blocks.Count; i++)
-            {
-                ordered[i].Id = (ushort)(i + 1);
-            }
-        }
-
         private void ValidateIds(List<Block> blocks)
         {
-            var distinctIds = blocks.Select(b => b.Id).Distinct().ToList();
-            if (distinctIds.Count == blocks.Count) return;
-            Debug.LogWarning("Duplicate block id detected");
-            ushort count = 1;
-            foreach (var block in blocks)
+#if UNITY_EDITOR
+            try
             {
-                block.Id = count++;
+                var groups = blocks.GroupBy(b => b.Id);
+                bool duplicate = false;
+                foreach (var group in groups)
+                {
+                    if (group.Count() > 1)
+                    {
+                        duplicate = true;
+                        Debug.LogError($"Duplicate id {group.Key}: {string.Join(", ", group)}");
+                    }
+                }
+                if (duplicate)
+                {
+                    throw new System.Exception("Duplicate Block ID's Detected");
+                }
+
+                var set = new HashSet<ushort>(blocks.Select(b => b.Id));
+                var max = blocks.Max(b => b.Id);
+                if (set.Count != max)
+                {
+                    var missing = Enumerable.Range(1, max).Where(i => !set.Contains((ushort)i));
+                    throw new System.Exception($"Missing block ids: {string.Join(", ", missing)}");
+                }
+            } catch
+            { 
+                EditorApplication.isPlaying = false;
+                throw;
             }
+#endif
         }
 
         private void OnDestroy()

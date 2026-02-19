@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c391e9543f7e944796946cb5ce48a18, type: 3}
   m_Name: WheatPlant
   m_EditorClassIdentifier: 
+  Id: 59
   Display: {fileID: 11400000, guid: 3a8e581744e19c544b2f183eed3c2625, type: 2}
   HitsToBreak: 1
   MovementModifier: 0
@@ -28,3 +29,5 @@ MonoBehaviour:
   MustBePlacedOn:
   - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
   AfterHarvest: {fileID: 0}
+  useOverrides: 0
+  HarvestOverrides: []

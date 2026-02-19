@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398492f618341d44680d07a87ab1025d, type: 3}
   m_Name: CavePortal
   m_EditorClassIdentifier: 
+  Id: 9
   Display: {fileID: 11400000, guid: fe82e1179e371e94798d139617ee28b1, type: 2}
   HitsToBreak: 1000
   MovementModifier: 0

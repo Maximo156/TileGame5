@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0664067da0443824ead999662763426e, type: 3}
   m_Name: WorkBench
   m_EditorClassIdentifier: 
+  Id: 64
   Display: {fileID: 11400000, guid: c2a0cd6331e0fdb4a83f6bd8ddc25c89, type: 2}
   HitsToBreak: 3
   MovementModifier: 0

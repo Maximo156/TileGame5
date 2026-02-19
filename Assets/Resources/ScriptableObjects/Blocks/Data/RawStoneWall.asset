@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
   m_Name: RawStoneWall
   m_EditorClassIdentifier: 
+  Id: 34
   Display: {fileID: 11400000, guid: 95924120b0b24304fb4ff06730b0839b, type: 2}
   HitsToBreak: 3
+  MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: 502ab55c8dcd5774486116e9a4e22183, type: 2}
     Count: 2
@@ -21,4 +23,5 @@ MonoBehaviour:
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 1
   solid: 1
+  Walkable: 0
   MustBePlacedOn: []

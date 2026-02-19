@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 072a6322a0a87ea46ab21de1b75b02c2, type: 3}
   m_Name: TilledSoil
   m_EditorClassIdentifier: 
+  Id: 51
   Display: {fileID: 11400000, guid: fc818634e46a90446a13190a98c51b04, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

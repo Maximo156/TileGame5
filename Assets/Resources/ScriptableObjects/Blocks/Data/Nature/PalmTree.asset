@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
   m_Name: PalmTree
   m_EditorClassIdentifier: 
+  Id: 24
   Display: {fileID: 11400000, guid: 079ce5dac7519ef4d8baf0f6da336d13, type: 2}
   HitsToBreak: 4
   MovementModifier: 0

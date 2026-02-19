@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 072a6322a0a87ea46ab21de1b75b02c2, type: 3}
   m_Name: GrassGround
   m_EditorClassIdentifier: 
+  Id: 20
   Display: {fileID: 11400000, guid: a15de075d8807ca48b896f4e8e90533e, type: 2}
   HitsToBreak: 2
   MovementModifier: 0

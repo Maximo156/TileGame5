@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
   m_Name: Tree2
   m_EditorClassIdentifier: 
+  Id: 57
   Display: {fileID: 11400000, guid: 40c9c95f5d246a841a7665615ffcbb18, type: 2}
   HitsToBreak: 3
   MovementModifier: 0

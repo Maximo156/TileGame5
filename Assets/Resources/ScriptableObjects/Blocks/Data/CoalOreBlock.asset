@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
   m_Name: CoalOreBlock
   m_EditorClassIdentifier: 
+  Id: 11
   Display: {fileID: 11400000, guid: 33dc41bf5a7219d46941139f47c8961c, type: 2}
   HitsToBreak: 4
+  MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: 12549c26cbd08ec4cad63abfc7577440, type: 2}
     Count: 3
@@ -21,4 +23,5 @@ MonoBehaviour:
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 1
   solid: 1
+  Walkable: 0
   MustBePlacedOn: []

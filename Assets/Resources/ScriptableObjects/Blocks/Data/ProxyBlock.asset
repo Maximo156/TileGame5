@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 850b97da43dc1dc428b1f8862189e852, type: 3}
   m_Name: ProxyBlock
   m_EditorClassIdentifier: 
-  Id: 0
+  Id: 28
   Display: {fileID: 0}
   HitsToBreak: 0
   MovementModifier: 0
