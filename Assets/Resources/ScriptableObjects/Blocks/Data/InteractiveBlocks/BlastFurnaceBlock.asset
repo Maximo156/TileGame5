@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b73217277cb7744fb9c8b141b91f209, type: 3}
   m_Name: BlastFurnaceBlock
   m_EditorClassIdentifier: 
+  Id: 6
   Display: {fileID: 11400000, guid: f1e5072833d93774581a4ffc5bf9b41f, type: 2}
   HitsToBreak: 5
   MovementModifier: 0

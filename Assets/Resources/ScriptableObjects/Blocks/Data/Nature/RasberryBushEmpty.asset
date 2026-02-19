@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
   m_Name: RasberryBushEmpty
   m_EditorClassIdentifier: 
+  Id: 33
   Display: {fileID: 11400000, guid: a6ffda57895d55640a46df76c2c5daf0, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c391e9543f7e944796946cb5ce48a18, type: 3}
   m_Name: AppleTree
   m_EditorClassIdentifier: 
+  Id: 2
   Display: {fileID: 11400000, guid: 6be68e3b530933945b54a8c9246c8965, type: 2}
   HitsToBreak: 3
   MovementModifier: 0

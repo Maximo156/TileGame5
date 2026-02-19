@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a740b837d13d6b4893b267ff1ebbc01, type: 3}
   m_Name: SimpleAlter
   m_EditorClassIdentifier: 
+  Id: 45
   Display: {fileID: 11400000, guid: c7a4e8ba9c783b7428dd5b7d5cb08142, type: 2}
   HitsToBreak: 3
   MovementModifier: 0

@@ -43,7 +43,7 @@ public class ChunkManager : MonoBehaviour
     { 
         Manager = this;
         PlayerMovement.OnPlayerChangedChunks += PlayerChangedChunks;
-        PortalBlock.OnPortalBlockUsed += PortalUsed;
+        PortalBlock.OnPortalBlockUsed += PortalUsed; 
     }
 
     // Start is called before the first frame update
@@ -54,7 +54,12 @@ public class ChunkManager : MonoBehaviour
             realm.Initialize(EntityContainerPrefab, transform);
             realm.Disable();
         }
-        ActiveRealm = Realms.First(r => r.name == startingRealm);
+        var playerRealm = PlayerSaver.LoadPlayerInfo().currentRealm;
+        if(string.IsNullOrWhiteSpace(playerRealm) )
+        {
+            playerRealm = startingRealm;
+        }
+        ActiveRealm = Realms.First(r => r.name == playerRealm);
         Task.Run(() => ChunkTick());
     }
 
@@ -184,7 +189,6 @@ public class ChunkManager : MonoBehaviour
 
     private void OnDisable()
     {
-        Manager = null;
         PlayerMovement.OnPlayerChangedChunks -= PlayerChangedChunks;
         PortalBlock.OnPortalBlockUsed -= PortalUsed;
     }

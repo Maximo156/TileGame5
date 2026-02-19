@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
   m_Name: TomatoSeedling
   m_EditorClassIdentifier: 
+  Id: 54
   Display: {fileID: 11400000, guid: 4b195bbec1dce18499c8a2fd77f1fe52, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

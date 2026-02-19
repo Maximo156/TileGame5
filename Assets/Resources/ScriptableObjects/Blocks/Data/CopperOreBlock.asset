@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
   m_Name: CopperOreBlock
   m_EditorClassIdentifier: 
+  Id: 12
   Display: {fileID: 11400000, guid: d4e2e604b37c25e4ab32d40b1431f5c2, type: 2}
   HitsToBreak: 5
+  MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: fd246b5683b2dce4c95174dd21b0d737, type: 2}
     Count: 2
@@ -21,4 +23,5 @@ MonoBehaviour:
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 1
   solid: 1
+  Walkable: 0
   MustBePlacedOn: []

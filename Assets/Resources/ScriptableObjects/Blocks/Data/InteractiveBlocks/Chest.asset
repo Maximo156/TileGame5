@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4eea1237af9a419294f8b112511cd88, type: 3}
   m_Name: Chest
   m_EditorClassIdentifier: 
+  Id: 10
   Display: {fileID: 11400000, guid: bde37fe8ae7d2413d88e3c51790863b9, type: 2}
   HitsToBreak: 3
   MovementModifier: 0

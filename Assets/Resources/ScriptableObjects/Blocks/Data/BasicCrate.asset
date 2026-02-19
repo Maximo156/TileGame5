@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9461edb5501c704ebbbd3696622a51a, type: 3}
   m_Name: BasicCrate
   m_EditorClassIdentifier: 
+  Id: 4
   Display: {fileID: 11400000, guid: 33380e998d140f944964e3bb5397acb3, type: 2}
   HitsToBreak: 3
   MovementModifier: 0

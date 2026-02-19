@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0664067da0443824ead999662763426e, type: 3}
   m_Name: Anvil
   m_EditorClassIdentifier: 
+  Id: 1
   Display: {fileID: 11400000, guid: 1e4557eef66922245a638ef5c8dbe2df, type: 2}
   HitsToBreak: 0
   MovementModifier: 0

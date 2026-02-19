@@ -111,9 +111,9 @@ public class TerrainGenerator : ChunkSubGenerator
                      Mathf.Pow(density * sparceBlockDensity.GetElement2d(x, y, chunkWidth), 1.7f) > random.NextDouble())
             {
                 var sparce = spaceBlocks.SelectRandomWeighted(ref random);
-                if (replaceSolid || (sparce.blockLevel == BlockLevel.Floor && slice.groundBlock == 0))
+                if (sparce.blockLevel == BlockLevel.Floor && (replaceSolid || slice.groundBlock == 0))
                     slice.groundBlock = sparce.block;
-                if (replaceSolid || (sparce.blockLevel == BlockLevel.Wall && slice.wallBlock == 0))
+                if (sparce.blockLevel == BlockLevel.Wall && (replaceSolid || slice.wallBlock == 0))
                     slice.wallBlock = sparce.block;
             }
         }

@@ -10,20 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 580021be82c6ff349978a80f15551233, type: 3}
-  m_Name: Fire
+  m_Name: Torch
   m_EditorClassIdentifier: 
-  Display: {fileID: 11400000, guid: 203659ed5f07eaf43a0a1ed0f270015c, type: 2}
-  HitsToBreak: 2
+  Id: 55
+  Display: {fileID: 11400000, guid: 6c69b680e27ae934ba64f3f699ad30a6, type: 2}
+  HitsToBreak: 1
   MovementModifier: 0
   Drops:
-  - Item: {fileID: 11400000, guid: aa840768f8676ad40835efb749abfc09, type: 2}
-    Count: 2
   - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
-    Count: 2
-  UiSprite: {fileID: 944622427, guid: 70ee17b454b422040a0c6ccf549f8841, type: 3}
+    Count: 1
+  - Item: {fileID: 11400000, guid: 871d58d8e70c8924ea26852b3642cc12, type: 2}
+    Count: 1
+  UiSprite: {fileID: 4994728430060012801, guid: cb33dfebfb63d9943a25f8b190565039, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
   structural: 0
   solid: 0
-  Walkable: 0
+  Walkable: 1
   MustBePlacedOn: []
   LightLevel: 8

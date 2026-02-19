@@ -82,4 +82,9 @@ public class PlayerMovement : MonoBehaviour, IHittable
     {
         hitTimer = new Timer(0.2f);
     }
+
+    void OnDestroy()
+    {
+        PortalBlock.OnPortalBlockUsed -= PortalUsed;
+    }
 }

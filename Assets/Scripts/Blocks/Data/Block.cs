@@ -5,6 +5,8 @@ using BlockDataRepos;
 using NativeRealm;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
+using UnityEditor;
 
 public interface IConditionalPlace
 {
@@ -19,14 +21,9 @@ public interface IOnPlace
 [JsonConverter(typeof(BlockConverter))]
 public class Block : ScriptableObject, ISpriteful
 {
-    ushort _id;
-    public ushort Id { get
-        {
-            if (_id == 0) throw new System.Exception($"{Identifier} has no id");
-            return _id;
-        }
-        set => _id = value;
-    }
+    [ReadOnlyProperty]
+    public ushort Id = 0;
+
     public TileBase Display;
     public int HitsToBreak;
     public float MovementModifier = 0;
@@ -39,12 +36,6 @@ public class Block : ScriptableObject, ISpriteful
     [SerializeField]
     private Color UiColor = Color.white;
     public Color Color => UiColor;
-    string Identifier;
-
-    private void OnValidate()
-    {
-        Identifier = name;
-    }
 
     public byte GetDefaultSimpleState()
     {
@@ -72,6 +63,51 @@ public class Block : ScriptableObject, ISpriteful
         public NativeBlockSlice slice;
         public bool dontDrop;
     }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (Id == 0)
+        {
+            FixupBlockId();
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (Id == 0)
+        {
+            FixupBlockId();
+        }
+    }
+
+    void FixupBlockId()
+    {
+        var tmp = Resources.LoadAll<Block>("ScriptableObjects/Blocks").OrderBy(b => b.name).ToList();
+        var ordered = tmp.OrderBy(b => b.Id).ToList();
+        var set = new HashSet<ushort>(ordered.Select(b => b.Id));
+        for(ushort i = 1; i <= ordered.Count; i++)
+        {
+            if (!set.Contains(i))
+            {
+                SetBlockId(this, i);
+                return;
+            }
+        }
+    }
+
+    public static void SetBlockId(Block block, ushort id, bool save = true)
+    {
+        block.Id = id;
+        EditorUtility.SetDirty(block);
+
+        if (save)
+        {
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+        }
+    }
+#endif
 }
 
 public abstract class BlockState

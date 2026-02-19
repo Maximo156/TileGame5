@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
   m_Name: Grass1
   m_EditorClassIdentifier: 
+  Id: 19
   Display: {fileID: 11400000, guid: 98e1eab4e8d565644ba646a75aac6656, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0765976a088fb684fb9a509ac9ee1873, type: 3}
   m_Name: WoodenDoorBlock
   m_EditorClassIdentifier: 
+  Id: 61
   Display: {fileID: 11400000, guid: f07b8c37097b7e24e8db64afbc30b55e, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

@@ -40,9 +40,15 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
         events = EventSystem.current;
     }
 
+    bool isOverGO;
+    public void Update()
+    {
+        isOverGO = events.IsPointerOverGameObject();
+    }
+
     public void Scroll(InputAction.CallbackContext value)
     {
-        if (!Keyboard.current.ctrlKey.isPressed && !tool.animating && !events.IsPointerOverGameObject())
+        if (!Keyboard.current.ctrlKey.isPressed && !tool.animating && !isOverGO)
         {
             var dir = value.ReadValue<Vector2>();
 

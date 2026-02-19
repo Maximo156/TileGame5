@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using TMPro;
 using Unity.Collections;
+using UnityEditor;
 using UnityEngine;
 
 namespace BlockDataRepos
@@ -8,26 +11,59 @@ namespace BlockDataRepos
     public class BlockDataRepo : MonoBehaviour
     {
         public static NativeBlockDataRepo NativeRepo;
+        public static ProxyBlock proxyBlock;
         static Block[] Blocks;
 
         private void Awake()
         {
             var tmp = Resources.LoadAll<Block>("ScriptableObjects/Blocks").OrderBy(b => b.name).ToList();
-            tmp.Add(ProxyBlock.Instance);
+            proxyBlock = tmp.First(b => b is ProxyBlock) as ProxyBlock;
+
             Debug.Log($"Loading {tmp.Count} blocks");
             Blocks = new Block[tmp.Count];
-            ushort count = 1;
-            foreach(var block in tmp)
-            {
-                block.Id = count;
-                count++;
-            }
+
+            ValidateIds(tmp);
 
             NativeRepo = new(tmp);
             foreach (var block in tmp)
             {
                 Blocks[block.Id-1] = block;
             }
+        }
+
+        private void ValidateIds(List<Block> blocks)
+        {
+#if UNITY_EDITOR
+            try
+            {
+                var groups = blocks.GroupBy(b => b.Id);
+                bool duplicate = false;
+                foreach (var group in groups)
+                {
+                    if (group.Count() > 1)
+                    {
+                        duplicate = true;
+                        Debug.LogError($"Duplicate id {group.Key}: {string.Join(", ", group)}");
+                    }
+                }
+                if (duplicate)
+                {
+                    throw new System.Exception("Duplicate Block ID's Detected");
+                }
+
+                var set = new HashSet<ushort>(blocks.Select(b => b.Id));
+                var max = blocks.Max(b => b.Id);
+                if (set.Count != max)
+                {
+                    var missing = Enumerable.Range(1, max).Where(i => !set.Contains((ushort)i));
+                    throw new System.Exception($"Missing block ids: {string.Join(", ", missing)}");
+                }
+            } catch
+            { 
+                EditorApplication.isPlaying = false;
+                throw;
+            }
+#endif
         }
 
         private void OnDestroy()
@@ -72,12 +108,13 @@ namespace BlockDataRepos
 
             for (int i = 0; i < blocks.Count; i++)
             {
-                ProcessBlock(blocks[i], i);
+                ProcessBlock(blocks[i]);
             }
         }
 
-        public void ProcessBlock(Block block, int index)
+        public void ProcessBlock(Block block)
         {
+            var index = block.Id - 1;
             var wall = block as Wall;
             lightLevels[index] = block is LightBlock light ? (byte)(light.LightLevel * 2) : (byte)0;
             moveInfo[index] = new BlockMovementInfo 

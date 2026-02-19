@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
   m_Name: WheatSeedling
   m_EditorClassIdentifier: 
+  Id: 60
   Display: {fileID: 11400000, guid: af17840246e9f7f4d9e611d27c54b778, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

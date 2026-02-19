@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
   m_Name: RadishSeedling
   m_EditorClassIdentifier: 
+  Id: 31
   Display: {fileID: 11400000, guid: b5cf636907da59a46b54a6b8e7181b4a, type: 2}
   HitsToBreak: 1
   MovementModifier: 0

@@ -5,16 +5,5 @@ using UnityEngine;
 
 public class ProxyBlock : Wall
 {
-    static ProxyBlock instance;
-    public static ProxyBlock Instance
-    {
-        get
-        {
-            if(instance == null)
-            {
-                instance = CreateInstance<ProxyBlock>();
-            }
-            return instance;
-        }
-    }
+    
 }

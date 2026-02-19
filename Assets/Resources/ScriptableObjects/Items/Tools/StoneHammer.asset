@@ -67,8 +67,12 @@ MonoBehaviour:
           sprite: {fileID: 21300000, guid: c4c9dbddd2e54d3439e6318760829a64, type: 3}
           color: {r: 1, g: 1, b: 1, a: 1}
           recipes:
-          - block: {fileID: 11400000, guid: f190cce03727c234aaaa1b058e5e3cac, type: 2}
           - block: {fileID: 11400000, guid: b1678367436a8f54b92bb8f649e302a1, type: 2}
+        - name: Utilities
+          sprite: {fileID: 4994728430060012801, guid: cb33dfebfb63d9943a25f8b190565039, type: 3}
+          color: {r: 1, g: 1, b: 1, a: 1}
+          recipes:
+          - block: {fileID: 11400000, guid: 19b8d8d9bb53eaf4e8b476f35e2272e5, type: 2}
           - block: {fileID: 11400000, guid: 21ea753720df4014d8264935c1fc2a07, type: 2}
-          - block: {fileID: 11400000, guid: a0891015ee4d57243b9264b38c32dd83, type: 2}
           - block: {fileID: 11400000, guid: 435ff1008e43d43bc9d43e6d946213be, type: 2}
+          - block: {fileID: 11400000, guid: a0891015ee4d57243b9264b38c32dd83, type: 2}

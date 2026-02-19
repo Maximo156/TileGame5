@@ -17,8 +17,10 @@ MonoBehaviour:
   minHeight: 0.65
   GroundBlock: {fileID: 11400000, guid: 22a8a340cdc98184188d3138c749b133, type: 2}
   WallBlock: {fileID: 11400000, guid: 2f19c0fb0e66aa241b9b26b5eb310f8f, type: 2}
-  RoofBlock: {fileID: 0}
+  RoofBlock: {fileID: 11400000, guid: 08bdaef5c5bdc1c45ad7033edb63c483, type: 2}
+  ReplacementInfos: []
   replaceSolid: 0
-  SparceBlocks: []
-  SparceSoundSettings: {fileID: 0}
+  SparceBlockInfos: []
   SparceDensity: 0
+  NaturalMobs: []
+  HostileMobs: []

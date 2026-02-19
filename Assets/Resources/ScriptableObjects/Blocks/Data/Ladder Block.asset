@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398492f618341d44680d07a87ab1025d, type: 3}
   m_Name: Ladder Block
   m_EditorClassIdentifier: 
+  Id: 23
   Display: {fileID: 11400000, guid: f8082110958844e4d9e79992b2c54326, type: 2}
   HitsToBreak: 1000
   MovementModifier: 0

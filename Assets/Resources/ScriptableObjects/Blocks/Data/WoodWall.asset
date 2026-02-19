@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
   m_Name: WoodWall
   m_EditorClassIdentifier: 
+  Id: 63
   Display: {fileID: 11400000, guid: d9e9a781a70698642ba1be0fd65bd80b, type: 2}
   HitsToBreak: 1
+  MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
     Count: 3
@@ -21,4 +23,5 @@ MonoBehaviour:
   UiColor: {r: 0.77254903, g: 0.41960785, b: 0.23137255, a: 1}
   structural: 1
   solid: 1
+  Walkable: 0
   MustBePlacedOn: []

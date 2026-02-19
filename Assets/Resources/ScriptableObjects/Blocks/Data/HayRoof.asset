@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11b3fef60f0dd0e4f99034d104eceb6d, type: 3}
   m_Name: HayRoof
   m_EditorClassIdentifier: 
+  Id: 21
   Display: {fileID: 0}
   HitsToBreak: 2
+  MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: 871d58d8e70c8924ea26852b3642cc12, type: 2}
     Count: 3
   UiSprite: {fileID: -1552312805, guid: 7d966fb53b128bd4b9f88fa7adc43765, type: 3}
   UiColor: {r: 1, g: 1, b: 1, a: 1}
+  Strength: 4
