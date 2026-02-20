@@ -7,14 +7,14 @@ public class ItemEntityManager : MonoBehaviour
     public GameObject ItemEntityPrefab;
 
     public float DespawnSeconds;
-
-    Queue<(float expiry, ItemEntity entity)> entities = new Queue<(float expiry, ItemEntity entity)>();
+    
+    PriorityQueue<ItemEntity, float> entities = new PriorityQueue<ItemEntity, float>();
 
     public void FixedUpdate()
     {
-        while (entities.Count > 0 && ShouldDequeue(entities.Peek()))
+        while (entities.TryPeek(out var entity, out var exp) && ShouldDequeue(exp, entity))
         {
-            var dequeued = entities.Dequeue().entity;
+            var dequeued = entities.Dequeue();
             if (dequeued != null)
             {
                 Destroy(dequeued.gameObject);
@@ -22,13 +22,14 @@ public class ItemEntityManager : MonoBehaviour
         }
     }
 
-    bool ShouldDequeue((float expiry, ItemEntity entity) entry)
+    bool ShouldDequeue(float expiry, ItemEntity entity)
     {
-        return entry.entity == null || Time.time > entry.expiry;
+        return entity == null || Time.time > expiry;
     }
 
-    private void SpawnItemPriv(Vector2Int pos, ItemStack stack, bool randomMovement = true)
+    private void SpawnItemPriv(Vector2Int pos, ItemStack stack, bool randomMovement = true, int despawnSeconds = -1)
     {
+        var seconds = despawnSeconds == -1 ? DespawnSeconds : despawnSeconds;
         var itemEntity = Instantiate(ItemEntityPrefab, pos + new Vector2(0.5f, 0.5f), Quaternion.identity, transform).GetComponent<ItemEntity>();
         itemEntity.stack = stack;
         itemEntity.sr.sprite = stack.Item.Sprite;
@@ -37,11 +38,11 @@ public class ItemEntityManager : MonoBehaviour
         {
             itemEntity.rb.linearVelocity = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
         }
-        entities.Enqueue((Time.time + DespawnSeconds, itemEntity));
+        entities.Enqueue(itemEntity, Time.time + seconds);
     }
 
-    public static void SpawnItem(Vector2Int pos, ItemStack stack, bool randomMovement = true)
+    public static void SpawnItem(Vector2Int pos, ItemStack stack, bool randomMovement = true, int despawnSeconds = -1)
     {
-         ChunkManager.CurRealm.EntityContainer.ItemManager.SpawnItemPriv(pos, stack, randomMovement);
+         ChunkManager.CurRealm.EntityContainer.ItemManager.SpawnItemPriv(pos, stack, randomMovement, despawnSeconds);
     }
 }

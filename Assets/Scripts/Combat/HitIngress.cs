@@ -23,10 +23,20 @@ public class HitIngress : MonoBehaviour
 
     public void Hit(HitData data)
     {
-        if (immunityTimer?.Expired != false)
+        if (enabled && immunityTimer?.Expired != false)
         {
             immunityTimer = new Timer(ImmuneSeconds);
             OnHit?.Invoke(data);
         }
+    }
+
+    public void Die()
+    {
+        enabled = false;
+    }
+
+    public void Respawn()
+    {
+        enabled = true;
     }
 }

@@ -8,6 +8,7 @@ using UnityEngine;
 using Unity.Collections;
 using NativeRealm;
 using BlockDataRepos;
+using UnityEngine.SceneManagement;
 
 public class ChunkManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class ChunkManager : MonoBehaviour
     static ChunkManager Manager;
 
     public static Realm CurRealm => Manager.ActiveRealm;
+    public static string defaultRealm => Manager.startingRealm;
 
     [Header("Realm Settings")]
     public string startingRealm;
@@ -125,8 +127,7 @@ public class ChunkManager : MonoBehaviour
 
     private void PortalUsed(string newDim, PortalBlock exitBlock, Vector2Int worldPos)
     {
-        ActiveRealm = Realms.First(r => r.name == newDim);
-        ActiveRealm.PlayerChangedChunks(currentChunk, AllTaskShutdown.Token);
+        SetActiveRealmImpl(newDim);
         var chunk = Utilities.GetChunk(worldPos, WorldConfig.ChunkWidth);
         CallbackManager.AddCallback(PlacePortal);
 
@@ -139,6 +140,17 @@ public class ChunkManager : MonoBehaviour
             }
             CallbackManager.AddCallback(() => PlaceBlock(worldPos, Vector2Int.zero, exitBlock, true));
         }
+    }
+
+    void SetActiveRealmImpl(string newDim)
+    {
+        ActiveRealm = Realms.First(r => r.name == newDim);
+        ActiveRealm.PlayerChangedChunks(currentChunk, AllTaskShutdown.Token);
+    }
+
+    public static void SetActiveRealm(string newDim)
+    {
+        Manager.SetActiveRealmImpl(newDim);
     }
 
     public static float GetMovementSpeed(Vector2Int position)
@@ -172,11 +184,11 @@ public class ChunkManager : MonoBehaviour
         );
     }
 
-    public static bool Interact(Vector2Int position)
+    public static bool Interact(Vector2Int position, InteractorInfo interactor)
     {
         return Manager.ActiveRealm.QueueChunkAction(
             position, 
-            (chunk, pos) => chunk.Interact(pos),
+            (chunk, pos) => chunk.Interact(pos, interactor),
             (chunk, pos) => BlockDataRepo.TryGetBlock<Wall>(chunk.GetBlock(pos).wallBlock, out var b) && b is IInteractableBlock
         );
     }
@@ -186,12 +198,6 @@ public class ChunkManager : MonoBehaviour
         Manager.ActiveRealm.QueueChunkAction(position, (chunk, pos) => chunk.BreakBlock(pos, roof, drop), useProxy);
     }
     #endregion
-
-    private void OnDisable()
-    {
-        PlayerMovement.OnPlayerChangedChunks -= PlayerChangedChunks;
-        PortalBlock.OnPortalBlockUsed -= PortalUsed;
-    }
 
     private void OnDestroy()
     {
@@ -208,5 +214,17 @@ public class ChunkManager : MonoBehaviour
         {
             _activeRealm.DrawDebug();
         }
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void Initialize()
+    {
+        SceneManager.sceneUnloaded += ResetEvent;
+    }
+
+    static void ResetEvent(Scene _)
+    {
+        Debug.Log("Resetting realm");
+        OnRealmChange = null;
     }
 }

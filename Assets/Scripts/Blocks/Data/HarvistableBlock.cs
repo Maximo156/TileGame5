@@ -12,7 +12,7 @@ public class HarvistableBlock : Wall, IInteractableBlock
     public bool useOverrides;
     public List<ItemStack> HarvestOverrides;
 
-    public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice)
+    public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice, InteractorInfo interactor)
     {
         slice.wallBlock = AfterHarvest?.Id ?? 0;
         Utilities.DropItems(worldPos, useOverrides ? HarvestOverrides : Drops);

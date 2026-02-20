@@ -46,6 +46,7 @@ public class ItemPickup : MonoBehaviour
     //Detect collisions between the GameObjects with Colliders attached
     void OnTriggerEnter2D(Collider2D collider)
     {
+        if(!enabled) return;
         var test = collider.GetComponent<Rigidbody2D>();
         _pickedUpItems.Add(test);
     }

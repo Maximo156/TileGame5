@@ -162,9 +162,6 @@ public class ChunkRenderer : MonoBehaviour
 
     private void OnDisable()
     {
-        PlayerMovement.OnPlayerChangedChunks -= PlayerChangedChunks;
-        ChunkManager.OnRealmChange -= OnRealmChange;
-
         if (curRealm != null)
         {
             curRealm.OnChunkChanged -= RefreshChunk;

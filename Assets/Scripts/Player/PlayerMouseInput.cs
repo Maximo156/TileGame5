@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerMouseInput : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class PlayerMouseInput : MonoBehaviour
     private Vector2 mouseWorldPosition;
     private Vector2Int mouseBlockPosition;
     private Vector2 screenPosition;
-    private EventSystem events;
+    private InputController inputController;
 
     [Header("Controls")]
     public ToolDisplay tool;
@@ -29,21 +30,21 @@ public class PlayerMouseInput : MonoBehaviour
 
     Inventory HotBarInv;
     PlayerInventories playerInventory;
+    PlayerRespawner playerRespawner;
 
     public void Awake()
     {
         mainCamera = Camera.main;
-        events = EventSystem.current;
+        inputController = GetComponent<InputController>();
         playerInventory = GetComponent<PlayerInventories>();
+        playerRespawner = GetComponent<PlayerRespawner>();
         playerInventory.OnHotBarChanged += ChangeHand;
         HotBarInv = playerInventory.HotbarInv;
     }
 
     bool attackNextFrame;
-    bool overGUI = false;
     public void Update()
     {
-        overGUI = events.IsPointerOverGameObject();
         if (attackNextFrame)
         {
             attackNextFrame = false;
@@ -54,7 +55,7 @@ public class PlayerMouseInput : MonoBehaviour
     bool attackHeld = false;
     public void OnAttack(InputAction.CallbackContext value)
     {
-        if (!overGUI && value.started)
+        if (inputController.AllowClickInput && value.started)
         {
             attackHeld = true;
             PlayerAttack();
@@ -68,7 +69,7 @@ public class PlayerMouseInput : MonoBehaviour
 
     public void OnInteract(InputAction.CallbackContext value)
     {
-        if (!overGUI && value.started)
+        if (inputController.AllowClickInput && value.started)
         {
             bool canInteract = Vector3.Distance(transform.position, mouseWorldPosition) <= InteractiveReach;
             if (Keyboard.current.shiftKey.isPressed && canInteract)
@@ -132,7 +133,7 @@ public class PlayerMouseInput : MonoBehaviour
     Vector2Int? CurInteractPos;
     private bool BlockInteract()
     {
-        if (ChunkManager.Interact(mouseBlockPosition))
+        if (ChunkManager.Interact(mouseBlockPosition, new() { Respawner = playerRespawner }))
         {
             return true;
         }
@@ -154,7 +155,13 @@ public class PlayerMouseInput : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void Initialize()
+    {
+        SceneManager.sceneUnloaded += ResetEvent;
+    }
+
+    static void ResetEvent(Scene _)
     {
         OnAttackInterupted = null;
         OnBlockInterfaced = null;

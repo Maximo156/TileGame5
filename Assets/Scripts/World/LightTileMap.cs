@@ -76,9 +76,4 @@ public class LightTileMap : MonoBehaviour
     {
         Map.color = color;
     }
-
-    private void OnDisable()
-    {
-        ChunkManager.OnRealmChange -= OnRealmChange;
-    }
 }

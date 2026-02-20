@@ -32,6 +32,7 @@ public class Realm
     [Header("Realm Settings")]
     public RealmBiomeInfo BiomeInfo;
     public RealmStructureInfo StructureInfo;
+    public bool AllowSetSpawn = true;
 
     HashSet<Vector2Int> RequestedChunks = new();
     List<Vector2Int> DropChunks = new();
@@ -273,7 +274,7 @@ public class Realm
     void DropManagedChunk(Vector2Int chunk)
     {
         LoadedChunks.Remove(chunk, out var c);
-        c.Drop();
+        c?.Drop();
     }
 
     public async Task ChunkManagedTick(Vector2Int curChunk, CancellationToken AllTaskShutdown)

@@ -20,7 +20,12 @@ public interface IInterfaceBlock
 
 public interface IInteractableBlock
 {
-    public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice);
+    public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice, InteractorInfo interactor);
+}
+
+public struct InteractorInfo
+{
+    public PlayerRespawner Respawner;
 }
 
 public interface IStorageBlockState

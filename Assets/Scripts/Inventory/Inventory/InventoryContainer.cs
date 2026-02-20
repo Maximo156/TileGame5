@@ -45,5 +45,18 @@ public interface IInventoryContainer
         return res;
     }
 
+    public List<ItemStack> RemoveAllItems()
+    {
+        var result = new List<ItemStack>();
+        foreach (var inv in GetIndividualInventories())
+        {
+            for(int i = 0; i < inv.Count; i++)
+            {
+                result.Add(inv.RemoveItemIndex(i));
+            }
+        }
+        return result;
+    }
+
     public IEnumerable<IInventory> GetIndividualInventories();
 }
