@@ -9,11 +9,6 @@ public class ReplacableBlock : Wall, ISimpleTickBlock
     public Wall nextBlock;
     public int MeanSecondsToHappen;
 
-    protected virtual Wall NewBlock()
-    {
-        return nextBlock;
-    }
-
     public TickInfo GetTickInfo()
     {
         return new TickInfo
