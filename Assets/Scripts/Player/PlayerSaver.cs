@@ -3,14 +3,18 @@ using UnityEngine;
 public class PlayerSaver : MonoBehaviour
 {
     PlayerInventories playerInventories;
+    PlayerRespawner respawner;
 
     const string infoLocation = "player/info";
     const string invLocation = "player/inventory";
     private void Start()
     {
         playerInventories = GetComponent<PlayerInventories>();
+        respawner = GetComponent<PlayerRespawner>();
         var info = LoadPlayerInfo();
         transform.position = info.Position.ToVector3Int();
+        respawner.SpawnPoint = info.SpawnPoint;
+        respawner.SpawnRealm = info.SpawnRealm;
         InitInventory();
     }
 
@@ -20,7 +24,9 @@ public class PlayerSaver : MonoBehaviour
             new PlayerInfo() 
             { 
                 Position = Utilities.GetBlockPos(transform.position.ToVector2()),
-                currentRealm = ChunkManager.CurRealm.name
+                currentRealm = ChunkManager.CurRealm.name,
+                SpawnPoint = respawner.SpawnPoint,
+                SpawnRealm = respawner.SpawnRealm,
             }
         );;
         SaveInventory(null);
@@ -65,6 +71,8 @@ public class PlayerSaver : MonoBehaviour
     public struct PlayerInfo
     {
         public Vector2Int Position;
+        public Vector2Int SpawnPoint;
+        public string SpawnRealm;
         public string currentRealm;
     }
 

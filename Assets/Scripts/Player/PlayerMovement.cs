@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour, IHittable
@@ -22,26 +23,26 @@ public class PlayerMovement : MonoBehaviour, IHittable
     private Rigidbody2D rb2d;
 
     private Timer hitTimer;
-    private EventSystem eventSystem;
+    private InputController inputController;
 
     // Start is called before the first frame update
     void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
         PlayerTransform = transform;
+        inputController = GetComponent<InputController>();
     }
 
     private void Start()
     {
         PortalBlock.OnPortalBlockUsed += PortalUsed;
-        eventSystem = EventSystem.current;
     }
 
     private Vector2Int LastChunk = new Vector2Int(1000, 10000);
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (eventSystem.currentSelectedGameObject != null)
+        if (!inputController.AllowMovement)
         {
             rb2d.linearVelocity = Vector2.zero;
             return;
@@ -83,8 +84,14 @@ public class PlayerMovement : MonoBehaviour, IHittable
         hitTimer = new Timer(0.2f);
     }
 
-    void OnDestroy()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void Initialize()
     {
-        PortalBlock.OnPortalBlockUsed -= PortalUsed;
+        SceneManager.sceneUnloaded += ResetEvent;
+    }
+
+    static void ResetEvent(Scene _)
+    {
+        OnPlayerChangedChunks = null;
     }
 }

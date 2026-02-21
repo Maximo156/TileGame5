@@ -14,6 +14,7 @@ public class ItemCollision : MonoBehaviour
     //Detect collisions between the GameObjects with Colliders attached
     void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!enabled) return;
         var itemEntity = collision.gameObject.GetComponent<ItemEntity>();
         //Check for a match with the specified name on any GameObject that collides with your GameObject
         if (itemEntity != null)

@@ -32,4 +32,8 @@ public class DayTime : MonoBehaviour
         Display.SetColor(ChunkManager.CurRealm.Generator.GetColor(GameHoursPerGameDay, CurGameTime));
     }
 
+    public void SetMorning()
+    {
+        CurGameTime = Morining;
+    }
 }

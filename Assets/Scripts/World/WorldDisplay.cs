@@ -128,9 +128,4 @@ public class WorldDisplay : MonoBehaviour
             }
         }
     }
-
-    private void OnDisable()
-    {
-        ChunkManager.OnRealmChange -= Clear;
-    }
 }

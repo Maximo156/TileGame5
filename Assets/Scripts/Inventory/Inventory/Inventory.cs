@@ -9,6 +9,9 @@ public interface IInventory
 {
     public delegate void ItemChanged(Inventory inv);
     public event ItemChanged OnItemChanged;
+
+    public int Count { get; }
+
     public bool AddItem(ItemStack ItemStack);
 
     public bool AddItemIndex(ItemStack ItemStack, int index);

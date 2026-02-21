@@ -320,14 +320,14 @@ public partial class Chunk
         return item;
     }
 
-    public bool Interact(Vector2Int worldPosition)
+    public bool Interact(Vector2Int worldPosition, InteractorInfo interactor)
     {
         var local = WorldToLocal(worldPosition);
         var nativeSlice = GetBlock(worldPosition);
         var origSlice = nativeSlice;
         if (BlockDataRepo.TryGetBlock<Wall>(nativeSlice.wallBlock, out var wall) && wall is IInteractableBlock interactable)
         {
-            if (interactable.Interact(worldPosition, ref nativeSlice))
+            if (interactable.Interact(worldPosition, ref nativeSlice, interactor))
             {
                 data.InitializeSlice(local.x, local.y, nativeSlice);
                 if (origSlice.wallBlock == nativeSlice.wallBlock)

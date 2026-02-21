@@ -218,11 +218,11 @@ public static class Utilities
         }
     }
 
-    public static void DropItems(Vector2Int worldPos, IEnumerable<ItemStack> drops)
+    public static void DropItems(Vector2Int worldPos, IEnumerable<ItemStack> drops, int despawnSeconds = -1)
     {
         foreach (var stack in drops)
         {
-            ItemEntityManager.SpawnItem(worldPos, new ItemStack(stack), true);
+            ItemEntityManager.SpawnItem(worldPos, new ItemStack(stack), true, despawnSeconds);
         }
     }
 

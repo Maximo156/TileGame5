@@ -20,5 +20,5 @@ MonoBehaviour:
   MovementModifier: 0
   HealthRegen: 10
   ManaRegen: 10
-  HungerDepletion: 0
+  HungerDepletion: -0.1
   PickupRange: 3

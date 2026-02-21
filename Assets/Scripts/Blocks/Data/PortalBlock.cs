@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "NewPortalBlock", menuName = "Block/Portal", order = 1)]
 public class PortalBlock : Wall, IInteractableBlock
@@ -14,9 +15,20 @@ public class PortalBlock : Wall, IInteractableBlock
     public string NewDim;
     public PortalBlock Exit;
 
-    public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice)
+    public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice, InteractorInfo interactor)
     {
         OnPortalBlockUsed?.Invoke(NewDim, Exit, worldPos);
         return false;
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void Initialize()
+    {
+        SceneManager.sceneUnloaded += ResetEvent;
+    }
+
+    static void ResetEvent(Scene _)
+    {
+        OnPortalBlockUsed = null;
     }
 }

@@ -56,5 +56,10 @@ public abstract class EntityVariableStat : MonoBehaviour
         }
     }
 
+    public void Respawn()
+    {
+        current = MaxValue;
+    }
+
     protected abstract void OnChangeStat();
 }

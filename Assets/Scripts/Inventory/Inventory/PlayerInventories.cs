@@ -24,7 +24,7 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
 
     public AccessoryInv AccessoryInv { get; private set; }
 
-    private EventSystem events;
+    private InputController inputController;
 
     void Awake()
     {
@@ -36,19 +36,13 @@ public class PlayerInventories : MonoBehaviour, IInventoryContainer
 
     public void Start()
     {
-        GetComponent<EntityStatistics.EntityStats>()?.AttachInv(AccessoryInv);
-        events = EventSystem.current;
-    }
-
-    bool isOverGO;
-    public void Update()
-    {
-        isOverGO = events.IsPointerOverGameObject();
+        GetComponent<EntityStatistics.EntityStats>()?.AttachInv(AccessoryInv); 
+        inputController = GetComponent<InputController>();
     }
 
     public void Scroll(InputAction.CallbackContext value)
     {
-        if (!Keyboard.current.ctrlKey.isPressed && !tool.animating && !isOverGO)
+        if (!Keyboard.current.ctrlKey.isPressed && !tool.animating && inputController.AllowScrollInput)
         {
             var dir = value.ReadValue<Vector2>();
 
