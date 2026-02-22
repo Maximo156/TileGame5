@@ -1,3 +1,4 @@
+using BlockDataRepos;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,68 +14,76 @@ namespace ComposableBlocks
         public List<ItemRecipe> Recipes;
         public List<Item> Fuels;
 
-        public BlockBehaviourState GetState()
+        public BlockBehaviourState GetState(Block baseBlock)
         {
-            return new ProcessingBlockBehaviourState(this);
-        }
-
-        public void OnValidate()
-        {
-            if (Fuels.Any(f => f.BurnTime == 0))
-            {
-                Debug.LogWarning("Added fuel has 0 burn time, removing");
-                Fuels = Fuels.Where(f => f.BurnTime > 0).ToList();
-            }
+            return new ProcessingBlockBehaviourState(this, baseBlock.Id);
         }
     }
 
     public class ProcessingBlockBehaviourState : BlockBehaviourState, ITickableBehaviourState
     {
         [JsonProperty]
+        readonly ushort blockId;
         readonly ProcessingBlockBehaviour block;
         public Inventory inputs;
         public Inventory outputs = new Inventory(1);
         public LimitedInventory fuels;
 
         [JsonConstructor]
-        ProcessingBlockBehaviourState(ProcessingBlockBehaviour block, Inventory inputs, Inventory outputs, LimitedInventory fuels, float? timeLeft, float? curFuel, float? lastUsedFuel, int _curRecipeIndex) : this(block)
+        ProcessingBlockBehaviourState(ushort blockId, Inventory inputs, Inventory outputs, LimitedInventory fuels, float? timeLeft, float? curFuel, float? lastUsedFuel, int _curRecipeIndex)
         {
+            this.blockId = blockId;
+            block = BlockDataRepo.GetBlock<Block>(blockId).GetBehavour<ProcessingBlockBehaviour>();
             this.inputs = inputs;
             this.outputs = outputs;
-            this.fuels = new LimitedInventory((i, _, _) => block.Fuels.Contains(i), 1);
-            fuels.CopyToInventory(this.fuels);
+            this.fuels = block.Fuels.Count > 0 ? new LimitedInventory((i, _, _) => block.Fuels.Contains(i), 1) : null;
+            fuels?.CopyToInventory(this.fuels);
             this.timeLeft = timeLeft;
             this.curFuel = curFuel;
             this.lastUsedFuel = lastUsedFuel;
             this._curRecipeIndex = _curRecipeIndex;
             lastTick = Utilities.CurMilli();
 
-            inputs.OnItemChanged += InventoriesUpdate;
-            fuels.OnItemChanged += InventoriesUpdate;
-            outputs.OnItemChanged += InventoriesUpdate;
+            this.inputs.OnItemChanged += InventoriesUpdate;
+            if (this.fuels != null)
+            {
+                this.fuels.OnItemChanged += InventoriesUpdate;
+            }
+            this.outputs.OnItemChanged += InventoriesUpdate;
         }
 
-        public ProcessingBlockBehaviourState(ProcessingBlockBehaviour block)
+        public ProcessingBlockBehaviourState(ProcessingBlockBehaviour block, ushort blockId)
         {
+            this.blockId = blockId;
             this.block = block;
-            fuels = new LimitedInventory((i, _, _) => block.Fuels.Contains(i), 1);
+            fuels = block.Fuels.Count > 0 ? new LimitedInventory((i, _, _) => block.Fuels.Contains(i), 1) : null;
             inputs = new Inventory(block.inputs);
             inputs.OnItemChanged += InventoriesUpdate;
-            fuels.OnItemChanged += InventoriesUpdate;
+            if (fuels != null)
+            {
+                fuels.OnItemChanged += InventoriesUpdate;
+            }
             outputs.OnItemChanged += InventoriesUpdate;
         }
 
         public override void CleanUp(Vector2Int worldPos)
         {
             inputs.OnItemChanged -= InventoriesUpdate;
-            fuels.OnItemChanged -= InventoriesUpdate;
+            if (fuels != null)
+            {
+                fuels.OnItemChanged -= InventoriesUpdate;
+            }
             outputs.OnItemChanged -= InventoriesUpdate;
 
             Utilities.DropItems(worldPos, inputs.GetAllItems(false));
-            Utilities.DropItems(worldPos, fuels.GetAllItems(false));
+            if (fuels != null)
+            {
+                Utilities.DropItems(worldPos, fuels.GetAllItems(false));
+            }
             Utilities.DropItems(worldPos, outputs.GetAllItems(false));
         }
 
+        public bool requiresFuel => fuels != null;
         long lastTick;
         public float? timeLeft { get; private set; } = null;
         public float? curFuel { get; private set; } = null;
@@ -116,7 +125,7 @@ namespace ComposableBlocks
                     }
                 }
             }
-            if ((curFuel ?? 0) <= 0 && curRecipe is not null)
+            if ((curFuel ?? 0) <= 0 && curRecipe is not null && requiresFuel)
             {
                 var fuelStack = fuels.CheckSlot(0);
                 if (fuelStack != null)
@@ -135,14 +144,17 @@ namespace ComposableBlocks
                 }
             }
 
-            if (curFuel >= 0)
+            if (!requiresFuel || curFuel >= 0)
             {
                 curFuel -= deltaTime;
                 if (timeLeft != null)
                 {
                     timeLeft -= deltaTime;
                 }
-                TrigerSafeStateChange();
+                if (timeLeft != null || curFuel != null)
+                {
+                    TrigerSafeStateChange();
+                }
             }
 
             lastTick = Utilities.CurMilli();
@@ -150,7 +162,7 @@ namespace ComposableBlocks
 
         bool CanProduce(ItemRecipe recipe)
         {
-            return recipe != null && recipe.CanProduce(inputs.GetAllItems()) && outputs.CanAddSlot(recipe.Result, 0) && (curFuel > 0 || fuels.GetAllItems(false).Any());
+            return recipe != null && recipe.CanProduce(inputs.GetAllItems()) && outputs.CanAddSlot(recipe.Result, 0) && (!requiresFuel || curFuel > 0 || fuels.GetAllItems(false).Any());
         }
 
         void InventoriesUpdate(Inventory _)

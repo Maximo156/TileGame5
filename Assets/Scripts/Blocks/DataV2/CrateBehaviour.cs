@@ -5,13 +5,13 @@ namespace ComposableBlocks
 {
     public class CrateBehaviour : BlockBehaviour, IStatefulBlockBehaviour
     {
-        public BlockBehaviourState GetState()
+        public BlockBehaviourState GetState(Block baseBlock)
         {
             return new CrateBehaviourState();
         }
     }
 
-    public class CrateBehaviourState : BlockBehaviourState, IStorageBlockState
+    public class CrateBehaviourState : BlockBehaviourState, IStorageBlockBehaviourState
     {
         public List<ItemStack> AdditionalDrops;
 

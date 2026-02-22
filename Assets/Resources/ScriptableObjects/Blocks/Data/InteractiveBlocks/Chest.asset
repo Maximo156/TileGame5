@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4eea1237af9a419294f8b112511cd88, type: 3}
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
   m_Name: Chest
   m_EditorClassIdentifier: 
   Id: 10
@@ -21,10 +21,18 @@ MonoBehaviour:
     Count: 2
   - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
     Count: 3
-  UiSprite: {fileID: 1705310225, guid: d3293a345225c4f7e9e2e0362c4e665b, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: 1705310225, guid: d3293a345225c4f7e9e2e0362c4e665b, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors:
+  - rid: 6157179869043097631
   structural: 0
   solid: 0
-  Walkable: 0
-  MustBePlacedOn: []
-  size: 6
+  walkable: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6157179869043097631
+      type: {class: InventoryBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
+      data:
+        name: InventoryBehaviour
+        size: 6

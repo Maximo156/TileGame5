@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a740b837d13d6b4893b267ff1ebbc01, type: 3}
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
   m_Name: SimpleAlter
   m_EditorClassIdentifier: 
   Id: 45
@@ -19,13 +19,21 @@ MonoBehaviour:
   Drops:
   - Item: {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
     Count: 5
-  UiSprite: {fileID: -920270343234752220, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: -920270343234752220, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors:
+  - rid: 6157179869043097640
   structural: 0
   solid: 0
-  Walkable: 0
-  MustBePlacedOn: []
-  AllowedCharms:
-  - {fileID: 11400000, guid: 64953c23444c6e44a8de9efcc1ff07d5, type: 2}
-  - {fileID: 11400000, guid: 2c067b9396cd30c41985d336f9bfcfc8, type: 2}
-  - {fileID: 11400000, guid: 306658efb22f0bf4988eab605e2e10a8, type: 2}
+  walkable: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6157179869043097640
+      type: {class: InfusionBlockBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
+      data:
+        name: InfusionBlockBehaviour
+        AllowedCharms:
+        - {fileID: 11400000, guid: 2c067b9396cd30c41985d336f9bfcfc8, type: 2}
+        - {fileID: 11400000, guid: 64953c23444c6e44a8de9efcc1ff07d5, type: 2}
+        - {fileID: 11400000, guid: 306658efb22f0bf4988eab605e2e10a8, type: 2}

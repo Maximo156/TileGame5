@@ -2,13 +2,52 @@ using NativeRealm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Compilation;
+using UnityEditor;
 using UnityEngine;
 
 namespace ComposableBlocks
 {
+    [Serializable]
     public abstract class BlockBehaviour
     {
+        #region Static Caching
+        private static List<Type> cachedTypes;
+        public static IReadOnlyList<Type> Types
+        {
+            get
+            {
+                if (cachedTypes == null)
+                    BuildCache();
 
+                return cachedTypes;
+            }
+        }
+
+        static BlockBehaviour()
+        {
+            BuildCache();
+
+            // Fired when scripts recompile
+            CompilationPipeline.compilationFinished += _ => BuildCache();
+
+            // Fired when domain reload happens
+            AssemblyReloadEvents.afterAssemblyReload += BuildCache;
+        }
+
+        private static void BuildCache()
+        {
+            cachedTypes = Utilities.GetAllConcreteSubclassesOf<BlockBehaviour>();
+        }
+        #endregion
+
+        [HideInInspector]
+        public string name;
+
+        public BlockBehaviour()
+        {
+            name = GetType().Name;
+        }
     }
 
     public interface IInterfaceBlockBehaviour
@@ -23,17 +62,17 @@ namespace ComposableBlocks
 
     public interface IStatefulBlockBehaviour
     {
-        public BlockBehaviourState GetState();
+        public BlockBehaviourState GetState(Block baseBlock);
     }
 
     public interface IInteractableBehaviour
     {
-        public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice, InteractorInfo interactor);
+        public bool Interact(ref NativeBlockSlice slice, InteractionWorldInfo worldInfo, InteractorInfo interactor);
     }
 
     public interface IConditionalPlaceBehaviour
     {
-        public bool CanPlace(Vector2Int Pos, Vector2Int dir);
+        public bool CanPlace(Vector2Int Pos, Vector2Int dir, NativeBlockSlice slice);
     }
 
     public interface IOnPlaceBehaviour
@@ -54,6 +93,22 @@ namespace ComposableBlocks
     public interface ITickableBehaviourState
     {
         public void Tick();
+    }
+
+    public interface IStorageBlockBehaviourState
+    {
+        public bool AddItemStack(ItemStack stack);
+    }
+
+    public struct InteractorInfo
+    {
+        public PlayerRespawner Respawner;
+    }
+
+    public struct InteractionWorldInfo 
+    { 
+        public Vector2Int WorldPos;
+        public Block block;
     }
 
     public abstract class BlockBehaviourState

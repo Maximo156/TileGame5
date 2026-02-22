@@ -7,13 +7,13 @@ namespace ComposableBlocks
     {
         public int size;
 
-        public BlockBehaviourState GetState()
+        public BlockBehaviourState GetState(Block baseBlock)
         {
             return new InventoryBehaviourState(size);
         }
     }
 
-    public class InventoryBehaviourState : BlockBehaviourState, IStorageBlockState
+    public class InventoryBehaviourState : BlockBehaviourState, IStorageBlockBehaviourState
     {
         public Inventory StoredItems;
 

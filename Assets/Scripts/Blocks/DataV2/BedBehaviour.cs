@@ -5,8 +5,9 @@ namespace ComposableBlocks
 {
     public class BedBehaviour : BlockBehaviour, IInteractableBehaviour
     {
-        public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice, InteractorInfo interactor)
+        public bool Interact(ref NativeBlockSlice slice, InteractionWorldInfo worldInfo, InteractorInfo interactor)
         {
+            var worldPos = worldInfo.WorldPos;
             var respawner = interactor.Respawner;
             if (respawner != null)
             {

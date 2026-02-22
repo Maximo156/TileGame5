@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9461edb5501c704ebbbd3696622a51a, type: 3}
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
   m_Name: BasicCrate
   m_EditorClassIdentifier: 
   Id: 4
@@ -17,9 +17,17 @@ MonoBehaviour:
   HitsToBreak: 3
   MovementModifier: 0
   Drops: []
-  UiSprite: {fileID: 3489699743356552951, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: 3489699743356552951, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors:
+  - rid: 6157179869043097616
   structural: 0
   solid: 0
-  Walkable: 0
-  MustBePlacedOn: []
+  walkable: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6157179869043097616
+      type: {class: CrateBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
+      data:
+        name: CrateBehaviour

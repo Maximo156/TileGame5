@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 using System.Linq;
 using NativeRealm;
 using BlockDataRepos;
+using ComposableBlocks;
 
 public class WorldDisplay : MonoBehaviour
 {

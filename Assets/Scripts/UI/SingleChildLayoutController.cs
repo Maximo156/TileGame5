@@ -116,7 +116,6 @@ public class SingleChildLayoutController : MonoBehaviour
             var constraintDim = GridLayout.constraintCount;
 
             var (rows, cols) = GridLayout.constraint == GridLayoutGroup.Constraint.FixedRowCount ? (constraintDim, nonConstraintDim) : (nonConstraintDim, constraintDim);
-            Debug.Log($"{rows} {cols}");
             var height = rows * (GridLayout.cellSize.y + GridLayout.spacing.y) + GridLayout.padding.top + GridLayout.padding.bottom;
             var width = cols * (GridLayout.cellSize.x + GridLayout.spacing.x) + GridLayout.padding.left + GridLayout.padding.right;
             rect.sizeDelta = new Vector2(FitContentWidth ? width : rect.sizeDelta.x, FitContentHeight ? height : rect.sizeDelta.y);

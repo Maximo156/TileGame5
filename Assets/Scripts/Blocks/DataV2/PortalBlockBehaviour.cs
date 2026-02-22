@@ -6,16 +6,17 @@ namespace ComposableBlocks
 {
     public class PortalBlockBehaviour : BlockBehaviour, IInteractableBehaviour
     {
-        public delegate void PortalBlockUsed(string newDim, PortalBlock exitBlock, Vector2Int worldPos);
+        public delegate void PortalBlockUsed(string newDim, Block exitBlock, Vector2Int worldPos);
         public static event PortalBlockUsed OnPortalBlockUsed;
 
         [Header("Portal Info")]
         public string NewDim;
-        public PortalBlock Exit;
 
-        public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice, InteractorInfo interactor)
+        public Block Exit;
+
+        public bool Interact(ref NativeBlockSlice slice, InteractionWorldInfo worldInfo, InteractorInfo interactor)
         {
-            OnPortalBlockUsed?.Invoke(NewDim, Exit, worldPos);
+            OnPortalBlockUsed?.Invoke(NewDim, Exit, worldInfo.WorldPos);
             return false;
         }
 

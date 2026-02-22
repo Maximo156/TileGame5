@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Collections;
 using UnityEditor;
 using UnityEngine;
+using ComposableBlocks;
 
 namespace BlockDataRepos
 {
@@ -51,12 +52,13 @@ namespace BlockDataRepos
                     throw new System.Exception("Duplicate Block ID's Detected");
                 }
 
-                var set = new HashSet<ushort>(blocks.Select(b => b.Id));
+                var set = new HashSet<ushort>(blocks.Select(b => b.Id)); 
                 var max = blocks.Max(b => b.Id);
                 if (set.Count != max)
                 {
                     var missing = Enumerable.Range(1, max).Where(i => !set.Contains((ushort)i));
-                    throw new System.Exception($"Missing block ids: {string.Join(", ", missing)}");
+                    var over = blocks.Where(b => b.Id > set.Count).Select(b => b.name);
+                    throw new System.Exception($"Missing block ids: {string.Join(", ", missing)}, potential fillers: {string.Join(", ", over)}");
                 }
             } catch
             { 
@@ -78,9 +80,9 @@ namespace BlockDataRepos
 
         public static bool TryGetBlock<T>(ushort id, out T block) where T : Block
         {
-            if(id != 0 && Blocks[id - 1] is T b)
+            if(id != 0)
             {
-                block = b;
+                block = Blocks[id - 1] as T;
                 return true;
             }
             block = null;
@@ -115,17 +117,17 @@ namespace BlockDataRepos
         public void ProcessBlock(Block block)
         {
             var index = block.Id - 1;
+            lightLevels[index] = block.TryGetBehavior<LightBehaviour>(out var light) ? (byte)(light.LightLevel * 2) : (byte)0;
             var wall = block as Wall;
-            lightLevels[index] = block is LightBlock light ? (byte)(light.LightLevel * 2) : (byte)0;
             moveInfo[index] = new BlockMovementInfo 
             { 
-                door = block is Door,
+                door = block.TryGetBehavior<DoorBehaviour>(out var _),
                 movementSpeed = block.MovementModifier,
-                walkable = wall?.Walkable ?? true,
+                walkable = wall?.walkable ?? true,
             };
             solid[index] = wall?.solid ?? false;
-            lootable[index] = block is CrateBlock || block is StorageBlock;
-            tickInfo[index] = block is ISimpleTickBlock tick ? tick.GetTickInfo() : default;
+            lootable[index] = block.TryGetBehavior<IStorageBlockBehaviourState>(out var _);
+            tickInfo[index] = block.TryGetBehavior<ISimpleTickBlockBehaviour>(out var tick) ? tick.GetTickInfo() : default;
         }
 
         public void Dispose()

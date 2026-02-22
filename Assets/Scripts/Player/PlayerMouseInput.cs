@@ -1,4 +1,5 @@
 using BlockDataRepos;
+using ComposableBlocks;
 using NativeRealm;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ public class PlayerMouseInput : MonoBehaviour
     public delegate void AttackInterupted();
     public static event AttackInterupted OnAttackInterupted;
 
-    public delegate void BlockInterfaced(Vector2Int pos, Wall InterfacedBlock, BlockState state, IInventoryContainer inv);
+    public delegate void BlockInterfaced(Vector2Int pos, Block InterfacedBlock, BlockState state, IInterfaceBlockBehaviour behaviour, IInventoryContainer inv);
     public static event BlockInterfaced OnBlockInterfaced;
 
     public delegate void InterfaceRangeExceeded();
@@ -137,10 +138,10 @@ public class PlayerMouseInput : MonoBehaviour
         {
             return true;
         }
-        if(ChunkManager.TryGetBlockAndState(mouseBlockPosition, out var slice, out var state) && BlockDataRepo.TryGetBlock<Wall>(slice.wallBlock, out var wallBlock) && wallBlock is IInterfaceBlock)
+        if(ChunkManager.TryGetBlockAndState(mouseBlockPosition, out var slice, out var state) && BlockDataRepo.TryGetBlock<Wall>(slice.wallBlock, out var wallBlock) && wallBlock.TryGetBehavior<IInterfaceBlockBehaviour>(out var behaviour))
         {
             CurInteractPos = CurInteractPos == mouseBlockPosition ? null : mouseBlockPosition;
-            OnBlockInterfaced?.Invoke(mouseBlockPosition, wallBlock, state, playerInventory);
+            OnBlockInterfaced?.Invoke(mouseBlockPosition, wallBlock, state, behaviour, playerInventory);
             return true;
         }
         return false;

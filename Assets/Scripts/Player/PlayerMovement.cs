@@ -1,3 +1,4 @@
+using ComposableBlocks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,7 +36,7 @@ public class PlayerMovement : MonoBehaviour, IHittable
 
     private void Start()
     {
-        PortalBlock.OnPortalBlockUsed += PortalUsed;
+        PortalBlockBehaviour.OnPortalBlockUsed += PortalUsed;
     }
 
     private Vector2Int LastChunk = new Vector2Int(1000, 10000);
@@ -74,7 +75,7 @@ public class PlayerMovement : MonoBehaviour, IHittable
         movementDir = value.ReadValue<Vector2>();
     }
 
-    private void PortalUsed(string _, PortalBlock __, Vector2Int worldPos)
+    private void PortalUsed(string _, Block __, Vector2Int worldPos)
     {
         transform.position = worldPos.ToVector3Int() + Vector3.one * 0.5f;
     }

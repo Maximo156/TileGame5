@@ -11,7 +11,7 @@ namespace ComposableBlocks
             return 0;
         }
 
-        public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice, InteractorInfo interactor)
+        public bool Interact(ref NativeBlockSlice slice, InteractionWorldInfo worldInfo, InteractorInfo interactor)
         {
             slice.simpleBlockState = (byte)((slice.simpleBlockState++) % totalStates);
             return true;

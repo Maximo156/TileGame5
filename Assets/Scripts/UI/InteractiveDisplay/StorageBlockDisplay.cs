@@ -1,3 +1,4 @@
+using ComposableBlocks;
 using NativeRealm;
 using System;
 using System.Collections;
@@ -10,12 +11,12 @@ public class StorageBlockDisplay : InteractiveDislay
     private Inventory _attachedInv;
     public override Type TypeMatch()
     {
-        return typeof(StorageBlock);
+        return typeof(InventoryBehaviour);
     }
 
-    public override void DisplayInventory(Vector2Int worldPos, Wall _, BlockState state, IInventoryContainer otherInventory)
+    public override void DisplayInventory(Vector2Int worldPos, Block _, BlockState state, IInventoryContainer otherInventory)
     {
-        _attachedInv = (state as StorageState).StoredItems;
+        _attachedInv = state.GetState<InventoryBehaviourState>().StoredItems;
         singleInventoryDisplay.AttachInv(_attachedInv);
     }
 

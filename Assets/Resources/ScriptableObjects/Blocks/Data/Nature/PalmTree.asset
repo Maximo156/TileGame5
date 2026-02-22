@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
   m_Name: PalmTree
   m_EditorClassIdentifier: 
   Id: 24
@@ -17,9 +17,12 @@ MonoBehaviour:
   HitsToBreak: 4
   MovementModifier: 0
   Drops: []
-  UiSprite: {fileID: 1301760331, guid: 99f7ad5da9f171346826c9fe68ec7424, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: 1301760331, guid: 99f7ad5da9f171346826c9fe68ec7424, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors: []
   structural: 0
   solid: 0
-  Walkable: 1
-  MustBePlacedOn: []
+  walkable: 1
+  references:
+    version: 2
+    RefIds: []

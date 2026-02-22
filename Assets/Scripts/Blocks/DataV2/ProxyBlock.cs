@@ -3,7 +3,7 @@ using UnityEngine;
 namespace ComposableBlocks
 {
     [CreateAssetMenu(fileName = "NewProxyBlock", menuName = "Block/ProxyBlock")]
-    public class ProxyBlock : Block
+    public class ProxyBlock : Wall
     {
 
     }

@@ -1,4 +1,5 @@
 using BlockDataRepos;
+using ComposableBlocks;
 using NativeRealm;
 using System;
 using System.Collections;
@@ -78,7 +79,7 @@ public class PlayerRespawner : MonoBehaviour
         {
             await Awaitable.NextFrameAsync();
         }
-        if (BlockDataRepo.TryGetBlock<Bed>(block.wallBlock, out var _))
+        if (BlockDataRepo.TryGetBlock<Wall>(block.wallBlock, out var blockData) && blockData.TryGetBehavior<BedBehaviour>(out var _))
         {
             foreach(var v in Utilities.QuadAdjacent)
             {

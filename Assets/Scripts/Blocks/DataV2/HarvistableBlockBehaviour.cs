@@ -10,10 +10,10 @@ namespace ComposableBlocks
         public bool useOverrides;
         public List<ItemStack> HarvestOverrides;
 
-        public bool Interact(Vector2Int worldPos, ref NativeBlockSlice slice, InteractorInfo interactor)
+        public bool Interact(ref NativeBlockSlice slice, InteractionWorldInfo worldInfo, InteractorInfo interactor)
         {
             slice.wallBlock = AfterHarvest?.Id ?? 0;
-            Utilities.DropItems(worldPos, useOverrides ? HarvestOverrides : throw new System.Exception("Fix harvest blocks"));
+            Utilities.DropItems(worldInfo.WorldPos, useOverrides ? HarvestOverrides : worldInfo.block.Drops);
             return true;
         }
     }

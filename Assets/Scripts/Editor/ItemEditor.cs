@@ -17,7 +17,7 @@ public class ItemEditor : DisplaySpriteEditor
         // Draw default inspector
         InspectorElement.FillDefaultInspector(root, serializedObject, this);
 
-        SerializedProperty itemBehaviors = serializedObject.FindProperty("Behaviors");
+        SerializedProperty itemBehaviors = serializedObject.FindProperty(nameof(Item.Behaviors));
 
         // Add button that opens the popup
         var button = new Button()
@@ -30,7 +30,7 @@ public class ItemEditor : DisplaySpriteEditor
         {
             var ItemBehaviorClasses =ItemBehaviour.Types.ToDictionary(t => t.Name, t => t);
 
-            SearchablePopup.Show(GetScreenRect(button), ItemBehaviorClasses.Keys.ToList(), selected =>
+            SearchablePopup.Show(Utilities.GetScreenRect(button), ItemBehaviorClasses.Keys.ToList(), selected =>
             {
                 ItemBehaviour instance = (ItemBehaviour)Activator.CreateInstance(ItemBehaviorClasses[selected]);
 
@@ -46,25 +46,6 @@ public class ItemEditor : DisplaySpriteEditor
 
 
         return root;
-    }
-
-    public static Rect GetScreenRect(VisualElement element)
-    {
-        // Element's position in panel space
-        var world = element.worldBound;
-
-        // Panel's top-left relative to screen
-        var panel = element.panel.visualTree.worldBound;
-
-        // EditorWindow position in screen space
-        var window = EditorWindow.focusedWindow.position;
-
-        return new Rect(
-            window.x + world.x - panel.x,
-            window.y + world.y - panel.y + world.height, // + height to open below
-            world.width,
-            world.height
-        );
     }
 }
 

@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
   m_Name: AppleTreeEmpty
   m_EditorClassIdentifier: 
   Id: 3
@@ -21,11 +21,19 @@ MonoBehaviour:
     Count: 3
   - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
     Count: 3
-  UiSprite: {fileID: 7026102079263425026, guid: 99f7ad5da9f171346826c9fe68ec7424, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: 7026102079263425026, guid: 99f7ad5da9f171346826c9fe68ec7424, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors:
+  - rid: 6157179869043097623
   structural: 0
   solid: 0
-  Walkable: 1
-  MustBePlacedOn: []
-  nextBlock: {fileID: 11400000, guid: 06500d31aae579e4587ad5a6abeeb0d3, type: 2}
-  MeanSecondsToHappen: 5
+  walkable: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 6157179869043097623
+      type: {class: ReplacableBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
+      data:
+        name: ReplacableBehaviour
+        nextBlock: {fileID: 11400000, guid: 06500d31aae579e4587ad5a6abeeb0d3, type: 2}
+        MeanSecondsToHappen: 5

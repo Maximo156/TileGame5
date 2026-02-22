@@ -6,6 +6,7 @@ using System.Linq;
 using Unity.Collections;
 using NativeRealm;
 using Unity.Mathematics;
+using ComposableBlocks;
 
 public class BuildingInformation : MonoBehaviour
 {

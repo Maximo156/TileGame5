@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ComposableBlocks
 {
-    public class CreaftingBlockBehaviour: BlockBehaviour, IInterfaceBlockBehaviour, IGridSource
+    public class CraftingBlockBehaviour: BlockBehaviour, IInterfaceBlockBehaviour, IGridSource
     {
         public List<ItemRecipe> Recipes;
 

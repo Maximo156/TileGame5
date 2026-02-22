@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
   m_Name: RoseFlower
   m_EditorClassIdentifier: 
   Id: 37
@@ -21,10 +21,20 @@ MonoBehaviour:
     Count: 1
   - Item: {fileID: 11400000, guid: 5be3a9bce6cbf4320b2702b16810af66, type: 2}
     Count: 1
-  UiSprite: {fileID: 922397976, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: 922397976, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors:
+  - rid: 6157179869043097609
   structural: 0
   solid: 0
-  Walkable: 0
-  MustBePlacedOn:
-  - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
+  walkable: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 6157179869043097609
+      type: {class: HarvistableBlockBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
+      data:
+        name: HarvistableBlockBehaviour
+        AfterHarvest: {fileID: 0}
+        useOverrides: 0
+        HarvestOverrides: []

@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
   m_Name: WheatMid
   m_EditorClassIdentifier: 
   Id: 58
@@ -19,12 +19,19 @@ MonoBehaviour:
   Drops:
   - Item: {fileID: 11400000, guid: 75e7df615a8d87344a2f1c7a8e2c0c95, type: 2}
     Count: 1
-  UiSprite: {fileID: 269862747, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: 269862747, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors:
+  - rid: 6157179869043097614
   structural: 0
   solid: 0
-  Walkable: 1
-  MustBePlacedOn:
-  - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
-  nextBlock: {fileID: 11400000, guid: 7a61583378a3e4d408a5a1086f998e69, type: 2}
-  MeanSecondsToHappen: 5
+  walkable: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 6157179869043097614
+      type: {class: ReplacableBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
+      data:
+        name: ReplacableBehaviour
+        nextBlock: {fileID: 11400000, guid: 7a61583378a3e4d408a5a1086f998e69, type: 2}
+        MeanSecondsToHappen: 5

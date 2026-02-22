@@ -9,6 +9,7 @@ using Unity.Collections;
 using NativeRealm;
 using BlockDataRepos;
 using UnityEngine.SceneManagement;
+using ComposableBlocks;
 
 public class ChunkManager : MonoBehaviour
 {
@@ -45,7 +46,7 @@ public class ChunkManager : MonoBehaviour
     { 
         Manager = this;
         PlayerMovement.OnPlayerChangedChunks += PlayerChangedChunks;
-        PortalBlock.OnPortalBlockUsed += PortalUsed; 
+        PortalBlockBehaviour.OnPortalBlockUsed += PortalUsed; 
     }
 
     // Start is called before the first frame update
@@ -125,7 +126,7 @@ public class ChunkManager : MonoBehaviour
         return block;
     }
 
-    private void PortalUsed(string newDim, PortalBlock exitBlock, Vector2Int worldPos)
+    private void PortalUsed(string newDim, Block exitBlock, Vector2Int worldPos)
     {
         SetActiveRealmImpl(newDim);
         var chunk = Utilities.GetChunk(worldPos, WorldConfig.ChunkWidth);
@@ -189,7 +190,7 @@ public class ChunkManager : MonoBehaviour
         return Manager.ActiveRealm.QueueChunkAction(
             position, 
             (chunk, pos) => chunk.Interact(pos, interactor),
-            (chunk, pos) => BlockDataRepo.TryGetBlock<Wall>(chunk.GetBlock(pos).wallBlock, out var b) && b is IInteractableBlock
+            (chunk, pos) => BlockDataRepo.TryGetBlock<Wall>(chunk.GetBlock(pos).wallBlock, out var b) && b.TryGetBehavior<IInteractableBehaviour>(out var _)
         );
     }
 

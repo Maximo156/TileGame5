@@ -9,103 +9,111 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0664067da0443824ead999662763426e, type: 3}
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
   m_Name: WorkBench
   m_EditorClassIdentifier: 
-  Id: 64
+  Id: 63
   Display: {fileID: 11400000, guid: c2a0cd6331e0fdb4a83f6bd8ddc25c89, type: 2}
   HitsToBreak: 3
   MovementModifier: 0
   Drops:
   - Item: {fileID: 11400000, guid: aa840768f8676ad40835efb749abfc09, type: 2}
     Count: 4
-  UiSprite: {fileID: 1385272632488264903, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: 1385272632488264903, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors:
+  - rid: 6157179869043097639
   structural: 0
   solid: 0
-  Walkable: 0
-  MustBePlacedOn: []
-  Recipes:
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: aa840768f8676ad40835efb749abfc09, type: 2}
-      Count: 1
-    Result:
-      Item: {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
-      Count: 3
-    craftingTime: 0.5
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
-      Count: 1
-    Result:
-      Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
-      Count: 3
-    craftingTime: 0.5
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
-      Count: 2
-    Result:
-      Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
-      Count: 1
-    craftingTime: 0.5
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
-      Count: 2
-    Result:
-      Item: {fileID: 11400000, guid: ad7c3e0c7e1db01419b1d173058d3441, type: 2}
-      Count: 1
-    craftingTime: 2
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
-      Count: 2
-    - Item: {fileID: 11400000, guid: 502ab55c8dcd5774486116e9a4e22183, type: 2}
-      Count: 1
-    Result:
-      Item: {fileID: 11400000, guid: fdb0d608330aa8641ad4dd86c605ca1f, type: 2}
-      Count: 1
-    craftingTime: 3
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
-      Count: 1
-    - Item: {fileID: 11400000, guid: 502ab55c8dcd5774486116e9a4e22183, type: 2}
-      Count: 2
-    Result:
-      Item: {fileID: 11400000, guid: 94215b4d806521f4283b576e2cb29f65, type: 2}
-      Count: 1
-    craftingTime: 2
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: aa840768f8676ad40835efb749abfc09, type: 2}
-      Count: 1
-    Result:
-      Item: {fileID: 11400000, guid: 2649c64e201ebc94bb441d9434f16a49, type: 2}
-      Count: 1
-    craftingTime: 4
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
-      Count: 1
-    - Item: {fileID: 11400000, guid: 502ab55c8dcd5774486116e9a4e22183, type: 2}
-      Count: 2
-    Result:
-      Item: {fileID: 11400000, guid: cb6ca2667a18aa340b5e937f7061d17f, type: 2}
-      Count: 1
-    craftingTime: 2
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: 0d5045cb3530d4a54aae38bc8498c024, type: 2}
-      Count: 2
-    Result:
-      Item: {fileID: 11400000, guid: 898e3f1d560598f4baf6d953f88029de, type: 2}
-      Count: 1
-    craftingTime: 7
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: 0d5045cb3530d4a54aae38bc8498c024, type: 2}
-      Count: 6
-    Result:
-      Item: {fileID: 11400000, guid: 982da2bae139b8f4b9bb4c63522a67cd, type: 2}
-      Count: 1
-    craftingTime: 7
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: 0d5045cb3530d4a54aae38bc8498c024, type: 2}
-      Count: 4
-    Result:
-      Item: {fileID: 11400000, guid: 4107277eaba41ce419fbb2d0916aba22, type: 2}
-      Count: 1
-    craftingTime: 7
+  walkable: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6157179869043097639
+      type: {class: CraftingBlockBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
+      data:
+        name: CraftingBlockBehaviour
+        Recipes:
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: aa840768f8676ad40835efb749abfc09, type: 2}
+            Count: 1
+          Result:
+            Item: {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
+            Count: 3
+          craftingTime: 0.5
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
+            Count: 1
+          Result:
+            Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
+            Count: 3
+          craftingTime: 0.5
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
+            Count: 2
+          Result:
+            Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
+            Count: 1
+          craftingTime: 0.5
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
+            Count: 2
+          Result:
+            Item: {fileID: 11400000, guid: ad7c3e0c7e1db01419b1d173058d3441, type: 2}
+            Count: 1
+          craftingTime: 2
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
+            Count: 2
+          - Item: {fileID: 11400000, guid: 502ab55c8dcd5774486116e9a4e22183, type: 2}
+            Count: 1
+          Result:
+            Item: {fileID: 11400000, guid: fdb0d608330aa8641ad4dd86c605ca1f, type: 2}
+            Count: 1
+          craftingTime: 3
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
+            Count: 1
+          - Item: {fileID: 11400000, guid: 502ab55c8dcd5774486116e9a4e22183, type: 2}
+            Count: 2
+          Result:
+            Item: {fileID: 11400000, guid: 94215b4d806521f4283b576e2cb29f65, type: 2}
+            Count: 1
+          craftingTime: 2
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: aa840768f8676ad40835efb749abfc09, type: 2}
+            Count: 1
+          Result:
+            Item: {fileID: 11400000, guid: 2649c64e201ebc94bb441d9434f16a49, type: 2}
+            Count: 1
+          craftingTime: 4
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
+            Count: 1
+          - Item: {fileID: 11400000, guid: 502ab55c8dcd5774486116e9a4e22183, type: 2}
+            Count: 2
+          Result:
+            Item: {fileID: 11400000, guid: cb6ca2667a18aa340b5e937f7061d17f, type: 2}
+            Count: 1
+          craftingTime: 2
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: 0d5045cb3530d4a54aae38bc8498c024, type: 2}
+            Count: 2
+          Result:
+            Item: {fileID: 11400000, guid: 898e3f1d560598f4baf6d953f88029de, type: 2}
+            Count: 1
+          craftingTime: 7
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: 0d5045cb3530d4a54aae38bc8498c024, type: 2}
+            Count: 6
+          Result:
+            Item: {fileID: 11400000, guid: 982da2bae139b8f4b9bb4c63522a67cd, type: 2}
+            Count: 1
+          craftingTime: 7
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: 0d5045cb3530d4a54aae38bc8498c024, type: 2}
+            Count: 4
+          Result:
+            Item: {fileID: 11400000, guid: 4107277eaba41ce419fbb2d0916aba22, type: 2}
+            Count: 1
+          craftingTime: 7

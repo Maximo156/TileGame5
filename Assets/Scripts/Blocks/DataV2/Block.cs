@@ -6,11 +6,12 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System;
 using BlockDataRepos;
+using Newtonsoft.Json;
 
 namespace ComposableBlocks
 {
-    [CreateAssetMenu(fileName = "NewComposableBlock", menuName = "Block/ComposableBlock")]
-    public class Block : ScriptableObject, ISpriteful
+    [JsonConverter(typeof(BlockConverter))]
+    public abstract class Block : ScriptableObject, ISpriteful
     {
         [ReadOnlyProperty]
         public ushort Id = 0;
@@ -19,15 +20,14 @@ namespace ComposableBlocks
         public int HitsToBreak;
         public float MovementModifier = 0;
         public List<ItemStack> Drops;
-        public BlockLevel Level;
 
         [field: SerializeField]
         public Sprite Sprite { get; set; }
 
         [field: SerializeField]
-        public Color Color { get; set; }
+        public Color Color { get; set; } = Color.white;
 
-        [SerializeReference]
+        [SerializeReference] 
         public List<BlockBehaviour> Behaviors = new List<BlockBehaviour>();
 
         public virtual bool OnBreak(Vector2Int worldPos, BreakInfo info)
@@ -59,6 +59,16 @@ namespace ComposableBlocks
             return behaviour != null;
         }
 
+        public T GetBehavour<T>() where T : class
+        {
+            return Behaviors.FirstOrDefault(b => typeof(T).IsAssignableFrom(b.GetType())) as T;
+        }
+
+        public IEnumerable<T> GetAllBehavours<T>() where T : class
+        {
+            return Behaviors.Select(b => b as T).Where(b => b != null);
+        }
+
         public bool TryGetState(out BlockState state)
         {
             var stateful = Behaviors.Where(b => b is IStatefulBlockBehaviour);
@@ -67,7 +77,7 @@ namespace ComposableBlocks
                 state = null;
                 return false;
             }
-            state = new BlockState(stateful);
+            state = new BlockState(this, stateful);
             return true;
         }
 
@@ -127,7 +137,11 @@ namespace ComposableBlocks
 
     public class BlockState
     {
-        Dictionary<Type, BlockBehaviourState> States;
+        public event Action OnStateUpdated;
+
+        [JsonProperty]
+        readonly IReadOnlyDictionary<Type, BlockBehaviourState> States;
+        readonly IReadOnlyList<ITickableBehaviourState> Ticks;
 
         public void CleanUp(Vector2Int worldPos)
         {
@@ -137,9 +151,37 @@ namespace ComposableBlocks
             }
         }
 
-        public BlockState(IEnumerable<BlockBehaviour> behaviours)
+        [JsonConstructor]
+        public BlockState(IReadOnlyDictionary<Type, BlockBehaviourState> States)
         {
-            States = behaviours.ToDictionary(b => b.GetType(), b => (b as IStatefulBlockBehaviour).GetState());
+            this.States = States;
+            Ticks = States.Values.Where(s => s is ITickableBehaviourState).Select(s => s as ITickableBehaviourState).ToList(); 
+            foreach (var state in States.Values)
+            {
+                state.OnStateUpdated += TriggerStateUpdate;
+            }
+        }
+
+        public BlockState(Block block, IEnumerable<BlockBehaviour> behaviours): this(behaviours.Select(b => (b as IStatefulBlockBehaviour).GetState(block)).ToDictionary(b => b.GetType(), b => b))
+        {
+        }
+
+        public T GetState<T>() where T : BlockBehaviourState
+        {
+            return States[typeof(T)] as T;
+        }
+
+        void TriggerStateUpdate()
+        {
+            OnStateUpdated?.Invoke();
+        }
+
+        public void Tick()
+        {
+            foreach(var state in Ticks)
+            {
+                state.Tick();
+            }
         }
     }
 

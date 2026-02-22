@@ -1,3 +1,4 @@
+using BlockDataRepos;
 using NativeRealm;
 using UnityEngine;
 
@@ -6,12 +7,12 @@ namespace ComposableBlocks
     public class MultiBlockBehaviour : BlockBehaviour, IConditionalPlaceBehaviour, IOnPlaceBehaviour, IOnBreakBehaviour
     {
         public Vector2Int Dimensions;
-        public bool CanPlace(Vector2Int Pos, Vector2Int dir)
+        public bool CanPlace(Vector2Int Pos, Vector2Int dir, NativeBlockSlice _)
         {
             var bounds = GetBounds(Pos, dir);
             foreach (var pos in bounds.allPositionsWithin)
             {
-                if (!ChunkManager.TryGetBlock(pos.ToVector2Int(), out var slice) || slice.wallBlock != 0)
+                if (!ChunkManager.TryGetBlock(pos.ToVector2Int(), out var worldSlice) || worldSlice.wallBlock != 0)
                 {
                     return false;
                 }
@@ -21,7 +22,19 @@ namespace ComposableBlocks
 
         public void OnPlace(Vector2Int Pos, Vector2Int dir, ref NativeBlockSlice slice)
         {
-            throw new System.NotImplementedException();
+            var bounds = GetBounds(Pos, dir);
+            foreach (var pos in bounds.allPositionsWithin)
+            {
+                if (pos != Pos.ToVector3Int())
+                {
+                    var state = (Pos - pos.ToVector2Int()).ToOffsetStateEncoding();
+                    ChunkManager.PlaceBlock(pos.ToVector2Int(), dir, BlockDataRepo.proxyBlock, false, state);
+                }
+                else
+                {
+                    slice.simpleBlockState = (byte)System.Array.IndexOf(Utilities.QuadAdjacent, dir);
+                }
+            }
         }
 
         public void OnBreak(Vector2Int worldPos, BreakInfo info)

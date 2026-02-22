@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c3737952da42914fa7ba143096070e2, type: 3}
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
   m_Name: TomatoSeedling
   m_EditorClassIdentifier: 
   Id: 54
@@ -19,12 +19,26 @@ MonoBehaviour:
   Drops:
   - Item: {fileID: 11400000, guid: 851039e123ef6bf47b51224a6ccd3e6a, type: 2}
     Count: 1
-  UiSprite: {fileID: 2071693735, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: 2071693735, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors:
+  - rid: 6157179869043097610
+  - rid: 6157179869043097635
   structural: 0
   solid: 0
-  Walkable: 1
-  MustBePlacedOn:
-  - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
-  nextBlock: {fileID: 11400000, guid: c4eea3eb5736daa4ba2f8a96a099ee86, type: 2}
-  MeanSecondsToHappen: 5
+  walkable: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 6157179869043097610
+      type: {class: ReplacableBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
+      data:
+        name: ReplacableBehaviour
+        nextBlock: {fileID: 11400000, guid: c4eea3eb5736daa4ba2f8a96a099ee86, type: 2}
+        MeanSecondsToHappen: 5
+    - rid: 6157179869043097635
+      type: {class: MustBePlacedOnBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
+      data:
+        name: MustBePlacedOnBehaviour
+        MustBePlacedOn:
+        - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
