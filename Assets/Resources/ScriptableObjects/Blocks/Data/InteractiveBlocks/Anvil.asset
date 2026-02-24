@@ -49,6 +49,15 @@ MonoBehaviour:
           - Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
             Count: 1
           Result:
-            Item: {fileID: 11400000, guid: 94215b4d806521f4283b576e2cb29f65, type: 2}
+            Item: {fileID: 11400000, guid: 1fdadcf8d63be63468853ca8c8dadec7, type: 2}
+            Count: 1
+          craftingTime: 10
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: b47515d8c3730c141acf622480b894ae, type: 2}
+            Count: 2
+          - Item: {fileID: 11400000, guid: 99826781ac1bbd7428a1353ef57cbbcb, type: 2}
+            Count: 1
+          Result:
+            Item: {fileID: 11400000, guid: 79ae11fe49e3e3546bf3ef47db99a6c0, type: 2}
             Count: 1
           craftingTime: 10

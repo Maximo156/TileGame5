@@ -91,7 +91,7 @@ public partial class Chunk
         var slice = data.GetSlice(localPos.x, localPos.y);
         if (res == null && BlockDataRepo.TryGetBlock<Wall>(slice.wallBlock, out var wall) && wall.TryGetState(out res))
         {
-            if(res is IStorageBlockBehaviourState storage)
+            if(res.TryGetStateInterface<IStorageBlockBehaviourState>(out var storage))
             {
                 parentRealm.StructureInfo.AttemptFillStorageState(world, slice.simpleBlockState, storage);
                 data.SetState(localPos.x, localPos.y, 0);

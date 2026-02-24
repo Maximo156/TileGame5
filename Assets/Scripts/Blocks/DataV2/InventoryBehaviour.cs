@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ComposableBlocks
 {
-    public class InventoryBehaviour : BlockBehaviour, IStatefulBlockBehaviour, IInterfaceBlockBehaviour
+    public class InventoryBehaviour : BlockBehaviour, IStatefulBlockBehaviour, IInterfaceBlockBehaviour, ILootableBlockBehaviour
     {
         public int size;
 

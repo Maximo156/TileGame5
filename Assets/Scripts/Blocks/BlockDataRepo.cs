@@ -126,7 +126,7 @@ namespace BlockDataRepos
                 walkable = wall?.walkable ?? true,
             };
             solid[index] = wall?.solid ?? false;
-            lootable[index] = block.TryGetBehavior<IStorageBlockBehaviourState>(out var _);
+            lootable[index] = block.TryGetBehavior<ILootableBlockBehaviour>(out var _);
             tickInfo[index] = block.TryGetBehavior<ISimpleTickBlockBehaviour>(out var tick) ? tick.GetTickInfo() : default;
         }
 

@@ -171,6 +171,13 @@ namespace ComposableBlocks
             return States[typeof(T)] as T;
         }
 
+        public bool TryGetStateInterface<T>(out T state) where T : class
+        {
+            state = States.Values.FirstOrDefault(b => typeof(T).IsAssignableFrom(b.GetType())) as T;
+
+            return state != null;
+        }
+
         void TriggerStateUpdate()
         {
             OnStateUpdated?.Invoke();

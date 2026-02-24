@@ -65,6 +65,11 @@ namespace ComposableBlocks
         public BlockBehaviourState GetState(Block baseBlock);
     }
 
+    public interface ILootableBlockBehaviour
+    {
+
+    }
+
     public interface IInteractableBehaviour
     {
         public bool Interact(ref NativeBlockSlice slice, InteractionWorldInfo worldInfo, InteractorInfo interactor);

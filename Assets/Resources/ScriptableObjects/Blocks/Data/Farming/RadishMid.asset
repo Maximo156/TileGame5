@@ -33,5 +33,5 @@ MonoBehaviour:
       type: {class: ReplacableBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
       data:
         name: ReplacableBehaviour
-        nextBlock: {fileID: 11400000}
+        nextBlock: {fileID: 11400000, guid: 2a77ee6a8c1994a46beca7afefe85f70, type: 2}
         MeanSecondsToHappen: 5

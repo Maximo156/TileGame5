@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ComposableBlocks
 {
-    public class CrateBehaviour : BlockBehaviour, IStatefulBlockBehaviour
+    public class CrateBehaviour : BlockBehaviour, IStatefulBlockBehaviour, ILootableBlockBehaviour
     {
         public BlockBehaviourState GetState(Block baseBlock)
         {
