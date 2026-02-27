@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 850b97da43dc1dc428b1f8862189e852, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e7cb6b1e9e1c14479c463a249125895, type: 3}
   m_Name: ProxyBlock
   m_EditorClassIdentifier: 
   Id: 28
@@ -17,9 +17,9 @@ MonoBehaviour:
   HitsToBreak: 0
   MovementModifier: 0
   Drops: []
-  UiSprite: {fileID: 0}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
-  structural: 0
-  solid: 0
-  Walkable: 0
-  MustBePlacedOn: []
+  <Sprite>k__BackingField: {fileID: 0}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors: []
+  references:
+    version: 2
+    RefIds: []

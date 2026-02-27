@@ -8,6 +8,7 @@ using UnityEngine;
 using NativeRealm;
 using Unity.Jobs;
 using Unity.Profiling;
+using ComposableBlocks;
 
 
 [Serializable]

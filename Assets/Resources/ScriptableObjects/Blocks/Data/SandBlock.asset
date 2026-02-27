@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 072a6322a0a87ea46ab21de1b75b02c2, type: 3}
+  m_Script: {fileID: 11500000, guid: b639a90eda08d3f4ba1c433f737e02b2, type: 3}
   m_Name: SandBlock
   m_EditorClassIdentifier: 
   Id: 40
@@ -17,5 +17,5 @@ MonoBehaviour:
   HitsToBreak: 3
   MovementModifier: 0
   Drops: []
-  UiSprite: {fileID: 28460362, guid: 581d88950f593a74887ce8ee6c22bc6f, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: 28460362, guid: 581d88950f593a74887ce8ee6c22bc6f, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}

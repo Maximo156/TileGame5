@@ -34,7 +34,7 @@ MonoBehaviour:
         name: MiningBehavior
         priority: 0
         Reach: 7
-        BlockDamage: 3
+        BlockDamage: 2
     - rid: 8730737088419332097
       type: {class: DamageBehaviour, ns: , asm: Assembly-CSharp}
       data:

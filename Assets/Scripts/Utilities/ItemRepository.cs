@@ -11,7 +11,7 @@ public class ItemRepository : MonoBehaviour
 
     private void Awake()
     {
-        items = Resources.FindObjectsOfTypeAll<Item>().ToDictionary(i => i.name, i => i);
+        items = Resources.LoadAll<Item>("ScriptableObjects/Items").ToDictionary(i => i.name, i => i);
     }
 
     public static Item GetItem(string name)

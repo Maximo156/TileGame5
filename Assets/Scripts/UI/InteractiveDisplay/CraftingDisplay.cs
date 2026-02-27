@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using TMPro;
 using BlockDataRepos;
 using NativeRealm;
+using ComposableBlocks;
 
 public class CraftingDisplay : InteractiveDislay
 {
@@ -27,14 +28,14 @@ public class CraftingDisplay : InteractiveDislay
         otherInv=null; 
     }
 
-    CraftingBlock block;
+    CraftingBlockBehaviour block;
     IInventoryContainer otherInv;
     Vector2 worldPos;
 
-    public override void DisplayInventory(Vector2Int worldPos, Wall interfacedBlock, BlockState _, IInventoryContainer otherInv)
+    public override void DisplayInventory(Vector2Int worldPos, Block interfacedBlock, BlockState _, IInventoryContainer otherInv)
     {
         Completion.fillAmount = 0;
-        block = interfacedBlock as CraftingBlock;
+        interfacedBlock.TryGetBehavior(out block);
         this.otherInv = otherInv;
         this.worldPos = worldPos;
         foreach (var inv in otherInv.GetIndividualInventories())
@@ -51,7 +52,7 @@ public class CraftingDisplay : InteractiveDislay
 
     public override Type TypeMatch()
     {
-        return typeof(CraftingBlock);
+        return typeof(CraftingBlockBehaviour);
     }
 
     Coroutine craftingRoutine;

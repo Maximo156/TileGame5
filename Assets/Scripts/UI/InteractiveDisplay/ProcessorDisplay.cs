@@ -1,3 +1,4 @@
+using ComposableBlocks;
 using NativeRealm;
 using System;
 using UnityEngine;
@@ -24,10 +25,10 @@ public class ProcessorDisplay : InteractiveDislay
         }
     }
 
-    ProcessingBlockState curState;
-    public override void DisplayInventory(Vector2Int worldPos, Wall _, BlockState state, IInventoryContainer otherInventory)
+    ProcessingBlockBehaviourState curState;
+    public override void DisplayInventory(Vector2Int worldPos, Block _, BlockState state, IInventoryContainer otherInventory)
     {
-        curState = state as ProcessingBlockState;
+        curState = state.GetState<ProcessingBlockBehaviourState>();
         curState.OnStateUpdated += SetSliders;
         Render();
     }
@@ -36,7 +37,16 @@ public class ProcessorDisplay : InteractiveDislay
     {
         Inputs.AttachInv(curState.inputs);
         Outputs.AttachInv(curState.outputs);
-        Fuels.AttachInv(curState.fuels);
+
+        if (curState.requiresFuel)
+        {
+            Fuels.gameObject.SetActive(true);
+            Fuels.AttachInv(curState.fuels);
+        }
+        else
+        {
+            Fuels.gameObject.SetActive(false);
+        }
 
         SetSliders();
     }
@@ -44,11 +54,20 @@ public class ProcessorDisplay : InteractiveDislay
     void SetSliders()
     {
         CompletionSlider.fillAmount =  1 - (curState.timeLeft / (curState.curRecipe?.craftingTime * 1000)) ?? 0;
-        FuelConsumptionSlider.fillAmount = (curState.curFuel / curState.lastUsedFuel) ?? 0;
+
+        if (curState.requiresFuel)
+        {
+            FuelConsumptionSlider.gameObject.SetActive(true);
+            FuelConsumptionSlider.fillAmount = (curState.curFuel / curState.lastUsedFuel) ?? 0;
+        }
+        else
+        {
+            FuelConsumptionSlider.gameObject.SetActive(false);
+        }
     }
 
     public override Type TypeMatch()
     {
-        return typeof(ProcessingBlock);
+        return typeof(ProcessingBlockBehaviour);
     }
 }

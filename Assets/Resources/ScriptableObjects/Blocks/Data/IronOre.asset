@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc7607ed54e0cc24f86d590a8dd8dc10, type: 3}
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
   m_Name: IronOre
   m_EditorClassIdentifier: 
   Id: 22
@@ -19,8 +19,8 @@ MonoBehaviour:
   Drops:
   - Item: {fileID: 11400000, guid: d60a673afec2b424abc7e5b6e690fabd, type: 2}
     Count: 2
-  UiSprite: {fileID: 7155843861327263153, guid: 6c544ac105cc8364998cc2e336a85b3d, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: 7155843861327263153, guid: 6c544ac105cc8364998cc2e336a85b3d, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
   structural: 1
   solid: 1
   Walkable: 0

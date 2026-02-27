@@ -6,6 +6,7 @@ using System.Linq;
 using NativeRealm;
 using Unity.Collections;
 using BlockDataRepos;
+using ComposableBlocks;
 
 public class TileDisplayCache
 {
@@ -63,8 +64,8 @@ public class TileDisplayCache
                     stone.Add(pos);
                 }
 
-                wallTile.SetElement2d(y, x, chunkWidth, slice.wallBlock != 0 ? BlockDataRepo.GetBlock<Block>(slice.wallBlock).Display : null);
-                groundTile.SetElement2d(y, x, chunkWidth, slice.groundBlock != 0 ? BlockDataRepo.GetBlock<Block>(slice.groundBlock).Display : null);
+                wallTile.SetElement2d(y, x, chunkWidth, slice.wallBlock != 0 ? BlockDataRepo.GetBlock<Wall>(slice.wallBlock).Display : null);
+                groundTile.SetElement2d(y, x, chunkWidth, slice.groundBlock != 0 ? BlockDataRepo.GetBlock<Ground>(slice.groundBlock).Display : null);
 
                 if (slice.roofBlock != 0)
                 {

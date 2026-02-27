@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using NativeRealm;
 using BlockDataRepos;
+using ComposableBlocks;
 
 [CreateAssetMenu(fileName = "NewBiomePreset", menuName = "Terrain/Biome/BiomePreset", order = 1)]
 public class BiomePreset : ScriptableObject

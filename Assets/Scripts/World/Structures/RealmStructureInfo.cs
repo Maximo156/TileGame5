@@ -1,3 +1,4 @@
+using ComposableBlocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,7 @@ public class RealmStructureInfo
         }
     }
 
-    public void AttemptFillStorageState(Vector2Int pos, byte index, IStorageBlockState state)
+    public void AttemptFillStorageState(Vector2Int pos, byte index, IStorageBlockBehaviourState state)
     {
         var iPos = pos.ToInt();
         var structChunk = Utilities.GetChunk(pos, StructureChunkWidth).ToInt();

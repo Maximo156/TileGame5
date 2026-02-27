@@ -1,10 +1,5 @@
 using UnityEngine;
 
-public interface ISimpleTickBlock
-{
-    public TickInfo GetTickInfo();
-}
-
 public enum TickBehaviour
 {
     None,

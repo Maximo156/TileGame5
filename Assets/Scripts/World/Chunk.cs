@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NativeRealm;
 using BlockDataRepos;
+using ComposableBlocks;
 
 public partial class Chunk
 {
@@ -73,11 +74,7 @@ public partial class Chunk
     {
         foreach(var kvp in BlockStates)
         {
-            var state = kvp.Value;
-            if(state is ITickableState tickable)
-            {
-                tickable.Tick();
-            }
+            kvp.Value.Tick();
         }
     }
 
@@ -92,10 +89,9 @@ public partial class Chunk
         var localPos = WorldToLocal(world);
         var res = BlockStates.GetValueOrDefault(localPos);
         var slice = data.GetSlice(localPos.x, localPos.y);
-        if (res == null && BlockDataRepo.TryGetBlock<Wall>(slice.wallBlock, out var wall) && wall is IStatefulBlock stateful)
+        if (res == null && BlockDataRepo.TryGetBlock<Wall>(slice.wallBlock, out var wall) && wall.TryGetState(out res))
         {
-            res = stateful.GetState();
-            if(res is IStorageBlockState storage)
+            if(res.TryGetStateInterface<IStorageBlockBehaviourState>(out var storage))
             {
                 parentRealm.StructureInfo.AttemptFillStorageState(world, slice.simpleBlockState, storage);
                 data.SetState(localPos.x, localPos.y, 0);
@@ -142,17 +138,16 @@ public partial class Chunk
         var block = BlockDataRepo.GetBlock<Block>(blockId);
         if (block is Wall)
         {
-            var blockInfo = BlockDataRepo.GetBlock<Block>(blockId);
-            if (block is LightBlock light && light.LightLevel != 0)
+            if (block.TryGetBehavior<LightBehaviour>(out var light) && light.LightLevel != 0)
             {
                 Debug.LogWarning("Need to fix lighting");
             }
             data.SetWall(x, y, blockId);
-            data.SetState(x, y, initialState != 0 ? initialState : blockInfo.GetDefaultSimpleState());
+            data.SetState(x, y, initialState != 0 ? initialState : block.GetSimpleState());
             var local = new Vector2Int(x, y);
-            if (blockInfo is IStatefulBlock stateful)
+            if (block.TryGetState(out var state))
             {
-                SetState(local, stateful.GetState());
+                SetState(local, state);
             }
         }
         if (block is Roof)
@@ -189,12 +184,10 @@ public partial class Chunk
         var curSlice = data.GetSlice(x, y);
         var curItems = BlockItems.GetValueOrDefault(local);
         var blockData = BlockDataRepo.GetBlock<Block>(blockId);
-        var mustBePlacedOn = (blockData as Wall)?.MustBePlacedOn;
 
         if (blockData is Wall &&
             (curSlice.wallBlock != 0 ||
-            (curItems != null && curItems.placedItems != null && curItems.placedItems.Count > 0) ||
-            (mustBePlacedOn.Count > 0 && !mustBePlacedOn.Any((b) => b.Id == curSlice.groundBlock)))
+            (curItems != null && curItems.placedItems != null && curItems.placedItems.Count > 0))
             )
         {
             return false;
@@ -249,16 +242,19 @@ public partial class Chunk
         }
         if (BlockDataRepo.TryGetBlock(brokenId, out broken))
         {
-            broken.OnBreak(worldPos, new Block.BreakInfo() { state = brokenBlockState, slice = slice, dontDrop = dontDrop });
+            broken.OnBreak(worldPos, new BreakInfo() { state = brokenBlockState, slice = slice, dontDrop = dontDrop });
         }
         return broken is Roof || (broken is Wall && slice.roofBlock != 0);
     }
 
     public bool PlaceBlock(Vector2Int position, Vector2Int dir, Block block, bool force = false, byte initialState = 0)
     {
-        if(block is IConditionalPlace cond && !cond.CanPlace(position, dir))
+        foreach(var b in block.GetAllBehavours<IConditionalPlaceBehaviour>())
         {
-            return false;
+            if(!b.CanPlace(position, dir, GetBlock(position)))
+            {
+                return false;
+            }
         }
         var localPos = WorldToLocal(position);
         var x = localPos.x;
@@ -267,7 +263,7 @@ public partial class Chunk
         if (res)
         {
             var slice = GetBlock(position);
-            if (block is IOnPlace place)
+            if (block.TryGetBehavior<IOnPlaceBehaviour>(out var place))
             {
                 place.OnPlace(position, dir, ref slice);
                 data.InitializeSlice(x, y, slice);
@@ -325,9 +321,9 @@ public partial class Chunk
         var local = WorldToLocal(worldPosition);
         var nativeSlice = GetBlock(worldPosition);
         var origSlice = nativeSlice;
-        if (BlockDataRepo.TryGetBlock<Wall>(nativeSlice.wallBlock, out var wall) && wall is IInteractableBlock interactable)
+        if (BlockDataRepo.TryGetBlock<Wall>(nativeSlice.wallBlock, out var wall) && wall.TryGetBehavior<IInteractableBehaviour>(out var interactable))
         {
-            if (interactable.Interact(worldPosition, ref nativeSlice, interactor))
+            if (interactable.Interact(ref nativeSlice, new InteractionWorldInfo{ WorldPos = worldPosition, block = wall }, interactor))
             {
                 data.InitializeSlice(local.x, local.y, nativeSlice);
                 if (origSlice.wallBlock == nativeSlice.wallBlock)
@@ -357,7 +353,9 @@ public partial class Chunk
             {
                 var local = new Vector2Int(x, y);
 
-                if (ChunkManager.TryGetBlock(localToWorld(local), out var s) && BlockDataRepo.GetBlock<Wall>(s.wallBlock)?.structural == true && BlockDataRepo.GetBlock<Roof>(s.roofBlock) is not null)
+                if (ChunkManager.TryGetBlock(localToWorld(local), out var s) 
+                    && BlockDataRepo.GetBlock<Wall>(s.wallBlock)?.structural == true
+                    && BlockDataRepo.GetBlock<Roof>(s.roofBlock) is not null)
                 {
                     toCheck.Enqueue(local);
                     grid[x, y] = 0;
@@ -392,7 +390,6 @@ public partial class Chunk
                 var local = new Vector2Int(x, y);
                 var worldpos = localToWorld(local);
                 if (ChunkManager.TryGetBlock(worldpos, out var s)) {
-                    var roofBlock = BlockDataRepo.GetBlock<Wall>(s.roofBlock);
                     if (BlockDataRepo.TryGetBlock<Roof>(s.roofBlock, out var roof) && roof.Strength < grid[x, y] && worldpos.ManhattanDistance(worldPosition) <= roofStrength)
                     {
                         Break(worldpos, true, out var _);

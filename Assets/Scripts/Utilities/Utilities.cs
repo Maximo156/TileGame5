@@ -7,6 +7,9 @@ using Random = UnityEngine.Random;
 using NativeRealm;
 using BlockDataRepos;
 using Unity.Mathematics;
+using ComposableBlocks;
+using UnityEditor;
+using UnityEngine.UIElements;
 
 public static class Utilities
 {
@@ -244,14 +247,28 @@ public static class Utilities
             .ToList();
     }
 
-    public static Block GetActionableBlock(bool roof, NativeBlockSlice slice)
-    {
-        return roof ? BlockDataRepo.GetBlock<Block>(slice.roofBlock): (BlockDataRepo.GetBlock<Block>(slice.wallBlock) ?? BlockDataRepo.GetBlock<Block>(slice.groundBlock));
-    }
-
     public static bool CheckChunkBoundry(int x, int y, int ChunkWidth)
     {
         return x >= 0 && y >= 0 && x < ChunkWidth && y < ChunkWidth;
+    }
+
+    public static Rect GetScreenRect(VisualElement element)
+    {
+        // Element's position in panel space
+        var world = element.worldBound;
+
+        // Panel's top-left relative to screen
+        var panel = element.panel.visualTree.worldBound;
+
+        // EditorWindow position in screen space
+        var window = EditorWindow.focusedWindow.position;
+
+        return new Rect(
+            window.x + world.x - panel.x,
+            window.y + world.y - panel.y + world.height, // + height to open below
+            world.width,
+            world.height
+        );
     }
 
     public static Vector2Int[] QuadAdjacent =

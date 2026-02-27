@@ -1,7 +1,7 @@
 using BlockDataRepos;
+using ComposableBlocks;
 using Newtonsoft.Json;
 using System;
-using UnityEngine;
 
 public class BlockConverter : JsonConverter<Block>
 {

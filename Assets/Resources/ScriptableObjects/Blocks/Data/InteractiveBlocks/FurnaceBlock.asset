@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b73217277cb7744fb9c8b141b91f209, type: 3}
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
   m_Name: FurnaceBlock
   m_EditorClassIdentifier: 
   Id: 18
@@ -21,52 +21,60 @@ MonoBehaviour:
     Count: 10
   - Item: {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
     Count: 2
-  UiSprite: {fileID: -8565900843335951664, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: -8565900843335951664, guid: c1c7e2c5e231e6b4d869ba5530476d9b, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors:
+  - rid: 6157179869043097642
   structural: 0
   solid: 0
-  Walkable: 0
-  MustBePlacedOn: []
-  inputs: 1
-  fuelEfficiency: 1
-  Recipes:
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: fd246b5683b2dce4c95174dd21b0d737, type: 2}
-      Count: 1
-    Result:
-      Item: {fileID: 11400000, guid: 60cdf15cb46d464458b4a0760a572eb0, type: 2}
-      Count: 1
-    craftingTime: 10
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: b47752e40dc76544fa5230eb44d2567a, type: 2}
-      Count: 1
-    Result:
-      Item: {fileID: 11400000, guid: 60cdf15cb46d464458b4a0760a572eb0, type: 2}
-      Count: 1
-    craftingTime: 10
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: d60a673afec2b424abc7e5b6e690fabd, type: 2}
-      Count: 1
-    Result:
-      Item: {fileID: 11400000, guid: b47515d8c3730c141acf622480b894ae, type: 2}
-      Count: 1
-    craftingTime: 10
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: 4efc8d77f289dff489bfad6b5c015f8d, type: 2}
-      Count: 1
-    Result:
-      Item: {fileID: 11400000, guid: b47515d8c3730c141acf622480b894ae, type: 2}
-      Count: 1
-    craftingTime: 10
-  - RequiredItems:
-    - Item: {fileID: 11400000, guid: 871d58d8e70c8924ea26852b3642cc12, type: 2}
-      Count: 1
-    Result:
-      Item: {fileID: 11400000, guid: 43aa8adc1ed25bb48a9943c54064c937, type: 2}
-      Count: 5
-    craftingTime: 10
-  Fuels:
-  - {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
-  - {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
-  - {fileID: 11400000, guid: aa840768f8676ad40835efb749abfc09, type: 2}
-  - {fileID: 11400000, guid: 12549c26cbd08ec4cad63abfc7577440, type: 2}
+  walkable: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6157179869043097642
+      type: {class: ProcessingBlockBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
+      data:
+        name: ProcessingBlockBehaviour
+        inputs: 1
+        fuelEfficiency: 1
+        Recipes:
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: fd246b5683b2dce4c95174dd21b0d737, type: 2}
+            Count: 1
+          Result:
+            Item: {fileID: 11400000, guid: 60cdf15cb46d464458b4a0760a572eb0, type: 2}
+            Count: 1
+          craftingTime: 10
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: b47752e40dc76544fa5230eb44d2567a, type: 2}
+            Count: 1
+          Result:
+            Item: {fileID: 11400000, guid: 60cdf15cb46d464458b4a0760a572eb0, type: 2}
+            Count: 1
+          craftingTime: 10
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: d60a673afec2b424abc7e5b6e690fabd, type: 2}
+            Count: 1
+          Result:
+            Item: {fileID: 11400000, guid: b47515d8c3730c141acf622480b894ae, type: 2}
+            Count: 1
+          craftingTime: 10
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: 4efc8d77f289dff489bfad6b5c015f8d, type: 2}
+            Count: 1
+          Result:
+            Item: {fileID: 11400000, guid: b47515d8c3730c141acf622480b894ae, type: 2}
+            Count: 1
+          craftingTime: 10
+        - RequiredItems:
+          - Item: {fileID: 11400000, guid: 871d58d8e70c8924ea26852b3642cc12, type: 2}
+            Count: 1
+          Result:
+            Item: {fileID: 11400000, guid: 43aa8adc1ed25bb48a9943c54064c937, type: 2}
+            Count: 5
+          craftingTime: 10
+        Fuels:
+        - {fileID: 11400000, guid: b176989e3d1e5b34cb90a74b0d95ace3, type: 2}
+        - {fileID: 11400000, guid: 15ba061dc5ee6b141b2b7b214cd29f7e, type: 2}
+        - {fileID: 11400000, guid: aa840768f8676ad40835efb749abfc09, type: 2}
+        - {fileID: 11400000, guid: 12549c26cbd08ec4cad63abfc7577440, type: 2}

@@ -2,6 +2,7 @@ using UnityEngine;
 using EntityStatistics;
 using TMPro;
 using NativeRealm;
+using ComposableBlocks;
 
 public class PlayerInventoryDisplay : MonoBehaviour
 {
@@ -50,7 +51,7 @@ public class PlayerInventoryDisplay : MonoBehaviour
         CreativeInventoryContainer.SetActive(false);
     }
 
-    private void BlockInterfaced(Vector2Int pos, Wall _, BlockState state, IInventoryContainer inv)
+    private void BlockInterfaced(Vector2Int pos, Block _, BlockState state, IInterfaceBlockBehaviour behaviour, IInventoryContainer inv)
     {
         InventorySetActive(true);
     }

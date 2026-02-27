@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c391e9543f7e944796946cb5ce48a18, type: 3}
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
   m_Name: TomatoPlant
   m_EditorClassIdentifier: 
   Id: 53
@@ -21,13 +21,20 @@ MonoBehaviour:
     Count: 1
   - Item: {fileID: 11400000, guid: 851039e123ef6bf47b51224a6ccd3e6a, type: 2}
     Count: 2
-  UiSprite: {fileID: -809522943, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
-  UiColor: {r: 1, g: 1, b: 1, a: 1}
+  <Sprite>k__BackingField: {fileID: -809522943, guid: cc33a8691e404ae4c8fa5bc23296bba9, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors:
+  - rid: 6157179869043097612
   structural: 0
   solid: 0
-  Walkable: 1
-  MustBePlacedOn:
-  - {fileID: 11400000, guid: aa3c9079309f12546bfd8d02552317bb, type: 2}
-  AfterHarvest: {fileID: 11400000, guid: c4eea3eb5736daa4ba2f8a96a099ee86, type: 2}
-  useOverrides: 0
-  HarvestOverrides: []
+  walkable: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 6157179869043097612
+      type: {class: HarvistableBlockBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
+      data:
+        name: HarvistableBlockBehaviour
+        AfterHarvest: {fileID: 11400000, guid: c4eea3eb5736daa4ba2f8a96a099ee86, type: 2}
+        useOverrides: 0
+        HarvestOverrides: []

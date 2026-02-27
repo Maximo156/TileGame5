@@ -2,6 +2,7 @@ using BlockDataRepos;
 using NativeRealm;
 using System;
 using UnityEngine;
+using ComposableBlocks;
 
 [Serializable]
 public class PlaceBlockBehaviour : RangedUseBehavior
@@ -16,7 +17,7 @@ public class PlaceBlockBehaviour : RangedUseBehavior
         var rawDir = (targetPosition - usePosition).ToVector2();
         var xBig = Mathf.Abs(rawDir.x) > Mathf.Abs(rawDir.y);
         var dir = new Vector2Int(xBig ? (int)Mathf.Sign(rawDir.x) : 0, !xBig ? (int)Mathf.Sign(rawDir.y) : 0);
-        if (TryReplace(blockPos, block, blockSlice, recipe))
+        if (TryReplace(blockPos, block, blockSlice, dir, recipe))
         {
             ChunkManager.BreakBlock(blockPos, block is Roof, false);
             ChunkManager.PlaceBlock(blockPos, dir, recipe.block);
@@ -34,12 +35,19 @@ public class PlaceBlockBehaviour : RangedUseBehavior
         return (false, false);
     }
 
-    bool TryReplace(Vector2Int worldPos, Block block, NativeBlockSlice slice, BlockRecipe recipe)
+    bool TryReplace(Vector2Int worldPos, Block block, NativeBlockSlice slice, Vector2Int dir, BlockRecipe recipe)
     {
-        Block blockToWorkWith = block is Wall ? BlockDataRepo.GetBlock<Wall>(slice.wallBlock) : (block is Ground ? BlockDataRepo.GetBlock<Ground>(slice.groundBlock) : (block is Roof ? BlockDataRepo.GetBlock<Roof>(slice.roofBlock) : null));
+        Block blockToWorkWith = block is Wall ? BlockDataRepo.GetBlock<Wall>(slice.wallBlock) : (block is Ground ? BlockDataRepo.GetBlock<Ground>(slice.groundBlock) : (block is Roof? BlockDataRepo.GetBlock<Roof>(slice.roofBlock) : null));
         if (blockToWorkWith == null || (block is Ground && slice.wallBlock != 0)) return false;
-        if (recipe.CanProduce(blockToWorkWith.Drops) && block is not IConditionalPlace)
+        if (recipe.CanProduce(blockToWorkWith.Drops))
         {
+            foreach(var b in block.GetAllBehavours<IConditionalPlaceBehaviour>())
+            {
+                if(!b.CanPlace(worldPos, dir, slice))
+                {
+                    return false;
+                }
+            }
             Utilities.DropItems(worldPos, recipe.UseRecipe(blockToWorkWith.Drops));
             return true;
         }

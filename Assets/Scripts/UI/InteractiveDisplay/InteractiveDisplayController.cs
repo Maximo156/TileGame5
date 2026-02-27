@@ -1,4 +1,5 @@
 using BlockDataRepos;
+using ComposableBlocks;
 using NativeRealm;
 using System;
 using System.Collections;
@@ -9,7 +10,7 @@ using UnityEngine;
 public abstract class InteractiveDislay : MonoBehaviour
 {
     public abstract Type TypeMatch();
-    public abstract void DisplayInventory(Vector2Int worldPos, Wall interfacedBlock, BlockState state, IInventoryContainer otherInventory);
+    public abstract void DisplayInventory(Vector2Int worldPos, Block interfacedBlock, BlockState state, IInventoryContainer otherInventory);
     public abstract void Detach();
 }
 
@@ -62,7 +63,7 @@ public class InteractiveDisplayController : MonoBehaviour
 
     Vector2Int? curPos;
     ushort curBlock;
-    private void OnInteract(Vector2Int pos, Wall interfacedBlock, BlockState state, IInventoryContainer userInventory)
+    private void OnInteract(Vector2Int pos, Block interfacedBlock, BlockState state, IInterfaceBlockBehaviour behaviour, IInventoryContainer userInventory)
     {
         if(curPos == pos)
         {
@@ -77,7 +78,7 @@ public class InteractiveDisplayController : MonoBehaviour
         foreach (var display in displays.Select(d => d.display))
         {
             display.gameObject.SetActive(false);
-            if (!found && display.TypeMatch().IsAssignableFrom(interfacedBlock.GetType()))
+            if (!found && display.TypeMatch().IsAssignableFrom(behaviour.GetType()))
             {
                 display.gameObject.SetActive(true);
                 display.DisplayInventory(pos, interfacedBlock, state, userInventory);

@@ -1,4 +1,5 @@
 using BlockDataRepos;
+using ComposableBlocks;
 using NativeRealm;
 using System;
 using System.Collections;
@@ -38,16 +39,16 @@ public class InfusionBlockDisplay : InteractiveDislay
     }
 
     Vector2Int? WorldPos;
-    InfusionBlock connectedBlock;
-    public override void DisplayInventory(Vector2Int worldPos, Wall interfacedBlock, BlockState _, IInventoryContainer otherInventory)
+    InfusionBlockBehaviour connectedBlock;
+    public override void DisplayInventory(Vector2Int worldPos, Block interfacedBlock, BlockState _, IInventoryContainer otherInventory)
     {
         WorldPos = worldPos;
-        connectedBlock = interfacedBlock as InfusionBlock;
+        interfacedBlock.TryGetBehavior(out connectedBlock);
     }
 
     public override Type TypeMatch()
     {
-        return typeof(InfusionBlock);
+        return typeof(InfusionBlockBehaviour);
     }
 
     List<int> usedSlots;
