@@ -6,6 +6,7 @@ using System;
 using NativeRealm;
 using BlockDataRepos;
 using ComposableBlocks;
+using Unity.Mathematics;
 
 [CreateAssetMenu(fileName = "NewBiomePreset", menuName = "Terrain/Biome/BiomePreset", order = 1)]
 public class BiomePreset : ScriptableObject
@@ -28,8 +29,8 @@ public class BiomePreset : ScriptableObject
     }
 
     [Header("Gen Info")]
-    public float minMoisture;
-    public float minHeat;
+    public float targetMoisture;
+    public float targetHeat;
     public float minHeight;
 
     [Header("Block Info")]
@@ -45,6 +46,7 @@ public class BiomePreset : ScriptableObject
         public int Weight;
         public Block block;
     }
+
     [Header("Sparce Blocks")]
     public bool replaceSolid = false;
     public List<SparceBlockInfo> SparceBlockInfos;
@@ -54,14 +56,12 @@ public class BiomePreset : ScriptableObject
     public List<MobSpawnInfo> NaturalMobs;
     public List<MobSpawnInfo> HostileMobs;
 
-    public bool MatchCondition(float moisture, float heat)
-    {
-        return moisture >= minMoisture && heat >= minHeat;
-    }
+    [Header("Editor Only")]
+    public Color32 EditorColor;
 
-    public float GetDiffValue(float moisture, float heat)
+    public float DistSq(float moisture, float heat)
     {
-        return (moisture - minMoisture) + (heat - minHeat);
+        return math.distancesq(math.float2(heat, moisture), math.float2(targetHeat, targetMoisture));
     }
 
     public NativeBiomePreset GetNativePreset()
@@ -71,9 +71,9 @@ public class BiomePreset : ScriptableObject
             groundBlock = GroundBlock?.Id ?? 0,
             wallBlock = WallBlock?.Id ?? 0,
             roofBlock = RoofBlock?.Id ?? 0,
-            minHeat = minHeat,
+            targetHeat = targetHeat,
             minHeight = minHeight,
-            minMoisture = minMoisture,
+            targetMoisture = targetMoisture,
             sparceDesnity = SparceDensity,
             sparceReplaceSolid = replaceSolid
         };

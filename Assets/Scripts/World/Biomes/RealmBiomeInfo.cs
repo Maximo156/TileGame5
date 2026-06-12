@@ -5,12 +5,11 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewRealmBiomeInfo", menuName = "Terrain/Biome/RealmBiomeInfo", order = 1)]
-public class RealmBiomeInfo : ScriptableObject
+public abstract class RealmBiomeInfo : ScriptableObject
 {
-    public BaseSoundSettings HeightSound;
-    public BaseSoundSettings MoistureSound;
-    public BaseSoundSettings HeatSound;
+    public FractalSound HeightSound;
+    public FractalSound MoistureSound;
+    public FractalSound HeatSound;
 
     public List<BiomePreset> Biomes;
     public List<BiomePreset> WallBiomes;
@@ -22,24 +21,35 @@ public class RealmBiomeInfo : ScriptableObject
         return GetBiome(HeightSound.GetSound(worldPos.x, worldPos.y), MoistureSound?.GetSound(worldPos.x, worldPos.y) ?? 0, HeatSound?.GetSound(worldPos.x, worldPos.y) ?? 0);
     }
 
-    BiomePreset GetBiome(float height, float moisture, float heat)
+    public BiomePreset GetBiome(float height, float moisture, float heat)
     {
         if (height <= waterLevel) return null;
-        return Biomes.Where(b => b.MatchCondition(moisture, heat)).MinBy(b => b.GetDiffValue(moisture, heat));
+        return Biomes.MinBy(b => b.DistSq(moisture, heat));
     }
 
-    NativeBiomeInfo biomeInfo;
+    NativeBiomeInfo _biomeInfo;
 
     public NativeBiomeInfo BiomeInfo 
     { 
         get
         {
-            if (!biomeInfo.isCreated)
+            if (!_biomeInfo.isCreated)
             {
-                biomeInfo = new NativeBiomeInfo(Biomes, WallBiomes, waterLevel);
+                _biomeInfo = new NativeBiomeInfo(Biomes, WallBiomes, waterLevel);
             }
-            return biomeInfo; 
+            return _biomeInfo; 
         } 
+    }
+
+    public bool TryGetBiome(float height, int index, out BiomePreset biome)
+    {
+        biome = default;
+
+        if (height <= waterLevel || index == -1)
+            return false;
+
+        biome = Biomes[index];
+        return true;
     }
 
     public void OnEnable()
@@ -49,16 +59,9 @@ public class RealmBiomeInfo : ScriptableObject
 
     public void Dispose()
     {
-        biomeInfo.Dispose(); 
+        _biomeInfo.Dispose(); 
     }
 
-    public JobHandle ScheduelBiomeInfoGen(int chunkWidth, NativeArray<int2> chunks, ref BiomeData biomeData)
-    {
-        var heightJob = HeightSound.ScheduleSoundJob(chunks, biomeData.HeightMap, chunkWidth);
-        var moistureJob = MoistureSound?.ScheduleSoundJob(chunks, biomeData.MoistureMap, chunkWidth) ?? default;
-        var heatJob = HeatSound?.ScheduleSoundJob(chunks, biomeData.HeatMap, chunkWidth) ?? default;
-
-        return JobHandle.CombineDependencies(heatJob, moistureJob, heightJob);
-    }
+    public abstract JobHandle ScheduelBiomeInfoGen(int chunkWidth, NativeArray<int2> chunks, ref BiomeData biomeData);
 }
  

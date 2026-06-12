@@ -4,12 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 
 public struct NativeBiomeInfo
 {
-    NativeArray<NativeBiomePreset> Biomes;
+    public NativeArray<NativeBiomePreset> Biomes;
     NativeArray<NativeBiomePreset> WallBiomes;
     NativeArray<NativeSparceInfo> sparceBlocks;
     NativeArray<ReplacementInfo> replacementInfo;
@@ -41,7 +42,7 @@ public struct NativeBiomeInfo
                 sparceBlocks[sparceCount++] = new()
                 {
                     block = block.block.Id,
-                    blockLevel = BlockDataRepo.TryGetBlock<Wall>(block.block.Id, out var _) ? BlockLevel.Wall : BlockLevel.Floor,
+                    blockLevel = block.block is Wall ? BlockLevel.Wall : BlockLevel.Floor,
                     Weight = block.Weight,
                 };
             }
@@ -77,7 +78,7 @@ public struct NativeBiomeInfo
                 sparceBlocks[sparceCount++] = new()
                 {
                     block = block.block.Id,
-                    blockLevel = BlockDataRepo.TryGetBlock<Wall>(block.block.Id, out var _) ? BlockLevel.Wall : BlockLevel.Floor,
+                    blockLevel = block.block is Wall ? BlockLevel.Wall : BlockLevel.Floor,
                     Weight = block.Weight,
                 };
             }
@@ -124,33 +125,15 @@ public struct NativeBiomeInfo
         return false;
     }
 
-    public readonly bool TryGetBiome(float height, float moisture, float heat, out NativeBiomePreset biome)
+    public readonly bool TryGetBiome(float height, int index, out NativeBiomePreset biome)
     {
         biome = default;
 
-        if (height <= waterLevel)
+        if (height <= waterLevel || index == -1)
             return false;
 
-        float bestScore = float.MaxValue;
-        bool found = false;
-
-        for (int i = 0; i < Biomes.Length; i++)
-        {
-            var b = Biomes[i];
-
-            if (!b.MatchCondition(moisture, heat))
-                continue;
-
-            float diff = b.GetDiffValue(moisture, heat);
-            if (diff < bestScore)
-            {
-                bestScore = diff;
-                biome = b;
-                found = true;
-            }
-        }
-
-        return found;
+        biome = Biomes[index];
+        return true;
     }
 
     public NativeSlice<NativeSparceInfo> GetSparceBlocks(NativeBiomePreset biome)
@@ -187,8 +170,8 @@ public struct NativeBiomePreset
     public ushort roofBlock;
 
     public float minHeight;
-    public float minMoisture;
-    public float minHeat;
+    public float targetMoisture;
+    public float targetHeat;
 
     public float sparceDesnity;
     public bool sparceReplaceSolid;
@@ -196,13 +179,8 @@ public struct NativeBiomePreset
     public SliceData sparceBlockSlice;
     public SliceData replacementBlockSlice;
 
-    public bool MatchCondition(float moisture, float heat)
+    public float DistSq(float moisture, float heat)
     {
-        return moisture >= minMoisture && heat >= minHeat;
-    }
-
-    public float GetDiffValue(float moisture, float heat)
-    {
-        return (moisture - minMoisture) + (heat - minHeat);
+        return math.distancesq(math.float2(heat, moisture), math.float2(targetHeat, targetMoisture));
     }
 }

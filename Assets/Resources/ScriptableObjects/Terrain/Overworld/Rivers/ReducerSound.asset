@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6fd7b5be74fec5499f705dce71192a1, type: 3}
   m_Name: ReducerSound
   m_EditorClassIdentifier: 
-  Seed: 4523
   Octaves: 2
   Lacunarity: 1
   Persistence: 0.5
   Scale: 100
-  useBurst: 1
+  settings:
+    Octaves: 2
+    Lacunarity: 1
+    Persistence: 0.5
+    Scale: 100

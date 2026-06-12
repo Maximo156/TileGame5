@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b74ac95afd66814388906db68324387, type: 3}
+  m_Script: {fileID: 11500000, guid: f0465bc20ec256b4e8e64168eb69d1d9, type: 3}
   m_Name: OverworldBiomeInfo
   m_EditorClassIdentifier: 
   HeightSound: {fileID: 11400000, guid: f8f3b4dcc42dd4b40b9d50dfdf6f9a0b, type: 2}
   MoistureSound: {fileID: 11400000, guid: 9e76d38d92b1e6f4d84783466e3baff4, type: 2}
   HeatSound: {fileID: 11400000, guid: 10a78e1fa1b10b94fa2761a8530933f3, type: 2}
-  SparceBlockSound: {fileID: 11400000, guid: 79c31cf142e74aa4193e8688d4ce773f, type: 2}
   Biomes:
   - {fileID: 11400000, guid: 949bea6c910e8c340bea2d68ef247f68, type: 2}
   - {fileID: 11400000, guid: 24ea485f46923884298ad8246a279096, type: 2}
