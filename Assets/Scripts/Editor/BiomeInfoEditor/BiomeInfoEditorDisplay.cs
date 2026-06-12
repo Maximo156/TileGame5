@@ -1,16 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Unity.Collections;
 using Unity.Mathematics;
-using UnityEditor;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class BiomeInfoEditorDisplay
 {
-
+    int chunksPerRow = 30;
     private readonly VisualElement biomeDisplay;
     private readonly VisualElement cellImage;
     private RealmBiomeInfo biomeInfo;
@@ -20,13 +16,27 @@ public class BiomeInfoEditorDisplay
 
     Action Repaint;
 
+    Action OnDispose = delegate {};
+
     public BiomeInfoEditorDisplay(VisualElement display, RealmBiomeInfo info, Action repaint)
     {
         biomeInfo = info;
-        Repaint = repaint; 
+        Repaint = repaint;
 
         biomeDisplay = display.Q<VisualElement>("BiomeDisplay");
         cellImage = display.Q<VisualElement>("DistDisplay");
+
+        var zoomIn = display.Q<Button>("ZoomIn");
+        var zoomOut = display.Q<Button>("ZoomOut");
+
+        zoomIn.clicked += ZoomIn;
+        zoomOut.clicked += ZoomOut;
+
+        OnDispose += () =>
+        {
+            zoomIn.clicked -= ZoomIn;
+            zoomOut.clicked -= ZoomOut;
+        };
 
         RenderDisplay();
         InitControls();
@@ -43,24 +53,25 @@ public class BiomeInfoEditorDisplay
 
         const int chunkWidth = 32;
 
-        NativeArray<int2> chunks = new NativeArray<int2>(Utilities.OctAdjacentInt.Append(math.int2(0)).ToArray(), Allocator.Persistent);
+        NativeArray<int2> chunks = new NativeArray<int2>(chunksPerRow * chunksPerRow, Allocator.Persistent);
+        int c = 0;
+        for(int x = 0; x < chunksPerRow; x++)
+        {
+            for (int y = 0; y < chunksPerRow; y++)
+            {
+                chunks[c] = math.int2(x, y);
+                c++;
+            }
+        }
+        
         var biomedata = new BiomeData(chunks.Length, chunkWidth);
 
         biomeInfo.ScheduelBiomeInfoGen(chunkWidth, chunks, ref biomedata).Complete();
         Color32[] colors = new Color32[chunks.Length * chunkWidth * chunkWidth];
 
-        for(int i = 0; i < colors.Length; i++)
-        {
-            var biomeIndex = biomedata.SelectedBiome[i];
-            var height = biomedata.HeightMap[i];
+        ConvertBiomesToColor(chunkWidth, chunks, biomedata, colors, biomeInfo);
 
-            if(biomeInfo.TryGetBiome(height, biomeIndex, out var biomePreset))
-            {
-                colors[i] = biomePreset.EditorColor;
-            }
-        }
-
-        biomeTexture = new Texture2D(3*chunkWidth, 3*chunkWidth)
+        biomeTexture = new Texture2D(chunksPerRow * chunkWidth, chunksPerRow * chunkWidth)
         {
             filterMode = FilterMode.Point,
             wrapMode = TextureWrapMode.Clamp
@@ -69,6 +80,7 @@ public class BiomeInfoEditorDisplay
         biomeTexture.Apply();
 
         biomeDisplay.style.backgroundImage = biomeTexture;
+        biomeDisplay.MarkDirtyRepaint();
         biomedata.Dispose();
         chunks.Dispose();
     }
@@ -82,6 +94,15 @@ public class BiomeInfoEditorDisplay
 
         cellImage.generateVisualContent += DrawDots;
 
+        OnDispose += () =>
+        {
+            cellImage.UnregisterCallback<MouseDownEvent>(OnBiomeDisplayDown);
+            cellImage.UnregisterCallback<MouseMoveEvent>(OnBiomeDisplayMove);
+            cellImage.UnregisterCallback<MouseUpEvent>(OnBiomeDisplayUp);
+            cellImage.UnregisterCallback<MouseOutEvent>(OnBiomeDisplayOut);
+
+            cellImage.generateVisualContent -= DrawDots;
+        };
 
         DrawBiomeControlls();
     }
@@ -227,7 +248,6 @@ public class BiomeInfoEditorDisplay
     {
         biomeInfo.Dispose();
         RenderDisplay();
-        biomeDisplay.MarkDirtyRepaint();
         Repaint();
         draggedBiomeIndex = -1;
     }
@@ -242,13 +262,76 @@ public class BiomeInfoEditorDisplay
 
     public void OnDisable()
     {
-        cellImage.UnregisterCallback<MouseDownEvent>(OnBiomeDisplayDown);
-        cellImage.UnregisterCallback<MouseMoveEvent>(OnBiomeDisplayMove);
-        cellImage.UnregisterCallback<MouseUpEvent>(OnBiomeDisplayUp);
-        cellImage.UnregisterCallback<MouseOutEvent>(OnBiomeDisplayOut);
-
-        cellImage.generateVisualContent -= DrawDots;
-
+        OnDispose?.Invoke();
         biomeInfo.Dispose();
+    }
+
+    void ConvertBiomesToColor(
+     int chunkWidth,
+     NativeArray<int2> chunks,
+     BiomeData biomeData,
+     Color32[] colors,
+     RealmBiomeInfo biomeInfo)
+    {
+        int chunkSize = chunkWidth * chunkWidth;
+
+        int2 min = chunks[0];
+        int2 max = chunks[0];
+
+        for (int i = 1; i < chunks.Length; i++)
+        {
+            min = math.min(min, chunks[i]);
+            max = math.max(max, chunks[i]);
+        }
+
+        for (int chunkId = 0; chunkId < chunks.Length; chunkId++)
+        {
+            int2 normalized = chunks[chunkId] - min;
+
+            int chunkX = normalized.y;
+            int chunkY = normalized.x;
+
+            int chunkOffsetX = chunkX * chunkWidth;
+            int chunkOffsetY = chunkY * chunkWidth;
+
+            for (int localIndex = 0; localIndex < chunkSize; localIndex++)
+            {
+                int globalIndex = chunkId * chunkSize + localIndex;
+
+                int localX = localIndex % chunkWidth;
+                int localY = localIndex / chunkWidth;
+
+                int biomeIndex = biomeData.SelectedBiome[globalIndex];
+                float height = biomeData.HeightMap[globalIndex];
+
+                int x = chunkOffsetX + localX;
+                int y = chunkOffsetY + localY;
+
+                int textureIndex = x * (chunkWidth * chunksPerRow) + y;
+
+                if (biomeInfo.TryGetBiome(height, biomeIndex, out var biomePreset))
+                {
+                    colors[textureIndex] = biomePreset.EditorColor;
+                }
+                else
+                {
+                    colors[textureIndex] = Color.blue;
+                }
+            }
+        }
+    }
+
+    void ZoomIn()
+    {
+        chunksPerRow = Mathf.Max(chunksPerRow - 1, 1);
+        RenderDisplay();
+        Repaint();  
+    }
+
+    void ZoomOut()
+    {
+        chunksPerRow++;
+        RenderDisplay();
+        Repaint();
     }
 }

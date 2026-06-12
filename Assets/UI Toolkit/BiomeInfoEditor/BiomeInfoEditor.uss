@@ -7,6 +7,19 @@
     min-height: 256px;
     max-height: 256px;
     background-color: rgb(255, 255, 255);
+    border-left-color: rgb(166, 166, 166);
+    border-right-color: rgb(166, 166, 166);
+    border-top-color: rgb(166, 166, 166);
+    border-bottom-color: rgb(166, 166, 166);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    background-size: 100% 100%;
 }
 
 .controllsContainer {
@@ -20,12 +33,42 @@
 }
 
 .displayContainer {
-    flex-grow: 1;
+    flex-grow: 0;
     flex-shrink: 4;
     align-items: center;
     justify-content: center;
+    padding-top: 16px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    padding-left: 16px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(255, 255, 255, 0.24);
+    border-left-color: rgba(255, 255, 255, 0.24);
+    border-right-color: rgba(255, 255, 255, 0.24);
+    border-top-color: rgba(255, 255, 255, 0.24);
 }
 
 .biomeDisplay {
     background-color: rgb(13, 94, 255);
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+}
+
+.smallButton {
+    width: 10px;
+    height: 10px;
+    padding-top: 8px;
+    padding-right: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
 }

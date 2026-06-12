@@ -2,10 +2,18 @@
     <Style src="project://database/Assets/UI%20Toolkit/BiomeInfoEditor/BiomeInfoEditor.uss?fileID=7433441132597879392&amp;guid=b261327513087a746b07ea4bb3f738d7&amp;type=3#BiomeInfoEditor" />
     <ui:VisualElement name="Container" style="flex-grow: 1;">
         <ui:VisualElement name="Display" class="displayContainer">
-            <ui:VisualElement name="BiomeDisplay" class="imgDisplay biomeDisplay" />
+            <ui:VisualElement name="BiomeDisplay" class="imgDisplay biomeDisplay" style="flex-direction: row-reverse; align-items: flex-start; justify-content: flex-end;">
+                <ui:VisualElement name="Buttons" style="flex-grow: 1; flex-direction: row-reverse; align-items: center;">
+                    <ui:Button text="+" name="ZoomIn" class="smallButton" />
+                    <ui:Button text="-" name="ZoomOut" class="smallButton" />
+                </ui:VisualElement>
+            </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="Controlls" class="controllsContainer">
-            <ui:VisualElement name="DistDisplay" class="imgDisplay" />
+            <ui:VisualElement name="DistDisplay" class="imgDisplay">
+                <ui:Label text="Temp" name="Tempurature" style="position: absolute; top: 101%; left: 43%; height: 25px; align-self: center;" />
+                <ui:Label text="Moisture" name="Moisture" style="position: absolute; top: 50%; left: auto; width: 57px; right: 100%;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
