@@ -28,18 +28,50 @@ public class BiomeInfoEditorDisplay
 
         var zoomIn = display.Q<Button>("ZoomIn");
         var zoomOut = display.Q<Button>("ZoomOut");
+        var sample = display.Q<Button>("Sample");
 
         zoomIn.clicked += ZoomIn;
         zoomOut.clicked += ZoomOut;
+        sample.clicked += RunSample;
 
         OnDispose += () =>
         {
             zoomIn.clicked -= ZoomIn;
             zoomOut.clicked -= ZoomOut;
+            sample.clicked -= RunSample;
         };
 
         RenderDisplay();
         InitControls();
+    }
+
+    void RunSample()
+    {
+        int sampleCount = 100;
+        var t = System.Diagnostics.Stopwatch.StartNew();
+        for(int i = 0; i < sampleCount; i++)
+        {
+            const int chunkWidth = 32;
+
+            NativeArray<int2> chunks = new NativeArray<int2>(chunksPerRow * chunksPerRow, Allocator.Persistent);
+            int c = 0;
+            for (int x = 0; x < chunksPerRow; x++)
+            {
+                for (int y = 0; y < chunksPerRow; y++)
+                {
+                    chunks[c] = math.int2(x, y);
+                    c++;
+                }
+            }
+
+            var biomedata = new BiomeData(chunks.Length, chunkWidth);
+
+            biomeInfo.ScheduelBiomeInfoGen(chunkWidth, chunks, ref biomedata).Complete();
+
+            biomedata.Dispose();
+            chunks.Dispose();
+        }
+        Debug.Log($"Avg: {t.Elapsed / sampleCount}");
     }
 
     void RenderDisplay()

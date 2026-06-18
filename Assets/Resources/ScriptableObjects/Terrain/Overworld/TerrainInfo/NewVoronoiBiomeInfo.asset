@@ -22,7 +22,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9f109d1242bc0904e96d9a20fc5cf6a8, type: 2}
   WallBiomes: []
   waterLevel: 0.2
-  ChunkWidth: 128
+  ChunkWidth: 96
   SmoothingPasses: 1
   DisplacementPercent: 0.1
   DisplacementFrequency: 25

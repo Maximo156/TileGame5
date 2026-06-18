@@ -73,9 +73,13 @@ public struct VoronoiData<T> where T : unmanaged
         Data.CopyTo(dest.Data);
     }
 
-    public void Dispose()
+    public void Dispose(bool dataOnly = false)
     {
-        Positions.Dispose();
+        if (!dataOnly)
+        {
+            Positions.Dispose();
+        }
+
         Data.Dispose();
     }
 

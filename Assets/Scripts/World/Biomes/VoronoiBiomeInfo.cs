@@ -62,7 +62,6 @@ public class VoronoiBiomeInfo : RealmBiomeInfo
         var biomeGen = new GenBiomeInfo()
         {
             voronoiChunkWidth = ChunkWidth,
-            displacementOffset = Utilities.Seededint2(4000, seed),
             displacementFrequency = DisplacementFrequency,
             displacementPercent = DisplacementPercent,
             chunkWidth = chunkWidth,

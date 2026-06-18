@@ -9,11 +9,12 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="Controlls" class="controllsContainer">
+        <ui:VisualElement name="Controlls" class="controllsContainer" style="justify-content: space-between;">
             <ui:VisualElement name="DistDisplay" class="imgDisplay">
                 <ui:Label text="Temp" name="Tempurature" style="position: absolute; top: 101%; left: 43%; height: 25px; align-self: center;" />
                 <ui:Label text="Moisture" name="Moisture" style="position: absolute; top: 50%; left: auto; width: 57px; right: 100%;" />
             </ui:VisualElement>
+            <ui:Button text="Sample" name="Sample" style="width: 50%;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

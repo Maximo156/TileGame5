@@ -76,7 +76,7 @@ public static class Utilities
         return rand.NextInt2(-range, range).ToVector();
     }
 
-    public static int2 Seededint2(int range, uint seed)
+    public static int2 SeededInt2(int range, uint seed)
     {
         var rand = new Unity.Mathematics.Random(seed);
         return rand.NextInt2(-range, range);

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
     Octaves: 1
-    Lacunarity: 0
+    Lacunarity: 1
     Persistence: 0
     Scale: 300
     Offset: {x: 0, y: 0}

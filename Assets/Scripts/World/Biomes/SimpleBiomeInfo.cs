@@ -54,29 +54,8 @@ public class SimpleBiomeInfo : RealmBiomeInfo
 
             for (int i = 0; i < chunkLength; i++)
             {
-                chunkBiomeSlice[i] = GetClosestBiomeIndex(chunkMoistureSlice[i], chunkHeatSlice[i], biomeInfo);
+                chunkBiomeSlice[i] = GetClosestBiomeIndex(chunkMoistureSlice[i], chunkHeatSlice[i], ref biomeInfo);
             }
-        }
-
-        int GetClosestBiomeIndex(float moisture, float heat, NativeBiomeInfo info)
-        {
-            if (info.Biomes.Length == 0)
-            {
-                return -1;
-            }
-            int index = 0;
-            float dist = info.Biomes[0].DistSq(moisture, heat);
-
-            for (int i = 1; i < info.Biomes.Length; i++)
-            {
-                var newDist = info.Biomes[i].DistSq(moisture, heat);
-                if (newDist < dist)
-                {
-                    index = i;
-                    dist = newDist;
-                }
-            }
-            return index;
         }
     }
 }
