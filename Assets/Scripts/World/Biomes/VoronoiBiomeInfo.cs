@@ -62,6 +62,7 @@ public class VoronoiBiomeInfo : RealmBiomeInfo
         var biomeGen = new GenBiomeInfo()
         {
             voronoiChunkWidth = ChunkWidth,
+            displacementOffset = Utilities.SeededInt2(4000, seed),
             displacementFrequency = DisplacementFrequency,
             displacementPercent = DisplacementPercent,
             chunkWidth = chunkWidth,
@@ -91,30 +92,9 @@ public class VoronoiBiomeInfo : RealmBiomeInfo
                 var pos = math.float2(Voronoi.GetWorldPositionAndValue(i).pos);
                 var heat = FractalSound.GetSound(ref pos, ref heatSoundSettings);
                 var moisture = FractalSound.GetSound(ref pos, ref moistureSoundSettings);
-                Voronoi.SetValue(i, GetClosestBiomeIndex(moisture, heat, biomeInfo));
+                Voronoi.SetValue(i, GetClosestBiomeIndex(moisture, heat, ref biomeInfo));
             }
             DoSmoothingPasses(smoothingPasses, ref Voronoi);
-        }
-
-        int GetClosestBiomeIndex(float moisture, float heat, NativeBiomeInfo info)
-        {
-            if (info.Biomes.Length == 0)
-            {
-                return -1;
-            }
-            int index = 0;
-            float dist = info.Biomes[0].DistSq(moisture, heat);
-
-            for (int i = 1; i < info.Biomes.Length; i++)
-            {
-                var newDist = info.Biomes[i].DistSq(moisture, heat);
-                if (newDist < dist)
-                {
-                    index = i;
-                    dist = newDist;
-                }
-            }
-            return index;
         }
     }
 
@@ -182,7 +162,7 @@ public class VoronoiBiomeInfo : RealmBiomeInfo
         dataRead.CopyTo(data);
         if (allocator != Allocator.Temp)
         {
-            dataTmp.Dispose();
+            dataTmp.Dispose(true);
         }
     }
 
@@ -218,7 +198,6 @@ public class VoronoiBiomeInfo : RealmBiomeInfo
                 }
                 else
                 {
-                    Debug.Log($"overwriting {thisVal} -> {maxVal}");
                     dataWrite.SetValue(x, y, maxVal);
                 }
 
