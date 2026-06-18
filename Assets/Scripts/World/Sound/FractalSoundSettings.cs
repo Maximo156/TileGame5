@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using Unity.Collections;
 using Unity.Jobs;
 using System;
+using System.Runtime.CompilerServices;
 
 [CreateAssetMenu(fileName = "NewFractalSoundSettings", menuName = "Terrain/FractalSoundSettings", order = 1)]
 [BurstCompile]
