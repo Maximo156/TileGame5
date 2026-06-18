@@ -12,12 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6fd7b5be74fec5499f705dce71192a1, type: 3}
   m_Name: OverworldHeat
   m_EditorClassIdentifier: 
-  Octaves: 1
-  Lacunarity: 0
-  Persistence: 0
-  Scale: 120
   settings:
     Octaves: 1
     Lacunarity: 0
     Persistence: 0
-    Scale: 120
+    Scale: 350
+    Offset: {x: 0, y: 0}

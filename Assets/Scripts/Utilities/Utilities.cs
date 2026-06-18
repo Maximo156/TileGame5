@@ -40,6 +40,11 @@ public static class Utilities
         return Vector2Int.FloorToInt(new Vector2(block.x, block.y) / ChunkWidth);
     }
 
+    public static int2 GetChunk(int2 block, int ChunkWidth)
+    {
+        return math.int2(math.floor( new float2(block.x, block.y) / ChunkWidth));
+    }
+
     public static Vector2Int GetBlockPos(Vector2 pos)
     {
         return Vector2Int.FloorToInt(pos);
@@ -69,6 +74,12 @@ public static class Utilities
     {
         var rand = new Unity.Mathematics.Random(seed);
         return rand.NextInt2(-range, range).ToVector();
+    }
+
+    public static int2 Seededint2(int range, uint seed)
+    {
+        var rand = new Unity.Mathematics.Random(seed);
+        return rand.NextInt2(-range, range);
     }
 
     public static Vector2Int RandomVector2Int(int min, int max, System.Random rand)

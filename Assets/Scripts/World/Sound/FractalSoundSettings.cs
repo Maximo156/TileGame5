@@ -10,6 +10,12 @@ using System;
 public class FractalSound : ScriptableObject
 {
     public FractalSoundSettings settings;
+    public FractalSoundSettings GetSettings()
+    {
+        var s = settings;
+        s.Offset = Offset;
+        return s;
+    }
 
     public Vector2Int Offset => Utilities.SeededVector2Int(4000, (uint)(name.GetHashCode() ^ WorldSave.ActiveSeed));
 
@@ -18,6 +24,7 @@ public class FractalSound : ScriptableObject
         x += Offset.x;
         y += Offset.y;
         var pos = new float2(x, y);
+        var settings = GetSettings();
         return GetSound(ref pos, ref settings);
     }
 
@@ -26,17 +33,16 @@ public class FractalSound : ScriptableObject
         return new CalcFractalSoundJob()
         {
             chunks = chunks,
-            offset = Offset,
             chunkWidth = chunkWidth,
-            settings = settings,
+            settings = GetSettings(),
             res = sound,
         }.Schedule(chunks.Length, 1, dep);
     }
 
     [BurstCompile]
-    static float GetSound(ref float2 pos, ref FractalSoundSettings settings)
+    public static float GetSound(ref float2 origPos, ref FractalSoundSettings settings)
     {
-        pos += new float2(0.001f, 0.007f);
+        var pos = origPos + settings.Offset.ToInt() + new float2(0.001f, 0.007f);
         float value = 0;
         float amplitude = 1;
 
@@ -72,7 +78,6 @@ public class FractalSound : ScriptableObject
     {
         [ReadOnly]
         public NativeArray<int2> chunks;
-        public Vector2Int offset;
         public int chunkWidth;
         public FractalSoundSettings settings;
          
@@ -83,7 +88,7 @@ public class FractalSound : ScriptableObject
         public void Execute(int index)
         {
             var chunk = res.GetChunk(index, chunkWidth * chunkWidth);
-            var pos = chunks[index] * math.float2(chunkWidth) + math.int2(offset.x, offset.y);
+            var pos = chunks[index] * math.float2(chunkWidth);
             GetSoundArray(ref pos, chunkWidth, ref settings, ref chunk);
         }
     }
@@ -99,5 +104,8 @@ public class FractalSound : ScriptableObject
         public float Persistence;
         [Min(1)]
         public float Scale;
+
+        [HideInInspector]
+        public Vector2Int Offset;
     }
 }

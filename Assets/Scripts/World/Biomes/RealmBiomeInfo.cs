@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
@@ -16,15 +17,29 @@ public abstract class RealmBiomeInfo : ScriptableObject
 
     public float waterLevel = 0.2f;
 
-    public BiomePreset GetBiome(Vector2Int worldPos)
-    {
-        return GetBiome(HeightSound.GetSound(worldPos.x, worldPos.y), MoistureSound?.GetSound(worldPos.x, worldPos.y) ?? 0, HeatSound?.GetSound(worldPos.x, worldPos.y) ?? 0);
-    }
-
     public BiomePreset GetBiome(float height, float moisture, float heat)
     {
-        if (height <= waterLevel) return null;
-        return Biomes.MinBy(b => b.DistSq(moisture, heat));
+        var ind = GetBiomeIndex(height, moisture, heat);
+        if (ind == -1) return null;
+        return Biomes[ind];
+    }
+
+    public BiomePreset GetBiome(Vector2Int worldPos)
+    {
+        var ind = GetBiomeIndex(worldPos);
+        if(ind == -1) return null;
+        return Biomes[ind];
+    }
+
+    protected int GetBiomeIndex(float height, float moisture, float heat)
+    {
+        if (height <= waterLevel) return -1;
+        return Biomes.Select((b, i) => (index: i, val: b)).MinBy(b => b.val.DistSq(moisture, heat)).index;
+    }
+
+    protected virtual int GetBiomeIndex(Vector2Int worldPos)
+    {
+        return GetBiomeIndex(HeightSound.GetSound(worldPos.x, worldPos.y), MoistureSound?.GetSound(worldPos.x, worldPos.y) ?? 0, HeatSound?.GetSound(worldPos.x, worldPos.y) ?? 0);
     }
 
     NativeBiomeInfo _biomeInfo;
@@ -62,6 +77,15 @@ public abstract class RealmBiomeInfo : ScriptableObject
         _biomeInfo.Dispose(); 
     }
 
-    public abstract JobHandle ScheduelBiomeInfoGen(int chunkWidth, NativeArray<int2> chunks, ref BiomeData biomeData);
+    public JobHandle ScheduelBiomeInfoGen(int chunkWidth, NativeArray<int2> chunks, ref BiomeData biomeData)
+    {
+        var heightJob = HeightSound.ScheduleSoundJob(chunks, biomeData.HeightMap, chunkWidth);
+
+        var resolveBiomeJob = ScheduelInternalBiomeInfoGen(chunkWidth, chunks, ref biomeData);
+
+        return JobHandle.CombineDependencies(resolveBiomeJob, heightJob);
+    }
+    
+    protected abstract JobHandle ScheduelInternalBiomeInfoGen(int chunkWidth, NativeArray<int2> chunks, ref BiomeData biomeData);
 }
  
