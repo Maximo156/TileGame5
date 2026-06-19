@@ -10,7 +10,7 @@ using Unity.Burst;
 [CreateAssetMenu(fileName = "NewTerrainGenerator", menuName = "Terrain/Generator", order = 1)]
 public class TerrainGenerator : ChunkSubGenerator
 {
-    public BaseSoundSettings SparceBlockSound;
+    public FractalSound SparceBlockSound;
 
     public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> originalChunks, NativeArray<int2> chunks, RealmData realmData, RealmInfo realmInfo, ref BiomeData biomeData, JobHandle dep = default)
     {
@@ -64,9 +64,9 @@ public class TerrainGenerator : ChunkSubGenerator
             var chunk = chunks[index];
             var data = realmData.InitChunk(chunk, index);
             var sparceBlockDensity = SparceBlockDensity.GetChunk(index, chunkLength);
-            var heatMap = biomeData.HeatMap.GetChunk(index, chunkLength);
             var heightMap = biomeData.HeightMap.GetChunk(index, chunkLength);
-            var moistureMap = biomeData.MoistureMap.GetChunk(index, chunkLength);
+
+            var biomeMap = biomeData.SelectedBiome.GetChunk(index, chunkLength);
 
             var random = new Random((uint)chunk.GetHashCode());
             for (int x = 0; x < chunkWidth; x++)
@@ -76,8 +76,7 @@ public class TerrainGenerator : ChunkSubGenerator
                     var foundWall = biomeInfo.TryGetWall(heightMap.GetElement2d(x, y, chunkWidth), out var wallBiome);
                     var foundBiome = biomeInfo.TryGetBiome(
                         heightMap.GetElement2d(x, y, chunkWidth),
-                        moistureMap.GetElement2d(x, y, chunkWidth),
-                        heatMap.GetElement2d(x, y, chunkWidth), out var biome);
+                        biomeMap.GetElement2d(x, y, chunkWidth), out var biome);
 
                     var slice = new NativeBlockSlice() { isWater = true };
                     if (!foundBiome)

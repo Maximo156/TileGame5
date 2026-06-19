@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6fd7b5be74fec5499f705dce71192a1, type: 3}
   m_Name: OverworldSound
   m_EditorClassIdentifier: 
-  Seed: 8645678
   Octaves: 4
   Lacunarity: 3
   Persistence: 0.35
   Scale: 80
-  useBurst: 1
+  settings:
+    Octaves: 4
+    Lacunarity: 3
+    Persistence: 0.35
+    Scale: 80

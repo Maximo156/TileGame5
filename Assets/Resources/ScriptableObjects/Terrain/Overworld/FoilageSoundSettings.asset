@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6fd7b5be74fec5499f705dce71192a1, type: 3}
   m_Name: FoilageSoundSettings
   m_EditorClassIdentifier: 
-  Seed: 64677
   Octaves: 1
   Lacunarity: 0
   Persistence: 0
   Scale: 2
-  useBurst: 1
+  settings:
+    Octaves: 1
+    Lacunarity: 0
+    Persistence: 0
+    Scale: 2

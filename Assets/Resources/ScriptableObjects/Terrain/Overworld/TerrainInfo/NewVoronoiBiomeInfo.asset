@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0465bc20ec256b4e8e64168eb69d1d9, type: 3}
-  m_Name: OverworldBiomeInfo
+  m_Script: {fileID: 11500000, guid: a70b52a355519654495247b7afdb3fce, type: 3}
+  m_Name: NewVoronoiBiomeInfo
   m_EditorClassIdentifier: 
   HeightSound: {fileID: 11400000, guid: f8f3b4dcc42dd4b40b9d50dfdf6f9a0b, type: 2}
   MoistureSound: {fileID: 11400000, guid: 9e76d38d92b1e6f4d84783466e3baff4, type: 2}
@@ -20,7 +20,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 24ea485f46923884298ad8246a279096, type: 2}
   - {fileID: 11400000, guid: 3300bfabef50d42408d02a78e46c453c, type: 2}
   - {fileID: 11400000, guid: 9f109d1242bc0904e96d9a20fc5cf6a8, type: 2}
-  WallBiomes:
-  - {fileID: 11400000, guid: ac53cb0f06184ff488f6210330836f54, type: 2}
-  - {fileID: 11400000, guid: f8f9662874d07cc42ae708212cb6f0f6, type: 2}
+  WallBiomes: []
   waterLevel: 0.2
+  ChunkWidth: 96
+  SmoothingPasses: 1
+  DisplacementPercent: 0.1
+  DisplacementFrequency: 25

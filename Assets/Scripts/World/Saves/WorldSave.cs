@@ -11,23 +11,30 @@ public class WorldSave
 {
     static string persistentDataPath;
     static WorldSave _activeSave;
-    public static WorldSave ActiveSave { 
+    public static WorldSave ActiveSave {
         get
         {
-            if(_activeSave == null)
+            if (_activeSave == null)
             {
                 _activeSave = GetFirstSave();
                 Debug.Log("Returning default");
             }
             return _activeSave;
         }
-        set 
+        set
         {
             _activeSave = value;
         }
     }
 
-    public static uint ActiveSeed => ActiveSave.seed;
+    public static uint ActiveSeed { get 
+        {
+            if (Application.isPlaying)
+                return ActiveSave.seed;
+            return 0;  
+        } 
+    }
+
     public static string ActiveSaveDirectoryPath => ActiveSave.DirectoryPath;
 
     const string META_DATA_FILE_NAME = "metadata";

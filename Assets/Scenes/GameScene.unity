@@ -15733,7 +15733,7 @@ MonoBehaviour:
   - name: Overworld
     Generator: {fileID: 11400000, guid: a924afc1afeadfd4eaa3f1495083cc62, type: 2}
     Save: 1
-    BiomeInfo: {fileID: 11400000, guid: f97f06548c96e9b43842bbc0e2d69ba0, type: 2}
+    BiomeInfo: {fileID: 11400000, guid: 36c31909ef2bcc644b7d3b0f65eab5c5, type: 2}
     StructureInfo:
       StructureChunkWidth: 64
       Structures:

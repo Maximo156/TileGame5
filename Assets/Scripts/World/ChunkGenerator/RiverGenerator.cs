@@ -11,8 +11,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewRiverGenerator", menuName = "Terrain/RiverGenerator", order = 1)]
 public class RiverGenerator : ChunkSubGenerator
 {
-    public BaseSoundSettings RiverSound;
-    public BaseSoundSettings Reducer;
+    public FractalSound RiverSound;
+    public FractalSound Reducer;
     public float RiverCuttoff;
 
     public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> originalChunks, NativeArray<int2> chunks, RealmData realmData, RealmInfo realmInfo, ref BiomeData biomeData, JobHandle dep = default)

@@ -1,45 +1,73 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
+using Unity.Profiling;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewRealmBiomeInfo", menuName = "Terrain/Biome/RealmBiomeInfo", order = 1)]
-public class RealmBiomeInfo : ScriptableObject
+[BurstCompile]
+public abstract class RealmBiomeInfo : ScriptableObject
 {
-    public BaseSoundSettings HeightSound;
-    public BaseSoundSettings MoistureSound;
-    public BaseSoundSettings HeatSound;
+    public FractalSound HeightSound;
+    public FractalSound MoistureSound;
+    public FractalSound HeatSound;
 
     public List<BiomePreset> Biomes;
     public List<BiomePreset> WallBiomes;
 
     public float waterLevel = 0.2f;
 
+    public BiomePreset GetBiome(float height, float moisture, float heat)
+    {
+        var ind = GetBiomeIndex(height, moisture, heat);
+        if (ind == -1) return null;
+        return Biomes[ind];
+    }
+
     public BiomePreset GetBiome(Vector2Int worldPos)
     {
-        return GetBiome(HeightSound.GetSound(worldPos.x, worldPos.y), MoistureSound?.GetSound(worldPos.x, worldPos.y) ?? 0, HeatSound?.GetSound(worldPos.x, worldPos.y) ?? 0);
+        var ind = GetBiomeIndex(worldPos);
+        if(ind == -1) return null;
+        return Biomes[ind];
     }
 
-    BiomePreset GetBiome(float height, float moisture, float heat)
+    protected int GetBiomeIndex(float height, float moisture, float heat)
     {
-        if (height <= waterLevel) return null;
-        return Biomes.Where(b => b.MatchCondition(moisture, heat)).MinBy(b => b.GetDiffValue(moisture, heat));
+        if (height <= waterLevel) return -1;
+        return Biomes.Select((b, i) => (index: i, val: b)).MinBy(b => b.val.DistSq(moisture, heat)).index;
     }
 
-    NativeBiomeInfo biomeInfo;
+    protected virtual int GetBiomeIndex(Vector2Int worldPos)
+    {
+        return GetBiomeIndex(HeightSound.GetSound(worldPos.x, worldPos.y), MoistureSound?.GetSound(worldPos.x, worldPos.y) ?? 0, HeatSound?.GetSound(worldPos.x, worldPos.y) ?? 0);
+    }
+
+    NativeBiomeInfo _biomeInfo;
 
     public NativeBiomeInfo BiomeInfo 
     { 
         get
         {
-            if (!biomeInfo.isCreated)
+            if (!_biomeInfo.isCreated)
             {
-                biomeInfo = new NativeBiomeInfo(Biomes, WallBiomes, waterLevel);
+                _biomeInfo = new NativeBiomeInfo(Biomes, WallBiomes, waterLevel);
             }
-            return biomeInfo; 
+            return _biomeInfo; 
         } 
+    }
+
+    public bool TryGetBiome(float height, int index, out BiomePreset biome)
+    {
+        biome = default;
+
+        if (height <= waterLevel || index == -1)
+            return false;
+
+        biome = Biomes[index];
+        return true;
     }
 
     public void OnEnable()
@@ -49,16 +77,40 @@ public class RealmBiomeInfo : ScriptableObject
 
     public void Dispose()
     {
-        biomeInfo.Dispose(); 
+        _biomeInfo.Dispose(); 
     }
 
     public JobHandle ScheduelBiomeInfoGen(int chunkWidth, NativeArray<int2> chunks, ref BiomeData biomeData)
     {
         var heightJob = HeightSound.ScheduleSoundJob(chunks, biomeData.HeightMap, chunkWidth);
-        var moistureJob = MoistureSound?.ScheduleSoundJob(chunks, biomeData.MoistureMap, chunkWidth) ?? default;
-        var heatJob = HeatSound?.ScheduleSoundJob(chunks, biomeData.HeatMap, chunkWidth) ?? default;
 
-        return JobHandle.CombineDependencies(heatJob, moistureJob, heightJob);
+        var resolveBiomeJob = ScheduelInternalBiomeInfoGen(chunkWidth, chunks, ref biomeData);
+
+        return JobHandle.CombineDependencies(resolveBiomeJob, heightJob);
+    }
+    
+    protected abstract JobHandle ScheduelInternalBiomeInfoGen(int chunkWidth, NativeArray<int2> chunks, ref BiomeData biomeData);
+
+    [BurstCompile]
+    protected static int GetClosestBiomeIndex(float moisture, float heat, ref NativeBiomeInfo info)
+    {
+        if (info.Biomes.Length == 0)
+        {
+            return -1;
+        }
+        int index = 0;
+        float dist = info.Biomes[0].DistSq(moisture, heat);
+
+        for (int i = 1; i < info.Biomes.Length; i++)
+        {
+            var newDist = info.Biomes[i].DistSq(moisture, heat);
+            if (newDist < dist)
+            {
+                index = i;
+                dist = newDist;
+            }
+        }
+        return index;
     }
 }
  
