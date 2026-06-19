@@ -82,11 +82,12 @@ public class FractalSound : ScriptableObject
         int octaves = settings.Octaves;
 
         int index = 0;
-        float2 samplePos = basePos;
         for (int x = 0; x < chunkWidth; x++)
         {
+            float2 rowPos = basePos + new float2(x, 0);
             for (int y = 0; y < chunkWidth; y++)
             {
+                var samplePos = rowPos + new float2(0, y);
                 float value = 0f;
                 float amplitude = 1f;
                 float scale = baseScale;
@@ -100,11 +101,7 @@ public class FractalSound : ScriptableObject
                 }
 
                 res[index++] = math.saturate(value * 0.5f + 0.5f);
-
-                samplePos.y += 1f;
             }
-            samplePos.y = basePos.y;
-            samplePos.x += 1f;
         }
     }
 
