@@ -92,7 +92,7 @@ public struct VoronoiPositions
             for (int y = -1; y <= 1; y++)
             {
                 var c = chunk + math.int2(x, y);
-                var point = WorldPositions.GetElement2d(c.x, c.y, DataWidth);
+                var point = WorldPositions[c.x * DataWidth + c.y];
 
 
                 var dist = math.distancesq(worldPos, point);

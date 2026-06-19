@@ -103,6 +103,7 @@ public class FractalSound : ScriptableObject
 
                 samplePos.y += 1f;
             }
+            samplePos.y = basePos.y;
             samplePos.x += 1f;
         }
     }
@@ -127,6 +128,8 @@ public class FractalSound : ScriptableObject
                 res[index++] = math.saturate(value * 0.5f + 0.5f);
                 samplePos.y += 1f;
             }
+            
+            samplePos.y = basePos.y;
             samplePos.x += 1f;
         }
     }

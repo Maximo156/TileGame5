@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 [CreateAssetMenu(fileName = "NewVoronoiBiomeInfo", menuName = "Terrain/Biome/VoronoiBiomeInfo", order = 1)]
 [BurstCompile]
@@ -117,23 +118,42 @@ public class VoronoiBiomeInfo : RealmBiomeInfo
 
         public void Execute(int index)
         {
-            var chunkBlockPos = chunks[index] * chunkWidth;
+            var xOffset = displacementOffset + new float2(0.001f, 0.007f);
+            var yOffset = displacementOffset + new float2(1023.001f, -1070.007f);
+            float invFreq = 1f / displacementFrequency;
+            var mult = voronoiChunkWidth * displacementPercent;
             var biomeSlice = biomeArray.GetChunk(index, chunkWidth * chunkWidth);
-            for(int x = 0; x < chunkWidth; x++)
+            var basePos = chunks[index] * chunkWidth;
+
+            int i = 0;
+            for (int x = 0; x < chunkWidth; x++)
             {
+                int px = basePos.x + x;
+                int pyBase = basePos.y;
+
+                float2 sxBase = new float2(px, pyBase) + xOffset;
+                float2 syBase = new float2(px, pyBase) + yOffset;
+
                 for (int y = 0; y < chunkWidth; y++)
                 {
-                    var p = CalcOffsetPos(chunkBlockPos + math.int2(x, y));
-                    biomeSlice.SetElement2d(x, y, chunkWidth, voronoiBiomeData.GetValue(p));
+                    int py = pyBase + y;
+
+                    float2 sx = sxBase + new float2(0, y);
+                    float2 sy = syBase + new float2(0, y);
+
+                    float2 noiseInputX = sx * invFreq;
+                    float2 noiseInputY = sy * invFreq;
+
+                    float vx = noise.cnoise(noiseInputX);
+                    float vy = noise.cnoise(noiseInputY);
+
+                    int2 offset = (int2)math.floor(new float2(vx, vy) * mult);
+
+                    int2 offsetPos = new int2(px, py) + offset;
+
+                    biomeSlice[i++] = voronoiBiomeData.GetValue(offsetPos);
                 }
             }
-        }
-
-        int2 CalcOffsetPos(int2 pos)
-        {
-            var sx = pos + displacementOffset + new float2(0.001f, 0.007f);
-            var sy = pos + displacementOffset + new float2(1023.001f, -1070.007f);
-            return pos + math.int2(math.float2(noise.cnoise(sx / displacementFrequency), noise.cnoise(sy / displacementFrequency)) * voronoiChunkWidth * displacementPercent);
         }
     }
 
