@@ -10,6 +10,8 @@ using System.Runtime.CompilerServices;
 [BurstCompile]
 public class FractalSound : ScriptableObject
 {
+    static readonly float2 perlinOffset = new float2(0.001f, 0.007f);
+     
     public FractalSoundSettings settings;
     public FractalSoundSettings GetSettings()
     {
@@ -18,7 +20,7 @@ public class FractalSound : ScriptableObject
         return s;
     }
 
-    public Vector2Int Offset => Utilities.SeededVector2Int(4000, (uint)(name.GetHashCode() ^ WorldSave.ActiveSeed));
+    public int2 Offset => Utilities.SeededInt2(4000, (uint)(name.GetHashCode() ^ WorldSave.ActiveSeed));
 
     public float GetSound(int x, int y)
     {
@@ -41,36 +43,91 @@ public class FractalSound : ScriptableObject
     }
 
     [BurstCompile]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float GetSound(ref float2 origPos, ref FractalSoundSettings settings)
     {
-        var pos = origPos + settings.Offset.ToInt() + new float2(0.001f, 0.007f);
-        float value = 0;
-        float amplitude = 1;
+        float2 pos = origPos + settings.Offset + perlinOffset;
+
+        float value = 0f;
+        float amplitude = 1f;
 
         float scale = settings.Scale;
         float lacunarity = settings.Lacunarity;
         float persistence = settings.Persistence;
+        int octaves = settings.Octaves;
 
-        for (int i = 0; i < settings.Octaves; i++)
+        for (int octave = 0; octave < octaves; octave++)
         {
             value += noise.cnoise(pos / scale) * amplitude;
+
             pos *= lacunarity;
             amplitude *= persistence;
         }
-        value = value / 2 + 0.5f;
-        return math.clamp(value, 0, 1);
+
+        return math.saturate(value * 0.5f + 0.5f);
     }
 
     [BurstCompile]
-    static void GetSoundArray(ref float2 pos, int chunkWidth, ref FractalSoundSettings settings, ref NativeSlice<float> res)
+    static void GetSoundArray(
+    ref float2 pos,
+    int chunkWidth,
+    ref FractalSoundSettings settings,
+    ref NativeSlice<float> res)
     {
-        for(int x = 0; x < chunkWidth; x++)
+        float2 basePos = pos + settings.Offset + perlinOffset;
+
+        float baseScale = settings.Scale;
+        float lacunarity = settings.Lacunarity;
+        float persistence = settings.Persistence;
+        int octaves = settings.Octaves;
+
+        int index = 0;
+        float2 samplePos = basePos;
+        for (int x = 0; x < chunkWidth; x++)
         {
             for (int y = 0; y < chunkWidth; y++)
             {
-                var p = pos + new float2(x, y);
-                res.SetElement2d(x, y, chunkWidth, GetSound(ref p, ref settings));
-            } 
+                float value = 0f;
+                float amplitude = 1f;
+                float scale = baseScale;
+
+                for (int octave = 0; octave < octaves; octave++)
+                {
+                    value += noise.cnoise(samplePos / scale) * amplitude;
+
+                    samplePos *= lacunarity;
+                    amplitude *= persistence;
+                }
+
+                res[index++] = math.saturate(value * 0.5f + 0.5f);
+
+                samplePos.y += 1f;
+            }
+            samplePos.x += 1f;
+        }
+    }
+
+    [BurstCompile]
+    static void GetSoundArraySimple(
+    ref float2 pos,
+    int chunkWidth,
+    ref FractalSoundSettings settings,
+    ref NativeSlice<float> res)
+    {
+        float2 basePos = pos + settings.Offset + perlinOffset;
+        float invScale = 1.0f / settings.Scale;
+
+        int index = 0;
+        float2 samplePos = basePos;
+        for (int x = 0; x < chunkWidth; x++)
+        {
+            for (int y = 0; y < chunkWidth; y++)
+            {
+                float value = noise.cnoise(samplePos * invScale);
+                res[index++] = math.saturate(value * 0.5f + 0.5f);
+                samplePos.y += 1f;
+            }
+            samplePos.x += 1f;
         }
     }
 
@@ -90,7 +147,14 @@ public class FractalSound : ScriptableObject
         {
             var chunk = res.GetChunk(index, chunkWidth * chunkWidth);
             var pos = chunks[index] * math.float2(chunkWidth);
-            GetSoundArray(ref pos, chunkWidth, ref settings, ref chunk);
+            if (settings.Octaves < 2)
+            {
+                GetSoundArraySimple(ref pos, chunkWidth, ref settings, ref chunk);
+            }
+            else
+            {
+                GetSoundArray(ref pos, chunkWidth, ref settings, ref chunk);
+            }
         }
     }
 
@@ -107,6 +171,6 @@ public class FractalSound : ScriptableObject
         public float Scale;
 
         [HideInInspector]
-        public Vector2Int Offset;
+        public int2 Offset;
     }
 }
