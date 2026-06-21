@@ -117,9 +117,9 @@ public class ChunkManager : MonoBehaviour
         return Manager.ActiveRealm.TryGetBlockAndState(position, out block, out state, useProxy);
     }
 
-    public static NativeBlockSlice GetBlock(Vector2Int position)
+    public static NativeBlockSlice GetBlock(Vector2Int position, bool useProxy = true)
     {
-        if(!TryGetBlock(position, out var block))
+        if(!TryGetBlock(position, out var block, useProxy))
         {
             throw new InvalidOperationException("Checking ungenerated chunk");
         }
@@ -197,6 +197,16 @@ public class ChunkManager : MonoBehaviour
     public static void BreakBlock(Vector2Int position, bool roof, bool drop = true, bool useProxy = true)
     {
         Manager.ActiveRealm.QueueChunkAction(position, (chunk, pos) => chunk.BreakBlock(pos, roof, drop), useProxy);
+    }
+
+    public static void SetSimpleState(Vector2Int position, byte state, bool useProxy = true)
+    {
+        Manager.ActiveRealm.QueueChunkAction(position, (chunk, pos) => chunk.SetSimpleState(pos, state), useProxy);
+    }
+
+    public static void SetSlice(Vector2Int position, NativeBlockSlice slice)
+    {
+        Manager.ActiveRealm.QueueChunkAction(position, (chunk, pos) => chunk.SetSlice(pos, slice), false);
     }
     #endregion
 

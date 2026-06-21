@@ -15,9 +15,9 @@ public static class Extensions
         return new Vector2Int(input.x, input.y);
     }
 
-    public static Vector3Int ToVector3Int(this Vector2Int input)
+    public static Vector3Int ToVector3Int(this Vector2Int input, int z = 0)
     {
-        return new Vector3Int(input.x, input.y, 0);
+        return new Vector3Int(input.x, input.y, z);
     }
 
     public static Vector2 ToVector2(this Vector3 vec)

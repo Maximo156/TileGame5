@@ -9,9 +9,15 @@ using UnityEngine;
 
 public abstract class InteractiveDislay : MonoBehaviour
 {
+    public virtual bool OpenInv { get; } = true;
     public abstract Type TypeMatch();
-    public abstract void DisplayInventory(Vector2Int worldPos, Block interfacedBlock, BlockState state, IInventoryContainer otherInventory);
+    public abstract void InitDisplay(Vector2Int worldPos, Block interfacedBlock, BlockState state, byte simpleState, IInventoryContainer otherInventory);
     public abstract void Detach();
+
+    public virtual void Reposition(Vector3 pos)
+    {
+
+    }
 }
 
 public class InteractiveDisplayController : MonoBehaviour
@@ -26,6 +32,10 @@ public class InteractiveDisplayController : MonoBehaviour
     public Camera Cam;
 
     public List<Display> displays;
+
+    public PlayerInventoryDisplay inventoryDisplay;
+
+    InteractiveDislay activeDisplay;
 
     void Awake()
     {
@@ -57,13 +67,15 @@ public class InteractiveDisplayController : MonoBehaviour
     {
         if (curPos != null)
         {
-            transform.position = Cam.WorldToScreenPoint(curPos.Value.ToVector3Int());
+            var pos = Cam.WorldToScreenPoint(curPos.Value.ToVector3Int());
+            transform.position = pos;
+            activeDisplay.Reposition(pos);
         }
     }
 
     Vector2Int? curPos;
     ushort curBlock;
-    private void OnInteract(Vector2Int pos, Block interfacedBlock, BlockState state, IInterfaceBlockBehaviour behaviour, IInventoryContainer userInventory)
+    private void OnInteract(Vector2Int pos, Block interfacedBlock, BlockState state, byte simpleState, IInterfaceBlockBehaviour behaviour, IInventoryContainer userInventory)
     {
         if(curPos == pos)
         {
@@ -81,8 +93,13 @@ public class InteractiveDisplayController : MonoBehaviour
             if (!found && display.TypeMatch().IsAssignableFrom(behaviour.GetType()))
             {
                 display.gameObject.SetActive(true);
-                display.DisplayInventory(pos, interfacedBlock, state, userInventory);
+                display.InitDisplay(pos, interfacedBlock, state, simpleState, userInventory);
+                if (display.OpenInv)
+                {
+                    inventoryDisplay.InventorySetActive(true);
+                }
                 found = true;
+                activeDisplay = display;
             }
         }
         if (!found)
@@ -110,6 +127,7 @@ public class InteractiveDisplayController : MonoBehaviour
         {
             display.display.Detach();
         }
+        activeDisplay = null;
     }
 
     public void Close()
