@@ -8,7 +8,6 @@ namespace ComposableBlocks
     {
         public BlockBehaviourState GetState(Block baseBlock)
         {
-            Debug.Log("hit");
             return new StructureBehaviourState();
         }
     }

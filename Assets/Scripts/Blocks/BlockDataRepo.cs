@@ -146,6 +146,7 @@ namespace BlockDataRepos
             moveInfo.Dispose();
             solid.Dispose();
             lootable.Dispose();
+            StateFixup.Dispose();
         }
 
         public BlockMovementInfo GetMovementInfo(ushort id)
