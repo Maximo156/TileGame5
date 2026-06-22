@@ -1,4 +1,5 @@
 using NativeRealm;
+using Newtonsoft.Json;
 using System;
 using Unity.Collections;
 using UnityEngine;
@@ -12,8 +13,12 @@ public struct StructureComponent
     public ushort[] Roof;
     public byte[] SimpleStates;
 
+    [JsonIgnore]
+    public bool IsCreated;
+
     public StructureComponent(Vector2Int size)
     {
+        IsCreated = true;
         this.size = size;
         var length = size.x * size.y;
         Ground = new ushort[length];

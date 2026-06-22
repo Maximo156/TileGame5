@@ -92,14 +92,14 @@ public class FileController
 
     void OnSave(ClickEvent _)
     {
-        var selectedName = Path.Combine(selectedDir, Path.GetFileNameWithoutExtension(fileName.value) + ".json");
+        var selectedName = Path.Combine(selectedDir, Path.GetDirectoryName(fileName.value), Path.GetFileNameWithoutExtension(fileName.value) + ".json");
         if(!File.Exists(selectedName))
         {
             if(!Directory.Exists(Path.GetDirectoryName(selectedName)))
             { 
                 Directory.CreateDirectory(Path.GetDirectoryName(selectedName));
             }
-            File.Create(selectedName);
+            File.Create(selectedName).Dispose();
         }
         onFileSelected(selectedName);
         OnClose(null);

@@ -15829,10 +15829,12 @@ MonoBehaviour:
     BiomeInfo: {fileID: 11400000, guid: 1b1da806a3fd86d40b724745617c10db, type: 2}
     StructureInfo:
       StructureChunkWidth: 64
-      Structures: []
+      Structures:
+      - {fileID: 11400000, guid: b90ec879b18590a449f159374d391dcd, type: 2}
     AllowSetSpawn: 1
   EntityContainerPrefab: {fileID: 4125942454157733406, guid: 09ba13a72b3f5d44b85e34b2a97e24c3, type: 3}
-  debug: 0
+  debugChunks: 0
+  debugStructures: 1
 --- !u!114 &1918543955
 MonoBehaviour:
   m_ObjectHideFlags: 0

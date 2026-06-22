@@ -26,8 +26,9 @@ public class ChunkManager : MonoBehaviour
     public List<Realm> Realms;
     public GameObject EntityContainerPrefab;
 
-    [Header("Chunk Settings")]
-    public bool debug;
+    [Header("Debug")]
+    public bool debugChunks;
+    public bool debugStructures;
 
     Realm _activeRealm;
     Realm ActiveRealm
@@ -221,9 +222,13 @@ public class ChunkManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (Application.isPlaying && debug)
+        if (Application.isPlaying && debugChunks)
         {
             _activeRealm.DrawDebug();
+        }
+        if (Application.isPlaying && debugStructures)
+        {
+            _activeRealm.StructureInfo.RenderStructureBounds(Utilities.GetBlockPos(Camera.main.transform.position));
         }
     }
 

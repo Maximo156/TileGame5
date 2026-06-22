@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor.Compilation;
 using UnityEditor;
 using UnityEngine;
+using Unity.Burst;
 
 namespace ComposableBlocks
 {
@@ -83,6 +84,11 @@ namespace ComposableBlocks
     public interface IOnPlaceBehaviour
     {
         public void OnPlace(Vector2Int Pos, Vector2Int dir, ref NativeBlockSlice slice);
+    }
+
+    public interface INeedsStateFixup
+    {
+        public FunctionPointer<StructureGenerator.FixupSimpleState> GetFixupFunction();
     }
 
     public interface IOnBreakBehaviour

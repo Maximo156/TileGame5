@@ -1,10 +1,12 @@
+using AOT;
 using BlockDataRepos;
 using NativeRealm;
+using Unity.Burst;
 using UnityEngine;
 
 namespace ComposableBlocks
 {
-    public class MultiBlockBehaviour : BlockBehaviour, IConditionalPlaceBehaviour, IOnPlaceBehaviour, IOnBreakBehaviour
+    public class MultiBlockBehaviour : BlockBehaviour, IConditionalPlaceBehaviour, IOnPlaceBehaviour, IOnBreakBehaviour, INeedsStateFixup
     {
         public Vector2Int Dimensions;
         public bool CanPlace(Vector2Int Pos, Vector2Int dir, NativeBlockSlice _)
@@ -65,6 +67,18 @@ namespace ComposableBlocks
                 offset.z = 0;
                 return new BoundsInt(Pos.ToVector3Int() - offset, size);
             }
+        }
+
+        public FunctionPointer<StructureGenerator.FixupSimpleState> GetFixupFunction()
+        {
+            return BurstCompiler.CompileFunctionPointer<StructureGenerator.FixupSimpleState>(FixState);
+        }
+
+        [BurstCompile]
+        [MonoPInvokeCallback(typeof(StructureGenerator.FixupSimpleState))]
+        public static byte FixState(ref StructureGenerator.Rotation rot, byte state)
+        {
+            return (byte)((state + rot.dif) % 4);
         }
     }
 }
