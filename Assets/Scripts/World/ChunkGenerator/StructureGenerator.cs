@@ -1,4 +1,5 @@
 using BlockDataRepos;
+using ComposableBlocks;
 using NativeRealm;
 using System;
 using System.Collections.Generic;
@@ -172,7 +173,7 @@ public class StructureGenerator : ChunkSubGenerator
             var components = structureInfo.GetStructureBuildingComponents(structure);
             if (BuildingFits(point, Rotation.zero, center))
             {
-                PlaceBuilding(point, Rotation.zero, center, AnchorDirection.None);
+                PlaceBuilding(point, Rotation.zero, center, AnchorDirection.Down);
                 FillAnchors();
             }
 
@@ -289,7 +290,7 @@ public class StructureGenerator : ChunkSubGenerator
                 }
                 foreach(var anchor in componentAnchors) 
                 {
-                    if (anchor.direction != AnchorDirection.None && anchor.direction != usedAnchorDir)
+                    if (anchor.direction != usedAnchorDir)
                     {
                         var rotatedPosition = ApplyRotation(rotation, anchor.offset, compBounds.size);
                         var worldPos = start + rotatedPosition;
@@ -350,7 +351,6 @@ public class StructureGenerator : ChunkSubGenerator
                         foreach (var matchingAnchor in availAnchors)
                         {
                             if (
-                                matchingAnchor.direction == AnchorDirection.None ||
                                 matchingAnchor.key != curAnchor.key ||
                                 matchingAnchor.Lock == curAnchor.Lock
                                 ) continue;

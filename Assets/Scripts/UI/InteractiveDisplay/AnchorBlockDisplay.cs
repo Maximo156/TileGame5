@@ -1,7 +1,5 @@
 using ComposableBlocks;
-using Newtonsoft.Json;
 using System;
-using System.IO;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -75,8 +73,7 @@ public class AnchorBlockDisplay : InteractiveDislay
 
     void OnRotate(ClickEvent _)
     {
-        curDur = curDur + 1;
-        if (curDur == AnchorDirection.None) curDur = AnchorDirection.Up;
+        curDur = (AnchorDirection)(((int)curDur + 1) % 4);
         ChunkManager.SetSimpleState(worldPos, AnchorBlockBehaviour.GetState(keyInput.value, codeInput.value, curDur));
     }
 }

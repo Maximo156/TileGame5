@@ -2,8 +2,18 @@ using UnityEngine;
 
 namespace ComposableBlocks
 {
+    public enum AnchorDirection
+    {
+        Up,
+        Right,
+        Down,
+        Left
+    }
+
     public class AnchorBlockBehaviour : BlockBehaviour, ISimpleStateBlockBehaviour, IInterfaceBlockBehaviour
     {
+        
+
         public byte GetState()
         {
             return 0;
