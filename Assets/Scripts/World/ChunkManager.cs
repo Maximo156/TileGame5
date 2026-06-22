@@ -26,8 +26,9 @@ public class ChunkManager : MonoBehaviour
     public List<Realm> Realms;
     public GameObject EntityContainerPrefab;
 
-    [Header("Chunk Settings")]
-    public bool debug;
+    [Header("Debug")]
+    public bool debugChunks;
+    public bool debugStructures;
 
     Realm _activeRealm;
     Realm ActiveRealm
@@ -117,9 +118,9 @@ public class ChunkManager : MonoBehaviour
         return Manager.ActiveRealm.TryGetBlockAndState(position, out block, out state, useProxy);
     }
 
-    public static NativeBlockSlice GetBlock(Vector2Int position)
+    public static NativeBlockSlice GetBlock(Vector2Int position, bool useProxy = true)
     {
-        if(!TryGetBlock(position, out var block))
+        if(!TryGetBlock(position, out var block, useProxy))
         {
             throw new InvalidOperationException("Checking ungenerated chunk");
         }
@@ -198,6 +199,16 @@ public class ChunkManager : MonoBehaviour
     {
         Manager.ActiveRealm.QueueChunkAction(position, (chunk, pos) => chunk.BreakBlock(pos, roof, drop), useProxy);
     }
+
+    public static void SetSimpleState(Vector2Int position, byte state, bool useProxy = true)
+    {
+        Manager.ActiveRealm.QueueChunkAction(position, (chunk, pos) => chunk.SetSimpleState(pos, state), useProxy);
+    }
+
+    public static void SetSlice(Vector2Int position, NativeBlockSlice slice)
+    {
+        Manager.ActiveRealm.QueueChunkAction(position, (chunk, pos) => chunk.SetSlice(pos, slice), false);
+    }
     #endregion
 
     private void OnDestroy()
@@ -211,9 +222,13 @@ public class ChunkManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (Application.isPlaying && debug)
+        if (Application.isPlaying && debugChunks)
         {
             _activeRealm.DrawDebug();
+        }
+        if (Application.isPlaying && debugStructures)
+        {
+            _activeRealm.StructureInfo.RenderStructureBounds(Utilities.GetBlockPos(Camera.main.transform.position));
         }
     }
 

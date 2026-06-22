@@ -32,7 +32,7 @@ public class CraftingDisplay : InteractiveDislay
     IInventoryContainer otherInv;
     Vector2 worldPos;
 
-    public override void DisplayInventory(Vector2Int worldPos, Block interfacedBlock, BlockState _, IInventoryContainer otherInv)
+    public override void InitDisplay(Vector2Int worldPos, Block interfacedBlock, BlockState _, byte simpleState, IInventoryContainer otherInv)
     {
         Completion.fillAmount = 0;
         interfacedBlock.TryGetBehavior(out block);

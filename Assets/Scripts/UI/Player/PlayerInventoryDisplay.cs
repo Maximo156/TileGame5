@@ -31,7 +31,6 @@ public class PlayerInventoryDisplay : MonoBehaviour
         Stats = inventory.gameObject.GetComponent<EntityStats>();
         Stats.OnStatChanged += OnStatChanged;
         Defence.text = Stats.GetStat(EntityStats.Stat.Defense).ToString();
-        PlayerMouseInput.OnBlockInterfaced += BlockInterfaced;
 
         HotBarDisplay.AttachInv(inventory.HotbarInv);
         MainInventoryDisplay.AttachInv(inventory.MainInv);
@@ -43,17 +42,13 @@ public class PlayerInventoryDisplay : MonoBehaviour
 
     public void OnInvToggle()
     {
+        if (!InputController.Instance.AllowMovement) return;
         InventorySetActive(!TogglableInv.activeSelf);
         if (!TogglableInv.activeSelf)
         {
             OtherDisplay.Close();
         }
         CreativeInventoryContainer.SetActive(false);
-    }
-
-    private void BlockInterfaced(Vector2Int pos, Block _, BlockState state, IInterfaceBlockBehaviour behaviour, IInventoryContainer inv)
-    {
-        InventorySetActive(true);
     }
 
     void OnStatChanged(EntityStats.Stat stat)
@@ -64,7 +59,7 @@ public class PlayerInventoryDisplay : MonoBehaviour
         }
     }
 
-    private void InventorySetActive(bool active)
+    public void InventorySetActive(bool active)
     {
         TogglableInv.SetActive(active);
         ModifierDisplay.SetActive(!active);

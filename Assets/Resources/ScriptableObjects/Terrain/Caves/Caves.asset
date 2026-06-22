@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Caves
   m_EditorClassIdentifier: 
   saveChunks: 0
-  biomes: {fileID: 11400000, guid: 1b1da806a3fd86d40b724745617c10db, type: 2}
   Generators:
   - {fileID: 11400000, guid: 6083a69df504f5445bf12292807c1604, type: 2}
+  - {fileID: 11400000, guid: 1f642d9c96e706649a483e70c2229874, type: 2}
   ShadowColor:
     serializedVersion: 2
     key0: {r: 0, g: 0, b: 0, a: 0.99215686}

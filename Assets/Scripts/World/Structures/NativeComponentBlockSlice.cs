@@ -7,4 +7,5 @@ public struct NativeComponentBlockSlice
     public ushort groundBlock;
     public ushort wallBlock;
     public ushort roofBlock;
+    public byte simpleState;
 }

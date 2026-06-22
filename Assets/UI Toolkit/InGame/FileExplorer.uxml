@@ -1,0 +1,12 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/InGame/InGameStyles.uss?fileID=7433441132597879392&amp;guid=1e3b557c349120849bc1c47e68c5fe44&amp;type=3#InGameStyles" />
+    <Style src="project://database/Assets/UI%20Toolkit/TitleScreenUss.uss?fileID=7433441132597879392&amp;guid=8695dbf73c329ee43a0ad90fe6357e23&amp;type=3#TitleScreenUss" />
+    <ui:VisualElement name="VisualElement" class="PanelBackground gap-list" style="flex-grow: 1; height: 292px; justify-content: space-between;">
+        <ui:TreeView name="TreeView" virtualization-method="FixedHeight" style="background-image: none; width: 100%; padding-top: 8px; padding-right: 8px; padding-bottom: 8px; padding-left: 8px;" />
+        <ui:VisualElement style="flex-grow: 0; flex-direction: row; align-items: flex-end;">
+            <ui:TextField label="File" name="FileName" class="field-small-label panel-text-field__input" style="align-items: center; width: 197px;" />
+            <ui:Button text="Select" name="Select" enabled="false" class="InGameButton slim-button" />
+            <ui:Button text="Close" name="Close" class="InGameButton slim-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

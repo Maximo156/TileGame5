@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20c5df25308626468e037eb6e0c53f2, type: 3}
+  m_Name: TestStructure
+  m_EditorClassIdentifier: 
+  minComponentCount: 5
+  maxComponentCount: 20
+  Centers:
+  - {fileID: 11400000, guid: 02adb99fcffb5eb4b82b9cc2f3242634, type: 2}
+  components:
+  - {fileID: 11400000, guid: 298716706bda27f4aad4171d4a3d6b5c, type: 2}
+  - {fileID: 11400000, guid: ebb5d06fe671a03448a0b66db6884ec9, type: 2}
+  - {fileID: 11400000, guid: 57dde223b43415149836db469eee55c9, type: 2}
+  - {fileID: 11400000, guid: 1804a4b0cf547304fa7d3f4b1e4f1fc3, type: 2}
+  - {fileID: 11400000, guid: 2a5be27dca9a9274f84faab2c8189d94, type: 2}
+  - {fileID: 11400000, guid: 9f1904988e59cfd41b4ea1bc64e075ae, type: 2}

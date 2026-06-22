@@ -13,7 +13,7 @@ public class PlayerMouseInput : MonoBehaviour
     public delegate void AttackInterupted();
     public static event AttackInterupted OnAttackInterupted;
 
-    public delegate void BlockInterfaced(Vector2Int pos, Block InterfacedBlock, BlockState state, IInterfaceBlockBehaviour behaviour, IInventoryContainer inv);
+    public delegate void BlockInterfaced(Vector2Int pos, Block InterfacedBlock, BlockState state, byte simpleState, IInterfaceBlockBehaviour behaviour, IInventoryContainer inv);
     public static event BlockInterfaced OnBlockInterfaced;
 
     public delegate void InterfaceRangeExceeded();
@@ -141,7 +141,7 @@ public class PlayerMouseInput : MonoBehaviour
         if(ChunkManager.TryGetBlockAndState(mouseBlockPosition, out var slice, out var state) && BlockDataRepo.TryGetBlock<Wall>(slice.wallBlock, out var wallBlock) && wallBlock.TryGetBehavior<IInterfaceBlockBehaviour>(out var behaviour))
         {
             CurInteractPos = CurInteractPos == mouseBlockPosition ? null : mouseBlockPosition;
-            OnBlockInterfaced?.Invoke(mouseBlockPosition, wallBlock, state, behaviour, playerInventory);
+            OnBlockInterfaced?.Invoke(mouseBlockPosition, wallBlock, state, slice.simpleBlockState, behaviour, playerInventory);
             return true;
         }
         return false;

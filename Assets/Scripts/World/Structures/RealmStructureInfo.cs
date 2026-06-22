@@ -63,7 +63,6 @@ public class RealmStructureInfo
             state.AddItemStack(i);
         }
     }
-
     NativeStructureInfo InitStructInfo()
     {
         var centerBounds = Structures.Select(s => s.Centers.Select(c => c.ComputeBounds()).ToList()).ToList();
@@ -174,22 +173,64 @@ public class RealmStructureInfo
     public static void PopulateAdjacentPoints(int2 StructureChunk, int StructureChunkWidth, NativeArray<int2> points, uint worldSeed)
     {
         PopulatePoint(StructureChunk + math.int2(-1, 1), 0);
-        PopulatePoint(StructureChunk + math.int2(0, 1), 0);
-        PopulatePoint(StructureChunk + math.int2(1, 1), 0);
+        PopulatePoint(StructureChunk + math.int2(0, 1), 1);
+        PopulatePoint(StructureChunk + math.int2(1, 1), 2);
 
-        PopulatePoint(StructureChunk + math.int2(-1, 0), 0);
-        PopulatePoint(StructureChunk + math.int2(1, 0), 0);
+        PopulatePoint(StructureChunk + math.int2(-1, 0), 3);
+        PopulatePoint(StructureChunk + math.int2(1, 0), 4);
 
-        PopulatePoint(StructureChunk + math.int2(-1, -1), 0);
-        PopulatePoint(StructureChunk + math.int2(0, -1), 0);
-        PopulatePoint(StructureChunk + math.int2(1, -1), 0);
+        PopulatePoint(StructureChunk + math.int2(-1, -1), 5);
+        PopulatePoint(StructureChunk + math.int2(0, -1), 6);
+        PopulatePoint(StructureChunk + math.int2(1, -1), 7);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void PopulatePoint(int2 chunk, int index)
         {
             var rand = GetChunkRandom(chunk, worldSeed);
-            var pos = GenPoint(StructureChunk, StructureChunkWidth, rand);
+            var pos = GenPoint(chunk, StructureChunkWidth, rand);
             points[index] = pos;
+        }
+    }
+
+    public void RenderStructureBounds(Vector2Int pos)
+    {
+        var structChunk = Utilities.GetChunk(pos, StructureChunkWidth).ToInt();
+        var rand = GetChunkRandom(structChunk, WorldSave.ActiveSeed);
+        var p = GenPoint(structChunk, StructureChunkWidth, rand);
+        using var adjacentPoints = new NativeArray<int2>(8, Allocator.Temp);
+        PopulateAdjacentPoints(structChunk, StructureChunkWidth, adjacentPoints, WorldSave.ActiveSeed);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(p.ToVector().ToVector3Int(), 1);
+        foreach (var point in adjacentPoints)
+        {
+            Gizmos.DrawSphere(point.ToVector().ToVector3Int(), 1);
+        }
+
+        var points = new List<Vector2>(9)
+        {
+            p.ToVector(),
+        };
+        foreach (var point in adjacentPoints)
+            points.Add(point.ToVector());
+
+        Gizmos.color = Color.yellow;
+
+        for (int i = 0; i < 9; i++)
+        {
+            VoronoiHelpers.DrawVoronoiCell(points, i);
+        }
+
+        Gizmos.color = Color.blue;
+
+        foreach (var v in Utilities.OctAdjacent)
+        {
+            Vector2 center =
+                (v + structChunk.ToVector()) * StructureChunkWidth +
+                Vector2.one * StructureChunkWidth * 0.5f;
+
+            Gizmos.DrawWireCube(
+                center.ToVector3(),
+                Vector3.one * StructureChunkWidth);
         }
     }
 }

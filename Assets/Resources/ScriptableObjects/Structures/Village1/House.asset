@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4255dd7c7acbb114b906dd432fabc25b, type: 3}
+  m_Name: House
+  m_EditorClassIdentifier: 
+  Json: {fileID: 4900000, guid: 12e5b2b80f41ae344b64aa065dc6719f, type: 3}
+  lootTable:
+  - chance: 1
+    min: 1
+    max: 5
+    Item: {fileID: 11400000, guid: 9d625386a764e074fb736996f5a62345, type: 2}
+    ItemFill: []
+  - chance: 1
+    min: 1
+    max: 3
+    Item: {fileID: 11400000, guid: 89e05cb5ef19ea64e9a963950f6a4e58, type: 2}
+    ItemFill: []
+  - chance: 1
+    min: 1
+    max: 1
+    Item: {fileID: 11400000, guid: 807ba9643f790ab48a06d9b474bf193e, type: 2}
+    ItemFill:
+    - Item: {fileID: 11400000, guid: 64953c23444c6e44a8de9efcc1ff07d5, type: 2}
+      Count: 1
+  Importance: 0
+  AllowMountains: 0

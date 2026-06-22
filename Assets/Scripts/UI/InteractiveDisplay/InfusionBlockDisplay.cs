@@ -40,7 +40,7 @@ public class InfusionBlockDisplay : InteractiveDislay
 
     Vector2Int? WorldPos;
     InfusionBlockBehaviour connectedBlock;
-    public override void DisplayInventory(Vector2Int worldPos, Block interfacedBlock, BlockState _, IInventoryContainer otherInventory)
+    public override void InitDisplay(Vector2Int worldPos, Block interfacedBlock, BlockState _, byte simpleState, IInventoryContainer otherInventory)
     {
         WorldPos = worldPos;
         interfacedBlock.TryGetBehavior(out connectedBlock);

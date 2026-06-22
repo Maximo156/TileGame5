@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4255dd7c7acbb114b906dd432fabc25b, type: 3}
+  m_Name: Management
+  m_EditorClassIdentifier: 
+  Json: {fileID: 4900000, guid: 9a28a763a0c95d045b64b5e949fcfeeb, type: 3}
+  lootTable:
+  - chance: 0.3
+    min: 2
+    max: 5
+    Item: {fileID: 11400000, guid: 9d625386a764e074fb736996f5a62345, type: 2}
+    ItemFill: []
+  - chance: 0.2
+    min: 1
+    max: 1
+    Item: {fileID: 11400000, guid: 1fdadcf8d63be63468853ca8c8dadec7, type: 2}
+    ItemFill: []
+  - chance: 0.5
+    min: 3
+    max: 7
+    Item: {fileID: 11400000, guid: b47515d8c3730c141acf622480b894ae, type: 2}
+    ItemFill: []
+  - chance: 0.1
+    min: 3
+    max: 7
+    Item: {fileID: 11400000, guid: 60cdf15cb46d464458b4a0760a572eb0, type: 2}
+    ItemFill: []
+  - chance: 0.5
+    min: 1
+    max: 1
+    Item: {fileID: 11400000, guid: 674aa75823b6f144b94bd2c588de0912, type: 2}
+    ItemFill: []
+  Importance: 1
+  AllowMountains: 1

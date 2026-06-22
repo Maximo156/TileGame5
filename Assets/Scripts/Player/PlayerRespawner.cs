@@ -68,12 +68,14 @@ public class PlayerRespawner : MonoBehaviour
     async Awaitable ResolveSpawnPoint()
     {
         transform.position = SpawnPoint.ToVector3Int();
-        if (SpawnPoint == Vector2Int.zero && SpawnRealm == ChunkManager.defaultRealm ) return;
 
-        if(ChunkManager.CurRealm.name != SpawnRealm)
+        if (ChunkManager.CurRealm.name != SpawnRealm)
         {
             ChunkManager.SetActiveRealm(SpawnRealm);
         }
+
+        if (SpawnPoint == Vector2Int.zero && SpawnRealm == ChunkManager.defaultRealm ) return;
+
         NativeBlockSlice block;
         while(!ChunkManager.TryGetBlock(SpawnPoint, out block))
         {

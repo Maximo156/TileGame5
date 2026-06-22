@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class InputController : MonoBehaviour
 {
+    public static InputController Instance;
     EventSystem events;
     bool selectedGameobject;
     bool overGameObject;
@@ -13,6 +15,7 @@ public class InputController : MonoBehaviour
 
     void Awake()
     {
+        Instance = this;
         events = EventSystem.current;
     }
 

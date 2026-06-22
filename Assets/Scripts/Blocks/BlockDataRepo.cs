@@ -6,6 +6,7 @@ using Unity.Collections;
 using UnityEditor;
 using UnityEngine;
 using ComposableBlocks;
+using Unity.Burst;
 
 namespace BlockDataRepos
 {
@@ -31,6 +32,8 @@ namespace BlockDataRepos
                 Blocks[block.Id-1] = block;
             }
         }
+
+        public static IReadOnlyList<Block> GetAllBlocks() => Blocks;
 
         private void ValidateIds(List<Block> blocks)
         {
@@ -98,6 +101,7 @@ namespace BlockDataRepos
         NativeArray<BlockMovementInfo> moveInfo;
         NativeArray<bool> solid;
         NativeArray<bool> lootable;
+        NativeHashMap<ushort, FunctionPointer<StructureGenerator.FixupSimpleState>> StateFixup;
 
         public NativeBlockDataRepo(List<Block> blocks)
         {
@@ -107,7 +111,7 @@ namespace BlockDataRepos
             moveInfo = new (blocks.Count, Allocator.Persistent);
             solid = new (blocks.Count, Allocator.Persistent);
             lootable = new (blocks.Count, Allocator.Persistent);
-
+            StateFixup = new(0, Allocator.Persistent);
             for (int i = 0; i < blocks.Count; i++)
             {
                 ProcessBlock(blocks[i]);
@@ -128,6 +132,11 @@ namespace BlockDataRepos
             solid[index] = wall?.solid ?? false;
             lootable[index] = block.TryGetBehavior<ILootableBlockBehaviour>(out var _);
             tickInfo[index] = block.TryGetBehavior<ISimpleTickBlockBehaviour>(out var tick) ? tick.GetTickInfo() : default;
+
+            if(block is INeedsStateFixup needsFixup || block.TryGetBehavior<INeedsStateFixup>(out needsFixup))
+            {
+                StateFixup.Add(block.Id, needsFixup.GetFixupFunction());
+            }
         }
 
         public void Dispose()
@@ -166,6 +175,11 @@ namespace BlockDataRepos
         {
             if (id == 0) return default;
             return tickInfo[id - 1];
+        }
+
+        public bool TryGetFixup(ushort id, out FunctionPointer<StructureGenerator.FixupSimpleState> fixup)
+        {
+            return StateFixup.TryGetValue(id, out fixup);
         }
     }
 

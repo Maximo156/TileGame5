@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe533c9a9fc38924097b8cf9a1584e46, type: 3}
+  m_Name: StructureBlock
+  m_EditorClassIdentifier: 
+  Id: 64
+  Display: {fileID: 11400000, guid: f748e9c6f78884843a97555e329da12b, type: 2}
+  HitsToBreak: 0
+  MovementModifier: 0
+  Drops: []
+  <Sprite>k__BackingField: {fileID: -1745567020, guid: 581d88950f593a74887ce8ee6c22bc6f, type: 3}
+  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  Behaviors:
+  - rid: 3336318953358622857
+  structural: 0
+  solid: 1
+  walkable: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 3336318953358622857
+      type: {class: StructureBlockBehaviour, ns: ComposableBlocks, asm: Assembly-CSharp}
+      data:
+        name: StructureBlockBehaviour

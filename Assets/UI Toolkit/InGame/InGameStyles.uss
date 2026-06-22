@@ -1,0 +1,100 @@
+.PanelBackground {
+    background-image: resource('Sprites/UI/InvenBackground');
+    flex-shrink: 1;
+    flex-grow: 0;
+    flex-basis: 100%;
+    position: absolute;
+    padding-top: 8px;
+    padding-right: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    align-items: center;
+}
+
+.InGameButton {
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    background-color: rgb(166, 109, 62);
+    border-left-color: rgb(140, 92, 58);
+    border-right-color: rgb(140, 92, 58);
+    border-top-color: rgb(140, 92, 58);
+    border-bottom-color: rgb(140, 92, 58);
+}
+
+.panel-text-field__input > .unity-base-text-field__input {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-left-color: rgb(140, 92, 58);
+    border-right-color: rgb(140, 92, 58);
+    border-top-color: rgb(140, 92, 58);
+    border-bottom-color: rgb(140, 92, 58);
+    background-color: rgb(229, 195, 167);
+}
+
+.gap-list {
+    padding-bottom: -8px;
+    margin-bottom: -8px;
+}
+
+.gap-list > * {
+    margin-bottom: 8px;
+}
+
+.slim-button {
+    padding-top: 6px;
+    padding-right: 8px;
+    padding-bottom: 6px;
+    padding-left: 8px;
+}
+
+.InGameButton:hover:enabled {
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    background-color: rgb(135, 90, 54);
+    border-left-color: rgb(89, 57, 34);
+    border-right-color: rgb(89, 57, 34);
+    border-top-color: rgb(89, 57, 34);
+    border-bottom-color: rgb(89, 57, 34);
+}
+
+.panel-check__input .unity-toggle__checkmark {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-left-color: rgb(140, 92, 58);
+    border-right-color: rgb(140, 92, 58);
+    border-top-color: rgb(140, 92, 58);
+    border-bottom-color: rgb(140, 92, 58);
+    background-color: rgb(229, 195, 167);
+}

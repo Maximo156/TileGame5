@@ -287,6 +287,20 @@ public partial class Chunk
         return true;
     }
 
+    public void SetSimpleState(Vector2Int worldPosition, byte state)
+    {
+        var loc = WorldToLocal(worldPosition);
+        data.SetState(loc.x, loc.y, state);
+        RefreshBlock(worldPosition);
+    }
+
+    public void SetSlice(Vector2Int worldPosition, NativeBlockSlice slice)
+    {
+        var loc = WorldToLocal(worldPosition);
+        data.InitializeSlice(loc.x, loc.y, slice);
+        TriggerChangedBlock(loc);
+    }
+
     public bool PlaceItem(Vector2Int worldPosition, ItemStack item)
     {
         var slice = GetBlock(worldPosition);

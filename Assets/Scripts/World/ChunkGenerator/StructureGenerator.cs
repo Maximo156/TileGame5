@@ -1,9 +1,11 @@
 using BlockDataRepos;
+using ComposableBlocks;
 using NativeRealm;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -15,15 +17,21 @@ using ReadOnlyAttribute = Unity.Collections.ReadOnlyAttribute;
 [CreateAssetMenu(fileName = "NewStructureGenerator", menuName = "Terrain/StructureGenerator", order = 1)]
 public class StructureGenerator : ChunkSubGenerator
 {
-    private struct Rotation
+    public delegate byte FixupSimpleState(ref Rotation rot, byte state);
+    public struct Rotation
     {
         public static readonly Rotation zero = new();
         public static readonly Rotation ninety = new() { invX = true, mirror = true, dif = 1 };
         public static readonly Rotation oneeighty = new() { invX = true, invY = true, dif = 2 };
         public static readonly Rotation twoseventy = new() { invY = true, mirror = true, dif = 3 };
-
+        
+        [MarshalAs(UnmanagedType.U1)]
         public bool invX;
+
+        [MarshalAs(UnmanagedType.U1)] 
         public bool invY;
+
+        [MarshalAs(UnmanagedType.U1)]
         public bool mirror;
         public int dif; 
     }
@@ -57,13 +65,24 @@ public class StructureGenerator : ChunkSubGenerator
 
     private HashSet<int2> GetStructureChunks(NativeArray<int2> originalChunks, int structChunkWidth)
     {
-        var StructureChunks = new HashSet<int2>();
-        var ratio = WorldConfig.ChunkWidth * 1f / structChunkWidth;
+        var structureChunks = new HashSet<int2>();
+
+        float ratio = WorldConfig.ChunkWidth / (float)structChunkWidth;
+
         foreach (var c in originalChunks)
         {
-            StructureChunks.Add(math.int2(math.floor(math.float2(c) * ratio)));
+            int2 sc = math.int2(math.floor(math.float2(c) * ratio));
+
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    structureChunks.Add(sc + new int2(x, y));
+                }
+            }
         }
-        return StructureChunks;
+
+        return structureChunks;
     }
 
     public override JobHandle ScheduleGeneration(int chunkWidth, NativeArray<int2> originalChunks, NativeArray<int2> requestChunks, RealmData realmData, RealmInfo realmInfo, ref BiomeData biomeData, JobHandle dep = default)
@@ -154,7 +173,7 @@ public class StructureGenerator : ChunkSubGenerator
             var components = structureInfo.GetStructureBuildingComponents(structure);
             if (BuildingFits(point, Rotation.zero, center))
             {
-                PlaceBuilding(point, Rotation.zero, center, AnchorDirection.None);
+                PlaceBuilding(point, Rotation.zero, center, AnchorDirection.Down);
                 FillAnchors();
             }
 
@@ -247,12 +266,14 @@ public class StructureGenerator : ChunkSubGenerator
                     var block = componentBlocks.GetElement2d(pos.x, pos.y, compBounds.size.y);
                     var x = localPos.x;
                     var y = localPos.y;
+
                     if (block.groundBlock != 0)
                     {
                         chunk.SetFloor(x, y, block.groundBlock);
-                        chunk.SetWall(x, y, block.wallBlock);
                     }
-                    if(block.groundBlock != 0 || block.wallBlock != 0)
+
+                    // clears wall block if ground block is set
+                    if (block.groundBlock != 0 || block.wallBlock != 0)
                     {
                         chunk.SetWall(x, y, block.wallBlock);
                     }
@@ -260,12 +281,16 @@ public class StructureGenerator : ChunkSubGenerator
                     {
                         chunk.SetState(x, y, (byte)component.SelfIndex);
                     }
+                    else
+                    {
+                        chunk.SetState(x, y, FixupState(block.wallBlock, rotation, block.simpleState));
+                    }
 
                     chunk.SetRoof(x, y, block.roofBlock);
                 }
                 foreach(var anchor in componentAnchors) 
                 {
-                    if (anchor.direction != AnchorDirection.None && anchor.direction != usedAnchorDir)
+                    if (anchor.direction != usedAnchorDir)
                     {
                         var rotatedPosition = ApplyRotation(rotation, anchor.offset, compBounds.size);
                         var worldPos = start + rotatedPosition;
@@ -326,7 +351,6 @@ public class StructureGenerator : ChunkSubGenerator
                         foreach (var matchingAnchor in availAnchors)
                         {
                             if (
-                                matchingAnchor.direction == AnchorDirection.None ||
                                 matchingAnchor.key != curAnchor.key ||
                                 matchingAnchor.Lock == curAnchor.Lock
                                 ) continue;
@@ -365,6 +389,15 @@ public class StructureGenerator : ChunkSubGenerator
                 }
                 availAnchors.Clear();
                 validComponents.Dispose();
+            }
+
+            byte FixupState(ushort block, Rotation rot, byte state)
+            {
+                if (blockData.TryGetFixup(block, out var fixUp))
+                {
+                    return fixUp.Invoke(ref rot, state);
+                }
+                return state;
             }
         }
 
