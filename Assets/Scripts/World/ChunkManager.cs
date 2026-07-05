@@ -176,6 +176,21 @@ public class ChunkManager : MonoBehaviour
         return Manager.ActiveRealm.PerformChunkAction(position, (chunk, pos) => chunk.PopItem(pos));
     }
 
+    public static uint RequestPath(PathProvider.Request request)
+    {
+        return Manager.ActiveRealm.PathProvider.RequestPath(request);
+    }
+
+    public static void DropPathRequest(uint id)
+    {
+        Manager.ActiveRealm.PathProvider.DropRequest(id);
+    }
+
+    public static bool TryGetPathResult(uint id, out NativeStack<float2> path)
+    {
+        return Manager.ActiveRealm.PathProvider.TryGetResult(id, out path);
+    }
+
     #region write actions
     public static bool PlaceBlock(Vector2Int position, Vector2Int dir, Block block, bool force = false, byte initialState = 0)
     {

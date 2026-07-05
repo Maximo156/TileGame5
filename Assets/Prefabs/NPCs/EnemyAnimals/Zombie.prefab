@@ -62,6 +62,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -99,7 +102,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &5528660755882797888
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -113,6 +116,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -126,6 +130,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7384479284224186033}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -149,7 +154,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.31}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -160,7 +166,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &2193687168910598462
@@ -191,95 +196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c29cff538c195c249b69c6f2236de67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Library:
-  - m_Name: Idle
-    m_Hash: 0
-    m_CategoryList:
-    - m_Name: Idle_0
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: 80819f5cc63aa2640bfd99dd9187c2c5, type: 3}
-    - m_Name: Idle_1
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: 8fc1bfc1c1f0e4a4eb0754dbe15e4047, type: 3}
-    - m_Name: Idle_2
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: d5a14be012a055b45a418d79b27507c9, type: 3}
-    - m_Name: Idle_3
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: 58e528ac98eedc943bef99dd0bac8d2f, type: 3}
-  - m_Name: Walk
-    m_Hash: 0
-    m_CategoryList:
-    - m_Name: Walk_0
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: bc62731ee49641e41b4b9882684a83eb, type: 3}
-    - m_Name: Walk_1
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: d1a16291fa1d9d541a24d28b818b0b72, type: 3}
-    - m_Name: Walk_2
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: d5a14be012a055b45a418d79b27507c9, type: 3}
-    - m_Name: Walk_3
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: 58e528ac98eedc943bef99dd0bac8d2f, type: 3}
-  - m_Name: Hit
-    m_Hash: 0
-    m_CategoryList:
-    - m_Name: Hit_1
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: 3633231d495fbeb44975f86af849d1ed, type: 3}
-    - m_Name: Hit_2
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: 63ad94f07643bbc4aa69cf5b7cfc552a, type: 3}
-  - m_Name: Die
-    m_Hash: 0
-    m_CategoryList:
-    - m_Name: Die_0
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: c60e873670b42a84c9c2f83f218d425c, type: 3}
-    - m_Name: New Label
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: cfad9270537b0ea46bc2c55c67f8742d, type: 3}
-    - m_Name: New Label_0
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: 70a8c538f4394f84794ef90236763ea7, type: 3}
-  - m_Name: Attack
-    m_Hash: 0
-    m_CategoryList:
-    - m_Name: Attack_0
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: d26fab760ad421841b079b6003907e88, type: 3}
-    - m_Name: Attack_1
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: e815eb52e3cb4bf478adfeb265410050, type: 3}
-    - m_Name: Attack_2
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: cd1a4eb03ee41df4f88a57bec86e1656, type: 3}
-    - m_Name: Attack_3
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: 4cc2d226eaeef3f40b2b8ebcf906f6c5, type: 3}
-    - m_Name: Attack_4
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: eb1e48cd6f711cf45ac3bd0f45922154, type: 3}
-  - m_Name: Attack2
-    m_Hash: 0
-    m_CategoryList:
-    - m_Name: Attack_0
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: d26fab760ad421841b079b6003907e88, type: 3}
-    - m_Name: Attack_1
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: e815eb52e3cb4bf478adfeb265410050, type: 3}
-    - m_Name: Attack_2
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: cd1a4eb03ee41df4f88a57bec86e1656, type: 3}
-    - m_Name: Attack_3
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: 4cc2d226eaeef3f40b2b8ebcf906f6c5, type: 3}
-    - m_Name: Attack_4
-      m_Hash: 0
-      m_Sprite: {fileID: 21300000, guid: eb1e48cd6f711cf45ac3bd0f45922154, type: 3}
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 6bf87c808e4687445ad1a37524308255, type: 3}
+  m_Library: []
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 3f44f55febbbd014389211b98e74eda7, type: 3}
 --- !u!114 &313064695148862794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,6 +228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 2
+  behaviour: {fileID: 0}
   monitor: 0
 --- !u!114 &5742638830674189606
 MonoBehaviour:

@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0857b2a53377458ebec6c4b1179e3c5a, type: 3}
+  m_Name: Generator
+  m_EditorClassIdentifier: 
+  nameSpace: Goap
+  scripts:
+    goals:
+    - <Name>k__BackingField: WanderGoal
+      fullName: Goap.WanderGoal, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      <Path>k__BackingField: Assets/Scripts/AI/GOAP/Goals/WanderGoal.cs
+      <Id>k__BackingField: 
+    actions:
+    - <Name>k__BackingField: WanderAction
+      fullName: Goap.WanderAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      <Path>k__BackingField: Assets/Scripts/AI/GOAP/Actions/WanderAction.cs
+      <Id>k__BackingField: 
+    worldSensors: []
+    worldKeys:
+    - <Name>k__BackingField: IsWandering
+      fullName: Goap.IsWandering, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      <Path>k__BackingField: Assets/Scripts/AI/GOAP/WorldKeys/IsWandering.cs
+      <Id>k__BackingField: 
+    targetSensors:
+    - <Name>k__BackingField: WanderTargetSensor
+      fullName: Goap.WanderTargetSensor, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      <Path>k__BackingField: Assets/Scripts/AI/GOAP/Sensors/WanderTargetSensor.cs
+      <Id>k__BackingField: 
+    targetKeys:
+    - <Name>k__BackingField: WanderTarget
+      fullName: Goap.WanderTarget, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      <Path>k__BackingField: Assets/Scripts/AI/GOAP/Targets/WanderTarget.cs
+      <Id>k__BackingField: 
+    multiSensors: []

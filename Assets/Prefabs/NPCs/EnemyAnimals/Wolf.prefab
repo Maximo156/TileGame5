@@ -61,6 +61,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -85,7 +88,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 989728161, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
+  m_Sprite: {fileID: 1646552883, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -98,7 +101,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &7873326469680123242
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -112,6 +115,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -125,6 +129,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6732792351147766889}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -148,7 +153,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,7 +165,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1717407417796355839
@@ -177,7 +182,7 @@ MonoBehaviour:
   m_CategoryHash: 3.5709718e-17
   m_labelHash: 3.8248278e-23
   m_SpriteKey: 0
-  m_SpriteHash: 317060392
+  m_SpriteHash: 1027422969
 --- !u!114 &712461263057731299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,59 +195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c29cff538c195c249b69c6f2236de67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Library:
-  - m_Name: Idle
-    m_Hash: 0
-    m_CategoryList:
-    - m_Name: Idle_0
-      m_Hash: 0
-      m_Sprite: {fileID: 430345445, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-    - m_Name: Idle_1
-      m_Hash: 0
-      m_Sprite: {fileID: 2015940132, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-    - m_Name: Idle_2
-      m_Hash: 0
-      m_Sprite: {fileID: -104215508, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-    - m_Name: Idle_3
-      m_Hash: 0
-      m_Sprite: {fileID: -853080382, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-  - m_Name: Walk
-    m_Hash: 0
-    m_CategoryList:
-    - m_Name: Walk_0
-      m_Hash: 0
-      m_Sprite: {fileID: 1646552883, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-    - m_Name: Walk_1
-      m_Hash: 0
-      m_Sprite: {fileID: -1641778703, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-    - m_Name: Walk_2
-      m_Hash: 0
-      m_Sprite: {fileID: 1602150979, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-    - m_Name: Walk_3
-      m_Hash: 0
-      m_Sprite: {fileID: 747312438, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-  - m_Name: Hit
-    m_Hash: 0
-    m_CategoryList:
-    - m_Name: Hit_1
-      m_Hash: 0
-      m_Sprite: {fileID: 980588247, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-    - m_Name: Hit_2
-      m_Hash: 0
-      m_Sprite: {fileID: -772846802, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-  - m_Name: Die
-    m_Hash: 0
-    m_CategoryList:
-    - m_Name: Die_0
-      m_Hash: 0
-      m_Sprite: {fileID: -1043980776, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-    - m_Name: New Label
-      m_Hash: 0
-      m_Sprite: {fileID: 131690301, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-    - m_Name: New Label_0
-      m_Hash: 0
-      m_Sprite: {fileID: 1396965755, guid: e696eabaef6f17741a2d3a4bea530e06, type: 3}
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 6bf87c808e4687445ad1a37524308255, type: 3}
+  m_Library: []
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: de4d0c50c40bc834282ce5a5f845801f, type: 3}
 --- !u!114 &5226047401262143773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,6 +227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUseDoors: 0
   MovementSpeed: 6
+  behaviour: {fileID: 0}
   monitor: 1
 --- !u!114 &625059372807967338
 MonoBehaviour:

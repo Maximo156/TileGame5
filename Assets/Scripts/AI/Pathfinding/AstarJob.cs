@@ -200,15 +200,15 @@ public struct AstarJob : IJob
     [BurstCompile]
     Node GetNode(int2 pos)
     {
-        Node node = default;
         var (chunkPos, localPos) = GetChunkAndPos(pos);
         var x = localPos.x;
         var y = localPos.y;
+        Node node;
         if (realmData.TryGetChunk(chunkPos, out var chunk))
         {
             var slice = chunk.GetSlice(x, y);
             var moveInfo = slice.GetMovementInfo(blockInfo);
-            var door = slice.wallBlock != 0 && blockInfo.GetMovementInfo(slice.wallBlock).door; 
+            var door = slice.wallBlock != 0 && blockInfo.GetMovementInfo(slice.wallBlock).door;
             node = new Node(pos, moveInfo.walkable, door, math.max(moveInfo.movementSpeed, 0.01f));
         }
         else
@@ -225,3 +225,5 @@ public struct AstarJob : IJob
         return (c, pos - (c * chunkWidth));
     }
 }
+
+

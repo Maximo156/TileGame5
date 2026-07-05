@@ -44,6 +44,7 @@ public class Realm
     RealmData realmData;
 
     public EntityManager EntityContainer {  get; private set; }
+    public PathProvider PathProvider { get; private set; }
 
     Queue<(Chunk chunk, Vector2Int pos, Action<Chunk, Vector2Int> action)> QueuedActions = new();
 
@@ -72,9 +73,11 @@ public class Realm
         // Scheduel native reads
         lightJobInfo = LightCalculation.ScheduelLightUpdate(realmData, frameUpdatedChunks);
         tickJobInfo = ChunkTick.ScheduelTick(tickJobInfo, playerCurrentChunk, realmData);
-         
-        ReadDependencies = frameUpdatedChunks.Dispose(JobHandle.CombineDependencies(lightJobInfo.jobHandle, tickJobInfo.job, EntityContainer.AIManager.RunPathfinding()));
+        var pathFinding = PathProvider.SchedulePathfinding();
 
+
+        ReadDependencies = frameUpdatedChunks.Dispose(JobHandle.CombineDependencies(lightJobInfo.jobHandle, tickJobInfo.job, EntityContainer.AIManager.RunPathfinding()));
+        ReadDependencies = JobHandle.CombineDependencies(pathFinding, ReadDependencies);
         SaveChunks();
     }
 
@@ -188,6 +191,7 @@ public class Realm
         realmData = new RealmData(WorldConfig.ChunkWidth, distWithBuffer * distWithBuffer);
         EntityContainer.name = $"{name} Entity Container";
         EntityContainer.AIManager.Initialize(LoadedChunks, WorldConfig.ChunkWidth, realmData);
+        PathProvider = new PathProvider(realmData, WorldConfig.ChunkWidth);
     }
 
     public void Cleanup()
