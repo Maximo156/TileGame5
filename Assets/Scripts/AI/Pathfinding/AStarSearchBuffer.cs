@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using Unity.Collections;
+using Unity.Jobs;
 using Unity.Mathematics;
 
 public enum NodeState : byte
@@ -24,9 +25,9 @@ public struct SearchBuffer : IDisposable
 
     public int2 Origin;
 
-    public NativeArray<SearchNode> Nodes; 
-    public NativeArray<float> BestG;
-    public NativeArray<byte> InOpen;
+    public NativeArray<SearchNode> Nodes;
+    public NativeArray<SliceMoveInfo> MoveInfo;
+    public NativeArray<byte> HasMove;
 
     public SearchBuffer(int maxDistance, Allocator allocator)
     {
@@ -40,8 +41,8 @@ public struct SearchBuffer : IDisposable
             allocator,
             NativeArrayOptions.ClearMemory);
 
-        BestG = new NativeArray<float>(Width * Width, allocator, NativeArrayOptions.UninitializedMemory);
-        InOpen = new NativeArray<byte>(Width * Width, allocator, NativeArrayOptions.ClearMemory);
+        HasMove = new NativeArray<byte>(Width * Width, allocator, NativeArrayOptions.ClearMemory);
+        MoveInfo = new NativeArray<SliceMoveInfo>(Width * Width, allocator, NativeArrayOptions.UninitializedMemory);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -58,8 +59,7 @@ public struct SearchBuffer : IDisposable
                 State = NodeState.Unvisited
             };
 
-            BestG[i] = float.MaxValue;
-            InOpen[i] = 0;
+            HasMove[i] = 0;
         }
     }
 
@@ -104,5 +104,13 @@ public struct SearchBuffer : IDisposable
     {
         if (Nodes.IsCreated)
             Nodes.Dispose();
+    }
+
+    public JobHandle Dispose(JobHandle dep)
+    {
+        if (!Nodes.IsCreated)
+            return default;
+
+        return JobHandle.CombineDependencies(Nodes.Dispose(dep), HasMove.Dispose(dep), MoveInfo.Dispose(dep));
     }
 }

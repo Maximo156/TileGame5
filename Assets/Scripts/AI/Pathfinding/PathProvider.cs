@@ -79,14 +79,14 @@ public class PathProvider
                 Open = OpenSet,
                 Search = searchBuffer
             }.Schedule(dep);
-            handle = reachable.Dispose(handle);
+
+            handle = JobHandle.CombineDependencies(reachable.Dispose(handle), OpenSet.Dispose(handle), searchBuffer.Dispose(handle));
             combinedDep = JobHandle.CombineDependencies(combinedDep, handle);
             Results.Add(id, new Result() { Job = handle, Path = res });
         }
         OpenRequests.Clear();
         return combinedDep;
     }
-
 
     public struct Request
     {

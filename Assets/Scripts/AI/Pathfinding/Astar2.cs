@@ -4,10 +4,14 @@ using Unity.Mathematics;
 using Unity.Jobs;
 using NativeRealm;
 using BlockDataRepos;
+using Unity.Profiling;
 
 [BurstCompile]
 public struct AStarJob : IJob
 {
+    static readonly ProfilerMarker expand = new ProfilerMarker("Expand");
+    static readonly ProfilerMarker getNode = new ProfilerMarker("GetNode");
+
     [ReadOnly] public RealmData realmData;
     [ReadOnly] public NativeBlockDataRepo blockInfo;
 
@@ -21,21 +25,9 @@ public struct AStarJob : IJob
 
     public SearchBuffer Search;
     public NativeBinaryMinHeap Open;
-
+     
     [WriteOnly] public NativeStack<float2> Path;
     [WriteOnly] public NativeList<int2> Reachable;
-
-    static readonly int2[] Offsets =
-    {
-        new(0, 1),
-        new(0, -1),
-        new(1, 0),
-        new(-1, 0),
-        new(1, 1),
-        new(-1, 1),
-        new(1, -1),
-        new(-1, -1)
-    };
 
     static readonly float2 DiagCost = new(1.41421356f, 1.41421356f);
 
@@ -80,50 +72,60 @@ public struct AStarJob : IJob
 
     void Expand(ushort currentIndex, int2 currentPos)
     {
+        using var e = expand.Auto();
         ref var current = ref Search.Get(currentIndex);
 
         float currentG = current.G;
 
-        for (int i = 0; i < 8; i++)
-        {
-            int2 np = currentPos + Offsets[i];
+        ExpandPosition(currentIndex, currentPos, currentG, new int2(0, 1), false);
+        ExpandPosition(currentIndex, currentPos, currentG, new int2(0, -1), false);
+        ExpandPosition(currentIndex, currentPos, currentG, new int2(1, 0), false);
+        ExpandPosition(currentIndex, currentPos, currentG, new int2(-1, 0), false);
 
-            if (!Search.Contains(np))
-                continue;
+        ExpandPosition(currentIndex, currentPos, currentG, new int2(1, 1), true);
+        ExpandPosition(currentIndex, currentPos, currentG, new int2(-1, 1), true);
+        ExpandPosition(currentIndex, currentPos, currentG, new int2(1, -1), true);
+        ExpandPosition(currentIndex, currentPos, currentG, new int2(-1, -1), true);
 
-            bool diagonal = i >= 4;
+    }
 
-            if (diagonal && !CanMoveDiagonal(currentPos, np))
-                continue;
+    void ExpandPosition(ushort currentIndex, int2 currentPos, float currentG, int2 offset, bool diagonal)
+    {
+        int2 np = currentPos + offset;
 
-            if (!TryGetMovement(np, out var move))
-                continue;
+        if (!Search.Contains(np))
+            return;
 
-            if (!move.walkable)
-                continue;
+        if (diagonal && !CanMoveDiagonal(currentPos, np))
+            return;
 
-            if (move.door && !canUseDoors)
-                continue;
+        if (!TryGetMovement(np, out var move))
+            return;
 
-            ushort nIndex = (ushort)Search.PositionToIndex(np);
-            ref var node = ref Search.Get(nIndex);
+        if (!move.walkable)
+            return;
 
-            float stepCost = diagonal ? 1.41421356f : 1f;
-            stepCost /= math.max(move.movementSpeed, 0.01f);
+        if (move.door && !canUseDoors)
+            return;
 
-            float tentativeG = currentG + stepCost;
+        ushort nIndex = (ushort)Search.PositionToIndex(np);
+        ref var node = ref Search.Get(nIndex);
 
-            if (node.State != NodeState.Unvisited && tentativeG >= node.G)
-                continue;
+        float stepCost = diagonal ? 1.41421356f : 1f;
+        stepCost /= math.max(move.movementSpeed, 0.01f);
 
-            node.G = tentativeG;
-            node.Parent = currentIndex;
-            node.State = NodeState.Open;
+        float tentativeG = currentG + stepCost;
 
-            float f = tentativeG + Heuristic(np, End);
+        if (node.State != NodeState.Unvisited && tentativeG >= node.G)
+            return;
 
-            Open.Push(nIndex, f);
-        }
+        node.G = tentativeG;
+        node.Parent = currentIndex;
+        node.State = NodeState.Open;
+
+        float f = tentativeG + Heuristic(np, End);
+
+        Open.Push(nIndex, f);
     }
 
     void Reconstruct(ushort endIndex)
@@ -158,12 +160,23 @@ public struct AStarJob : IJob
 
     bool TryGetMovement(int2 pos, out SliceMoveInfo move)
     {
+        using var e = getNode.Auto();
+
+        var nIndex = (ushort)Search.PositionToIndex(pos);
+        if (Search.HasMove[nIndex] == 1)
+        {
+            move = Search.MoveInfo[nIndex];
+            return true;
+        }
+
         var (chunkPos, local) = GetChunkAndPos(pos);
 
         if (realmData.TryGetChunk(chunkPos, out var chunk))
         {
             var slice = chunk.GetSlice(local.x, local.y);
             move = slice.GetMovementInfo(blockInfo);
+            Search.MoveInfo[nIndex] = move;
+            Search.HasMove[nIndex] = 1;
             return true;
         }
 

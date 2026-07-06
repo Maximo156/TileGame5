@@ -7,10 +7,14 @@ using Unity.Burst;
 using NativeRealm;
 using BlockDataRepos;
 using System.Runtime.CompilerServices;
+using Unity.Profiling;
 
 [BurstCompile]
 public struct AstarJob : IJob
 {
+    static readonly ProfilerMarker expand = new ProfilerMarker("Expand");
+    static readonly ProfilerMarker getNode = new ProfilerMarker("GetNode");
+
     struct Node : IEquatable<Node>
     {
         public int2 ParentPos;
@@ -100,7 +104,7 @@ public struct AstarJob : IJob
                 Reachable.Add(current.Pos);
             }
 
-            GetAdjacentNodes(current, ref adjacencies);
+            Expand(current, ref adjacencies);
 
             bool found = false;
             for(int i = 0; i< adjacencies.Length; i++)
@@ -167,8 +171,9 @@ public struct AstarJob : IJob
     }
 
     [BurstCompile]
-    void GetAdjacentNodes(Node n, ref NativeList<Node> temp)
+    void Expand(Node n, ref NativeList<Node> temp)
     {
+        using var e = expand.Auto();
         temp.Clear();
 
         var up = new int2(1, 0);
@@ -200,6 +205,7 @@ public struct AstarJob : IJob
     [BurstCompile]
     Node GetNode(int2 pos)
     {
+        using var e = getNode.Auto();
         var (chunkPos, localPos) = GetChunkAndPos(pos);
         var x = localPos.x;
         var y = localPos.y;

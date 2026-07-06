@@ -1,5 +1,6 @@
 using System;
 using Unity.Collections;
+using Unity.Jobs;
 using UnityEngine;
 
 public struct NativeBinaryMinHeap : IDisposable
@@ -30,6 +31,13 @@ public struct NativeBinaryMinHeap : IDisposable
     {
         if (_data.IsCreated)
             _data.Dispose();
+    }
+
+    public JobHandle Dispose(JobHandle dep)
+    {
+        if (_data.IsCreated)
+            return _data.Dispose(dep);
+        return default;
     }
 
     public void Push(ushort index, float priority)
