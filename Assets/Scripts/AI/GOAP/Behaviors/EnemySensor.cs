@@ -1,3 +1,4 @@
+using EntityStatistics;
 using System;
 using UnityEngine;
 
@@ -5,34 +6,35 @@ using UnityEngine;
 public class EnemySensor : MonoBehaviour
 {
     public event Action OnEnemyEnter;
-    public event Action OnEnemyExit;
 
-    private int activeEnemies = 0;
-    private LayerMask enemyLayer;
+    public LayerMask enemyLayer;
 
-    public void Init(CombatConfig config)
+    private EntityStats stats;
+
+    public void Init(EntityStats stats)
     {
-        GetComponent<CircleCollider2D>().radius = config.viewRange;
-        enemyLayer = config.mask;
+        this.stats = stats;
+        stats.OnStatChanged += OnStatChange;
+    }
+
+    public void Start()
+    {
+        GetComponent<CircleCollider2D>().radius = stats.GetStat(EntityStats.Stat.ViewDistance);
+    }
+
+    void OnStatChange(EntityStats.Stat stat)
+    {
+        if(stat == EntityStats.Stat.ViewDistance)
+        {
+            GetComponent<CircleCollider2D>().radius = stats.GetStat(EntityStats.Stat.ViewDistance);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (LayerMatch(enemyLayer, collision.gameObject.layer))
         {
-            activeEnemies++;
             OnEnemyEnter?.Invoke();
-        }
-    }
-     
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (LayerMatch(enemyLayer, collision.gameObject.layer))
-        {
-            if (--activeEnemies == 0)
-            {
-                OnEnemyExit?.Invoke();
-            }
         }
     }
 

@@ -6864,6 +6864,7 @@ GameObject:
   - component: {fileID: 676890523}
   - component: {fileID: 676890522}
   - component: {fileID: 676890521}
+  - component: {fileID: 676890526}
   - component: {fileID: 676890520}
   - component: {fileID: 676890519}
   - component: {fileID: 676890524}
@@ -6878,7 +6879,6 @@ GameObject:
   - component: {fileID: 676890510}
   - component: {fileID: 676890509}
   - component: {fileID: 676890508}
-  - component: {fileID: 676890507}
   m_Layer: 12
   m_Name: Wolf
   m_TagString: Untagged
@@ -6886,19 +6886,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &676890507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 676890506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7007437c8e4aabe42bae69b211a5d5c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CombatConfig: {fileID: 11400000, guid: dc8b779e5a64c4c40948f99fbe01de8a, type: 2}
 --- !u!114 &676890508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6911,6 +6898,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11898b40ac047b94faf5f474f0c25e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &676890509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7239,6 +7229,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba602afb150acca40af342b1d07b308f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &676890526
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676890506}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &719047625
 GameObject:
   m_ObjectHideFlags: 0
@@ -17441,6 +17458,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0915600b6219ab489be8693c09b58b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!58 &2026311081
 CircleCollider2D:
   m_ObjectHideFlags: 0

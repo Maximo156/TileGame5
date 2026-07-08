@@ -1,6 +1,7 @@
 using CrashKonijn.Agent.Core;
 using CrashKonijn.Agent.Runtime;
 using CrashKonijn.Goap.Runtime;
+using EntityStatistics;
 using System;
 using UnityEngine;
 
@@ -11,8 +12,7 @@ namespace Goap
     {
         public override IActionRunState Perform(IMonoAgent agent, Data data, IActionContext context)
         {
-            Debug.Log("Performing");
-            if(data.state == Data.State.NotStarted && Vector3.Distance(agent.transform.position, data.Target.Position) <= data.combat.CombatConfig.AttackRange)
+            if(data.state == Data.State.NotStarted && Vector3.Distance(agent.transform.position, data.Target.Position) <= data.stats.GetStat(EntityStats.Stat.AttackRange))
             {
                 data.state = Data.State.Animating;
                 data.brain.PlayAnimation("Attack", () => data.state = Data.State.Complete, false);
@@ -39,7 +39,7 @@ namespace Goap
             public BaseMobBrain brain { get; set; }
 
             [GetComponent]
-            public CombatBehavior combat { get; set; }
+            public EntityStats stats { get; set; }
 
             public State state { get; set; } = State.NotStarted;
         }

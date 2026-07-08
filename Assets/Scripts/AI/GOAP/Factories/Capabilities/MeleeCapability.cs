@@ -10,13 +10,14 @@ namespace Goap
             var builder = new CapabilityBuilder(nameof(MeleeCapability));
 
             builder.AddGoal<KillEnemyGoal>()
-                .SetBaseCost(25)
+                .SetBaseCost(0)
                 .AddCondition<EnemyHealth>(Comparison.SmallerThanOrEqual, 0);
 
             builder.AddAction<MeleeAction>()
                 .SetTarget<ClosestEnemyKey>()
                 .AddEffect<EnemyHealth>(EffectType.Decrease)
-                .SetStoppingDistance(0.5f);
+                .SetStoppingDistance(0.5f)
+                .SetValidateTarget(true);
 
             builder.AddTargetSensor<EnemyTargetSensor>()
                 .SetTarget<ClosestEnemyKey>();

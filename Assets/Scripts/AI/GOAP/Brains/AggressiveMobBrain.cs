@@ -1,34 +1,38 @@
 using CrashKonijn.Agent.Core;
+using CrashKonijn.Goap.Core;
 using CrashKonijn.Goap.Runtime;
+using EntityStatistics;
 using Goap;
 using System;
+using UnityEngine;
 
 public class AggressiveMobBrain : BaseMobBrain
 {
-    CombatConfig combatConfig;
+    public LayerMask EnemyMask;
+    EntityStats stats;
     EnemySensor sensor;
 
     protected override void Awake()
     {
         base.Awake();
-        combatConfig = GetComponent<CombatBehavior>().CombatConfig;
+        stats = GetComponent<EntityStats>();
 
         sensor = GetComponentInChildren<EnemySensor>();
-        sensor.Init(combatConfig);
+        sensor.Init(stats);
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
         sensor.OnEnemyEnter += OnEnemySeen;
-        sensor.OnEnemyExit += OnEnemyLost;
+        provider.Events.OnNoActionFound += OnNoActionFound;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
         sensor.OnEnemyEnter -= OnEnemySeen;
-        sensor.OnEnemyExit -= OnEnemyLost;
+        provider.Events.OnNoActionFound -= OnNoActionFound;
     }
 
     protected override void InitAgentType()
@@ -55,18 +59,18 @@ public class AggressiveMobBrain : BaseMobBrain
         var ingress = otherTransform.Transform.GetComponentInParent<HitIngress>();
         if (ingress != null) 
         { 
-            ingress.Hit(new HitData() { Perpetrator = transform, Damage = combatConfig.BaseDamage });
+            ingress.Hit(new HitData() { Perpetrator = transform, Damage = stats.GetStat(EntityStats.Stat.BaseDamage) });
         }
-    }
-
-    private void OnEnemyLost()
-    {
-        SetBaseGoals();
     }
 
     private void OnEnemySeen()
     {
         agent.StopAction();
         provider.RequestGoal<KillEnemyGoal>();
+    }
+
+    private void OnNoActionFound(IGoalRequest goal)
+    {
+        SetBaseGoals();
     }
 }
