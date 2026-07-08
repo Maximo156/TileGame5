@@ -7,7 +7,7 @@ using UnityEngine.Playables;
 
 public abstract class CallbackAnimator<TType> : MonoBehaviour where TType : class
 {
-    TType curAnim { get; set; } = null;
+    protected TType curAnim { get; set; } = null;
     public bool isPlaying => curAnim != null;
 
     protected class AnimationInfo
@@ -18,10 +18,11 @@ public abstract class CallbackAnimator<TType> : MonoBehaviour where TType : clas
 
     protected PlayableGraph playableGraph;
     protected AnimationMixerPlayable topLevelMixer;
+    protected Animator animator;
 
     protected virtual void SetupGraph(int totalAnimCount)
     {
-        var animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         playableGraph = PlayableGraph.Create("MobAnimation");
 
         var output = AnimationPlayableOutput.Create(playableGraph, "Animation", animator);
@@ -34,7 +35,7 @@ public abstract class CallbackAnimator<TType> : MonoBehaviour where TType : clas
 
     protected abstract AnimationInfo GetAnimationInfo(TType type);
 
-    public void PlayAnimation(TType animId, Action callback = null)
+    public virtual void PlayAnimation(TType animId, Action callback = null)
     {
         if (curAnim == animId) return;
         InteruptAnim();
@@ -59,7 +60,7 @@ public abstract class CallbackAnimator<TType> : MonoBehaviour where TType : clas
         };
     }
 
-    public void InteruptAnim()
+    public virtual void InteruptAnim()
     {
         topLevelMixer.SetInputWeight(0, 1);
         for (int i = 1; i < topLevelMixer.GetInputCount(); i++)

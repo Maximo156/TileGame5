@@ -64,7 +64,7 @@ public class PathProvider
             var searchBuffer = new SearchBuffer(MaxDistance, Allocator.TempJob);
             var OpenSet = new NativeBinaryMinHeap((2 * MaxDistance + 1) * (2 * MaxDistance + 1) / 2, Allocator.TempJob);
 
-            var handle = new AStarJob()
+            var handle = new AStarOptimizedJob()
             {
                 Start = request.start,
                 End = request.dest,

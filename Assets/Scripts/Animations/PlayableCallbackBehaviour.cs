@@ -7,7 +7,7 @@ public class PlayableCallbackBehaviour : PlayableBehaviour
 {
     public AnimationClipPlayable clip;
 
-    Action callBack;
+    public Action callBack { get; private set; }
     bool completed = true;
     // Called each frame while the state is set to Play
     public override void PrepareFrame(Playable playable, FrameData info)

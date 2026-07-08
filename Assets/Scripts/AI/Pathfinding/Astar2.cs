@@ -7,7 +7,7 @@ using BlockDataRepos;
 using Unity.Profiling;
 
 [BurstCompile]
-public struct AStarJob : IJob
+public struct AStarOptimizedJob : IJob
 {
     static readonly ProfilerMarker expand = new ProfilerMarker("Expand");
     static readonly ProfilerMarker getNode = new ProfilerMarker("GetNode");
@@ -28,8 +28,6 @@ public struct AStarJob : IJob
      
     [WriteOnly] public NativeStack<float2> Path;
     [WriteOnly] public NativeList<int2> Reachable;
-
-    static readonly float2 DiagCost = new(1.41421356f, 1.41421356f);
 
     public void Execute()
     {

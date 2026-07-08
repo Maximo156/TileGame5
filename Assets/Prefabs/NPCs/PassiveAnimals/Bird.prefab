@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 3394995356102244971}
   - component: {fileID: 5893345427441080162}
   - component: {fileID: 1435722902500920511}
+  - component: {fileID: 7317858752264870020}
   m_Layer: 12
   m_Name: Bird
   m_TagString: Untagged
@@ -363,3 +364,17 @@ MonoBehaviour:
     clip: {fileID: 7400000, guid: 77d1ee03051954e4bb4008bec3605b35, type: 2}
   - name: Die
     clip: {fileID: 7400000, guid: a7be0d2fdec82f84fb85796f0913736c, type: 2}
+--- !u!114 &7317858752264870020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6732792351147766889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 200ba3d4bce813a49930119922bb0d3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 1
+  Disable: []
