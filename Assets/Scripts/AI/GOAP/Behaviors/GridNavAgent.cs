@@ -1,7 +1,5 @@
 using CrashKonijn.Agent.Core;
 using System;
-using System.Linq;
-using System.Runtime;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
@@ -44,17 +42,28 @@ public class GridNavAgent : MonoBehaviour
         }
     }
 
+    // Cache current move speed to avoid repeated block resolution
+    Vector2Int moveModBlock;
+    float moveModifier;
+
     void PerformMoveUpdate()
     { 
         var canSeeTarget = CanDirectPath();
         CheckAndRequestPath(canSeeTarget);
         ResolvePath();
 
+        var curBlock = Utilities.GetBlockPos(transform.position);
+        if(curBlock != moveModBlock)
+        {
+            moveModBlock = curBlock;
+            moveModifier = ChunkManager.TryGetBlock(curBlock, out var slice) ? slice.GetMovementInfo().movementSpeed : 1;
+        }
+
         var moveDir = (canSeeTarget ? TargetDifference : PathDirection()) + ColliderPush();
 
         OnLocomotionUpdate?.Invoke(moveDir);
 
-        var movement = Time.deltaTime * moveSpeed * moveDir.normalized.ToVector3();
+        var movement = Time.deltaTime * moveSpeed * moveModifier * moveDir.normalized.ToVector3();
         transform.position += movement;
     }
 
