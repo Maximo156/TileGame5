@@ -76,7 +76,7 @@ public class Realm
         var pathFinding = PathProvider.SchedulePathfinding();
 
 
-        ReadDependencies = frameUpdatedChunks.Dispose(JobHandle.CombineDependencies(lightJobInfo.jobHandle, tickJobInfo.job, EntityContainer.AIManager.RunPathfinding()));
+        ReadDependencies = frameUpdatedChunks.Dispose(JobHandle.CombineDependencies(lightJobInfo.jobHandle, tickJobInfo.job));
         ReadDependencies = JobHandle.CombineDependencies(pathFinding, ReadDependencies);
         SaveChunks();
     }
@@ -108,7 +108,6 @@ public class Realm
         updates.Dispose();
         updateArray.Dispose();
         InitializeManagedChunks();
-        EntityContainer.AIManager.ProcessPathfinding();
     }
 
     float lastSave;
@@ -190,7 +189,7 @@ public class Realm
         var distWithBuffer = WorldConfig.ChunkGenDistance * 2 + 3;
         realmData = new RealmData(WorldConfig.ChunkWidth, distWithBuffer * distWithBuffer);
         EntityContainer.name = $"{name} Entity Container";
-        EntityContainer.AIManager.Initialize(LoadedChunks, WorldConfig.ChunkWidth, realmData);
+        EntityContainer.AIManager.Initialize(LoadedChunks, WorldConfig.ChunkWidth);
         PathProvider = new PathProvider(realmData, WorldConfig.ChunkWidth);
     }
 

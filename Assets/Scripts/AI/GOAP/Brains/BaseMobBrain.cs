@@ -4,13 +4,23 @@ using Goap;
 using System;
 using UnityEngine;
 
-public abstract class BaseMobBrain : MonoBehaviour
+public abstract class BaseMobBrain : MonoBehaviour, IAI
 {
     protected AgentBehaviour agent;
     protected GoapActionProvider provider;
     protected GoapBehaviour goap;
     private MobAnimator animator;
     private GridNavAgent navAgent;
+
+    public Transform Transform => transform;
+
+    [field:SerializeField]
+    public bool Natural { get; set; }
+
+    [field: SerializeField]
+    public bool Hostile { get; set; }
+
+    public event Action<IAI> OnDespawn;
 
     protected virtual void Awake()
     {
@@ -22,6 +32,14 @@ public abstract class BaseMobBrain : MonoBehaviour
 
         InitAgentType();
     }
+
+    protected void Start()
+    {
+        (this as IAI).Register();
+        SetBaseGoals();
+    }
+
+    protected abstract void SetBaseGoals();
 
     protected virtual void OnEnable()
     {
@@ -54,5 +72,10 @@ public abstract class BaseMobBrain : MonoBehaviour
     public void ResumeAgent()
     {
         agent.IsPaused = false;
+    }
+
+    public void OnDestroy()
+    {
+        OnDespawn?.Invoke(this);
     }
 }

@@ -30,6 +30,8 @@ public class GridNavAgent : MonoBehaviour
 
     public Vector2 TargetDifference => Target.IsValid() ? Target.Position - transform.position : default;
 
+    Vector2 currentMoveTarget => pathContinues && CurrentPath.Count != 1 ? CurrentPath.Peek() : Target.Position;
+
     private void Update()
     {
         if (Target != null && shouldMove && TargetDifference.magnitude > 0.1f)
@@ -79,7 +81,8 @@ public class GridNavAgent : MonoBehaviour
         {
             return default;
         }
-        var t = CurrentPath.Peek();
+
+        var t = currentMoveTarget;
 
         return new Vector2(t.x, t.y) - transform.position.ToVector2();
     }
@@ -115,7 +118,7 @@ public class GridNavAgent : MonoBehaviour
             RequestNewPath();
         }
         if (!pathContinues) return;
-        if(math.distance(CurrentPath.Peek(), transform.position.ToVector2()) < 0.25f)
+        else if(math.distance(currentMoveTarget, transform.position.ToVector2()) < 0.25f)
         {
             CurrentPath.Pop();
         }

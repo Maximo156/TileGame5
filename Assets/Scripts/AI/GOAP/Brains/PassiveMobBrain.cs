@@ -8,7 +8,7 @@ public class PassiveMobBrain : BaseMobBrain
             provider.AgentType = goap.GetAgentType(nameof(PassiveMobTypeConfigFactory));
     }
 
-    private void Start()
+    protected override void SetBaseGoals()
     {
         provider.RequestGoal<WanderGoal, FollowHeldItemGoal, ReduceFearGoal>();
     }

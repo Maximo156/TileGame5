@@ -41,12 +41,7 @@ public class AggressiveMobBrain : BaseMobBrain
             provider.AgentType = goap.GetAgentType(nameof(AggressiveMobTypeConfigFactory));
     }
 
-    private void Start()
-    {
-        SetBaseGoals();
-    }
-
-    void SetBaseGoals()
+    protected override void SetBaseGoals()
     {
         provider.RequestGoal<WanderGoal>();
     }

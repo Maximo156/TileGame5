@@ -2,19 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Unity.Mathematics;
-using Unity.Jobs;
-using Unity.Collections;
 using System;
-using System.Collections.Concurrent;
-using BlockDataRepos;
-using NativeRealm;
 
 public interface IAI
 {
     public event Action<IAI> OnDespawn;
-    public IPathFinder pathfinder { get; }
-    public IBehavior behavior { get; }
+
     public Transform Transform { get; }
     public bool Natural { get; }
     public bool Hostile { get; }
@@ -37,18 +30,12 @@ public class AIManager : MonoBehaviour
     HashSet<IAI> UnParentedAi = new();
     Dictionary<Vector2Int, Chunk> SimulatedChunks = new();
 
-    PathfindingManager PathFinder;
-    AIBehaviorManager BehaviorManager;
-
     HashSet<IPathFinder> requestedPathfinders = new();
 
-    public void Initialize(Dictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth, RealmData worldData)
+    public void Initialize(Dictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth)
     {
         this.LoadedChunks = LoadedChunks;
         this.ChunkWidth = ChunkWidth;
-
-        PathFinder = new PathfindingManager(worldData);
-        BehaviorManager = new AIBehaviorManager();
     }
 
     // Update is called once per frame
@@ -86,39 +73,7 @@ public class AIManager : MonoBehaviour
         }
     }
 
-    public IEnumerator RunBehaviors()
-    {
-        while (true)
-        {
-            int count = 0;
-            foreach (var kvp in SimulatedChunks.ToList())
-            {
-                var ais = kvp.Value.ais;
-                BehaviorManager.RunBehaviors(ais.Select(ai => ai.behavior));
-                count += ais.Count;
-                if(count > AiPerEnumeration)
-                {
-                    yield return null;
-                    count = 0;
-                }
-            }
-            yield return null;
-        }
-    }
-
-    public JobHandle RunPathfinding()
-    {
-        var tmp = requestedPathfinders;
-        requestedPathfinders = new();
-        return PathFinder.RunPathfinders(tmp);
-    }
-
-    public void ProcessPathfinding()
-    {
-        PathFinder.ProcessPathfinders();
-    }
-
-    public IEnumerator RunChunks()
+    public IEnumerator UpdateChunkChildren()
     {
         while (true)
         {
@@ -167,22 +122,17 @@ public class AIManager : MonoBehaviour
         {
             UnParentedAi.Remove(newAi);
             Chunk.AddChild(newAi);
-            if (newAi.pathfinder != null) {
-                newAi.pathfinder.RequestPathfinding += (ai) => requestedPathfinders.Add(ai);
-            }
         }
         else
         {
             UnParentedAi.Add(newAi);
         }
-        newAi.OnDespawn += (ai) => requestedPathfinders.Remove(ai.pathfinder);
     }
 
     private void OnEnable()
     {
         StartCoroutine(RunSpawnPass());
-        StartCoroutine(RunChunks());
-        StartCoroutine(RunBehaviors());
+        StartCoroutine(UpdateChunkChildren());
     }
 
     public static void Register(IAI newAi)
