@@ -30,8 +30,6 @@ public class AIManager : MonoBehaviour
     HashSet<IAI> UnParentedAi = new();
     Dictionary<Vector2Int, Chunk> SimulatedChunks = new();
 
-    HashSet<IPathFinder> requestedPathfinders = new();
-
     public void Initialize(Dictionary<Vector2Int, Chunk> LoadedChunks, int ChunkWidth)
     {
         this.LoadedChunks = LoadedChunks;
