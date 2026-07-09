@@ -43,6 +43,7 @@ public class PathProvider
         if (!Results.ContainsKey(id) && !OpenRequests.ContainsKey(id)) throw new System.Exception($"Unknown path request: {id}");
         if(Results.TryGetValue(id, out var res) && res.Job.IsCompleted)
         {
+            res.Job.Complete();
             path = res.Path;
             Results.Remove(id);
             return true;

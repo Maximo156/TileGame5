@@ -1,5 +1,6 @@
 using CrashKonijn.Agent.Core;
 using CrashKonijn.Goap.Runtime;
+using EntityStatistics;
 using UnityEngine;
 
 namespace Goap
@@ -23,8 +24,10 @@ namespace Goap
 
             AddLocalTargetSensor<ClosestPlayerInventory>((agent, references, target) =>
             {
-                if (target is TransformTarget transformTarget)
-                    return transformTarget.SetTransform(playerInv.transform);
+                if (Vector3.Distance(agent.Transform.position, playerInv.transform.position)
+                        > references.GetCachedComponent<ItemInterestsBehavior>().SenseDist) return null;
+                if (target != null)
+                    return target;
 
                 return new TransformTarget(playerInv.transform);
             });
