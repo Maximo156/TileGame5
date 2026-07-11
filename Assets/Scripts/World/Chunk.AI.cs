@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -84,7 +83,7 @@ public partial class Chunk
         var amount = Random.Range(info.MinCount, info.MaxCount);
         for(int i = 0; i<amount; i++)
         {
-            Object.Instantiate(info.Prefab, (pos.Value + BlockPos).ToVector3Int(), Quaternion.identity, null).GetComponent<AI>();
+            Object.Instantiate(info.Prefab, (pos.Value + BlockPos).ToVector3Int(), Quaternion.identity, null);
         }
         return amount;
     }
@@ -106,11 +105,11 @@ public partial class Chunk
                 {
                     if (loc.x < 0 || loc.x >= width || loc.y < 0 || loc.y >= width)
                     {
-                        return 0;
+                        return 1;
                     }
                     return data.GetWall(loc.x, loc.y);
                 },
-                wall => wall != 0,
+                wall => wall == 0,
                 wall => wall != 0,
                 out _,
                 100)?.position;

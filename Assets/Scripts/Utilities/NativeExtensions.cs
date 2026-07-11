@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Unity.Collections;
-using Unity.Mathematics;
-using UnityEngine;
+using Unity.Collections.LowLevel.Unsafe;
 using Random = Unity.Mathematics.Random;
 
 public static class NativeExtensions
@@ -167,6 +166,16 @@ public static class NativeExtensions
         }
         data = new NativeArray<TOut>(dataList.AsArray(), Allocator.Persistent);
         dataList.Dispose();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe ref T ElementAt<T>(this NativeArray<T> array, int index) where T : struct
+    {
+        // Get the unsafe pointer directly to the underlying buffer memory
+        void* ptr = NativeArrayUnsafeUtility.GetUnsafePtr(array);
+
+        // Offset the pointer to the target index and return the reference
+        return ref UnsafeUtility.ArrayElementAsRef<T>(ptr, index);
     }
 }
 

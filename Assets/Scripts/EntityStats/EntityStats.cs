@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,7 +22,10 @@ namespace EntityStatistics
             Defense,
             MovementModifier,
             DamageOverTime,
-            PickupRange
+            PickupRange,
+            BaseDamage,
+            ViewDistance,
+            AttackRange
         }
 
         public BaseStats baseStats;
@@ -43,9 +47,20 @@ namespace EntityStatistics
             return broker.GetStat(type, baseStats.GetStat(type));
         }
 
-        public void Update()
+        private void OnEnable()
         {
-            broker.Update();
+            StartCoroutine(UpdateLoop());
+        }
+
+        private IEnumerator UpdateLoop()
+        {
+            var wait = new WaitForSeconds(0.1f);
+
+            while (true)
+            {
+                broker.Update();
+                yield return wait;
+            }
         }
 
         public void ApplyModifiers(IEnumerable<Modifier> modifiers)

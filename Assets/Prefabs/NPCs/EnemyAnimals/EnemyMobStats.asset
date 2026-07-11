@@ -22,3 +22,6 @@ MonoBehaviour:
   ManaRegen: 0
   HungerDepletion: 0
   PickupRange: 0
+  BaseDamage: 10
+  AttackRange: 1
+  ViewDistance: 10

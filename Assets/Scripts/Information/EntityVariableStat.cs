@@ -18,7 +18,7 @@ public abstract class EntityVariableStat : MonoBehaviour
 
     protected EntityStats stats;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         stats = GetComponent<EntityStats>();
     }

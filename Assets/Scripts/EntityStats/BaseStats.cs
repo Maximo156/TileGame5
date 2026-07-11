@@ -22,6 +22,9 @@ namespace EntityStatistics
         public float ManaRegen;
         public float HungerDepletion;
         public float PickupRange;
+        public float BaseDamage;
+        public float AttackRange;
+        public float ViewDistance;
 
         public float GetStat(EntityStats.Stat type)
         {
@@ -47,6 +50,12 @@ namespace EntityStatistics
                     return HungerDepletion;
                 case EntityStats.Stat.PickupRange:
                     return PickupRange;
+                case EntityStats.Stat.BaseDamage:
+                    return BaseDamage;
+                case EntityStats.Stat.ViewDistance:
+                    return ViewDistance;
+                case EntityStats.Stat.AttackRange:
+                    return AttackRange;
                 case EntityStats.Stat.DamageOverTime:
                     return 0;
                 default:

@@ -30,28 +30,28 @@ MonoBehaviour:
   - MinCount: 1
     MaxCount: 3
     Weight: 1
-    Prefab: {fileID: 6732792351147766889, guid: 43c3d07a6191cfa49a86fb5c6f00db8a, type: 3}
+    Prefab: {fileID: 3534551988252977803, guid: e959cf4a061b50a48b6bb7f4f90bff7a, type: 3}
   - MinCount: 1
     MaxCount: 3
     Weight: 1
-    Prefab: {fileID: 6732792351147766889, guid: 978238d02b5a3504685a63e8901c2f44, type: 3}
+    Prefab: {fileID: 3534551988252977803, guid: 33a34d46c021dda43afa03b501e85c03, type: 3}
   - MinCount: 1
     MaxCount: 3
     Weight: 1
-    Prefab: {fileID: 6732792351147766889, guid: 17caf8d0532c26644a539b8acebd6a37, type: 3}
+    Prefab: {fileID: 3534551988252977803, guid: e45b45fb745e90d44a14d760d3498315, type: 3}
   - MinCount: 1
     MaxCount: 3
     Weight: 1
-    Prefab: {fileID: 6732792351147766889, guid: 7279f38a8ad9e114fb38a1a297f39e9e, type: 3}
+    Prefab: {fileID: 3534551988252977803, guid: e3329b5f4ae0b5948b3bfb2d405c172a, type: 3}
   HostileMobs:
   - MinCount: 1
     MaxCount: 2
     Weight: 1
-    Prefab: {fileID: 7384479284224186033, guid: 8f154a6188c0b3e4bb7e3696d1d440a3, type: 3}
+    Prefab: {fileID: 8068640728334255194, guid: f2b48c61e6734c641b6f24d30201687a, type: 3}
   - MinCount: 1
     MaxCount: 2
     Weight: 1
-    Prefab: {fileID: 7384479284224186033, guid: c9543cb63208c464b8000a4afd3c99c6, type: 3}
+    Prefab: {fileID: 8068640728334255194, guid: b80a20f4bbbee174d9c8248d2217d6d0, type: 3}
   EditorColor:
     serializedVersion: 2
     rgba: 4278236196

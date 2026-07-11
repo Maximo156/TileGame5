@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
-public class MobAnimator : CallbackAnimator<string>, IAnimationClipSource
+public class MobAnimator : CallbackAnimator<string>, IAnimationClipSource, IDisablable
 {
     [Serializable]
     public class MobAnimationInfo
@@ -25,7 +25,7 @@ public class MobAnimator : CallbackAnimator<string>, IAnimationClipSource
 
     Dictionary<string, List<AnimationInfo>> mobAnimationCache = new Dictionary<string, List<AnimationInfo>>();
 
-    void Start()
+    void Awake()
     {
         sprite = GetComponent<SpriteRenderer>();
         var additionalCount = additionalAnimations.Count;
@@ -91,5 +91,53 @@ public class MobAnimator : CallbackAnimator<string>, IAnimationClipSource
             throw new Exception($"Animation {type} not found for mob {name}");
         }
         return info.SelectRandom();
+    }
+
+    public override void PlayAnimation(string animId, Action callback = null)
+    {
+        if (visible)
+        {
+            base.PlayAnimation(animId, callback);
+        }
+        else
+        {
+            PlayInstantly(animId, callback);
+        }
+    }
+
+    public void PlayInstantly(string animId, Action callback = null)
+    {
+        curAnim = animId;
+        var clip = GetAnimationInfo(curAnim).callbackPlayable.GetBehaviour().clip.GetAnimationClip();
+        foreach (var e in clip.events)
+        {
+            SendMessage(e.functionName, e.messageOptions);
+        }
+        callback?.Invoke();
+    }
+
+    bool visible;
+
+    public void Disable()
+    {
+        visible = false;
+        if (curAnim != null)
+        {
+            var curPlayable = GetAnimationInfo(curAnim).callbackPlayable;
+            curPlayable.SetTime(curPlayable.GetDuration());
+            playableGraph.Evaluate();
+            curPlayable.GetBehaviour().callBack?.Invoke();
+            InteruptAnim();
+        }
+
+        playableGraph.Stop();
+        animator.enabled = false;
+    }
+
+    public void Enable()
+    {
+        visible = true;
+        playableGraph.Play();
+        animator.enabled = true;
     }
 }
