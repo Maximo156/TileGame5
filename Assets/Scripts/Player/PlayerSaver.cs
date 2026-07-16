@@ -20,7 +20,7 @@ public class PlayerSaver : MonoBehaviour
 
     private void OnDisable()
     {
-        WorldSave.SaveSimple(infoLocation, 
+        WorldSave.SaveSimple( 
             new PlayerInfo() 
             { 
                 Position = Utilities.GetBlockPos(transform.position.ToVector2()),
@@ -39,7 +39,7 @@ public class PlayerSaver : MonoBehaviour
 
     void SaveInventory(Inventory _)
     {
-        WorldSave.SaveSimple(invLocation, new InventorySave()
+        WorldSave.SaveSimple(new InventorySave()
         {
             Main = playerInventories.MainInv,
             Hotbar = playerInventories.HotbarInv,
@@ -49,7 +49,7 @@ public class PlayerSaver : MonoBehaviour
 
     void LoadInventory()
     {
-        var loaded = WorldSave.LoadSimple<InventorySave>(invLocation);
+        var loaded = WorldSave.LoadSimple<InventorySave>();
 
         if (loaded != null) 
         {
@@ -65,9 +65,10 @@ public class PlayerSaver : MonoBehaviour
 
     public static PlayerInfo LoadPlayerInfo()
     {
-        return WorldSave.LoadSimple<PlayerInfo>(infoLocation);
+        return WorldSave.LoadSimple<PlayerInfo>();
     }
 
+    [SaveLocation("player/info")]
     public struct PlayerInfo
     {
         public Vector2Int Position;
@@ -76,6 +77,7 @@ public class PlayerSaver : MonoBehaviour
         public string currentRealm;
     }
 
+    [SaveLocation("player/inventory")]
     class InventorySave
     {
         public Inventory Main;

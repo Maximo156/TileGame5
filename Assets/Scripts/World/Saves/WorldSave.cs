@@ -4,8 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+public class SaveLocationAttribute : Attribute
+{
+    public string location;
+    public SaveLocationAttribute(string location)
+    {
+        this.location = location;
+    }
+}
 
 public class WorldSave
 {
@@ -45,8 +55,16 @@ public class WorldSave
         persistentDataPath = Application.persistentDataPath;
     }
 
-    static public void SaveSimple<T>(string path, T save)
+    static string TypeSaveLocation<T>()
     {
+        var attribute = typeof(T).GetCustomAttribute<SaveLocationAttribute>();
+        if (attribute == null) throw new ArgumentException($"{typeof(T)} does not have a SaveLocation Attribute");
+        return attribute.location;
+    }
+
+    static public void SaveSimple<T>( T save)
+    {
+        var path = TypeSaveLocation<T>();
         var completePath = Path.Combine(ActiveSaveDirectoryPath, path);
         var dir = Path.GetDirectoryName(completePath);
         if(!Directory.Exists(dir))
@@ -57,8 +75,9 @@ public class WorldSave
         File.WriteAllText(completePath, json);
     }
 
-    static public T LoadSimple<T>(string path)
+    static public T LoadSimple<T>()
     {
+        var path = TypeSaveLocation<T>();
         try
         {
             var text = File.ReadAllText(Path.Combine(ActiveSaveDirectoryPath, path));
